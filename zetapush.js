@@ -16,11 +16,10 @@
 	}
 
 	// Inherits from EventEmitter
-	ZetaPush.prototype= new EventEmitter();
+	//ZetaPush.prototype= new EventEmitter();
 
 	// Singleton for ZetaPush core
 	var zp= new ZetaPush();
-
 	var proto = ZetaPush.prototype;
 	var exports = this;
 	var originalGlobalValue = exports.ZetaPush;
@@ -31,6 +30,9 @@
 	clientId,
 	subscriptions = [];
 
+	/*
+		Listeners for cometD meta channels
+	*/
 	cometd.addListener('/meta/connect', function(msg) {
 		if (cometd.isDisconnected()) {
 			connected = false;
@@ -41,39 +43,114 @@
 		var wasConnected = connected;
 		connected = msg.successful;
 		if (!wasConnected && connected) { // reconnected
-			log.info('connection established');			
-			zp.emitEvent('ZetaPush_Connected');
+			log.info('connection established');
+			cometd.notifyListeners('/meta/connected', msg);
 			cometd.batch(function(){ 
 				zp.refresh(); 
 			});
 		} else if (wasConnected && !connected) {
 			log.warn('connection broken');
-			zp.emitEvent('ZetaPush_Disconnected');
-		}
-	});
-
-	cometd.addListener('/meta/disconnect', function(msg) {
-		log.info('got disconnect');
-		if (msg.successful) {
-			connected = false;
-			log.info('connection closed');
-			zp.emitEvent('ZetaPush_Disconnected');
 		}
 	});
 
 	cometd.addListener('/meta/handshake', function(handshake) {
 		if (handshake.successful) {
 			log.debug('successful handshake', handshake);
-			zp.emitEvent('ZetaPush_Hanshake_Successful');
 			clientId = handshake.clientId;
 		}
 		else {
 			log.warn('unsuccessful handshake');
-			zp.emitEvent('ZetaPush_Hanshake_Denied');
 			clientId = null;
 		}
 	});
 
+	proto.isConnected= function(){
+		return cometd.isConnected();
+	}
+	/*
+		Generate a channel
+	*/
+	proto.generateChannel= function(businessId, deploymentId, verb){
+		return '/service/' + businessId +'/'+ deploymentId +'/'+ verb;
+	}
+
+	/*
+		Listener for every ZetaPush and CometD events
+	*/
+	proto.on= function(evt, callback){
+		var tokens= evt.split("/");
+		if (tokens.length<=1){
+			// TODO emit an error
+			return null;
+		}
+
+		var key={};
+		if (tokens[1]=='service'){
+			key.isService= true;
+			key.channel= evt;
+			key.callback= callback;
+
+			if (connected) {
+				key.sub = cometd.subscribe(key.channel, key.callback);
+				log.debug('subscribed', key);
+			} else {
+				log.debug('queuing subscription request', key);
+			}
+			subscriptions.push(key);
+			if (key.renewOnReconnect==null)
+				key.renewOnReconnect = true;
+
+			return key;	
+		} else if (tokens[1]=='meta'){
+			key.isService= false;
+			key.renewOnReconnect= false;
+			key.channel= evt;
+			key.callback= callback;
+			key.sub= cometd.addListener(evt, callback);
+		} else {
+			log.error("This event can t be managed by ZetaPush", evt);
+			return null;
+		}
+		return key;
+	}
+	/*
+		Remove listener
+	*/
+	proto.off= function(key){
+		if (!key || key.sub==null)
+			return;
+
+		if (key.isService){
+			cometd.unsubscribe(key.sub);
+			key.sub= null;
+		} else {
+			cometd.removeListener(key.sub);
+			key.sub= null;
+		}
+		log.debug('unsubscribed', key);
+		key.renewOnReconnect = false;
+	}
+
+	/*
+		Send data
+	*/
+	proto.send= function(evt, data){
+		var tokens= evt.split("/");
+		if (tokens.length<=1){
+			// todo emit an error
+			return;
+		}
+
+		if (tokens[1]=='service'){
+			if (connected){
+				cometd.publish(evt, data);
+			}
+		}
+	}
+
+	/*
+		Init ZetaPush with the server url
+	*/
 	proto.init= function(serverUrl, debugLevel){
 		log.setLevel(debugLevel);
 		cometd.configure({
@@ -84,7 +161,9 @@
 			appendMessageTypeToURL: false
 		});
 	}
-
+	/*
+		Disconnect ZetaPush
+	*/
 	proto.disconnect= function() {
 		cometd.disconnect(true);
 	}
@@ -102,50 +181,23 @@
 		disconnect();
 	};
 
-	proto.subscribe= function(key) {
-		if (connected) {
-			key.sub = cometd.subscribe(key.chan, key.cb);
-			log.debug('subscribed', key);
-		} else {
-			log.debug('queuing subscription request', key);
-		}
-		subscriptions.push(key);
-		if (key.renewOnReconnect==null)
-			key.renewOnReconnect = true;
-
-		return key;
-	}
-
-	proto.unsubscribe= function (key) {
-		if (key.sub){
-			cometd.unsubscribe(key.sub);
-			key.sub= null;
-			log.debug('unsubscribed', key);
-		}
-		key.renewOnReconnect = false;
-	}
-
+	/*
+		Refresh subscriptions
+	*/
 	proto.refresh= function() {		
 		log.debug('refreshing subscriptions');
 		var renew = [];
 		subscriptions.forEach(function(key) {
-			if (key.sub)
+			if (key.sub && key.isService)
 				cometd.unsubscribe(key.sub);
 			if (key.renewOnReconnect)
 				renew.push(key);
 		});
 		subscriptions = [];
 		renew.forEach(function(key) {
-			subscribe(key);
+			proto.on(key.channel, key.callback);
 		});		
 	};
-
-	proto.publish= function(channel, data){
-		if (connected){
-			cometd.publish(channel, data);
-		}
-	};
-
 	
 	// Make an Text ID so the localStorage will be filled by something
 	proto.makeResourceId= function()
@@ -159,6 +211,10 @@
 		localStorage['resource']= text;
 	}
 
+	/*
+		Connect to ZetaPush
+		connectionData must be given by a Authent Object
+	*/
 	proto.connect= function(connectionData){
 
 		_connectionData= connectionData;
@@ -166,6 +222,9 @@
 		cometd.handshake(connectionData);	
 	};	
 
+	/*
+		Reconnect
+	*/
 	proto.reconnect= function(){
 		connect(_connectionData);		
 	}
@@ -175,10 +234,10 @@
 	 *
 	 * @return {Function} Non conflicting ZetaPush class.
 	 */
-	 ZetaPush.noConflict = function noConflict() {
+	ZetaPush.noConflict = function noConflict() {
 		exports.ZetaPush = originalGlobalValue;
 		return zp;
-	 };
+	};
 
 	// Expose the class either via AMD, CommonJS or the global object
 	if (typeof define === 'function' && define.amd) {
