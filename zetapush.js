@@ -75,17 +75,24 @@
 		Listener for every ZetaPush and CometD events
 	*/
 	proto.on= function(evt, callback){
-		var tokens= evt.split("/");
-		if (tokens.length<=1){
-			// TODO emit an error
-			return null;
-		}
-
-		var key={};
-		if (tokens[1]=='service'){
-			key.isService= true;
+		// One can call the function with a key
+		if (arguments.length == 2){			
+			var key={};			
 			key.channel= evt;
 			key.callback= callback;
+			subscriptions.push(key);
+		} else {
+			var key= evt;
+		}
+
+		var tokens= key.channel.split("/");
+		if (tokens.length<=1){
+			cometd.notifyListeners('/meta/error', "Syntax error in the channel name");
+			return null;
+		}
+		
+		if (tokens[1]=='service'){
+			key.isService= true;
 
 			if (connected) {
 				key.sub = cometd.subscribe(key.channel, key.callback);
@@ -93,21 +100,17 @@
 			} else {
 				log.debug('queuing subscription request', key);
 			}
-			subscriptions.push(key);
-			if (key.renewOnReconnect==null)
-				key.renewOnReconnect = true;
 
-			return key;	
 		} else if (tokens[1]=='meta'){
 			key.isService= false;
-			key.renewOnReconnect= false;
-			key.channel= evt;
-			key.callback= callback;
-			key.sub= cometd.addListener(evt, callback);
+			key.sub= cometd.addListener(key.channel, key.callback);
 		} else {
 			log.error("This event can t be managed by ZetaPush", evt);
 			return null;
 		}
+		if (key.renewOnReconnect==null)
+			key.renewOnReconnect = true;
+
 		return key;
 	}
 	/*
@@ -134,7 +137,7 @@
 	proto.send= function(evt, data){
 		var tokens= evt.split("/");
 		if (tokens.length<=1){
-			// todo emit an error
+			cometd.notifyListeners('/meta/error', "Syntax error in the channel name");
 			return;
 		}
 
@@ -188,14 +191,19 @@
 		log.debug('refreshing subscriptions');
 		var renew = [];
 		subscriptions.forEach(function(key) {
-			if (key.sub && key.isService)
-				cometd.unsubscribe(key.sub);
+			if (key.sub){
+				if (key.isService)
+					cometd.unsubscribe(key.sub)
+				else
+					cometd.removeListener(key.sub);
+			}
 			if (key.renewOnReconnect)
 				renew.push(key);
 		});
-		subscriptions = [];
+		//subscriptions = [];
 		renew.forEach(function(key) {
-			proto.on(key.channel, key.callback);
+			//proto.on(key.channel, key.callback);
+			proto.on(key);
 		});		
 	};
 	
