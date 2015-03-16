@@ -15,9 +15,6 @@
 	function ZetaPush() {
 	}
 
-	// Inherits from EventEmitter
-	//ZetaPush.prototype= new EventEmitter();
-
 	// Singleton for ZetaPush core
 	var zp= new ZetaPush();
 	var proto = ZetaPush.prototype;
@@ -153,6 +150,9 @@
 	*/
 	proto.init= function(serverUrl, debugLevel){
 		log.setLevel(debugLevel);
+		if (debugLevel == 'debug')
+			cometd.websocketEnabled= false;
+		
 		cometd.configure({
 			url: serverUrl,
 			logLevel: debugLevel,

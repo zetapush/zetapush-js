@@ -13,7 +13,6 @@ var concat = require('gulp-concat'),
 gulp.task('zetapush', function() {
   return gulp.src([
   		'bower_components/loglevel/dist/loglevel.min.js',
-  		'bower_components/eventEmitter/EventEmitter.js',
 		'bower_components/cometd-zepto/dist/cometdzepto.js',
 	    'zetapush.js'
     ])
@@ -29,7 +28,6 @@ gulp.task('zetapush', function() {
 gulp.task('zetapush-jquery', function() {
   return gulp.src([
   		'bower_components/loglevel/dist/loglevel.min.js',
-  		'bower_components/eventEmitter/EventEmitter.js',
 		'bower_components/cometd-zepto/dist/cometd.js',
 	    'zetapush.js'
     ])
