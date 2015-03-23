@@ -62,7 +62,7 @@
 	});
 
 	proto.isConnected= function(){
-		return cometd.isConnected();
+		return !cometd.isDisconnected();
 	}
 	/*
 		Generate a channel
@@ -72,17 +72,37 @@
 	}
 
 	/*
-		Listener for every ZetaPush and CometD events
+		Generate a channel
 	*/
-	proto.on= function(evt, callback){
+	proto.generateMetaChannel= function(businessId, deploymentId, verb){
+		return '/meta/' + businessId +'/'+ deploymentId +'/'+ verb;
+	}
+
+	/*
+		Listener for every ZetaPush and CometD events
+
+		Args:
+		1 argument: a previous key (for refresh)
+		2 arguments: a topic and a callback
+		4 arguments: businessId, deploymentId, verb and callback
+	*/
+	proto.on= function(businessId, deploymentId, verb, callback){
 		// One can call the function with a key
-		if (arguments.length == 2){			
+		if (arguments.length== 1){
+			var key= arguments[0];
+		}
+		else if (arguments.length == 2){			
 			var key={};			
-			key.channel= evt;
+			key.channel= arguments[0];
+			key.callback= arguments[1];
+			subscriptions.push(key);
+		} else if (arguments.length == 4) {
+			var key={};
+			key.channel= proto.generateChannel(businessId, deploymentId, verb);
 			key.callback= callback;
 			subscriptions.push(key);
-		} else {
-			var key= evt;
+		} else{
+			throw "zetaPush.on - bad arguments";
 		}
 
 		var tokens= key.channel.split("/");
@@ -113,6 +133,7 @@
 
 		return key;
 	}
+
 	/*
 		Remove listener
 	*/
@@ -145,6 +166,9 @@
 			if (connected){
 				cometd.publish(evt, data);
 			}
+		} 
+		else if (tokens[1]=='meta'){
+			cometd.notifyListeners(evt, data);
 		}
 	}
 

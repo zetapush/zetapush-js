@@ -5044,7 +5044,7 @@ org.cometd.CallbackPollingTransport = function()
 	});
 
 	proto.isConnected= function(){
-		return cometd.isConnected();
+		return !cometd.isDisconnected();
 	}
 	/*
 		Generate a channel
@@ -5054,20 +5054,47 @@ org.cometd.CallbackPollingTransport = function()
 	}
 
 	/*
-		Listener for every ZetaPush and CometD events
+		Generate a channel
 	*/
-	proto.on= function(evt, callback){
-		var tokens= evt.split("/");
-		if (tokens.length<=1){
-			// TODO emit an error
-			return null;
+	proto.generateMetaChannel= function(businessId, deploymentId, verb){
+		return '/meta/' + businessId +'/'+ deploymentId +'/'+ verb;
+	}
+
+	/*
+		Listener for every ZetaPush and CometD events
+
+		Args:
+		1 argument: a previous key (for refresh)
+		2 arguments: a topic and a callback
+		4 arguments: businessId, deploymentId, verb and callback
+	*/
+	proto.on= function(businessId, deploymentId, verb, callback){
+		// One can call the function with a key
+		if (arguments.length== 1){
+			var key= arguments[0];
+		}
+		else if (arguments.length == 2){			
+			var key={};			
+			key.channel= arguments[0];
+			key.callback= arguments[1];
+			subscriptions.push(key);
+		} else if (arguments.length == 4) {
+			var key={};
+			key.channel= proto.generateChannel(businessId, deploymentId, verb);
+			key.callback= callback;
+			subscriptions.push(key);
+		} else{
+			throw "zetaPush.on - bad arguments";
 		}
 
-		var key={};
+		var tokens= key.channel.split("/");
+		if (tokens.length<=1){
+			cometd.notifyListeners('/meta/error', "Syntax error in the channel name");
+			return null;
+		}
+		
 		if (tokens[1]=='service'){
 			key.isService= true;
-			key.channel= evt;
-			key.callback= callback;
 
 			if (connected) {
 				key.sub = cometd.subscribe(key.channel, key.callback);
@@ -5075,23 +5102,20 @@ org.cometd.CallbackPollingTransport = function()
 			} else {
 				log.debug('queuing subscription request', key);
 			}
-			subscriptions.push(key);
-			if (key.renewOnReconnect==null)
-				key.renewOnReconnect = true;
 
-			return key;	
 		} else if (tokens[1]=='meta'){
 			key.isService= false;
-			key.renewOnReconnect= false;
-			key.channel= evt;
-			key.callback= callback;
-			key.sub= cometd.addListener(evt, callback);
+			key.sub= cometd.addListener(key.channel, key.callback);
 		} else {
 			log.error("This event can t be managed by ZetaPush", evt);
 			return null;
 		}
+		if (key.renewOnReconnect==null)
+			key.renewOnReconnect = true;
+
 		return key;
 	}
+
 	/*
 		Remove listener
 	*/
@@ -5116,7 +5140,7 @@ org.cometd.CallbackPollingTransport = function()
 	proto.send= function(evt, data){
 		var tokens= evt.split("/");
 		if (tokens.length<=1){
-			// todo emit an error
+			cometd.notifyListeners('/meta/error', "Syntax error in the channel name");
 			return;
 		}
 
@@ -5124,6 +5148,9 @@ org.cometd.CallbackPollingTransport = function()
 			if (connected){
 				cometd.publish(evt, data);
 			}
+		} 
+		else if (tokens[1]=='meta'){
+			cometd.notifyListeners(evt, data);
 		}
 	}
 
@@ -5170,14 +5197,19 @@ org.cometd.CallbackPollingTransport = function()
 		log.debug('refreshing subscriptions');
 		var renew = [];
 		subscriptions.forEach(function(key) {
-			if (key.sub && key.isService)
-				cometd.unsubscribe(key.sub);
+			if (key.sub){
+				if (key.isService)
+					cometd.unsubscribe(key.sub)
+				else
+					cometd.removeListener(key.sub);
+			}
 			if (key.renewOnReconnect)
 				renew.push(key);
 		});
-		subscriptions = [];
+		//subscriptions = [];
 		renew.forEach(function(key) {
-			proto.on(key.channel, key.callback);
+			//proto.on(key.channel, key.callback);
+			proto.on(key);
 		});		
 	};
 	
