@@ -154,8 +154,26 @@
 
 	/*
 		Send data
+		3 params
+		businessId, deploymentId, verb (no data)
+		4 params
+		businessId, deploymentId, verb, data
+		2 params
+		channel, data
 	*/
-	proto.send= function(evt, data){
+	proto.send= function(businessId, deploymentId, verb, data){
+
+		var evt, sendData;
+
+		if ((arguments.length== 2) || (arguments.length==1)){
+			evt= arguments[0];
+			sendData= arguments[1];
+		} 
+		else if ((arguments.length==3) || (arguments.length==4)){
+			evt= proto.generateChannel(businessId, deploymentId, verb);
+			sendData= data;
+		}
+
 		var tokens= evt.split("/");
 		if (tokens.length<=1){
 			cometd.notifyListeners('/meta/error', "Syntax error in the channel name");
@@ -164,11 +182,11 @@
 
 		if (tokens[1]=='service'){
 			if (connected){
-				cometd.publish(evt, data);
+				cometd.publish(evt, sendData);
 			}
 		} 
 		else if (tokens[1]=='meta'){
-			cometd.notifyListeners(evt, data);
+			cometd.notifyListeners(evt, sendData);
 		}
 	}
 
