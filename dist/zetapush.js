@@ -4983,8 +4983,13 @@ org.cometd.CallbackPollingTransport = function()
 /*
 	ZetaPushCore v1.0
 	Javascript core sdk for ZetaPush
-	Mikael Morvan - Mars 2015
-	*/
+	Mikael Morvan - March 2015
+*/
+
+// Global NameSpace
+ZetaPush = {};
+ZetaPush.service= {};
+ZetaPush.authent={};
 
 ;(function () {
 	'use strict';
@@ -4994,19 +4999,20 @@ org.cometd.CallbackPollingTransport = function()
 	 *
 	 * @class ZetaPush Manages core functionnalities
 	 */
-	function ZetaPush() {
+	function ZP() {
 	}
 
 	// Singleton for ZetaPush core
-	var zp= new ZetaPush();
-	var proto = ZetaPush.prototype;
+	var _zp= new ZP();
+	var proto = ZP.prototype;
 	var exports = this;
-	var originalGlobalValue = exports.ZetaPush;
+	var originalGlobalValue = exports.ZP;
 
 	var cometd = $.cometd,
 	_connectionData= null,
 	connected = false,
-	clientId,
+	_businessId= null,
+	_clientId= null,
 	subscriptions = [];
 
 	/*
@@ -5025,7 +5031,7 @@ org.cometd.CallbackPollingTransport = function()
 			log.info('connection established');
 			cometd.notifyListeners('/meta/connected', msg);
 			cometd.batch(function(){ 
-				zp.refresh(); 
+				_zp.refresh(); 
 			});
 		} else if (wasConnected && !connected) {
 			log.warn('connection broken');
@@ -5035,11 +5041,11 @@ org.cometd.CallbackPollingTransport = function()
 	cometd.addListener('/meta/handshake', function(handshake) {
 		if (handshake.successful) {
 			log.debug('successful handshake', handshake);
-			clientId = handshake.clientId;
+			_clientId = handshake.clientId;
 		}
 		else {
 			log.warn('unsuccessful handshake');
-			clientId = null;
+			_clientId = null;
 		}
 	});
 
@@ -5049,15 +5055,15 @@ org.cometd.CallbackPollingTransport = function()
 	/*
 		Generate a channel
 	*/
-	proto.generateChannel= function(businessId, deploymentId, verb){
-		return '/service/' + businessId +'/'+ deploymentId +'/'+ verb;
+	proto.generateChannel= function(deploymentId, verb){
+		return '/service/' + _businessId +'/'+ deploymentId +'/'+ verb;
 	}
 
 	/*
 		Generate a channel
 	*/
-	proto.generateMetaChannel= function(businessId, deploymentId, verb){
-		return '/meta/' + businessId +'/'+ deploymentId +'/'+ verb;
+	proto.generateMetaChannel= function( deploymentId, verb){
+		return '/meta/' + _businessId +'/'+ deploymentId +'/'+ verb;
 	}
 
 	/*
@@ -5175,7 +5181,9 @@ org.cometd.CallbackPollingTransport = function()
 	/*
 		Init ZetaPush with the server url
 	*/
-	proto.init= function(serverUrl, debugLevel){
+	proto.init= function(serverUrl, businessId, debugLevel){
+		_businessId= businessId;
+
 		log.setLevel(debugLevel);
 		if (debugLevel == 'debug')
 			cometd.websocketEnabled= false;
@@ -5230,8 +5238,11 @@ org.cometd.CallbackPollingTransport = function()
 			proto.on(key);
 		});		
 	};
-	
-	// Make an Text ID so the localStorage will be filled by something
+
+	/*
+		Make a new Resource ID
+		Store it in localStorage
+	*/
 	proto.makeResourceId= function()
 	{
 		var text = "";
@@ -5240,12 +5251,12 @@ org.cometd.CallbackPollingTransport = function()
 		for( var i=0; i < 5; i++ )
 			text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-		localStorage['resource']= text;
+		return text;
 	}
 
 	/*
 		Connect to ZetaPush
-		connectionData must be given by a Authent Object
+		connectionData must be given by an Authent Object
 	*/
 	proto.connect= function(connectionData){
 
@@ -5261,26 +5272,33 @@ org.cometd.CallbackPollingTransport = function()
 		connect(_connectionData);		
 	}
 
+	/*
+		getBusinessId
+	*/
+	proto.getBusinessId= function(){
+		return _businessId;
+	}
+
 	/**
 	 * Reverts the global {@link ZetaPush} to its previous value and returns a reference to this version.
 	 *
 	 * @return {Function} Non conflicting ZetaPush class.
 	 */
-	ZetaPush.noConflict = function noConflict() {
-		exports.ZetaPush = originalGlobalValue;
-		return zp;
+	ZP.noConflict = function noConflict() {
+		exports.ZP = originalGlobalValue;
+		return _zp;
 	};
 
 	// Expose the class either via AMD, CommonJS or the global object
 	if (typeof define === 'function' && define.amd) {
 		define(function () {
-			return zp;
+			return _zp;
 		});
 	}
 	else if (typeof module === 'object' && module.exports){
-		module.exports = zp;
+		module.exports = _zp;
 	}
 	else {
-		exports.zetaPush = zp;
+		exports.zp = _zp;
 	}
 }.call(this));
