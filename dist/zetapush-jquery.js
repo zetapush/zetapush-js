@@ -3430,6 +3430,7 @@ ZetaPush.authent={};
 	connected = false,
 	_businessId= null,
 	_clientId= null,
+	_serverUrl= null, 
 	subscriptions = [];
 
 	/*
@@ -3466,7 +3467,10 @@ ZetaPush.authent={};
 		}
 	});
 
-	proto.isConnected= function(){
+	proto.isConnected= function(authentType){
+		if (authentType){
+			return (authentType == _connectionData.ext.authentication.type) && !cometd.isDisconnected();
+		}
 		return !cometd.isDisconnected();
 	}
 	/*
@@ -3600,13 +3604,16 @@ ZetaPush.authent={};
 	*/
 	proto.init= function(serverUrl, businessId, debugLevel){
 		_businessId= businessId;
+		_serverUrl= serverUrl;
 
-		log.setLevel(debugLevel);
-		if (debugLevel == 'debug')
-			cometd.websocketEnabled= false;
-		
+		if (debugLevel){
+			log.setLevel(debugLevel);
+			if (debugLevel == 'debug')
+				cometd.websocketEnabled= false;	
+		}
+				
 		cometd.configure({
-			url: serverUrl,
+			url: serverUrl+'/strd',
 			logLevel: debugLevel,
 			backoffIncrement: 100,
 			maxBackoff: 500,
@@ -3618,6 +3625,17 @@ ZetaPush.authent={};
 	*/
 	proto.disconnect= function() {
 		cometd.disconnect(true);
+	}
+
+	/*
+		GetServerUrl
+	*/
+	proto.getServerUrl= function(){
+		return _serverUrl;
+	}
+
+	proto.getRestServerUrl= function(){
+		return _serverUrl+'/rest/deployed';
 	}
 
 	// http://cometd.org/documentation/cometd-javascript/subscription
