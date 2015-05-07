@@ -4,10 +4,6 @@
 	Mikael Morvan - March 2015
 */
 
-// Global NameSpace
-ZetaPush = {};
-ZetaPush.service= {};
-ZetaPush.authent={};
 
 ;(function () {
 	'use strict';
@@ -18,6 +14,8 @@ ZetaPush.authent={};
 	 * @class ZetaPush Manages core functionnalities
 	 */
 	function ZP() {
+		this.authent={};
+		this.service={};
 	}
 
 	// Singleton for ZetaPush core
@@ -26,8 +24,64 @@ ZetaPush.authent={};
 	var exports = this;
 	var originalGlobalValue = exports.ZP;
 
-	var cometd = $.cometd,
-	_connectionData= null,
+	org.cometd.JSON.toJSON = JSON.stringify;
+	org.cometd.JSON.fromJSON = JSON.parse;
+
+	function _setHeaders(headersArray, headers)
+	{
+		if (headers)
+		{
+			for (var headerName in headers)
+			{
+				headersArray[headerName]= headers[headerName];				
+			}
+		}
+	}
+
+	function LongPollingTransport()
+	{
+		var _super = new org.cometd.LongPollingTransport();
+		var that = org.cometd.Transport.derive(_super);
+
+		that.xhrSend = function(packet)
+		{
+			var headers=[];
+			headers['Content-Type']= 'application/json;charset=UTF-8';
+			_setHeaders(headers, packet.headers);
+
+			qwest.post(
+				packet.url,
+				packet.body,
+				{
+					async: packet.sync !== true,
+					headers: headers,
+					dataType: '-',
+					withCredentials: true,
+					timeout: 120000
+				}
+			)
+			.then(
+				packet.onSuccess
+			)
+			.catch(function(e,url){
+				packet.onError(reason, exception);
+			})							
+		};
+
+		return that;
+	}
+	
+	// Bind CometD
+	var cometd = new org.cometd.CometD();
+
+	// Registration order is important.
+	if (org.cometd.WebSocket)
+	{
+		cometd.registerTransport('websocket', new org.cometd.WebSocketTransport());
+	}
+	cometd.registerTransport('long-polling', new LongPollingTransport());
+
+	var _connectionData= null,
 	connected = false,
 	_businessId= null,
 	_clientId= null,
@@ -67,6 +121,102 @@ ZetaPush.authent={};
 			_clientId = null;
 		}
 	});
+
+	/*
+		Return a Real-time server url
+	*/
+	function getServer(businessId, force, apiUrl, callback){
+		// 1 - Check if an array of available server exists in the localStorage
+		// 2 - Check if the the information is fresh enough
+		// 3 - If the information isn't fresh enough or the force parameter is set, retrieve the info from api.zpush.io
+		// 4 - Return a random server from the array
+		var serverParams;
+		try{
+			serverParams= JSON.parse(localStorage['serverParams']);
+			// Check the last time customer has checked the server list ( 24h - 86400000 ms)
+			if (serverParams && serverParams.lastCheck && ( Date.now() - serverParams.lastCheck > 86400000)){
+				serverParams= null;
+			}
+			// Check if the last businessId is still the same
+			if (serverParams && serverParams.lastBusinessId && serverParams.lastBusinessId!= businessId){
+				serverParams= null;
+			}
+		} catch (e){
+			// This occurs when using private mode on browsers or headless-browser
+			serverParams= null;
+		}
+
+		if (!serverParams || force){
+			var headers=[];
+			headers['Content-Type']= 'application/json;charset=UTF-8';
+			qwest.get(
+				apiUrl + businessId,
+				null,
+				{
+					dataType: '-',
+					headers: headers,
+					responseType: 'json',
+					cache: true
+				}
+			)
+			.then(function(data){
+				data.lastCheck= Date.now();
+				data.lastBusinessId= businessId;
+				serverParams= data;
+				localStorage['serverParams']= JSON.stringify(serverParams);
+				var error= null;						
+				callback(error, serverParams.servers[Math.floor(Math.random()*serverParams.servers.length)]);
+			})
+			.catch(function(e,url){
+				log.error("Error retrieving server url list for businessId", businessId)
+				callback(error, null);
+			})
+			;
+						
+		} else {
+			var error= null;
+			callback(error, serverParams.servers[Math.floor(Math.random()*serverParams.servers.length)]);
+		}		
+	}
+
+	/*
+		Init ZetaPush with the server url
+		With 2 params, the 2nd param is the callback
+		With 3 params, the 2nd param is debugLevel and the 3rd is callback
+	*/
+	proto.init= function(businessId, debugLevel, apiUrl, callback){
+		_businessId= businessId;
+		if (arguments.length== 2){
+			callback= arguments[1];
+			debugLevel= 'info';
+			apiUrl= "http://api.zpush.io/";
+		}
+		if (arguments.length== 3){
+			debugLevel= arguments[1];
+			callback= arguments[2];
+			apiUrl= "http://api.zpush.io/";
+		}
+		getServer(businessId, false, apiUrl, function(error, serverUrl){
+			_serverUrl= serverUrl;
+			if (debugLevel){
+				log.setLevel(debugLevel);
+				if (debugLevel == 'debug')
+					cometd.websocketEnabled= false;	
+			}
+					
+			cometd.configure({
+				url: _serverUrl+'/strd',
+				logLevel: debugLevel,
+				backoffIncrement: 100,
+				maxBackoff: 500,
+				appendMessageTypeToURL: false
+			});
+			callback(error);
+		});
+
+	}
+
+
 
 	proto.isConnected= function(authentType){
 		if (authentType){
@@ -200,31 +350,15 @@ ZetaPush.authent={};
 		}
 	}
 
-	/*
-		Init ZetaPush with the server url
-	*/
-	proto.init= function(serverUrl, businessId, debugLevel){
-		_businessId= businessId;
-		_serverUrl= serverUrl;
 
-		if (debugLevel){
-			log.setLevel(debugLevel);
-			if (debugLevel == 'debug')
-				cometd.websocketEnabled= false;	
-		}
-				
-		cometd.configure({
-			url: serverUrl+'/strd',
-			logLevel: debugLevel,
-			backoffIncrement: 100,
-			maxBackoff: 500,
-			appendMessageTypeToURL: false
-		});
-	}
 	/*
 		Disconnect ZetaPush
 	*/
 	proto.disconnect= function() {
+		// Unsubscribe first
+		subscriptions.forEach(function(value, key){
+			proto.off(value);
+		} );
 		cometd.disconnect(true);
 	}
 
@@ -249,7 +383,8 @@ ZetaPush.authent={};
 			cometd.unsubscribe(subscriptionHandle);
 			log.error('unsubscribed');
 		}
-		disconnect();
+		// Try not to disconnect ???
+		//disconnect();
 	};
 
 	/*
@@ -296,6 +431,9 @@ ZetaPush.authent={};
 	*/
 	proto.connect= function(connectionData){
 
+		if (proto.isConnected())
+			return;
+
 		_connectionData= connectionData;
 		
 		cometd.handshake(connectionData);	
@@ -315,26 +453,5 @@ ZetaPush.authent={};
 		return _businessId;
 	}
 
-	/**
-	 * Reverts the global {@link ZetaPush} to its previous value and returns a reference to this version.
-	 *
-	 * @return {Function} Non conflicting ZetaPush class.
-	 */
-	ZP.noConflict = function noConflict() {
-		exports.ZP = originalGlobalValue;
-		return _zp;
-	};
-
-	// Expose the class either via AMD, CommonJS or the global object
-	if (typeof define === 'function' && define.amd) {
-		define(function () {
-			return _zp;
-		});
-	}
-	else if (typeof module === 'object' && module.exports){
-		module.exports = _zp;
-	}
-	else {
-		exports.zp = _zp;
-	}
+	exports.zp = _zp;
 }.call(this));
