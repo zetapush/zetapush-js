@@ -254,7 +254,18 @@
 				}
 			}
 		},
-
+		handleError= function(e){
+			error=true;
+			--requests;
+			// Clear the timeout
+			clearInterval(timeoutInterval);
+			// Execute 'catch' stack
+			if(options.async){
+				for(i=0;func=catch_stack[i];++i){
+					func.call(xhr, e, url);
+				}
+			}
+		},
 		// Recursively build the query string
 		buildData=function(data,key){
 			var res=[],
@@ -416,6 +427,7 @@
 			// Plug response handler
 			if(xhr2 || xdr){
 				xhr.onload=handleResponse;
+				xhr.onerror=handleError;
 			}
 			else{
 				xhr.onreadystatechange=function(){

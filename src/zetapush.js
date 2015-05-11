@@ -63,8 +63,9 @@
 			.then(
 				packet.onSuccess
 			)
-			.catch(function(e,url){
-				packet.onError(reason, exception);
+			.catch(function(e,url){				
+				var reason="Connection Failed for server " + url;
+				packet.onError(reason, e);
 			})							
 		};
 
@@ -86,6 +87,7 @@
 	_businessId= null,
 	_clientId= null,
 	_serverUrl= null, 
+	_serverList=[],
 	subscriptions = [];
 
 	/*
@@ -122,61 +124,65 @@
 		}
 	});
 
+	cometd.onTransportException= function(_cometd, transport){		
+		if (transport==='long-polling'){
+			log.debug('onTransportException for long-polling');
+
+			// Try to find an other available server
+			// Remove the current one from the _serverList array
+			for (var i = _serverList.length - 1; i >= 0; i--) {
+				if (_serverList[i]===_serverUrl){
+					_serverList.splice(i,1);
+					break;
+				}
+			};
+			if (_serverList.length===0){
+				log.info("No more server available");
+			} else {
+				_serverUrl= _serverList[Math.floor(Math.random()*_serverList.length)];
+				cometd.configure({
+					url: _serverUrl+'/strd'
+				});
+				log.debug('CometD Url', _serverUrl);
+				setTimeout(function(){ 
+					cometd.handshake(_connectionData);
+				},500);
+				
+			}
+
+		}
+	}
 	/*
 		Return a Real-time server url
 	*/
 	function getServer(businessId, force, apiUrl, callback){
-		// 1 - Check if an array of available server exists in the localStorage
-		// 2 - Check if the the information is fresh enough
-		// 3 - If the information isn't fresh enough or the force parameter is set, retrieve the info from api.zpush.io
-		// 4 - Return a random server from the array
-		var serverParams;
-		try{
-			serverParams= JSON.parse(localStorage['serverParams']);
-			// Check the last time customer has checked the server list ( 24h - 86400000 ms)
-			if (serverParams && serverParams.lastCheck && ( Date.now() - serverParams.lastCheck > 86400000)){
-				serverParams= null;
+		// Get the server list from a server
+		
+		var headers=[];		
+		headers['Content-Type']= 'application/json;charset=UTF-8';
+		qwest.get(
+			apiUrl + businessId,
+			null,
+			{
+				dataType: '-',
+				headers: headers,
+				responseType: 'json',
+				cache: true
 			}
-			// Check if the last businessId is still the same
-			if (serverParams && serverParams.lastBusinessId && serverParams.lastBusinessId!= businessId){
-				serverParams= null;
-			}
-		} catch (e){
-			// This occurs when using private mode on browsers or headless-browser
-			serverParams= null;
-		}
-
-		if (!serverParams || force){
-			var headers=[];
-			headers['Content-Type']= 'application/json;charset=UTF-8';
-			qwest.get(
-				apiUrl + businessId,
-				null,
-				{
-					dataType: '-',
-					headers: headers,
-					responseType: 'json',
-					cache: true
-				}
-			)
-			.then(function(data){
-				data.lastCheck= Date.now();
-				data.lastBusinessId= businessId;
-				serverParams= data;
-				localStorage['serverParams']= JSON.stringify(serverParams);
-				var error= null;						
-				callback(error, serverParams.servers[Math.floor(Math.random()*serverParams.servers.length)]);
-			})
-			.catch(function(e,url){
-				log.error("Error retrieving server url list for businessId", businessId)
-				callback(error, null);
-			})
-			;
-						
-		} else {
+		)
+		.then(function(data){
+			data.lastCheck= Date.now();
+			data.lastBusinessId= businessId;
 			var error= null;
-			callback(error, serverParams.servers[Math.floor(Math.random()*serverParams.servers.length)]);
-		}		
+			_serverList= data.servers;						
+			callback(error, data.servers[Math.floor(Math.random()*data.servers.length)]);
+		})
+		.catch(function(e,url){
+			log.error("Error retrieving server url list for businessId", businessId)
+			callback(error, null);
+		})
+		;
+		
 	}
 
 	/*
