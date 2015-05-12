@@ -3540,7 +3540,18 @@ org.cometd.LongPollingTransport = function()
 				}
 			}
 		},
-
+		handleError= function(e){
+			error=true;
+			--requests;
+			// Clear the timeout
+			clearInterval(timeoutInterval);
+			// Execute 'catch' stack
+			if(options.async){
+				for(i=0;func=catch_stack[i];++i){
+					func.call(xhr, e, url);
+				}
+			}
+		},
 		// Recursively build the query string
 		buildData=function(data,key){
 			var res=[],
@@ -3702,6 +3713,7 @@ org.cometd.LongPollingTransport = function()
 			// Plug response handler
 			if(xhr2 || xdr){
 				xhr.onload=handleResponse;
+				xhr.onerror=handleError;
 			}
 			else{
 				xhr.onreadystatechange=function(){
@@ -3855,8 +3867,9 @@ org.cometd.LongPollingTransport = function()
 			.then(
 				packet.onSuccess
 			)
-			.catch(function(e,url){
-				packet.onError(reason, exception);
+			.catch(function(e,url){				
+				var reason="Connection Failed for server " + url;
+				packet.onError(reason, e);
 			})							
 		};
 
@@ -3878,6 +3891,8 @@ org.cometd.LongPollingTransport = function()
 	_businessId= null,
 	_clientId= null,
 	_serverUrl= null, 
+	_serverList=[],
+	_debugLevel= null,
 	subscriptions = [];
 
 	/*
@@ -3914,101 +3929,117 @@ org.cometd.LongPollingTransport = function()
 		}
 	});
 
+	cometd.onTransportException= function(_cometd, transport){		
+		if (transport==='long-polling'){
+			log.debug('onTransportException for long-polling');
+
+			// Try to find an other available server
+			// Remove the current one from the _serverList array
+			for (var i = _serverList.length - 1; i >= 0; i--) {
+				if (_serverList[i]===_serverUrl){
+					_serverList.splice(i,1);
+					break;
+				}
+			};
+			if (_serverList.length===0){
+				log.info("No more server available");
+			} else {
+				_serverUrl= _serverList[Math.floor(Math.random()*_serverList.length)];
+				cometd.configure({
+					url: _serverUrl+'/strd'
+				});
+				log.debug('CometD Url', _serverUrl);
+				setTimeout(function(){ 
+					cometd.handshake(_connectionData);
+				},500);
+				
+			}
+
+		}
+	}
 	/*
 		Return a Real-time server url
 	*/
 	function getServer(businessId, force, apiUrl, callback){
-		// 1 - Check if an array of available server exists in the localStorage
-		// 2 - Check if the the information is fresh enough
-		// 3 - If the information isn't fresh enough or the force parameter is set, retrieve the info from api.zpush.io
-		// 4 - Return a random server from the array
-		var serverParams;
-		try{
-			serverParams= JSON.parse(localStorage['serverParams']);
-			// Check the last time customer has checked the server list ( 24h - 86400000 ms)
-			if (serverParams && serverParams.lastCheck && ( Date.now() - serverParams.lastCheck > 86400000)){
-				serverParams= null;
+		// Get the server list from a server
+		
+		var headers=[];		
+		headers['Content-Type']= 'application/json;charset=UTF-8';
+		qwest.get(
+			apiUrl + businessId,
+			null,
+			{
+				dataType: '-',
+				headers: headers,
+				responseType: 'json',
+				cache: true
 			}
-			// Check if the last businessId is still the same
-			if (serverParams && serverParams.lastBusinessId && serverParams.lastBusinessId!= businessId){
-				serverParams= null;
-			}
-		} catch (e){
-			// This occurs when using private mode on browsers or headless-browser
-			serverParams= null;
-		}
-
-		if (!serverParams || force){
-			var headers=[];
-			headers['Content-Type']= 'application/json;charset=UTF-8';
-			qwest.get(
-				apiUrl + businessId,
-				null,
-				{
-					dataType: '-',
-					headers: headers,
-					responseType: 'json',
-					cache: true
-				}
-			)
-			.then(function(data){
-				data.lastCheck= Date.now();
-				data.lastBusinessId= businessId;
-				serverParams= data;
-				localStorage['serverParams']= JSON.stringify(serverParams);
-				var error= null;						
-				callback(error, serverParams.servers[Math.floor(Math.random()*serverParams.servers.length)]);
-			})
-			.catch(function(e,url){
-				log.error("Error retrieving server url list for businessId", businessId)
-				callback(error, null);
-			})
-			;
-						
-		} else {
+		)
+		.then(function(data){
+			data.lastCheck= Date.now();
+			data.lastBusinessId= businessId;
 			var error= null;
-			callback(error, serverParams.servers[Math.floor(Math.random()*serverParams.servers.length)]);
-		}		
+			_serverList= data.servers;						
+			callback(error, data.servers[Math.floor(Math.random()*data.servers.length)]);
+		})
+		.catch(function(e,url){
+			log.error("Error retrieving server url list for businessId", businessId)
+			callback(error, null);
+		})
+		;
+		
 	}
 
 	/*
-		Init ZetaPush with the server url
-		With 2 params, the 2nd param is the callback
-		With 3 params, the 2nd param is debugLevel and the 3rd is callback
+		Init ZetaPush with the BusinessId of the user		
 	*/
-	proto.init= function(businessId, debugLevel, apiUrl, callback){
+	proto.init= function(businessId, debugLevel){
 		_businessId= businessId;
-		if (arguments.length== 2){
-			callback= arguments[1];
-			debugLevel= 'info';
+		if (arguments.length== 1){
+			_debugLevel= 'info';
+		} else {
+			_debugLevel= debugLevel;
+		}
+		log.setLevel(_debugLevel);
+	}
+
+	/*
+		Connect to ZetaPush
+		connectionData must be given by an Authent Object
+	*/
+	proto.connect= function(connectionData, apiUrl){
+
+		if (proto.isConnected())
+			return;
+
+		if (arguments.length === 1){			
 			apiUrl= "http://api.zpush.io/";
 		}
-		if (arguments.length== 3){
-			debugLevel= arguments[1];
-			callback= arguments[2];
-			apiUrl= "http://api.zpush.io/";
-		}
-		getServer(businessId, false, apiUrl, function(error, serverUrl){
+
+		_connectionData= connectionData;
+		
+		/*
+			Get the server Url
+		*/
+
+		getServer(_businessId, false, apiUrl, function(error, serverUrl){
 			_serverUrl= serverUrl;
-			if (debugLevel){
-				log.setLevel(debugLevel);
-				if (debugLevel == 'debug')
-					cometd.websocketEnabled= false;	
-			}
+				
+			if (_debugLevel === 'debug')
+				cometd.websocketEnabled= false;	
 					
 			cometd.configure({
 				url: _serverUrl+'/strd',
-				logLevel: debugLevel,
+				logLevel: _debugLevel,
 				backoffIncrement: 100,
 				maxBackoff: 500,
 				appendMessageTypeToURL: false
 			});
-			callback(error);
+			
+			cometd.handshake(connectionData);	
 		});
 
-	}
-
-
+	};
 
 	proto.isConnected= function(authentType){
 		if (authentType){
@@ -4217,19 +4248,7 @@ org.cometd.LongPollingTransport = function()
 		return text;
 	}
 
-	/*
-		Connect to ZetaPush
-		connectionData must be given by an Authent Object
-	*/
-	proto.connect= function(connectionData){
-
-		if (proto.isConnected())
-			return;
-
-		_connectionData= connectionData;
 		
-		cometd.handshake(connectionData);	
-	};	
 
 	/*
 		Reconnect

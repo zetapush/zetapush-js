@@ -88,6 +88,7 @@
 	_clientId= null,
 	_serverUrl= null, 
 	_serverList=[],
+	_debugLevel= null,
 	subscriptions = [];
 
 	/*
@@ -186,43 +187,55 @@
 	}
 
 	/*
-		Init ZetaPush with the server url
-		With 2 params, the 2nd param is the callback
-		With 3 params, the 2nd param is debugLevel and the 3rd is callback
+		Init ZetaPush with the BusinessId of the user		
 	*/
-	proto.init= function(businessId, debugLevel, apiUrl, callback){
+	proto.init= function(businessId, debugLevel){
 		_businessId= businessId;
-		if (arguments.length== 2){
-			callback= arguments[1];
-			debugLevel= 'info';
+		if (arguments.length== 1){
+			_debugLevel= 'info';
+		} else {
+			_debugLevel= debugLevel;
+		}
+		log.setLevel(_debugLevel);
+	}
+
+	/*
+		Connect to ZetaPush
+		connectionData must be given by an Authent Object
+	*/
+	proto.connect= function(connectionData, apiUrl){
+
+		if (proto.isConnected())
+			return;
+
+		if (arguments.length === 1){			
 			apiUrl= "http://api.zpush.io/";
 		}
-		if (arguments.length== 3){
-			debugLevel= arguments[1];
-			callback= arguments[2];
-			apiUrl= "http://api.zpush.io/";
-		}
-		getServer(businessId, false, apiUrl, function(error, serverUrl){
+
+		_connectionData= connectionData;
+		
+		/*
+			Get the server Url
+		*/
+
+		getServer(_businessId, false, apiUrl, function(error, serverUrl){
 			_serverUrl= serverUrl;
-			if (debugLevel){
-				log.setLevel(debugLevel);
-				if (debugLevel == 'debug')
-					cometd.websocketEnabled= false;	
-			}
+				
+			if (_debugLevel === 'debug')
+				cometd.websocketEnabled= false;	
 					
 			cometd.configure({
 				url: _serverUrl+'/strd',
-				logLevel: debugLevel,
+				logLevel: _debugLevel,
 				backoffIncrement: 100,
 				maxBackoff: 500,
 				appendMessageTypeToURL: false
 			});
-			callback(error);
+			
+			cometd.handshake(connectionData);	
 		});
 
-	}
-
-
+	};
 
 	proto.isConnected= function(authentType){
 		if (authentType){
@@ -431,19 +444,7 @@
 		return text;
 	}
 
-	/*
-		Connect to ZetaPush
-		connectionData must be given by an Authent Object
-	*/
-	proto.connect= function(connectionData){
-
-		if (proto.isConnected())
-			return;
-
-		_connectionData= connectionData;
 		
-		cometd.handshake(connectionData);	
-	};	
 
 	/*
 		Reconnect
