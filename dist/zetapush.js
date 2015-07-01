@@ -4045,6 +4045,10 @@ org.cometd.LongPollingTransport = function()
         proto.on('/meta/connected', callback);
     }
 
+    proto.onHandshake= function(callback){
+        proto.on('/meta/handshake', callback);
+    }
+
 	proto.isConnected= function(authentType){
 		if (authentType){
 			return (authentType == _connectionData.ext.authentication.type) && !cometd.isDisconnected();
