@@ -178,7 +178,7 @@
 			_serverList= data.servers;						
 			callback(error, data.servers[Math.floor(Math.random()*data.servers.length)]);
 		})
-		.catch(function(e,url){
+		.catch(function(error,url){
 			log.error("Error retrieving server url list for businessId", businessId)
 			callback(error, null);
 		})
