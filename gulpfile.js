@@ -24,7 +24,9 @@ gulp.task('zetapush', function() {
       cometdPath + 'LongPollingTransport.js',
       'bower_components/loglevel/dist/loglevel.min.js',
       'src/qwest.js',
-      'src/zetapush.js'
+      'src/zetapush.js',
+      'src/_base.js',
+      'src/generic.js'
     ])
     .pipe(concat('zetapush.js'))
     .pipe(gulp.dest('dist'))
