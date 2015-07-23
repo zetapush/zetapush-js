@@ -4352,3 +4352,167 @@ org.cometd.LongPollingTransport = function()
 	exports.zp.service.Generic = zpGenericService;
 	
 }.call(this));
+
+/*
+	ZetaPush Simple Authentication v1.0
+	Javascript Simple Authentication for ZetaPush
+	Mikael Morvan - 2015
+	*/
+
+;(function () {
+	'use strict';
+
+	/**
+	 * Class for managing Simple Authentication.     
+	 *
+	 * @class Manages Simple Authentication for ZetaPush
+	 */
+	function zpSimpleAuthent(deploymentId) {
+		_deploymentId= deploymentId;	
+
+		zp.on('/meta/handshake', function(msg){
+			if (msg.successful){
+				_userId= msg.ext.authentication.userId;
+				_token= msg.ext.authentication.token;
+			}
+		});
+	}
+	
+	var proto = zpSimpleAuthent.prototype;
+	var exports = this;
+	var _userId, _token, _deploymentId;
+
+	proto.getUserId= function(){
+		return _userId;
+	}
+
+	proto.getToken= function(){
+		return _token;
+	}
+
+	/*
+		If parameters == 2, the first parameter is a connection token
+
+	*/
+	proto.getConnectionData= function(login, password, resource){
+		var authType = zp.getBusinessId() +'.' + _deploymentId + '.' + 'simple';
+		var loginData;
+		var resourceName;
+
+		if (arguments.length === 2){		
+			loginData={token: login};
+			resourceName= password;
+		} else {
+			loginData={"login": login, "password": password};
+			resourceName= resource;
+		}
+
+		var handshakeData=
+			{"ext":
+				{
+					"authentication":{
+						"action":"authenticate",
+						"type": authType,
+						"resource": resourceName,
+						"data": loginData
+					}
+				}
+			}
+		return handshakeData;
+	}
+
+	exports.zp.authent.Simple = zpSimpleAuthent;
+	
+}.call(this));
+
+/*
+	ZetaPush Weak Authentication v1.0
+	Javascript Weak Authentication for ZetaPush
+	Mikael Morvan - 2015
+	*/
+
+;(function () {
+	'use strict';
+
+	/**
+	 * Class for managing Weak Authentication.     
+	 *
+	 * @class Manages Weak Authentication for ZetaPush
+	 */
+	function zpWeakAuthent(deploymentId) {
+		_deploymentId= deploymentId;	
+
+		_authType = zp.getBusinessId() +'.' + _deploymentId + '.' + 'weak';
+		zp.on('/meta/handshake', function(msg){
+			if (msg.successful){
+				_token= msg.ext.authentication.token;
+				_publicToken= msg.ext.authentication.publicToken;
+				_userId= msg.ext.authentication.userId;
+			}
+		});	
+
+		zp.on(zp.generateChannel(_deploymentId,'control'), function(msg){
+			console.log("control", msg);
+			// Receive a control demand
+			// must reconnect
+			if (zp.isConnected(_authType))
+				zp.reconnect();
+		});
+
+		zp.on(zp.generateChannel(_deploymentId,'release'), function(msg){
+			console.log("release", msg);
+			// Receive a release control demand
+			// must reconnect
+			if (zp.isConnected(_authType))
+				zp.reconnect();
+		});
+	}    
+	
+	var proto = zpWeakAuthent.prototype;
+	var exports = this;
+	// These 2 token are usefull to reconnect with the same Id on the server
+	var _token, _publicToken;
+	// This token is the id of the user
+	var _userId, _authType, _deploymentId;	
+
+	proto.getConnectionData= function(token, resource){
+		
+		var loginData= {"token": token};
+		
+		if (_token){
+			loginData= {"token": _token};
+		}
+
+		var handshakeData=
+			{"ext":
+				{
+					"authentication":{
+						"action":"authenticate",
+						"type": _authType,
+						"resource": resource,
+						"data": loginData
+					}
+				}
+			}
+		return handshakeData;
+	}
+
+	proto.getUserId= function(){
+		return _userId;		
+	}
+	
+	proto.getToken= function(){
+		return _token;
+	}
+
+	proto.getPublicToken= function(){
+		return _publicToken;
+	}
+
+	proto.getQRCodeUrl= function(publicToken){
+		return zp.getRestServerUrl()+'/'+zp.getBusinessId()+'/'+_deploymentId+'/weak/qrcode/'+publicToken;
+	}
+
+	exports.zp.authent.Weak = zpWeakAuthent;
+	
+}.call(this));
