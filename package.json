@@ -1,10 +1,11 @@
 {
   "name": "zetapush-js",
-  "version": "1.1.9",
-  "description": "",
+  "version": "1.1.10",
+  "description": "javascript sdk for ZetaPush",
+  "main": "dist/zetapush.min.js",
   "homepage": "zetapush.com",
   "bugs": "",
-  "keywords": [],
+  "keywords": ["zetapush","sdk"],
   "contributors": [
     "Mikael Morvan"
   ],
@@ -12,15 +13,12 @@
     "type": "git",
     "url": "https://github.com/zetapush/zetapush-js.git"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-concat": "~2.4.1",
     "gulp-notify": "~2.0.0",
     "gulp-rename": "~1.2.0",
     "gulp-uglify": "~1.0.1"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "start": "gulp & open dist/index.html"
   }
 }

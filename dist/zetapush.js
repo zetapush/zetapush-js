@@ -4013,7 +4013,9 @@ org.cometd.LongPollingTransport = function()
 			return;
 
 		if (arguments.length === 1){			
-			apiUrl= "http://api.zpush.io/";
+			apiUrl= "//api.zpush.io/";
+			if (location.protocol === "file:")
+				apiUrl= "http:" + apiUrl
 		}
 
 		_connectionData= connectionData;
@@ -4025,6 +4027,9 @@ org.cometd.LongPollingTransport = function()
 		getServer(_businessId, false, apiUrl, function(error, serverUrl){
 			_serverUrl= serverUrl;
 				
+			if (location.protocol === "https:")
+				_serverUrl= _serverUrl.replace("http://", "https://")
+
 			if (_debugLevel === 'debug')
 				cometd.websocketEnabled= false;	
 					
