@@ -28,7 +28,8 @@ gulp.task('zetapush', function() {
       'src/_base.js',
       'src/generic.js',
       'src/authentication/simple.js',
-      'src/authentication/weak.js'
+      'src/authentication/weak.js',
+      'src/authentication/delegating.js'
     ])
     .pipe(concat('zetapush.js'))
     .pipe(gulp.dest('dist'))

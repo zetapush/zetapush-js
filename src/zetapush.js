@@ -232,8 +232,8 @@
 			cometd.configure({
 				url: _serverUrl+'/strd',
 				logLevel: _debugLevel,
-				backoffIncrement: 100,
-				maxBackoff: 500,
+				backoffIncrement: 1000,
+				maxBackoff: 60000,
 				appendMessageTypeToURL: false
 			});
 			
