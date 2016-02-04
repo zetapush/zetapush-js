@@ -246,6 +246,10 @@
         proto.on('/meta/connected', callback);
     }
 
+    proto.onDisconnect= function(callback){
+        proto.on('/meta/disconnect', callback);
+    }
+
     proto.onHandshake= function(callback){
         proto.on('/meta/handshake', callback);
     }
