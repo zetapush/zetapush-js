@@ -1,20 +1,22 @@
 {
   "name": "zetapush-js",
-  "version": "1.1.12",
+  "version": "2.0.0",
+  "description": "JavaScript SDK for ZetaPush",
   "authors": [
+    "Grégory Houllier",
     "Mikael Morvan"
   ],
-  "description": "core library for ZetaPush",
   "main": "dist/zetapush.js",
   "moduleType": [
     "globals"
   ],
   "keywords": [
     "zetapush",
-    "core"
+    "realtime",
+    "sdk"
   ],
   "license": "MIT",
-  "homepage": "zetapush.com",
+  "homepage": "https://zetapush.com/",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -23,8 +25,22 @@
     "tests"
   ],
   "devDependencies": {
-    "loglevel": "1.2.0",
-    "cometd-jquery": "3.0.4"
+    "cometd-jquery": "https://github.com/cometd/cometd.git#02d24b7a42d85b22c0ec066978022dc4fd59eba0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "overrides": {
+    "cometd-jquery": {
+      "main": [
+        "cometd-javascript/common/src/main/js/org/cometd/cometd-namespace.js",
+        "cometd-javascript/common/src/main/js/org/cometd/CometD.js",
+        "cometd-javascript/common/src/main/js/org/cometd/Utils.js",
+        "cometd-javascript/common/src/main/js/org/cometd/cometd-json.js",
+        "cometd-javascript/common/src/main/js/org/cometd/Transport.js",
+        "cometd-javascript/common/src/main/js/org/cometd/RequestTransport.js",
+        "cometd-javascript/common/src/main/js/org/cometd/TransportRegistry.js",
+        "cometd-javascript/common/src/main/js/org/cometd/WebSocketTransport.js",
+        "cometd-javascript/common/src/main/js/org/cometd/LongPollingTransport.js"
+      ]
+    }
+  }
 }
