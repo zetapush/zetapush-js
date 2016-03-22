@@ -1,4 +1,5 @@
-import { LongPollingTransport } from './cometd'
+import { CometD, WebSocketTransport } from 'zetapush-cometd'
+import { FetchLongPollingTransport } from './cometd'
 import { getServers, shuffle } from './utils'
 
 const Message = {
@@ -36,9 +37,9 @@ export class ClientHelper {
     this.connected = false
     this.wasConnected = false
     this.serverUrl = null
-    this.cometd = new org.cometd.CometD()
-    this.cometd.registerTransport(Transport.WEBSOCKET, new org.cometd.WebSocketTransport())
-    this.cometd.registerTransport(Transport.LONG_POLLING, new LongPollingTransport())
+    this.cometd = new CometD()
+    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())
+    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())
     this.cometd.onTransportException = (cometd, transport) => {
       if (Transport.LONG_POLLING === transport) {
         // Try to find an other available server

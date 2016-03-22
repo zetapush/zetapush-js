@@ -1,6 +1,8 @@
-export function LongPollingTransport() {
-  var _super = new org.cometd.LongPollingTransport()
-  var that = org.cometd.Transport.derive(_super)
+import { Transport, LongPollingTransport } from 'zetapush-cometd'
+
+export function FetchLongPollingTransport() {
+  var _super = new LongPollingTransport()
+  var that = Transport.derive(_super)
 
   that.xhrSend = function(packet) {
     fetch(packet.url, {

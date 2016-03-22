@@ -20,29 +20,12 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
-    "test",
-    "tests"
+    "vendor",
+    "gulpfile.babel.js"
   ],
   "devDependencies": {
     "es6-promise": "^3.2.1",
-    "fetch": "^0.11.0",
-    "cometd-jquery": "https://github.com/cometd/cometd.git#02d24b7a42d85b22c0ec066978022dc4fd59eba0"
+    "fetch": "^0.11.0"
   },
-  "dependencies": {},
-  "overrides": {
-    "cometd-jquery": {
-      "main": [
-        "cometd-javascript/common/src/main/js/org/cometd/cometd-namespace.js",
-        "cometd-javascript/common/src/main/js/org/cometd/CometD.js",
-        "cometd-javascript/common/src/main/js/org/cometd/Utils.js",
-        "cometd-javascript/common/src/main/js/org/cometd/cometd-json.js",
-        "cometd-javascript/common/src/main/js/org/cometd/Transport.js",
-        "cometd-javascript/common/src/main/js/org/cometd/RequestTransport.js",
-        "cometd-javascript/common/src/main/js/org/cometd/TransportRegistry.js",
-        "cometd-javascript/common/src/main/js/org/cometd/WebSocketTransport.js",
-        "cometd-javascript/common/src/main/js/org/cometd/LongPollingTransport.js"
-      ]
-    }
-  }
+  "dependencies": {}
 }
