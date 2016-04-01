@@ -5,7 +5,7 @@ import { NotYetImplementedError } from './utils'
 export const API_URL = 'https://api.zpush.io/'
 
 export class Client {
-  constructor({ apiUrl = API_URL, businessId, handshake, resource }) {
+  constructor({ apiUrl = API_URL, businessId, handshake, resource = null }) {
     this.client = new ClientHelper({
       apiUrl,
       businessId,
@@ -42,7 +42,7 @@ export class Client {
   }
 
   subscribeListener({ deploymentId, serviceListener }) {
-    this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener);
+    this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)
   }
 
   createPubSub({ deploymentId, serviceListener, publisher }) {

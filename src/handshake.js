@@ -13,9 +13,9 @@ class AbstractHandshakeManager {
 
   getHandshakeFields(client) {
     const authentication = {
+      data: this.authData,
       type: `${client.getBusinessId()}.${this.deploymentId}.${this.authType}`,
-      version: this.authVersion,
-      data: this.authData
+      version: this.authVersion
     }
     if (client.getResource()) {
       authentication.resource = client.getResource()
@@ -92,8 +92,8 @@ export class AuthentFactory {
 
   static createHandshake({ login, password, deploymentId, authType }) {
     if (null === password) {
-      return new TokenHandshakeManager({ login, deploymentId, authType });
+      return new TokenHandshakeManager({ token: login, deploymentId, authType })
     }
-    return new DefaultZetapushHandshakeManager({ login, password, deploymentId, authType });
+    return new DefaultZetapushHandshakeManager({ login, password, deploymentId, authType })
   }
 }
