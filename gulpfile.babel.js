@@ -75,7 +75,7 @@ const getSourceStream = () => {
 gulp.task('bundle', () => {
   return merge(getVendorStream(), getSourceStream())
     .pipe(concat('zetapush.js'))
-    .pipe(optimize ? uglify() : gulp.noop())
+    .pipe(optimize ? uglify() : util.noop())
     .pipe(gulp.dest(paths.output))
 })
 

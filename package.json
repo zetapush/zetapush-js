@@ -1,6 +1,6 @@
 {
   "name": "zetapush-js",
-  "version": "2.0.0",
+  "version": "2.0.0-alpha.1",
   "description": "JavaScript SDK for ZetaPush",
   "main": "dist/zetapush.js",
   "homepage": "http://zetapush.com",
@@ -22,7 +22,8 @@
   "scripts": {
     "postinstall": "bower install",
     "prebuild": "npm install",
-    "build": "gulp build --optimize"
+    "build": "gulp build --optimize",
+    "build:dev": "gulp build"
   },
   "dependencies": {},
   "devDependencies": {
