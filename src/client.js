@@ -13,11 +13,11 @@ export class Client {
       resource
     })
   }
-  start() {
+  connect() {
     this.client.connect()
   }
 
-  stop() {
+  disconnect() {
     this.client.disconnect()
   }
 

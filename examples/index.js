@@ -9,28 +9,28 @@ const client = new ZetaPush.Client({
 })
 
 client.addConnectionStatusListener({
-  onSuccessfulHandshake(...params) {
-    console.debug('successfulHandshake', params)
+  onSuccessfulHandshake(authentication) {
+    console.debug('onSuccessfulHandshake', authentication)
   },
 
-  onFailedHandshake(...params) {
-    console.debug('failedHandshake', params)
+  onFailedHandshake(error) {
+    console.debug('onFailedHandshake', error)
   },
 
-  onConnectionEstablished(...params) {
-    console.debug('connectionEstablished', params)
+  onConnectionEstablished() {
+    console.debug('onConnectionEstablished')
   },
 
-  onConnectionBroken(...params) {
-    console.debug('connectionBroken', params)
+  onConnectionBroken() {
+    console.debug('onConnectionBroken')
   },
 
-  onConnectionClosed(...params) {
-    console.debug('connectionClosed', params)
+  onConnectionClosed() {
+    console.debug('onConnectionClosed')
   }
 })
 
-client.start()
+client.connect()
 
 setTimeout(() => {
   const deploymentId = 'messaging_main'
