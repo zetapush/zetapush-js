@@ -60,7 +60,7 @@ export class ClientHelper {
       })
 
       this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {
-        console.debug('/meta/handshake', { ext, successful, advice, error })
+        console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })
         if (successful) {
           const { authentication = null } = ext
           this.initialized(authentication)
@@ -71,7 +71,7 @@ export class ClientHelper {
       })
 
       this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {
-        console.debug('/meta/handshake', { ext, successful, advice, error })
+        console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })
         // AuthNegotiation
         if (!successful) {
           if (advice === null) {
@@ -87,7 +87,7 @@ export class ClientHelper {
       })
 
       this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {
-        console.debug('/meta/connect', { advice, channel, successful })
+        console.debug('ClientHelper::/meta/connect', { advice, channel, successful })
         // ConnectionListener
         if (this.cometd.isDisconnected()) {
           this.connected = false
@@ -165,6 +165,10 @@ export class ClientHelper {
         }, 250)
       }
     })
+  }
+
+  negotiate(ext) {
+    console.debug('ClientHelper::negotiate', ext)
   }
 
   disconnect() {
