@@ -1,13 +1,9 @@
-const { AuthentFactory, Client } = ZetaPush
+const { SmartClient } = ZetaPush
 
-const client = new Client({
+const client = new SmartClient({
   apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
   businessId: 'JteMN0To',
-  handshake: AuthentFactory.createSimpleHandshake({
-    login: 'ghoullier',
-    password: 'ghoullier',
-    deploymentId: 'simple_user'
-  })
+  deploymentId: 'weak_main'
 })
 
 client.addConnectionStatusListener({
@@ -33,14 +29,3 @@ client.addConnectionStatusListener({
 })
 
 client.connect()
-
-setTimeout(() => {
-  const deploymentId = 'messaging_main'
-  const serviceListener = {
-    addMessageInConversation() {
-      console.debug('addMessageInConversation', arguments)
-    }
-  }
-  const subscripions = client.subscribeListener({ deploymentId, serviceListener })
-  console.log('subscripions', subscripions)
-}, 2500)

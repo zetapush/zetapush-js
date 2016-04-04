@@ -1,5 +1,8 @@
 import { Transport, LongPollingTransport } from 'zetapush-cometd'
 
+/**
+ *
+ */
 export function FetchLongPollingTransport() {
   var _super = new LongPollingTransport()
   var that = Transport.derive(_super)

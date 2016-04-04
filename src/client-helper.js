@@ -14,6 +14,7 @@ const Transport = {
 }
 
 class ConnectionStatusListener {
+
   onSuccessfulHandshake() {}
 
   onFailedHandshake() {}
@@ -28,6 +29,9 @@ class ConnectionStatusListener {
 }
 
 export class ClientHelper {
+  /**
+   *
+   */
   constructor({ apiUrl, businessId, handshake, resource }) {
     this.businessId = businessId
     this.handshake = handshake
@@ -48,6 +52,9 @@ export class ClientHelper {
       }
     }
   }
+  /**
+   *
+   */
   connect() {
     this.servers.then((servers) => {
       this.serverUrl = shuffle(servers)
@@ -106,31 +113,41 @@ export class ClientHelper {
       this.cometd.handshake(this.handshake.getHandshakeFields(this))
     })
   }
-
+  /**
+   *
+   */
   connectionEstablished() {
     this.connectionListeners.forEach((listener) => {
       listener.onConnectionEstablished()
     })
   }
-
+  /**
+   *
+   */
   connectionBroken() {
     this.connectionListeners.forEach((listener) => {
       listener.onConnectionBroken()
     })
   }
-
+  /**
+   *
+   */
   messageLost(channel, data) {
     this.connectionListeners.forEach((listener) => {
       listener.onMessageLost(channel, data)
     })
   }
-
+  /**
+   *
+   */
   connectionClosed() {
     this.connectionListeners.forEach((listener) => {
       listener.onConnectionClosed()
     })
   }
-
+  /**
+   *
+   */
   initialized(authentication) {
     if (authentication) {
       this.userId = authentication.userId
@@ -139,13 +156,17 @@ export class ClientHelper {
       listener.onSuccessfulHandshake(authentication)
     })
   }
-
+  /**
+   *
+   */
   authenticationFailed(error) {
     this.connectionListeners.forEach((listener) => {
       listener.onFailedHandshake(error)
     })
   }
-
+  /**
+   *
+   */
   handshakeFailure() {
     this.servers.then((servers) => {
       const index = servers.indexOf(this.serverUrl)
@@ -166,31 +187,45 @@ export class ClientHelper {
       }
     })
   }
-
+  /**
+   *
+   */
   negotiate(ext) {
     console.debug('ClientHelper::negotiate', ext)
   }
-
+  /**
+   *
+   */
   disconnect() {
     this.cometd.disconnect()
   }
-
+  /**
+   *
+   */
   setHandshake(handshake) {
     this.handshake = handshake
   }
-
+  /**
+   *
+   */
   getBusinessId() {
     return this.businessId
   }
-
+  /**
+   *
+   */
   getSessionId() {
     throw NotYetImplementedError()
   }
-
+  /**
+   *
+   */
   getResource() {
     return this.resource
   }
-
+  /**
+   *
+   */
   subscribe(prefix, serviceListener) {
     const subscripions = {}
     for (const method in serviceListener) {
@@ -201,7 +236,9 @@ export class ClientHelper {
     }
     return subscripions
   }
-
+  /**
+   *
+   */
   unsubscribe(subscripions) {
     for (const method in subscripions) {
       if (subscripions.hasOwnProperty(method)) {
@@ -209,9 +246,12 @@ export class ClientHelper {
       }
     }
   }
-
+  /**
+   *
+   */
   addConnectionStatusListener(listener) {
     const connectionListener = Object.assign(new ConnectionStatusListener(), listener)
     this.connectionListeners.push(connectionListener)
   }
+
 }

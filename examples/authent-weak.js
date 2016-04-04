@@ -1,7 +1,9 @@
-const client = new ZetaPush.Client({
+const { AuthentFactory, Client } = ZetaPush
+
+const client = new Client({
   apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
   businessId: 'JteMN0To',
-  handshake: ZetaPush.AuthentFactory.createWeakHandshake({
+  handshake: AuthentFactory.createWeakHandshake({
     token: null,
     deploymentId: 'weak_main'
   })
@@ -9,23 +11,23 @@ const client = new ZetaPush.Client({
 
 client.addConnectionStatusListener({
   onSuccessfulHandshake(authentication) {
-    console.debug('onSuccessfulHandshake', authentication)
+    console.debug('AuthentWeak::onSuccessfulHandshake', authentication)
   },
 
   onFailedHandshake(error) {
-    console.debug('onFailedHandshake', error)
+    console.debug('AuthentWeak::onFailedHandshake', error)
   },
 
   onConnectionEstablished() {
-    console.debug('onConnectionEstablished')
+    console.debug('AuthentWeak::onConnectionEstablished')
   },
 
   onConnectionBroken() {
-    console.debug('onConnectionBroken')
+    console.debug('AuthentWeak::onConnectionBroken')
   },
 
   onConnectionClosed() {
-    console.debug('onConnectionClosed')
+    console.debug('AuthentWeak::onConnectionClosed')
   }
 })
 

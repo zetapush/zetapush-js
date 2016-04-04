@@ -1,16 +1,27 @@
+/**
+ *
+ */
 const DeployableNames = {
   AUTH_SIMPLE: 'simple',
   AUTH_WEAK: 'weak',
   AUTH_DELEGATING: 'delegating'
 }
 
+/**
+ *
+ */
 class AbstractHandshakeManager {
-  constructor({ businessId, deploymentId, authType }) {
+  /**
+   *
+   */
+  constructor({ authType, businessId, deploymentId }) {
+    this.authType = authType
     this.businessId = businessId
     this.deploymentId = deploymentId
-    this.authType = authType
   }
-
+  /**
+   *
+   */
   getHandshakeFields(client) {
     const authentication = {
       data: this.authData,
@@ -26,74 +37,108 @@ class AbstractHandshakeManager {
       }
     }
   }
-
+  /**
+   *
+   */
   get authVersion() {
     return 'none'
   }
+
 }
 
+/**
+ *
+ */
 class TokenHandshakeManager extends AbstractHandshakeManager {
-  constructor({ token, deploymentId, authType }) {
+  /**
+   *
+   */
+  constructor({ authType, deploymentId, token }) {
     super({ deploymentId, authType })
     this.token = token
   }
-
+  /**
+   *
+   */
   get authData() {
     const { token } = this
     return {
       token
     }
   }
+
 }
 
+/**
+ *
+ */
 class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {
-  constructor({ login, password, deploymentId, authType }) {
-    super({ deploymentId, authType })
+
+  /**
+   *
+   */
+  constructor({ authType, deploymentId, login, password }) {
+    super({ authType, deploymentId })
     this.login = login
     this.password = password
   }
-
+  /**
+   *
+   */
   get authData() {
     const { login, password } = this
     return {
       login, password
     }
   }
+
 }
 
+/**
+ *
+ */
 export class AuthentFactory {
-
-  static createSimpleHandshake({ login, password, deploymentId }) {
+  /**
+   *
+   */
+  static createSimpleHandshake({ deploymentId, login, password }) {
     return AuthentFactory.createHandshake({
+      authType: DeployableNames.AUTH_SIMPLE,
+      deploymentId,
       login,
-      password,
-      deploymentId,
-      authType: DeployableNames.AUTH_SIMPLE
+      password
     })
   }
-
-  static createWeakHandshake({ token, deploymentId }) {
+  /**
+   *
+   */
+  static createWeakHandshake({ deploymentId, token }) {
     return AuthentFactory.createHandshake({
-      login: token,
-      password: null,
+      authType: DeployableNames.AUTH_WEAK,
       deploymentId,
-      authType: DeployableNames.AUTH_WEAK
+      login: token,
+      password: null
     })
   }
-
-  static createDelegatingHandshake({ token, deploymentId }) {
+  /**
+   *
+   */
+  static createDelegatingHandshake({ deploymentId, token }) {
     return AuthentFactory.createHandshake({
-      login: token,
-      password: null,
+      authType: DeployableNames.AUTH_DELEGATING,
       deploymentId,
-      authType: DeployableNames.AUTH_DELEGATING
+      login: token,
+      password: null
     })
   }
-
-  static createHandshake({ login, password, deploymentId, authType }) {
+  /**
+   *
+   */
+  static createHandshake({ authType, deploymentId, login, password }) {
     if (null === password) {
-      return new TokenHandshakeManager({ token: login, deploymentId, authType })
+      return new TokenHandshakeManager({ authType, deploymentId, token: login })
     }
-    return new DefaultZetapushHandshakeManager({ login, password, deploymentId, authType })
+    return new DefaultZetapushHandshakeManager({ authType, deploymentId, login, password  })
   }
+
 }
