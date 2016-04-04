@@ -1,0 +1,2851 @@
+[
+  {
+    "__docId__": 0,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/client-helper.js",
+    "memberof": null,
+    "longname": "src/client-helper.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './cometd'\nimport { getServers, shuffle } from './utils'\n\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\nclass ConnectionStatusListener {\n\n  onSuccessfulHandshake() {}\n\n  onFailedHandshake() {}\n\n  onConnectionEstablished() {}\n\n  onConnectionBroken() {}\n\n  onConnectionClosed() {}\n\n  onMessageLost() {}\n}\n\nexport class ClientHelper {\n  /**\n   *\n   */\n  constructor({ apiUrl, businessId, handshakeFactory, resource }) {\n    this.businessId = businessId\n    this.handshakeFactory = handshakeFactory\n    this.resource = resource\n    this.servers = getServers(`${apiUrl}${businessId}`)\n    this.connectionListeners = []\n    this.connected = false\n    this.wasConnected = false\n    this.serverUrl = null\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.handshakeFailure()\n      }\n    }\n  }\n  /**\n   *\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n        console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n        if (successful) {\n          const { authentication = null } = ext\n          this.initialized(authentication)\n        }\n        else {\n          this.handshakeFailure(error)\n        }\n      })\n\n      this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n        console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n        // AuthNegotiation\n        if (!successful) {\n          if (advice === null) {\n            return\n          }\n          if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n            this.authenticationFailed(error)\n          }\n          else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n            this.negotiate(ext)\n          }\n        }\n      })\n\n      this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n        console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n        // ConnectionListener\n        if (this.cometd.isDisconnected()) {\n          this.connected = false\n          this.connectionClosed()\n        } else {\n          this.wasConnected = this.connected\n          this.connected = successful\n          if (!this.wasConnected && this.connected) {\n            this.connectionEstablished()\n          }\n          else if (this.wasConnected && !this.connected) {\n            this.connectionBroken()\n          }\n        }\n      })\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   *\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   *\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   *\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   *\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   *\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   *\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   *\n   */\n  handshakeFailure() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   *\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   *\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   *\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeFactory()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   *\n   */\n  setHandshakeFactory(handshakeFactory) {\n    this.handshakeFactory = handshakeFactory\n  }\n  /**\n   *\n   */\n  getBusinessId() {\n    return this.businessId\n  }\n  /**\n   *\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   *\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   *\n   */\n  subscribe(prefix, serviceListener) {\n    const subscripions = {}\n    for (const method in serviceListener) {\n      if (serviceListener.hasOwnProperty(method)) {\n        const channel = `${prefix}/${method}`\n        subscripions[method] = this.cometd.subscribe(channel, serviceListener[method])\n      }\n    }\n    return subscripions\n  }\n  /**\n   *\n   */\n  unsubscribe(subscripions) {\n    for (const method in subscripions) {\n      if (subscripions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscripions[method])\n      }\n    }\n  }\n  /**\n   *\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    this.connectionListeners.push(connectionListener)\n  }\n\n}\n"
+  },
+  {
+    "__docId__": 1,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "Message",
+    "memberof": "src/client-helper.js",
+    "longname": "src/client-helper.js~Message",
+    "access": null,
+    "export": false,
+    "importPath": "zetapush-js/src/client-helper.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 2,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "Transport",
+    "memberof": "src/client-helper.js",
+    "longname": "src/client-helper.js~Transport",
+    "access": null,
+    "export": false,
+    "importPath": "zetapush-js/src/client-helper.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 3,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "ConnectionStatusListener",
+    "memberof": "src/client-helper.js",
+    "longname": "src/client-helper.js~ConnectionStatusListener",
+    "access": null,
+    "export": false,
+    "importPath": "zetapush-js/src/client-helper.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 16,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 4,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "onSuccessfulHandshake",
+    "memberof": "src/client-helper.js~ConnectionStatusListener",
+    "longname": "src/client-helper.js~ConnectionStatusListener#onSuccessfulHandshake",
+    "access": null,
+    "description": null,
+    "lineNumber": 18,
+    "undocument": true,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 5,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "onFailedHandshake",
+    "memberof": "src/client-helper.js~ConnectionStatusListener",
+    "longname": "src/client-helper.js~ConnectionStatusListener#onFailedHandshake",
+    "access": null,
+    "description": null,
+    "lineNumber": 20,
+    "undocument": true,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 6,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "onConnectionEstablished",
+    "memberof": "src/client-helper.js~ConnectionStatusListener",
+    "longname": "src/client-helper.js~ConnectionStatusListener#onConnectionEstablished",
+    "access": null,
+    "description": null,
+    "lineNumber": 22,
+    "undocument": true,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 7,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "onConnectionBroken",
+    "memberof": "src/client-helper.js~ConnectionStatusListener",
+    "longname": "src/client-helper.js~ConnectionStatusListener#onConnectionBroken",
+    "access": null,
+    "description": null,
+    "lineNumber": 24,
+    "undocument": true,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 8,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "onConnectionClosed",
+    "memberof": "src/client-helper.js~ConnectionStatusListener",
+    "longname": "src/client-helper.js~ConnectionStatusListener#onConnectionClosed",
+    "access": null,
+    "description": null,
+    "lineNumber": 26,
+    "undocument": true,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 9,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "onMessageLost",
+    "memberof": "src/client-helper.js~ConnectionStatusListener",
+    "longname": "src/client-helper.js~ConnectionStatusListener#onMessageLost",
+    "access": null,
+    "description": null,
+    "lineNumber": 28,
+    "undocument": true,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 10,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "ClientHelper",
+    "memberof": "src/client-helper.js",
+    "longname": "src/client-helper.js~ClientHelper",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/client-helper.js",
+    "importStyle": "{ClientHelper}",
+    "description": null,
+    "lineNumber": 31,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 11,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#constructor",
+    "access": null,
+    "description": "",
+    "lineNumber": 35,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"apiUrl\": *, \"businessId\": *, \"handshakeFactory\": *, \"resource\": *}"
+        ],
+        "defaultRaw": {
+          "apiUrl": null,
+          "businessId": null,
+          "handshakeFactory": null,
+          "resource": null
+        },
+        "defaultValue": "{\"apiUrl\":null,\"businessId\":null,\"handshakeFactory\":null,\"resource\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 12,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "businessId",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#businessId",
+    "access": null,
+    "description": null,
+    "lineNumber": 36,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 13,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "handshakeFactory",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#handshakeFactory",
+    "access": null,
+    "description": null,
+    "lineNumber": 37,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 14,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "resource",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#resource",
+    "access": null,
+    "description": null,
+    "lineNumber": 38,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 15,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "servers",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#servers",
+    "access": null,
+    "description": null,
+    "lineNumber": 39,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 16,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "connectionListeners",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connectionListeners",
+    "access": null,
+    "description": null,
+    "lineNumber": 40,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 17,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "connected",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connected",
+    "access": null,
+    "description": null,
+    "lineNumber": 41,
+    "undocument": true,
+    "type": {
+      "types": [
+        "boolean"
+      ]
+    }
+  },
+  {
+    "__docId__": 18,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "wasConnected",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#wasConnected",
+    "access": null,
+    "description": null,
+    "lineNumber": 42,
+    "undocument": true,
+    "type": {
+      "types": [
+        "boolean"
+      ]
+    }
+  },
+  {
+    "__docId__": 19,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "serverUrl",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#serverUrl",
+    "access": null,
+    "description": null,
+    "lineNumber": 43,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 20,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "cometd",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#cometd",
+    "access": null,
+    "description": null,
+    "lineNumber": 44,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 21,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "connect",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connect",
+    "access": null,
+    "description": "",
+    "lineNumber": 58,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 22,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "serverUrl",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#serverUrl",
+    "access": null,
+    "description": null,
+    "lineNumber": 60,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 23,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "connected",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connected",
+    "access": null,
+    "description": null,
+    "lineNumber": 100,
+    "undocument": true,
+    "type": {
+      "types": [
+        "boolean"
+      ]
+    }
+  },
+  {
+    "__docId__": 24,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "wasConnected",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#wasConnected",
+    "access": null,
+    "description": null,
+    "lineNumber": 103,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 25,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "connected",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connected",
+    "access": null,
+    "description": null,
+    "lineNumber": 104,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 26,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "connectionEstablished",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connectionEstablished",
+    "access": null,
+    "description": "",
+    "lineNumber": 119,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 27,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "connectionBroken",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connectionBroken",
+    "access": null,
+    "description": "",
+    "lineNumber": 127,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 28,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "messageLost",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#messageLost",
+    "access": null,
+    "description": "",
+    "lineNumber": 135,
+    "params": [
+      {
+        "name": "channel",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "data",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 29,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "connectionClosed",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connectionClosed",
+    "access": null,
+    "description": "",
+    "lineNumber": 143,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 30,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "initialized",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#initialized",
+    "access": null,
+    "description": "",
+    "lineNumber": 151,
+    "params": [
+      {
+        "name": "authentication",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 31,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "userId",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#userId",
+    "access": null,
+    "description": null,
+    "lineNumber": 153,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 32,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "authenticationFailed",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#authenticationFailed",
+    "access": null,
+    "description": "",
+    "lineNumber": 162,
+    "params": [
+      {
+        "name": "error",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 33,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "handshakeFailure",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#handshakeFailure",
+    "access": null,
+    "description": "",
+    "lineNumber": 170,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 34,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "serverUrl",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#serverUrl",
+    "access": null,
+    "description": null,
+    "lineNumber": 180,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 35,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "negotiate",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#negotiate",
+    "access": null,
+    "description": "",
+    "lineNumber": 193,
+    "params": [
+      {
+        "name": "ext",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 36,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "disconnect",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#disconnect",
+    "access": null,
+    "description": "",
+    "lineNumber": 199,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 37,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getHandshakeFields",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#getHandshakeFields",
+    "access": null,
+    "description": "",
+    "lineNumber": 205,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 38,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "setHandshakeFactory",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#setHandshakeFactory",
+    "access": null,
+    "description": "",
+    "lineNumber": 212,
+    "params": [
+      {
+        "name": "handshakeFactory",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 39,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "handshakeFactory",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#handshakeFactory",
+    "access": null,
+    "description": null,
+    "lineNumber": 213,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 40,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getBusinessId",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#getBusinessId",
+    "access": null,
+    "description": "",
+    "lineNumber": 218,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 41,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getSessionId",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#getSessionId",
+    "access": null,
+    "description": "",
+    "lineNumber": 224,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 42,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getResource",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#getResource",
+    "access": null,
+    "description": "",
+    "lineNumber": 230,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 43,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "subscribe",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#subscribe",
+    "access": null,
+    "description": "",
+    "lineNumber": 236,
+    "params": [
+      {
+        "name": "prefix",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "serviceListener",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 44,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "unsubscribe",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#unsubscribe",
+    "access": null,
+    "description": "",
+    "lineNumber": 249,
+    "params": [
+      {
+        "name": "subscripions",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 45,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "addConnectionStatusListener",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#addConnectionStatusListener",
+    "access": null,
+    "description": "",
+    "lineNumber": 259,
+    "params": [
+      {
+        "name": "listener",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 46,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/client.js",
+    "memberof": null,
+    "longname": "src/client.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { ClientHelper } from './client-helper'\n\nimport { NotYetImplementedError } from './utils'\n\n/**\n *\n */\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n *\n */\nexport class Client {\n  /**\n   *\n   */\n  constructor({ apiUrl = API_URL, businessId, handshakeFactory, resource = null }) {\n    this.client = new ClientHelper({\n      apiUrl,\n      businessId,\n      handshakeFactory,\n      resource\n    })\n  }\n  /**\n   *\n   */\n  connect() {\n    this.client.connect()\n  }\n  /**\n   *\n   */\n  disconnect() {\n    this.client.disconnect()\n  }\n  /**\n   *\n   */\n  createServicePublisher({ deploymentId, publisher }) {\n    throw new NotYetImplementedError('createServicePublisher')\n  }\n  /**\n   *\n   */\n  getBusinessId() {\n    return this.client.getBusinessId()\n  }\n  /**\n   *\n   */\n  getResource() {\n    return this.client.getResource()\n  }\n  /**\n   *\n   */\n  getUserId() {\n    return this.client.getUserId()\n  }\n  /**\n   *\n   */\n  getSessionId() {\n    return this.client.getSessionId()\n  }\n  /**\n   *\n   */\n  subscribeListener({ deploymentId, serviceListener }) {\n    this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)\n  }\n  /**\n   *\n   */\n  createPubSub({ deploymentId, serviceListener, publisher }) {\n    throw new NotYetImplementedError('createPubSub')\n  }\n  /**\n   *\n   */\n  setResource(resource) {\n    this.client.setResource(resource)\n  }\n  /**\n   *\n   */\n  addConnectionStatusListener(listener) {\n    this.client.addConnectionStatusListener(listener)\n  }\n  /**\n   *\n   */\n  handshake(handshakeFactory) {\n    this.stop()\n    if (handshakeFactory) {\n      this.client.setHandshakeFactory(handshakeFactory)\n    }\n    this.start()\n  }\n\n}\n"
+  },
+  {
+    "__docId__": 47,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "API_URL",
+    "memberof": "src/client.js",
+    "longname": "src/client.js~API_URL",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/client.js",
+    "importStyle": "{API_URL}",
+    "description": "",
+    "lineNumber": 8,
+    "type": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 48,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "Client",
+    "memberof": "src/client.js",
+    "longname": "src/client.js~Client",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/client.js",
+    "importStyle": "{Client}",
+    "description": "",
+    "lineNumber": 13,
+    "interface": false
+  },
+  {
+    "__docId__": 49,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#constructor",
+    "access": null,
+    "description": "",
+    "lineNumber": 17,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"apiUrl\": *, \"businessId\": *, \"handshakeFactory\": *, \"resource\": *}"
+        ],
+        "defaultRaw": {
+          "apiUrl": null,
+          "businessId": null,
+          "handshakeFactory": null,
+          "resource": null
+        },
+        "defaultValue": "{\"apiUrl\":null,\"businessId\":null,\"handshakeFactory\":null,\"resource\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 50,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "client",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#client",
+    "access": null,
+    "description": null,
+    "lineNumber": 18,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 51,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "connect",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#connect",
+    "access": null,
+    "description": "",
+    "lineNumber": 28,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 52,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "disconnect",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#disconnect",
+    "access": null,
+    "description": "",
+    "lineNumber": 34,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 53,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "createServicePublisher",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#createServicePublisher",
+    "access": null,
+    "description": "",
+    "lineNumber": 40,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"deploymentId\": *, \"publisher\": *}"
+        ],
+        "defaultRaw": {
+          "deploymentId": null,
+          "publisher": null
+        },
+        "defaultValue": "{\"deploymentId\":null,\"publisher\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 54,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getBusinessId",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#getBusinessId",
+    "access": null,
+    "description": "",
+    "lineNumber": 46,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 55,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getResource",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#getResource",
+    "access": null,
+    "description": "",
+    "lineNumber": 52,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 56,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getUserId",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#getUserId",
+    "access": null,
+    "description": "",
+    "lineNumber": 58,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 57,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getSessionId",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#getSessionId",
+    "access": null,
+    "description": "",
+    "lineNumber": 64,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 58,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "subscribeListener",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#subscribeListener",
+    "access": null,
+    "description": "",
+    "lineNumber": 70,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"deploymentId\": *, \"serviceListener\": *}"
+        ],
+        "defaultRaw": {
+          "deploymentId": null,
+          "serviceListener": null
+        },
+        "defaultValue": "{\"deploymentId\":null,\"serviceListener\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 59,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "createPubSub",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#createPubSub",
+    "access": null,
+    "description": "",
+    "lineNumber": 76,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"deploymentId\": *, \"serviceListener\": *, \"publisher\": *}"
+        ],
+        "defaultRaw": {
+          "deploymentId": null,
+          "serviceListener": null,
+          "publisher": null
+        },
+        "defaultValue": "{\"deploymentId\":null,\"serviceListener\":null,\"publisher\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 60,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "setResource",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#setResource",
+    "access": null,
+    "description": "",
+    "lineNumber": 82,
+    "params": [
+      {
+        "name": "resource",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 61,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "addConnectionStatusListener",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#addConnectionStatusListener",
+    "access": null,
+    "description": "",
+    "lineNumber": 88,
+    "params": [
+      {
+        "name": "listener",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 62,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "handshake",
+    "memberof": "src/client.js~Client",
+    "longname": "src/client.js~Client#handshake",
+    "access": null,
+    "description": "",
+    "lineNumber": 94,
+    "params": [
+      {
+        "name": "handshakeFactory",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 63,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/cometd.js",
+    "memberof": null,
+    "longname": "src/cometd.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Transport, LongPollingTransport } from 'zetapush-cometd'\n\n/**\n *\n */\nexport function FetchLongPollingTransport() {\n  var _super = new LongPollingTransport()\n  var that = Transport.derive(_super)\n\n  that.xhrSend = function(packet) {\n    fetch(packet.url, {\n      method: 'post',\n      body: packet.body,\n      headers: Object.assign(packet.headers, {\n        'Content-Type': 'application/json;charset=UTF-8'\n      })\n    })\n    .then((response) => {\n      return response.json()\n    })\n    .then(packet.onSuccess)\n    .catch(packet.onError)\n  }\n\n  return that\n}\n"
+  },
+  {
+    "__docId__": 64,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "FetchLongPollingTransport",
+    "memberof": "src/cometd.js",
+    "longname": "src/cometd.js~FetchLongPollingTransport",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/cometd.js",
+    "importStyle": "{FetchLongPollingTransport}",
+    "description": "",
+    "lineNumber": 6,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 65,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/handshake.js",
+    "memberof": null,
+    "longname": "src/handshake.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 4,
+    "content": "/**\n *\n */\nconst DeployableNames = {\n  AUTH_SIMPLE: 'simple',\n  AUTH_WEAK: 'weak',\n  AUTH_DELEGATING: 'delegating'\n}\n\n/**\n *\n */\nclass AbstractHandshakeManager {\n  /**\n   *\n   */\n  constructor({ authType, businessId, deploymentId }) {\n    this.authType = authType\n    this.businessId = businessId\n    this.deploymentId = deploymentId\n  }\n  /**\n   *\n   */\n  getHandshakeFields(client) {\n    const authentication = {\n      data: this.authData,\n      type: `${client.getBusinessId()}.${this.deploymentId}.${this.authType}`,\n      version: this.authVersion\n    }\n    if (client.getResource()) {\n      authentication.resource = client.getResource()\n    }\n    return {\n      ext: {\n        authentication\n      }\n    }\n  }\n  /**\n   *\n   */\n  get authVersion() {\n    return 'none'\n  }\n\n}\n\n/**\n *\n */\nclass TokenHandshakeManager extends AbstractHandshakeManager {\n  /**\n   *\n   */\n  constructor({ authType, deploymentId, token }) {\n    super({ deploymentId, authType })\n    this.token = token\n  }\n  /**\n   *\n   */\n  get authData() {\n    const { token } = this\n    return {\n      token\n    }\n  }\n\n}\n\n/**\n *\n */\nclass DefaultZetapushHandshakeManager extends AbstractHandshakeManager {\n\n  /**\n   *\n   */\n  constructor({ authType, deploymentId, login, password }) {\n    super({ authType, deploymentId })\n    this.login = login\n    this.password = password\n  }\n  /**\n   *\n   */\n  get authData() {\n    const { login, password } = this\n    return {\n      login, password\n    }\n  }\n\n}\n\n/**\n *\n */\nexport class AuthentFactory {\n  /**\n   *\n   */\n  static createSimpleHandshake({ deploymentId, login, password }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_SIMPLE,\n      deploymentId,\n      login,\n      password\n    })\n  }\n  /**\n   *\n   */\n  static createWeakHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_WEAK,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   *\n   */\n  static createDelegatingHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_DELEGATING,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   *\n   */\n  static createHandshake({ authType, deploymentId, login, password }) {\n    if (null === password) {\n      return new TokenHandshakeManager({ authType, deploymentId, token: login })\n    }\n    return new DefaultZetapushHandshakeManager({ authType, deploymentId, login, password  })\n  }\n\n}\n"
+  },
+  {
+    "__docId__": 66,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "DeployableNames",
+    "memberof": "src/handshake.js",
+    "longname": "src/handshake.js~DeployableNames",
+    "access": null,
+    "export": false,
+    "importPath": "zetapush-js/src/handshake.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 4,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 67,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "AbstractHandshakeManager",
+    "memberof": "src/handshake.js",
+    "longname": "src/handshake.js~AbstractHandshakeManager",
+    "access": null,
+    "export": false,
+    "importPath": "zetapush-js/src/handshake.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 13,
+    "interface": false
+  },
+  {
+    "__docId__": 68,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/handshake.js~AbstractHandshakeManager",
+    "longname": "src/handshake.js~AbstractHandshakeManager#constructor",
+    "access": null,
+    "description": "",
+    "lineNumber": 17,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"authType\": *, \"businessId\": *, \"deploymentId\": *}"
+        ],
+        "defaultRaw": {
+          "authType": null,
+          "businessId": null,
+          "deploymentId": null
+        },
+        "defaultValue": "{\"authType\":null,\"businessId\":null,\"deploymentId\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 69,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "authType",
+    "memberof": "src/handshake.js~AbstractHandshakeManager",
+    "longname": "src/handshake.js~AbstractHandshakeManager#authType",
+    "access": null,
+    "description": null,
+    "lineNumber": 18,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 70,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "businessId",
+    "memberof": "src/handshake.js~AbstractHandshakeManager",
+    "longname": "src/handshake.js~AbstractHandshakeManager#businessId",
+    "access": null,
+    "description": null,
+    "lineNumber": 19,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 71,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "deploymentId",
+    "memberof": "src/handshake.js~AbstractHandshakeManager",
+    "longname": "src/handshake.js~AbstractHandshakeManager#deploymentId",
+    "access": null,
+    "description": null,
+    "lineNumber": 20,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 72,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getHandshakeFields",
+    "memberof": "src/handshake.js~AbstractHandshakeManager",
+    "longname": "src/handshake.js~AbstractHandshakeManager#getHandshakeFields",
+    "access": null,
+    "description": "",
+    "lineNumber": 25,
+    "params": [
+      {
+        "name": "client",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 73,
+    "kind": "get",
+    "static": false,
+    "variation": null,
+    "name": "authVersion",
+    "memberof": "src/handshake.js~AbstractHandshakeManager",
+    "longname": "src/handshake.js~AbstractHandshakeManager#authVersion",
+    "access": null,
+    "description": "",
+    "lineNumber": 43,
+    "type": {
+      "types": [
+        "string"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 74,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "TokenHandshakeManager",
+    "memberof": "src/handshake.js",
+    "longname": "src/handshake.js~TokenHandshakeManager",
+    "access": null,
+    "export": false,
+    "importPath": "zetapush-js/src/handshake.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 52,
+    "interface": false,
+    "extends": [
+      "AbstractHandshakeManager"
+    ]
+  },
+  {
+    "__docId__": 75,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/handshake.js~TokenHandshakeManager",
+    "longname": "src/handshake.js~TokenHandshakeManager#constructor",
+    "access": null,
+    "description": "",
+    "lineNumber": 56,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"authType\": *, \"deploymentId\": *, \"token\": *}"
+        ],
+        "defaultRaw": {
+          "authType": null,
+          "deploymentId": null,
+          "token": null
+        },
+        "defaultValue": "{\"authType\":null,\"deploymentId\":null,\"token\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 76,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "token",
+    "memberof": "src/handshake.js~TokenHandshakeManager",
+    "longname": "src/handshake.js~TokenHandshakeManager#token",
+    "access": null,
+    "description": null,
+    "lineNumber": 58,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 77,
+    "kind": "get",
+    "static": false,
+    "variation": null,
+    "name": "authData",
+    "memberof": "src/handshake.js~TokenHandshakeManager",
+    "longname": "src/handshake.js~TokenHandshakeManager#authData",
+    "access": null,
+    "description": "",
+    "lineNumber": 63,
+    "type": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 78,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "DefaultZetapushHandshakeManager",
+    "memberof": "src/handshake.js",
+    "longname": "src/handshake.js~DefaultZetapushHandshakeManager",
+    "access": null,
+    "export": false,
+    "importPath": "zetapush-js/src/handshake.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 75,
+    "interface": false,
+    "extends": [
+      "AbstractHandshakeManager"
+    ]
+  },
+  {
+    "__docId__": 79,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/handshake.js~DefaultZetapushHandshakeManager",
+    "longname": "src/handshake.js~DefaultZetapushHandshakeManager#constructor",
+    "access": null,
+    "description": "",
+    "lineNumber": 80,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"authType\": *, \"deploymentId\": *, \"login\": *, \"password\": *}"
+        ],
+        "defaultRaw": {
+          "authType": null,
+          "deploymentId": null,
+          "login": null,
+          "password": null
+        },
+        "defaultValue": "{\"authType\":null,\"deploymentId\":null,\"login\":null,\"password\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 80,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "login",
+    "memberof": "src/handshake.js~DefaultZetapushHandshakeManager",
+    "longname": "src/handshake.js~DefaultZetapushHandshakeManager#login",
+    "access": null,
+    "description": null,
+    "lineNumber": 82,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 81,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "password",
+    "memberof": "src/handshake.js~DefaultZetapushHandshakeManager",
+    "longname": "src/handshake.js~DefaultZetapushHandshakeManager#password",
+    "access": null,
+    "description": null,
+    "lineNumber": 83,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 82,
+    "kind": "get",
+    "static": false,
+    "variation": null,
+    "name": "authData",
+    "memberof": "src/handshake.js~DefaultZetapushHandshakeManager",
+    "longname": "src/handshake.js~DefaultZetapushHandshakeManager#authData",
+    "access": null,
+    "description": "",
+    "lineNumber": 88,
+    "type": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 83,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "AuthentFactory",
+    "memberof": "src/handshake.js",
+    "longname": "src/handshake.js~AuthentFactory",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/handshake.js",
+    "importStyle": "{AuthentFactory}",
+    "description": "",
+    "lineNumber": 100,
+    "interface": false
+  },
+  {
+    "__docId__": 84,
+    "kind": "method",
+    "static": true,
+    "variation": null,
+    "name": "createSimpleHandshake",
+    "memberof": "src/handshake.js~AuthentFactory",
+    "longname": "src/handshake.js~AuthentFactory.createSimpleHandshake",
+    "access": null,
+    "description": "",
+    "lineNumber": 104,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"deploymentId\": *, \"login\": *, \"password\": *}"
+        ],
+        "defaultRaw": {
+          "deploymentId": null,
+          "login": null,
+          "password": null
+        },
+        "defaultValue": "{\"deploymentId\":null,\"login\":null,\"password\":null}"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 85,
+    "kind": "method",
+    "static": true,
+    "variation": null,
+    "name": "createWeakHandshake",
+    "memberof": "src/handshake.js~AuthentFactory",
+    "longname": "src/handshake.js~AuthentFactory.createWeakHandshake",
+    "access": null,
+    "description": "",
+    "lineNumber": 115,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"deploymentId\": *, \"token\": *}"
+        ],
+        "defaultRaw": {
+          "deploymentId": null,
+          "token": null
+        },
+        "defaultValue": "{\"deploymentId\":null,\"token\":null}"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 86,
+    "kind": "method",
+    "static": true,
+    "variation": null,
+    "name": "createDelegatingHandshake",
+    "memberof": "src/handshake.js~AuthentFactory",
+    "longname": "src/handshake.js~AuthentFactory.createDelegatingHandshake",
+    "access": null,
+    "description": "",
+    "lineNumber": 126,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"deploymentId\": *, \"token\": *}"
+        ],
+        "defaultRaw": {
+          "deploymentId": null,
+          "token": null
+        },
+        "defaultValue": "{\"deploymentId\":null,\"token\":null}"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 87,
+    "kind": "method",
+    "static": true,
+    "variation": null,
+    "name": "createHandshake",
+    "memberof": "src/handshake.js~AuthentFactory",
+    "longname": "src/handshake.js~AuthentFactory.createHandshake",
+    "access": null,
+    "description": "",
+    "lineNumber": 137,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"authType\": *, \"deploymentId\": *, \"login\": *, \"password\": *}"
+        ],
+        "defaultRaw": {
+          "authType": null,
+          "deploymentId": null,
+          "login": null,
+          "password": null
+        },
+        "defaultValue": "{\"authType\":null,\"deploymentId\":null,\"login\":null,\"password\":null}"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 88,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/index.js",
+    "memberof": null,
+    "longname": "src/index.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "export { AuthentFactory } from './handshake'\nexport { API_URL, Client } from './client'\nexport { SmartClient } from './smart-client'\nexport { AbstractTokenPersistenceStrategy, LocalStorageTokenPersistenceStrategy } from './token-persistence'\n"
+  },
+  {
+    "__docId__": 89,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/smart-client.js",
+    "memberof": null,
+    "longname": "src/smart-client.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Client } from './client'\nimport { AuthentFactory } from './handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './token-persistence'\n\n/**\n *\n */\nexport class SmartClient extends Client {\n  /**\n   *\n   */\n  constructor({ apiUrl, businessId, deploymentId, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {\n    const handshakeFactory = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     *\n     */\n    super({ apiUrl , businessId, handshakeFactory, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('SmartClient::onFailedHandshake', error)\n    }\n    this.client.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    this.strategy = new TokenPersistenceStrategy()\n  }\n  /**\n   *\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
+  },
+  {
+    "__docId__": 90,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "SmartClient",
+    "memberof": "src/smart-client.js",
+    "longname": "src/smart-client.js~SmartClient",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/smart-client.js",
+    "importStyle": "{SmartClient}",
+    "description": "",
+    "lineNumber": 8,
+    "interface": false,
+    "extends": [
+      "src/client.js~Client"
+    ]
+  },
+  {
+    "__docId__": 91,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/smart-client.js~SmartClient",
+    "longname": "src/smart-client.js~SmartClient#constructor",
+    "access": null,
+    "description": "",
+    "lineNumber": 12,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"apiUrl\": *, \"businessId\": *, \"deploymentId\": *, \"resource\": *, \"TokenPersistenceStrategy\": *}"
+        ],
+        "defaultRaw": {
+          "apiUrl": null,
+          "businessId": null,
+          "deploymentId": null,
+          "resource": null,
+          "TokenPersistenceStrategy": null
+        },
+        "defaultValue": "{\"apiUrl\":null,\"businessId\":null,\"deploymentId\":null,\"resource\":null,\"TokenPersistenceStrategy\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 92,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "strategy",
+    "memberof": "src/smart-client.js~SmartClient",
+    "longname": "src/smart-client.js~SmartClient#strategy",
+    "access": null,
+    "description": null,
+    "lineNumber": 36,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 93,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getToken",
+    "memberof": "src/smart-client.js~SmartClient",
+    "longname": "src/smart-client.js~SmartClient#getToken",
+    "access": null,
+    "description": "",
+    "lineNumber": 41,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 94,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/token-persistence.js",
+    "memberof": null,
+    "longname": "src/token-persistence.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 4,
+    "content": "/**\n *\n */\nconst ZETAPUSH_TOKEN_KEY = 'zetapush.token'\n\n/**\n *\n */\nexport class AbstractTokenPersistenceStrategy {\n  /**\n   *\n   */\n  constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {\n    this.key = key\n  }\n  /**\n   *\n   */\n  get() {\n    return null\n  }\n  /**\n   *\n   */\n  set({ token }) {\n\n  }\n}\n\n/**\n *\n */\nexport class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersistenceStrategy {\n  /**\n   *\n   */\n  get() {\n    return localStorage.getItem(this.key)\n  }\n  /**\n   *\n   */\n  set({ token }) {\n    localStorage.setItem(this.key, token)\n  }\n}\n"
+  },
+  {
+    "__docId__": 95,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "ZETAPUSH_TOKEN_KEY",
+    "memberof": "src/token-persistence.js",
+    "longname": "src/token-persistence.js~ZETAPUSH_TOKEN_KEY",
+    "access": null,
+    "export": false,
+    "importPath": "zetapush-js/src/token-persistence.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 4,
+    "type": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 96,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "AbstractTokenPersistenceStrategy",
+    "memberof": "src/token-persistence.js",
+    "longname": "src/token-persistence.js~AbstractTokenPersistenceStrategy",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/token-persistence.js",
+    "importStyle": "{AbstractTokenPersistenceStrategy}",
+    "description": "",
+    "lineNumber": 9,
+    "interface": false
+  },
+  {
+    "__docId__": 97,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/token-persistence.js~AbstractTokenPersistenceStrategy",
+    "longname": "src/token-persistence.js~AbstractTokenPersistenceStrategy#constructor",
+    "access": null,
+    "description": "",
+    "lineNumber": 13,
+    "params": [
+      {
+        "name": "objectPattern",
+        "optional": true,
+        "types": [
+          "{\"key\": *}"
+        ],
+        "defaultRaw": {},
+        "defaultValue": "{}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 98,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "key",
+    "memberof": "src/token-persistence.js~AbstractTokenPersistenceStrategy",
+    "longname": "src/token-persistence.js~AbstractTokenPersistenceStrategy#key",
+    "access": null,
+    "description": null,
+    "lineNumber": 14,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 99,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "get",
+    "memberof": "src/token-persistence.js~AbstractTokenPersistenceStrategy",
+    "longname": "src/token-persistence.js~AbstractTokenPersistenceStrategy#get",
+    "access": null,
+    "description": "",
+    "lineNumber": 19,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 100,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "set",
+    "memberof": "src/token-persistence.js~AbstractTokenPersistenceStrategy",
+    "longname": "src/token-persistence.js~AbstractTokenPersistenceStrategy#set",
+    "access": null,
+    "description": "",
+    "lineNumber": 25,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"token\": *}"
+        ],
+        "defaultRaw": {
+          "token": null
+        },
+        "defaultValue": "{\"token\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 101,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "LocalStorageTokenPersistenceStrategy",
+    "memberof": "src/token-persistence.js",
+    "longname": "src/token-persistence.js~LocalStorageTokenPersistenceStrategy",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/token-persistence.js",
+    "importStyle": "{LocalStorageTokenPersistenceStrategy}",
+    "description": "",
+    "lineNumber": 33,
+    "interface": false,
+    "extends": [
+      "AbstractTokenPersistenceStrategy"
+    ]
+  },
+  {
+    "__docId__": 102,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "get",
+    "memberof": "src/token-persistence.js~LocalStorageTokenPersistenceStrategy",
+    "longname": "src/token-persistence.js~LocalStorageTokenPersistenceStrategy#get",
+    "access": null,
+    "description": "",
+    "lineNumber": 37,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 103,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "set",
+    "memberof": "src/token-persistence.js~LocalStorageTokenPersistenceStrategy",
+    "longname": "src/token-persistence.js~LocalStorageTokenPersistenceStrategy#set",
+    "access": null,
+    "description": "",
+    "lineNumber": 43,
+    "params": [
+      {
+        "name": "objectPattern",
+        "types": [
+          "{\"token\": *}"
+        ],
+        "defaultRaw": {
+          "token": null
+        },
+        "defaultValue": "{\"token\":null}"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 104,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/utils.js",
+    "memberof": null,
+    "longname": "src/utils.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 4,
+    "content": "/**\n *\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n *\n */\nexport const getServers = (url) => {\n  return fetch(url)\n    .then((response) => {\n      return response.json()\n    })\n    .then(({ servers }) => {\n      return servers\n    })\n}\n\n/**\n *\n */\nexport class NotYetImplementedError extends Error {\n  /**\n   *\n   */\n  constructor(message = '') {\n    super(message)\n    this.name = 'NotImplementedError'\n  }\n\n}\n"
+  },
+  {
+    "__docId__": 105,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "shuffle",
+    "memberof": "src/utils.js",
+    "longname": "src/utils.js~shuffle",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/utils.js",
+    "importStyle": "{shuffle}",
+    "description": "",
+    "lineNumber": 4,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 106,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "getServers",
+    "memberof": "src/utils.js",
+    "longname": "src/utils.js~getServers",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/utils.js",
+    "importStyle": "{getServers}",
+    "description": "",
+    "lineNumber": 12,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 107,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "NotYetImplementedError",
+    "memberof": "src/utils.js",
+    "longname": "src/utils.js~NotYetImplementedError",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/utils.js",
+    "importStyle": "{NotYetImplementedError}",
+    "description": "",
+    "lineNumber": 25,
+    "interface": false,
+    "extends": [
+      "Error"
+    ]
+  },
+  {
+    "__docId__": 108,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/utils.js~NotYetImplementedError",
+    "longname": "src/utils.js~NotYetImplementedError#constructor",
+    "access": null,
+    "description": "",
+    "lineNumber": 29,
+    "params": [
+      {
+        "name": "message",
+        "optional": true,
+        "types": [
+          "string"
+        ],
+        "defaultRaw": "",
+        "defaultValue": ""
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 109,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "name",
+    "memberof": "src/utils.js~NotYetImplementedError",
+    "longname": "src/utils.js~NotYetImplementedError#name",
+    "access": null,
+    "description": null,
+    "lineNumber": 31,
+    "undocument": true,
+    "type": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 111,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Infinity",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 112,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~NaN",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 113,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~undefined",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 114,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~null",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 115,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 116,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 117,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 118,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 119,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 120,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 121,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Symbol",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 122,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Error",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 123,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~EvalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 124,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~InternalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 125,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RangeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 126,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ReferenceError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 127,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~SyntaxError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 128,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~TypeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 129,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~URIError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 130,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 131,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 132,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Date",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 133,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~String",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 134,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~string",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 135,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RegExp",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 136,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 137,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 138,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 139,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8ClampedArray",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 140,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 141,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 142,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 143,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 144,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 145,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float64Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 146,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Map",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 147,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Set",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 148,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakMap",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 149,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakSet",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 150,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ArrayBuffer",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 151,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~DataView",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 152,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~JSON",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 153,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Promise",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 154,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Generator",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 155,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~GeneratorFunction",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 156,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Reflect",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 157,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Proxy",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 159,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "CanvasRenderingContext2D",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 160,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DocumentFragment",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~DocumentFragment",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 161,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Element",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Element",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 162,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Event",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Event",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 163,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Node",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Node",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 164,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NodeList",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~NodeList",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 165,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "XMLHttpRequest",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~XMLHttpRequest",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 166,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "AudioContext",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~AudioContext",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  }
+]

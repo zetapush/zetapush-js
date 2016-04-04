@@ -2,8 +2,14 @@ import { ClientHelper } from './client-helper'
 
 import { NotYetImplementedError } from './utils'
 
+/**
+ *
+ */
 export const API_URL = 'https://api.zpush.io/'
 
+/**
+ *
+ */
 export class Client {
   /**
    *

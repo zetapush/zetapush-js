@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/client-helper.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/zetapush/zetapush-js.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html">ClientHelper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html">AbstractTokenPersistenceStrategy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/token-persistence.js~LocalStorageTokenPersistenceStrategy.html">LocalStorageTokenPersistenceStrategy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils.js~NotYetImplementedError.html">NotYetImplementedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-FetchLongPollingTransport">FetchLongPollingTransport</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-API_URL">API_URL</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-getServers">getServers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-shuffle">shuffle</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/client-helper.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { CometD, WebSocketTransport } from &apos;zetapush-cometd&apos;
+import { FetchLongPollingTransport } from &apos;./cometd&apos;
+import { getServers, shuffle } from &apos;./utils&apos;
+
+const Message = {
+  RECONNECT_HANDSHAKE_VALUE: &apos;handshake&apos;,
+  RECONNECT_NONE_VALUE: &apos;none&apos;,
+  RECONNECT_RETRY_VALUE: &apos;retry&apos;
+}
+
+const Transport = {
+  LONG_POLLING: &apos;long-polling&apos;,
+  WEBSOCKET: &apos;websocket&apos;
+}
+
+class ConnectionStatusListener {
+
+  onSuccessfulHandshake() {}
+
+  onFailedHandshake() {}
+
+  onConnectionEstablished() {}
+
+  onConnectionBroken() {}
+
+  onConnectionClosed() {}
+
+  onMessageLost() {}
+}
+
+export class ClientHelper {
+  /**
+   *
+   */
+  constructor({ apiUrl, businessId, handshakeFactory, resource }) {
+    this.businessId = businessId
+    this.handshakeFactory = handshakeFactory
+    this.resource = resource
+    this.servers = getServers(`${apiUrl}${businessId}`)
+    this.connectionListeners = []
+    this.connected = false
+    this.wasConnected = false
+    this.serverUrl = null
+    this.cometd = new CometD()
+    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())
+    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())
+    this.cometd.onTransportException = (cometd, transport) =&gt; {
+      if (Transport.LONG_POLLING === transport) {
+        // Try to find an other available server
+        // Remove the current one from the _serverList array
+        this.handshakeFailure()
+      }
+    }
+  }
+  /**
+   *
+   */
+  connect() {
+    this.servers.then((servers) =&gt; {
+      this.serverUrl = shuffle(servers)
+
+      this.cometd.configure({
+        url: `${this.serverUrl}/strd`,
+        backoffIncrement: 1000,
+        maxBackoff: 60000,
+        appendMessageTypeToURL: false
+      })
+
+      this.cometd.addListener(&apos;/meta/handshake&apos;, ({ ext, successful, advice, error }) =&gt; {
+        console.debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
+        if (successful) {
+          const { authentication = null } = ext
+          this.initialized(authentication)
+        }
+        else {
+          this.handshakeFailure(error)
+        }
+      })
+
+      this.cometd.addListener(&apos;/meta/handshake&apos;, ({ advice, error, ext, successful }) =&gt; {
+        console.debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
+        // AuthNegotiation
+        if (!successful) {
+          if (advice === null) {
+            return
+          }
+          if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {
+            this.authenticationFailed(error)
+          }
+          else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {
+            this.negotiate(ext)
+          }
+        }
+      })
+
+      this.cometd.addListener(&apos;/meta/connect&apos;, ({ advice, channel, successful }) =&gt; {
+        console.debug(&apos;ClientHelper::/meta/connect&apos;, { advice, channel, successful })
+        // ConnectionListener
+        if (this.cometd.isDisconnected()) {
+          this.connected = false
+          this.connectionClosed()
+        } else {
+          this.wasConnected = this.connected
+          this.connected = successful
+          if (!this.wasConnected &amp;&amp; this.connected) {
+            this.connectionEstablished()
+          }
+          else if (this.wasConnected &amp;&amp; !this.connected) {
+            this.connectionBroken()
+          }
+        }
+      })
+      this.cometd.handshake(this.getHandshakeFields())
+    })
+  }
+  /**
+   *
+   */
+  connectionEstablished() {
+    this.connectionListeners.forEach((listener) =&gt; {
+      listener.onConnectionEstablished()
+    })
+  }
+  /**
+   *
+   */
+  connectionBroken() {
+    this.connectionListeners.forEach((listener) =&gt; {
+      listener.onConnectionBroken()
+    })
+  }
+  /**
+   *
+   */
+  messageLost(channel, data) {
+    this.connectionListeners.forEach((listener) =&gt; {
+      listener.onMessageLost(channel, data)
+    })
+  }
+  /**
+   *
+   */
+  connectionClosed() {
+    this.connectionListeners.forEach((listener) =&gt; {
+      listener.onConnectionClosed()
+    })
+  }
+  /**
+   *
+   */
+  initialized(authentication) {
+    if (authentication) {
+      this.userId = authentication.userId
+    }
+    this.connectionListeners.forEach((listener) =&gt; {
+      listener.onSuccessfulHandshake(authentication)
+    })
+  }
+  /**
+   *
+   */
+  authenticationFailed(error) {
+    this.connectionListeners.forEach((listener) =&gt; {
+      listener.onFailedHandshake(error)
+    })
+  }
+  /**
+   *
+   */
+  handshakeFailure() {
+    this.servers.then((servers) =&gt; {
+      const index = servers.indexOf(this.serverUrl)
+      if (index &gt; -1) {
+        servers.splice(index, 1)
+      }
+      if (servers.length === 0) {
+        // No more server available
+      }
+      else {
+        this.serverUrl = shuffle(servers)
+        this.cometd.configure({
+          url: `${this.serverUrl}/strd`
+        })
+        setTimeout(() =&gt; {
+          this.cometd.handshake(this.getHandshakeFields())
+        }, 250)
+      }
+    })
+  }
+  /**
+   *
+   */
+  negotiate(ext) {
+    console.debug(&apos;ClientHelper::negotiate&apos;, ext)
+  }
+  /**
+   *
+   */
+  disconnect() {
+    this.cometd.disconnect()
+  }
+  /**
+   *
+   */
+  getHandshakeFields() {
+    const handshake = this.handshakeFactory()
+    return handshake.getHandshakeFields(this)
+  }
+  /**
+   *
+   */
+  setHandshakeFactory(handshakeFactory) {
+    this.handshakeFactory = handshakeFactory
+  }
+  /**
+   *
+   */
+  getBusinessId() {
+    return this.businessId
+  }
+  /**
+   *
+   */
+  getSessionId() {
+    throw NotYetImplementedError()
+  }
+  /**
+   *
+   */
+  getResource() {
+    return this.resource
+  }
+  /**
+   *
+   */
+  subscribe(prefix, serviceListener) {
+    const subscripions = {}
+    for (const method in serviceListener) {
+      if (serviceListener.hasOwnProperty(method)) {
+        const channel = `${prefix}/${method}`
+        subscripions[method] = this.cometd.subscribe(channel, serviceListener[method])
+      }
+    }
+    return subscripions
+  }
+  /**
+   *
+   */
+  unsubscribe(subscripions) {
+    for (const method in subscripions) {
+      if (subscripions.hasOwnProperty(method)) {
+        this.cometd.unsubscribe(subscripions[method])
+      }
+    }
+  }
+  /**
+   *
+   */
+  addConnectionStatusListener(listener) {
+    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)
+    this.connectionListeners.push(connectionListener)
+  }
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
