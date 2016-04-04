@@ -10,7 +10,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './cometd'\nimport { getServers, shuffle } from './utils'\n\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\nclass ConnectionStatusListener {\n\n  onSuccessfulHandshake() {}\n\n  onFailedHandshake() {}\n\n  onConnectionEstablished() {}\n\n  onConnectionBroken() {}\n\n  onConnectionClosed() {}\n\n  onMessageLost() {}\n}\n\nexport class ClientHelper {\n  /**\n   *\n   */\n  constructor({ apiUrl, businessId, handshakeFactory, resource }) {\n    this.businessId = businessId\n    this.handshakeFactory = handshakeFactory\n    this.resource = resource\n    this.servers = getServers(`${apiUrl}${businessId}`)\n    this.connectionListeners = []\n    this.connected = false\n    this.wasConnected = false\n    this.serverUrl = null\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.handshakeFailure()\n      }\n    }\n  }\n  /**\n   *\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n        console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n        if (successful) {\n          const { authentication = null } = ext\n          this.initialized(authentication)\n        }\n        else {\n          this.handshakeFailure(error)\n        }\n      })\n\n      this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n        console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n        // AuthNegotiation\n        if (!successful) {\n          if (advice === null) {\n            return\n          }\n          if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n            this.authenticationFailed(error)\n          }\n          else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n            this.negotiate(ext)\n          }\n        }\n      })\n\n      this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n        console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n        // ConnectionListener\n        if (this.cometd.isDisconnected()) {\n          this.connected = false\n          this.connectionClosed()\n        } else {\n          this.wasConnected = this.connected\n          this.connected = successful\n          if (!this.wasConnected && this.connected) {\n            this.connectionEstablished()\n          }\n          else if (this.wasConnected && !this.connected) {\n            this.connectionBroken()\n          }\n        }\n      })\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   *\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   *\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   *\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   *\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   *\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   *\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   *\n   */\n  handshakeFailure() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   *\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   *\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   *\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeFactory()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   *\n   */\n  setHandshakeFactory(handshakeFactory) {\n    this.handshakeFactory = handshakeFactory\n  }\n  /**\n   *\n   */\n  getBusinessId() {\n    return this.businessId\n  }\n  /**\n   *\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   *\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   *\n   */\n  subscribe(prefix, serviceListener) {\n    const subscripions = {}\n    for (const method in serviceListener) {\n      if (serviceListener.hasOwnProperty(method)) {\n        const channel = `${prefix}/${method}`\n        subscripions[method] = this.cometd.subscribe(channel, serviceListener[method])\n      }\n    }\n    return subscripions\n  }\n  /**\n   *\n   */\n  unsubscribe(subscripions) {\n    for (const method in subscripions) {\n      if (subscripions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscripions[method])\n      }\n    }\n  }\n  /**\n   *\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    this.connectionListeners.push(connectionListener)\n  }\n\n}\n"
+    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './cometd'\nimport { getServers, shuffle } from './utils'\n\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\nclass ConnectionStatusListener {\n\n  onSuccessfulHandshake() {}\n\n  onFailedHandshake() {}\n\n  onConnectionEstablished() {}\n\n  onConnectionBroken() {}\n\n  onConnectionClosed() {}\n\n  onMessageLost() {}\n}\n\nexport class ClientHelper {\n  /**\n   *\n   */\n  constructor({ apiUrl, businessId, handshakeFactory, resource }) {\n    this.businessId = businessId\n    this.handshakeFactory = handshakeFactory\n    this.resource = resource\n    this.servers = getServers(`${apiUrl}${businessId}`)\n    this.connectionListeners = []\n    this.connected = false\n    this.wasConnected = false\n    this.serverUrl = null\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.handshakeFailure()\n      }\n    }\n    this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      if (successful) {\n        const { authentication = null } = ext\n        this.initialized(authentication)\n      }\n      else {\n        // this.handshakeFailure(error)\n      }\n    })\n\n    this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      // AuthNegotiation\n      if (!successful) {\n        if (advice === null) {\n          return\n        }\n        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n          this.authenticationFailed(error)\n        }\n        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n          this.negotiate(ext)\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n      console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n      // ConnectionListener\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        this.connectionClosed()\n      } else {\n        this.wasConnected = this.connected\n        this.connected = successful\n        if (!this.wasConnected && this.connected) {\n          this.connectionEstablished()\n        }\n        else if (this.wasConnected && !this.connected) {\n          this.connectionBroken()\n        }\n      }\n    })\n  }\n  /**\n   *\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   *\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   *\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   *\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   *\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   *\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   *\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   *\n   */\n  handshakeFailure() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   *\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   *\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   *\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeFactory()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   *\n   */\n  setHandshakeFactory(handshakeFactory) {\n    this.handshakeFactory = handshakeFactory\n  }\n  /**\n   *\n   */\n  getBusinessId() {\n    return this.businessId\n  }\n  /**\n   *\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   *\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   *\n   */\n  subscribe(prefix, serviceListener) {\n    const subscripions = {}\n    for (const method in serviceListener) {\n      if (serviceListener.hasOwnProperty(method)) {\n        const channel = `${prefix}/${method}`\n        subscripions[method] = this.cometd.subscribe(channel, serviceListener[method])\n      }\n    }\n    return subscripions\n  }\n  /**\n   *\n   */\n  unsubscribe(subscripions) {\n    for (const method in subscripions) {\n      if (subscripions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscripions[method])\n      }\n    }\n  }\n  /**\n   *\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    this.connectionListeners.push(connectionListener)\n  }\n\n}\n"
   },
   {
     "__docId__": 1,
@@ -370,29 +370,33 @@
   },
   {
     "__docId__": 21,
-    "kind": "method",
+    "kind": "member",
     "static": false,
     "variation": null,
-    "name": "connect",
+    "name": "connected",
     "memberof": "src/client-helper.js~ClientHelper",
-    "longname": "src/client-helper.js~ClientHelper#connect",
+    "longname": "src/client-helper.js~ClientHelper#connected",
     "access": null,
-    "description": "",
-    "lineNumber": 58,
-    "params": [],
-    "generator": false
+    "description": null,
+    "lineNumber": 85,
+    "undocument": true,
+    "type": {
+      "types": [
+        "boolean"
+      ]
+    }
   },
   {
     "__docId__": 22,
     "kind": "member",
     "static": false,
     "variation": null,
-    "name": "serverUrl",
+    "name": "wasConnected",
     "memberof": "src/client-helper.js~ClientHelper",
-    "longname": "src/client-helper.js~ClientHelper#serverUrl",
+    "longname": "src/client-helper.js~ClientHelper#wasConnected",
     "access": null,
     "description": null,
-    "lineNumber": 60,
+    "lineNumber": 88,
     "undocument": true,
     "type": {
       "types": [
@@ -410,25 +414,7 @@
     "longname": "src/client-helper.js~ClientHelper#connected",
     "access": null,
     "description": null,
-    "lineNumber": 100,
-    "undocument": true,
-    "type": {
-      "types": [
-        "boolean"
-      ]
-    }
-  },
-  {
-    "__docId__": 24,
-    "kind": "member",
-    "static": false,
-    "variation": null,
-    "name": "wasConnected",
-    "memberof": "src/client-helper.js~ClientHelper",
-    "longname": "src/client-helper.js~ClientHelper#wasConnected",
-    "access": null,
-    "description": null,
-    "lineNumber": 103,
+    "lineNumber": 89,
     "undocument": true,
     "type": {
       "types": [
@@ -437,13 +423,27 @@
     }
   },
   {
+    "__docId__": 24,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "connect",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connect",
+    "access": null,
+    "description": "",
+    "lineNumber": 102,
+    "params": [],
+    "generator": false
+  },
+  {
     "__docId__": 25,
     "kind": "member",
     "static": false,
     "variation": null,
-    "name": "connected",
+    "name": "serverUrl",
     "memberof": "src/client-helper.js~ClientHelper",
-    "longname": "src/client-helper.js~ClientHelper#connected",
+    "longname": "src/client-helper.js~ClientHelper#serverUrl",
     "access": null,
     "description": null,
     "lineNumber": 104,

@@ -101,6 +101,50 @@ export class ClientHelper {
         this.handshakeFailure()
       }
     }
+    this.cometd.addListener(&apos;/meta/handshake&apos;, ({ ext, successful, advice, error }) =&gt; {
+      console.debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
+      if (successful) {
+        const { authentication = null } = ext
+        this.initialized(authentication)
+      }
+      else {
+        // this.handshakeFailure(error)
+      }
+    })
+
+    this.cometd.addListener(&apos;/meta/handshake&apos;, ({ advice, error, ext, successful }) =&gt; {
+      console.debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
+      // AuthNegotiation
+      if (!successful) {
+        if (advice === null) {
+          return
+        }
+        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {
+          this.authenticationFailed(error)
+        }
+        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {
+          this.negotiate(ext)
+        }
+      }
+    })
+
+    this.cometd.addListener(&apos;/meta/connect&apos;, ({ advice, channel, successful }) =&gt; {
+      console.debug(&apos;ClientHelper::/meta/connect&apos;, { advice, channel, successful })
+      // ConnectionListener
+      if (this.cometd.isDisconnected()) {
+        this.connected = false
+        this.connectionClosed()
+      } else {
+        this.wasConnected = this.connected
+        this.connected = successful
+        if (!this.wasConnected &amp;&amp; this.connected) {
+          this.connectionEstablished()
+        }
+        else if (this.wasConnected &amp;&amp; !this.connected) {
+          this.connectionBroken()
+        }
+      }
+    })
   }
   /**
    *
@@ -116,50 +160,6 @@ export class ClientHelper {
         appendMessageTypeToURL: false
       })
 
-      this.cometd.addListener(&apos;/meta/handshake&apos;, ({ ext, successful, advice, error }) =&gt; {
-        console.debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
-        if (successful) {
-          const { authentication = null } = ext
-          this.initialized(authentication)
-        }
-        else {
-          this.handshakeFailure(error)
-        }
-      })
-
-      this.cometd.addListener(&apos;/meta/handshake&apos;, ({ advice, error, ext, successful }) =&gt; {
-        console.debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
-        // AuthNegotiation
-        if (!successful) {
-          if (advice === null) {
-            return
-          }
-          if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {
-            this.authenticationFailed(error)
-          }
-          else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {
-            this.negotiate(ext)
-          }
-        }
-      })
-
-      this.cometd.addListener(&apos;/meta/connect&apos;, ({ advice, channel, successful }) =&gt; {
-        console.debug(&apos;ClientHelper::/meta/connect&apos;, { advice, channel, successful })
-        // ConnectionListener
-        if (this.cometd.isDisconnected()) {
-          this.connected = false
-          this.connectionClosed()
-        } else {
-          this.wasConnected = this.connected
-          this.connected = successful
-          if (!this.wasConnected &amp;&amp; this.connected) {
-            this.connectionEstablished()
-          }
-          else if (this.wasConnected &amp;&amp; !this.connected) {
-            this.connectionBroken()
-          }
-        }
-      })
       this.cometd.handshake(this.getHandshakeFields())
     })
   }
