@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZetaPush SDK Examples - Form Login</title>
+    <style>
+      main,
+      form {
+        display: flex;
+        flex: 1 1 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <form autocomplete="off" name="form-login">
+        <div>
+          <label>
+            <span>login</span>
+            <input type="text" name="login">
+          </label>
+        </div>
+        <div>
+          <label>
+            <span>Password</span>
+            <input type="password" name="password">
+          </label>
+        </div>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </main>
+    <script src="../dist/zetapush.js"></script>
+    <script src="./form-login.js"></script>
+  </body>
+</html>
