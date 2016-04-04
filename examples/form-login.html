@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ZetaPush SDK Examples - Form Login</title>
     <style>
-      main,
-      form {
-        display: flex;
-        flex: 1 1 0;
-      }
+      form { display: flex; justify-content: space-around; border: 1px dotted black; }
+      aside, form { padding: 1rem; }
+      aside { text-align: center; }
+      .error { color: red; }
+      .success { color: green; }
     </style>
   </head>
   <body>
@@ -31,6 +31,7 @@
           <button type="submit">Submit</button>
         </div>
       </form>
+      <aside></aside>
     </main>
     <script src="../dist/zetapush.js"></script>
     <script src="./form-login.js"></script>
