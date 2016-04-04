@@ -8,11 +8,11 @@ export class Client {
   /**
    *
    */
-  constructor({ apiUrl = API_URL, businessId, handshake, resource = null }) {
+  constructor({ apiUrl = API_URL, businessId, handshakeFactory, resource = null }) {
     this.client = new ClientHelper({
       apiUrl,
       businessId,
-      handshake,
+      handshakeFactory,
       resource
     })
   }
@@ -85,10 +85,10 @@ export class Client {
   /**
    *
    */
-  handshake(handshake) {
+  handshake(handshakeFactory) {
     this.stop()
-    if (handshake) {
-      this.client.setHandshake(handshake)
+    if (handshakeFactory) {
+      this.client.setHandshakeFactory(handshakeFactory)
     }
     this.start()
   }

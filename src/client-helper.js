@@ -32,9 +32,9 @@ export class ClientHelper {
   /**
    *
    */
-  constructor({ apiUrl, businessId, handshake, resource }) {
+  constructor({ apiUrl, businessId, handshakeFactory, resource }) {
     this.businessId = businessId
-    this.handshake = handshake
+    this.handshakeFactory = handshakeFactory
     this.resource = resource
     this.servers = getServers(`${apiUrl}${businessId}`)
     this.connectionListeners = []
@@ -110,7 +110,7 @@ export class ClientHelper {
           }
         }
       })
-      this.cometd.handshake(this.handshake.getHandshakeFields(this))
+      this.cometd.handshake(this.getHandshakeFields())
     })
   }
   /**
@@ -182,7 +182,7 @@ export class ClientHelper {
           url: `${this.serverUrl}/strd`
         })
         setTimeout(() => {
-          this.cometd.handshake(this.handshake.getHandshakeFields(this))
+          this.cometd.handshake(this.getHandshakeFields())
         }, 250)
       }
     })
@@ -202,8 +202,15 @@ export class ClientHelper {
   /**
    *
    */
-  setHandshake(handshake) {
-    this.handshake = handshake
+  getHandshakeFields() {
+    const handshake = this.handshakeFactory()
+    return handshake.getHandshakeFields(this)
+  }
+  /**
+   *
+   */
+  setHandshakeFactory(handshakeFactory) {
+    this.handshakeFactory = handshakeFactory
   }
   /**
    *

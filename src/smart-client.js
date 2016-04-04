@@ -5,13 +5,23 @@ import { LocalStorageTokenPersistenceStrategy } from './token-persistence'
 /**
  *
  */
-export class SmartClient {
+export class SmartClient extends Client {
   /**
    *
    */
-  constructor({ apiUrl, businessId, deploymentId, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {
-    this.strategy = new TokenPersistenceStrategy()
-    const handshake = this.getHandshake({ deploymentId })
+  constructor({ apiUrl, businessId, deploymentId, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {
+    const handshakeFactory = () => {
+      const token = this.getToken()
+      const handshake = AuthentFactory.createWeakHandshake({
+        deploymentId,
+        token
+      })
+      return handshake
+    }
+    /**
+     *
+     */
+    super({ apiUrl , businessId, handshakeFactory, resource })
     const onSuccessfulHandshake = ({ publicToken, userId, token }) => {
       console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })
 
@@ -22,37 +32,8 @@ export class SmartClient {
     const onFailedHandshake = (error) => {
       console.debug('SmartClient::onFailedHandshake', error)
     }
-    this.client = new Client({ apiUrl, businessId, handshake })
-    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })
-  }
-  /**
-   *
-   */
-  addConnectionStatusListener(listener) {
-    this.client.addConnectionStatusListener(listener)
-  }
-  /**
-   *
-   */
-  disconnect() {
-    this.client.disconnect()
-  }
-  /**
-   *
-   */
-  connect() {
-    this.client.connect()
-  }
-  /**
-   *
-   */
-  getHandshake({ deploymentId }) {
-    const token = this.getToken()
-    const handshake = AuthentFactory.createWeakHandshake({
-      deploymentId,
-      token
-    })
-    return handshake
+    this.client.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })
+    this.strategy = new TokenPersistenceStrategy()
   }
   /**
    *
@@ -60,5 +41,4 @@ export class SmartClient {
   getToken() {
     return this.strategy.get()
   }
-
 }

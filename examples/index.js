@@ -3,11 +3,13 @@ const { AuthentFactory, Client } = ZetaPush
 const client = new Client({
   apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
   businessId: 'JteMN0To',
-  handshake: AuthentFactory.createSimpleHandshake({
-    login: 'ghoullier',
-    password: 'ghoullier',
-    deploymentId: 'simple_user'
-  })
+  handshakeFactory() {
+    return AuthentFactory.createSimpleHandshake({
+      login: 'ghoullier',
+      password: 'ghoullier',
+      deploymentId: 'simple_user'
+    })
+  }
 })
 
 client.addConnectionStatusListener({
