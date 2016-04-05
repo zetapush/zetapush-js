@@ -28,7 +28,7 @@ export class ClientHelper {
   /**
    *
    */
-  constructor({ apiUrl, businessId, handshakeFactory, resource }) {
+  constructor({ apiUrl, businessId, handshakeStrategy, resource }) {
     /**
      * @access private
      * @type {string}
@@ -38,7 +38,7 @@ export class ClientHelper {
      * @access private
      * @type {function():AbstractHandshakeManager}
      */
-    this.handshakeFactory = handshakeFactory
+    this.handshakeStrategy = handshakeStrategy
     /**
      * @access private
      * @type {string}
@@ -242,15 +242,15 @@ export class ClientHelper {
    * @return {Object}
    */
   getHandshakeFields() {
-    const handshake = this.handshakeFactory()
+    const handshake = this.handshakeStrategy()
     return handshake.getHandshakeFields(this)
   }
   /**
    * @desc Set a new handshake factory methods
-   * @param {function():AbstractHandshakeManager} handshakeFactory
+   * @param {function():AbstractHandshakeManager} handshakeStrategy
    */
-  setHandshakeFactory(handshakeFactory) {
-    this.handshakeFactory = handshakeFactory
+  setHandshakeStrategy(handshakeStrategy) {
+    this.handshakeStrategy = handshakeStrategy
   }
   /**
    * @desc Get business id

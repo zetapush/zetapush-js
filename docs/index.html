@@ -51,7 +51,7 @@
 
 const client = new Client({
   businessId: &apos;&lt;YOUR-BUSINESS-ID&gt;&apos;,
-  handshakeFactory() {
+  handshakeStrategy() {
     return AuthentFactory.createWeakHandshake({
       token: null,
       deploymentId: &apos;&lt;YOUR-DEPLOYMENT-ID&gt;&apos;

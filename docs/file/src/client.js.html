@@ -59,7 +59,7 @@ export const API_URL = &apos;https://api.zpush.io/&apos;
  * @example
  * const client = new Client({
  *   businessId: &apos;&lt;YOUR-BUSINESS-ID&gt;&apos;,
- *   handshakeFactory() {
+ *   handshakeStrategy() {
  *     return AuthentFactory.createWeakHandshake({
  *       token: null,
  *       deploymentId: &apos;&lt;YOUR-DEPLOYMENT-ID&gt;&apos;
@@ -71,7 +71,7 @@ export class Client {
   /**
    *
    */
-  constructor({ apiUrl = API_URL, businessId, handshakeFactory, resource = null }) {
+  constructor({ apiUrl = API_URL, businessId, handshakeStrategy, resource = null }) {
     /**
      * @access private
      * @type {ClientHelper}
@@ -79,7 +79,7 @@ export class Client {
     this.client = new ClientHelper({
       apiUrl,
       businessId,
-      handshakeFactory,
+      handshakeStrategy,
       resource
     })
   }
@@ -170,12 +170,12 @@ export class Client {
   }
   /**
    * @desc Force disconnect/connect with new handshake factory
-   * @param {function():AbstractHandshakeManager} handshakeFactory
+   * @param {function():AbstractHandshakeManager} handshakeStrategy
    */
-  handshake(handshakeFactory) {
+  handshake(handshakeStrategy) {
     this.disconnect()
-    if (handshakeFactory) {
-      this.client.setHandshakeFactory(handshakeFactory)
+    if (handshakeStrategy) {
+      this.client.setHandshakeStrategy(handshakeStrategy)
     }
     this.connect()
   }

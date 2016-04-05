@@ -11,7 +11,7 @@ export class SmartClient extends Client {
    *
    */
   constructor({ apiUrl, businessId, deploymentId, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {
-    const handshakeFactory = () => {
+    const handshakeStrategy = () => {
       const token = this.getToken()
       const handshake = AuthentFactory.createWeakHandshake({
         deploymentId,
@@ -22,7 +22,7 @@ export class SmartClient extends Client {
     /**
      *
      */
-    super({ apiUrl , businessId, handshakeFactory, resource })
+    super({ apiUrl , businessId, handshakeStrategy, resource })
     const onSuccessfulHandshake = ({ publicToken, userId, token }) => {
       console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })
 

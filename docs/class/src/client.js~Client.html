@@ -81,7 +81,7 @@
       
       <pre class="prettyprint source-code"><code data-ice="exampleCode">const client = new Client({
   businessId: &apos;&lt;YOUR-BUSINESS-ID&gt;&apos;,
-  handshakeFactory() {
+  handshakeStrategy() {
     return AuthentFactory.createWeakHandshake({
       token: null,
       deploymentId: &apos;&lt;YOUR-DEPLOYMENT-ID&gt;&apos;
@@ -113,7 +113,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(objectPattern: {&quot;apiUrl&quot;: <span>*</span>, &quot;businessId&quot;: <span>*</span>, &quot;handshakeFactory&quot;: <span>*</span>, &quot;resource&quot;: <span>*</span>})</span>
+           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(objectPattern: {&quot;apiUrl&quot;: <span>*</span>, &quot;businessId&quot;: <span>*</span>, &quot;handshakeStrategy&quot;: <span>*</span>, &quot;resource&quot;: <span>*</span>})</span>
         </p>
       </div>
       <div>
@@ -380,7 +380,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-handshake">handshake</a></span></span><span data-ice="signature">(handshakeFactory: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span>: <span>AbstractHandshakeManager</span></span>)</span>
+           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-handshake">handshake</a></span></span><span data-ice="signature">(handshakeStrategy: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span>: <span>AbstractHandshakeManager</span></span>)</span>
         </p>
       </div>
       <div>
@@ -464,7 +464,7 @@
     
     
     
-    <span data-ice="name">constructor</span><span data-ice="signature">(objectPattern: {&quot;apiUrl&quot;: <span>*</span>, &quot;businessId&quot;: <span>*</span>, &quot;handshakeFactory&quot;: <span>*</span>, &quot;resource&quot;: <span>*</span>})</span>
+    <span data-ice="name">constructor</span><span data-ice="signature">(objectPattern: {&quot;apiUrl&quot;: <span>*</span>, &quot;businessId&quot;: <span>*</span>, &quot;handshakeStrategy&quot;: <span>*</span>, &quot;resource&quot;: <span>*</span>})</span>
     <span class="right-info">
       
       
@@ -489,8 +489,8 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">objectPattern</td>
-      <td data-ice="type">{&quot;apiUrl&quot;: <span>*</span>, &quot;businessId&quot;: <span>*</span>, &quot;handshakeFactory&quot;: <span>*</span>, &quot;resource&quot;: <span>*</span>}</td>
-      <td data-ice="appendix"><ul><li>default: {&quot;apiUrl&quot;:null,&quot;businessId&quot;:null,&quot;handshakeFactory&quot;:null,&quot;resource&quot;:null}</li></ul></td>
+      <td data-ice="type">{&quot;apiUrl&quot;: <span>*</span>, &quot;businessId&quot;: <span>*</span>, &quot;handshakeStrategy&quot;: <span>*</span>, &quot;resource&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;apiUrl&quot;:null,&quot;businessId&quot;:null,&quot;handshakeStrategy&quot;:null,&quot;resource&quot;:null}</li></ul></td>
       <td data-ice="description"></td>
     </tr>
 </tbody>
@@ -1011,7 +1011,7 @@
     
     
     
-    <span data-ice="name">handshake</span><span data-ice="signature">(handshakeFactory: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span>: <span>AbstractHandshakeManager</span></span>)</span>
+    <span data-ice="name">handshake</span><span data-ice="signature">(handshakeStrategy: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span>: <span>AbstractHandshakeManager</span></span>)</span>
     <span class="right-info">
       
       
@@ -1036,7 +1036,7 @@
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">handshakeFactory</td>
+      <td data-ice="name" data-depth="0">handshakeStrategy</td>
       <td data-ice="type"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span>: <span>AbstractHandshakeManager</span></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>

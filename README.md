@@ -13,7 +13,7 @@ const { Client, AuthentFactory } = ZetaPush
 
 const client = new Client({
   businessId: '<YOUR-BUSINESS-ID>',
-  handshakeFactory() {
+  handshakeStrategy() {
     return AuthentFactory.createWeakHandshake({
       token: null,
       deploymentId: '<YOUR-DEPLOYMENT-ID>'
