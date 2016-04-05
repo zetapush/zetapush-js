@@ -10,7 +10,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './cometd'\nimport { getServers, shuffle } from './utils'\nimport { ConnectionStatusListener } from './connection-status'\n\n/**\n * @desc CometD Messages enumeration\n */\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\n/**\n * @desc CometD Transports enumeration\n */\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\n/**\n * @desc Provide utilities and abstraction on CometD Transport layer\n * @access private\n */\nexport class ClientHelper {\n  /**\n   *\n   */\n  constructor({ apiUrl, businessId, handshakeStrategy, resource }) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.businessId = businessId\n    /**\n     * @access private\n     * @type {function():AbstractHandshakeManager}\n     */\n    this.handshakeStrategy = handshakeStrategy\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.resource = resource\n    /**\n     * @access private\n     * @type {Promise}\n     */\n    this.servers = getServers(`${apiUrl}${businessId}`)\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.connectionListeners = []\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.connected = false\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.wasConnected = false\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.serverUrl = null\n    /**\n     * @access private\n     * @type {CometD}\n     */\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.updateServerUrl()\n      }\n    }\n    this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      if (successful) {\n        const { authentication = null } = ext\n        this.initialized(authentication)\n      }\n      else {\n        // this.handshakeFailure(error)\n      }\n    })\n\n    this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      // AuthNegotiation\n      if (!successful) {\n        if (advice === null) {\n          return\n        }\n        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n          this.authenticationFailed(error)\n        }\n        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n          this.negotiate(ext)\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n      console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n      // ConnectionListener\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        this.connectionClosed()\n      } else {\n        this.wasConnected = this.connected\n        this.connected = successful\n        if (!this.wasConnected && this.connected) {\n          this.connectionEstablished()\n        }\n        else if (this.wasConnected && !this.connected) {\n          this.connectionBroken()\n        }\n      }\n    })\n  }\n  /**\n   * @desc Connect client using CometD Transport\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is established\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is broken\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   * @desc Notify listeners when a message is lost\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is closed\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is established\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   * @desc Notify listeners when handshake step succeed\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   *\n   */\n  handshakeFailure() {\n\n  }\n  /**\n  * @desc Remove current server url from the server list and shuffle for another one\n  */\n  updateServerUrl() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   *\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   * @desc Disconnect CometD client\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   * @desc Get CometD handshake parameters\n   * @return {Object}\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeStrategy()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   * @desc Set a new handshake factory methods\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  setHandshakeStrategy(handshakeStrategy) {\n    this.handshakeStrategy = handshakeStrategy\n  }\n  /**\n   * @desc Get business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.businessId\n  }\n  /**\n   * @desc Get session id\n   * @return {string}\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   * @desc Get resource\n   * @return {string}\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   * @desc Subribe all methods defined in the serviceListener for the given prefixed channel\n   * @param {string} prefix - Channel prefix\n   * @param {Object} serviceListener\n   * @return {Object} subscriptions\n   */\n  subscribe(prefix, serviceListener) {\n    const subscriptions = {}\n    for (const method in serviceListener) {\n      if (serviceListener.hasOwnProperty(method)) {\n        const channel = `${prefix}/${method}`\n        subscriptions[method] = this.cometd.subscribe(channel, serviceListener[method])\n      }\n    }\n    return subscriptions\n  }\n  /**\n   * @desc Unsubcribe all subscriptions defined in given subscriptions object\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscriptions[method])\n      }\n    }\n  }\n  /**\n   * @desc Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    this.connectionListeners.push(connectionListener)\n  }\n\n}\n"
+    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './cometd'\nimport { getServers, shuffle } from './utils'\nimport { ConnectionStatusListener } from './connection-status'\n\n/**\n * @desc CometD Messages enumeration\n */\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\n/**\n * @desc CometD Transports enumeration\n */\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\n/**\n * @desc Provide utilities and abstraction on CometD Transport layer\n * @access private\n */\nexport class ClientHelper {\n  /**\n   *\n   */\n  constructor({ apiUrl, businessId, handshakeStrategy, resource }) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.businessId = businessId\n    /**\n     * @access private\n     * @type {function():AbstractHandshakeManager}\n     */\n    this.handshakeStrategy = handshakeStrategy\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.resource = resource\n    /**\n     * @access private\n     * @type {Promise}\n     */\n    this.servers = getServers(`${apiUrl}${businessId}`)\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.connectionListeners = []\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.connected = false\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.wasConnected = false\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.serverUrl = null\n    /**\n     * @access private\n     * @type {CometD}\n     */\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.updateServerUrl()\n      }\n    }\n    this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      if (successful) {\n        const { authentication = null } = ext\n        this.initialized(authentication)\n      }\n      else {\n        // this.handshakeFailure(error)\n      }\n    })\n\n    this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      // AuthNegotiation\n      if (!successful) {\n        if (advice === null) {\n          return\n        }\n        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n          this.authenticationFailed(error)\n        }\n        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n          this.negotiate(ext)\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n      console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n      // ConnectionListener\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        this.connectionClosed()\n      } else {\n        this.wasConnected = this.connected\n        this.connected = successful\n        if (!this.wasConnected && this.connected) {\n          this.connectionEstablished()\n        }\n        else if (this.wasConnected && !this.connected) {\n          this.connectionBroken()\n        }\n      }\n    })\n  }\n  /**\n   * @desc Connect client using CometD Transport\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is established\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is broken\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   * @desc Notify listeners when a message is lost\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is closed\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is established\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   * @desc Notify listeners when handshake step succeed\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   *\n   */\n  handshakeFailure() {\n\n  }\n  /**\n  * @desc Remove current server url from the server list and shuffle for another one\n  */\n  updateServerUrl() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   *\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   * @desc Disconnect CometD client\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   * @desc Get CometD handshake parameters\n   * @return {Object}\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeStrategy()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   * @desc Set a new handshake factory methods\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  setHandshakeStrategy(handshakeStrategy) {\n    this.handshakeStrategy = handshakeStrategy\n  }\n  /**\n   * @desc Get business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.businessId\n  }\n  /**\n   * @desc Get session id\n   * @return {string}\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   * @desc Get resource\n   * @return {string}\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   * @desc Subribe all methods defined in the serviceListener for the given prefixed channel\n   * @param {string} prefix - Channel prefix\n   * @param {Object} serviceListener\n   * @return {Object} subscriptions\n   */\n  subscribe(prefix, serviceListener) {\n    const subscriptions = {}\n    for (const method in serviceListener) {\n      if (serviceListener.hasOwnProperty(method)) {\n        const channel = `${prefix}/${method}`\n        subscriptions[method] = this.cometd.subscribe(channel, serviceListener[method])\n      }\n    }\n    return subscriptions\n  }\n  /**\n   * @desc Get a publisher\n   * @param {string} prefix - Channel prefix\n   * @param {Object} publisher\n   * @return {Object} servicePublisher\n   */\n  createServicePublisher(prefix, publisher) {\n    const servicePublisher = {}\n    for (const method in publisher) {\n      if (publisher.hasOwnProperty(method)) {\n        const channel = `${prefix}/${method}`\n        servicePublisher[method] = (parameters = {}) => {\n          this.cometd.publish(channel, parameters)\n        }\n      }\n    }\n  }\n  /**\n   * @desc Unsubcribe all subscriptions defined in given subscriptions object\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscriptions[method])\n      }\n    }\n  }\n  /**\n   * @desc Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    this.connectionListeners.push(connectionListener)\n  }\n\n}\n"
   },
   {
     "__docId__": 1,
@@ -751,12 +751,55 @@
     "kind": "method",
     "static": false,
     "variation": null,
+    "name": "createServicePublisher",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#createServicePublisher",
+    "access": null,
+    "description": "Get a publisher",
+    "lineNumber": 298,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "prefix",
+        "description": "Channel prefix"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "publisher",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "servicePublisher"
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 39,
+    "kind": "method",
+    "static": false,
+    "variation": null,
     "name": "unsubscribe",
     "memberof": "src/client-helper.js~ClientHelper",
     "longname": "src/client-helper.js~ClientHelper#unsubscribe",
     "access": null,
     "description": "Unsubcribe all subscriptions defined in given subscriptions object",
-    "lineNumber": 296,
+    "lineNumber": 313,
     "params": [
       {
         "nullable": null,
@@ -772,7 +815,7 @@
     "generator": false
   },
   {
-    "__docId__": 39,
+    "__docId__": 40,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -781,7 +824,7 @@
     "longname": "src/client-helper.js~ClientHelper#addConnectionStatusListener",
     "access": null,
     "description": "Add a connection listener to handle life cycle connection events",
-    "lineNumber": 307,
+    "lineNumber": 324,
     "params": [
       {
         "nullable": null,
@@ -797,7 +840,7 @@
     "generator": false
   },
   {
-    "__docId__": 40,
+    "__docId__": 41,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -807,10 +850,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { ClientHelper } from './client-helper'\n\nimport { NotYetImplementedError } from './utils'\n\n/**\n * @access public\n * @desc Default ZetaPush API URL\n */\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access public\n * @desc ZetaPush Client to connect\n * @example\n * const client = new Client({\n *   businessId: '<YOUR-BUSINESS-ID>',\n *   handshakeStrategy() {\n *     return AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   *\n   */\n  constructor({ apiUrl = API_URL, businessId, handshakeStrategy, resource = null }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.client = new ClientHelper({\n      apiUrl,\n      businessId,\n      handshakeStrategy,\n      resource\n    })\n  }\n  /**\n   * @desc Connect client to ZetaPush\n   */\n  connect() {\n    this.client.connect()\n  }\n  /**\n   * @desc Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.client.disconnect()\n  }\n  /**\n   * @desc Create a service publisher\n   * @experimental\n   * @return {Object}\n   */\n  createServicePublisher({ deploymentId, publisher }) {\n    throw new NotYetImplementedError('createServicePublisher')\n  }\n  /**\n   * @desc Get the client business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.client.getBusinessId()\n  }\n  /**\n   * @desc Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.client.getResource()\n  }\n  /**\n   * @desc Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.client.getUserId()\n  }\n  /**\n   * @desc Get the client session id\n   * @return {string}\n   */\n  getSessionId() {\n    return this.client.getSessionId()\n  }\n  /**\n   * @desc Subscribe all methods described in the serviceListener for the given deploymentId\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribeListener({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   */\n  subscribeListener({ deploymentId, serviceListener }) {\n    this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)\n  }\n  /**\n  * @desc Create a publish/subscribe\n  * @experimental\n  * @return {Object}\n   */\n  createPubSub({ deploymentId, serviceListener, publisher }) {\n    throw new NotYetImplementedError('createPubSub')\n  }\n  /**\n   * @desc Set new client resource value\n   */\n  setResource(resource) {\n    this.client.setResource(resource)\n  }\n  /**\n   * @desc Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    return this.client.addConnectionStatusListener(listener)\n  }\n  /**\n   * @desc Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  handshake(handshakeStrategy) {\n    this.disconnect()\n    if (handshakeStrategy) {\n      this.client.setHandshakeStrategy(handshakeStrategy)\n    }\n    this.connect()\n  }\n\n}\n"
+    "content": "import { ClientHelper } from './client-helper'\n\nimport { NotYetImplementedError } from './utils'\n\n/**\n * @access public\n * @desc Default ZetaPush API URL\n */\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access public\n * @desc ZetaPush Client to connect\n * @example\n * const client = new Client({\n *   businessId: '<YOUR-BUSINESS-ID>',\n *   handshakeStrategy() {\n *     return AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   *\n   */\n  constructor({ apiUrl = API_URL, businessId, handshakeStrategy, resource = null }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.client = new ClientHelper({\n      apiUrl,\n      businessId,\n      handshakeStrategy,\n      resource\n    })\n  }\n  /**\n   * @desc Connect client to ZetaPush\n   */\n  connect() {\n    this.client.connect()\n  }\n  /**\n   * @desc Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.client.disconnect()\n  }\n  /**\n   * @desc Create a service publisher\n   * @experimental\n   * @return {Object}\n   */\n  createServicePublisher({ deploymentId, publisher }) {\n    return this.client.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, publisher)\n  }\n  /**\n   * @desc Get the client business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.client.getBusinessId()\n  }\n  /**\n   * @desc Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.client.getResource()\n  }\n  /**\n   * @desc Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.client.getUserId()\n  }\n  /**\n   * @desc Get the client session id\n   * @return {string}\n   */\n  getSessionId() {\n    return this.client.getSessionId()\n  }\n  /**\n   * @desc Subscribe all methods described in the serviceListener for the given deploymentId\n   * @return {Object} subscription\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribeListener({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   */\n  subscribeListener({ deploymentId, serviceListener }) {\n    return this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)\n  }\n  /**\n  * @desc Create a publish/subscribe\n  * @experimental\n  * @return {Object}\n   */\n  createPubSub({ deploymentId, serviceListener, publisher }) {\n    throw new NotYetImplementedError('createPubSub')\n  }\n  /**\n   * @desc Set new client resource value\n   */\n  setResource(resource) {\n    this.client.setResource(resource)\n  }\n  /**\n   * @desc Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    return this.client.addConnectionStatusListener(listener)\n  }\n  /**\n   * @desc Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  handshake(handshakeStrategy) {\n    this.disconnect()\n    if (handshakeStrategy) {\n      this.client.setHandshakeStrategy(handshakeStrategy)\n    }\n    this.connect()\n  }\n\n}\n"
   },
   {
-    "__docId__": 41,
+    "__docId__": 42,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -830,7 +873,7 @@
     }
   },
   {
-    "__docId__": 42,
+    "__docId__": 43,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -849,7 +892,7 @@
     "interface": false
   },
   {
-    "__docId__": 43,
+    "__docId__": 44,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -877,7 +920,7 @@
     "generator": false
   },
   {
-    "__docId__": 44,
+    "__docId__": 45,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -897,7 +940,7 @@
     }
   },
   {
-    "__docId__": 45,
+    "__docId__": 46,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -911,7 +954,7 @@
     "generator": false
   },
   {
-    "__docId__": 46,
+    "__docId__": 47,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -925,7 +968,7 @@
     "generator": false
   },
   {
-    "__docId__": 47,
+    "__docId__": 48,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -960,7 +1003,7 @@
     "generator": false
   },
   {
-    "__docId__": 48,
+    "__docId__": 49,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -982,7 +1025,7 @@
     "generator": false
   },
   {
-    "__docId__": 49,
+    "__docId__": 50,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1004,7 +1047,7 @@
     "generator": false
   },
   {
-    "__docId__": 50,
+    "__docId__": 51,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1026,7 +1069,7 @@
     "generator": false
   },
   {
-    "__docId__": 51,
+    "__docId__": 52,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1048,7 +1091,7 @@
     "generator": false
   },
   {
-    "__docId__": 52,
+    "__docId__": 53,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1060,7 +1103,7 @@
     "examples": [
       "const stackServiceListener = {\n  list() {},\n  push() {},\n  update() {}\n}\nclient.subscribeListener({\n  deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n  serviceListener\n})"
     ],
-    "lineNumber": 102,
+    "lineNumber": 103,
     "params": [
       {
         "name": "objectPattern",
@@ -1074,10 +1117,18 @@
         "defaultValue": "{\"deploymentId\":null,\"serviceListener\":null}"
       }
     ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "subscription"
+    },
     "generator": false
   },
   {
-    "__docId__": 53,
+    "__docId__": 54,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1086,7 +1137,7 @@
     "longname": "src/client.js~Client#createPubSub",
     "access": null,
     "description": "Create a publish/subscribe",
-    "lineNumber": 110,
+    "lineNumber": 111,
     "experimental": true,
     "params": [
       {
@@ -1113,7 +1164,7 @@
     "generator": false
   },
   {
-    "__docId__": 54,
+    "__docId__": 55,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1122,7 +1173,7 @@
     "longname": "src/client.js~Client#setResource",
     "access": null,
     "description": "Set new client resource value",
-    "lineNumber": 116,
+    "lineNumber": 117,
     "params": [
       {
         "name": "resource",
@@ -1134,7 +1185,7 @@
     "generator": false
   },
   {
-    "__docId__": 55,
+    "__docId__": 56,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1143,7 +1194,7 @@
     "longname": "src/client.js~Client#addConnectionStatusListener",
     "access": null,
     "description": "Add a connection listener to handle life cycle connection events",
-    "lineNumber": 123,
+    "lineNumber": 124,
     "params": [
       {
         "nullable": null,
@@ -1164,7 +1215,7 @@
     "generator": false
   },
   {
-    "__docId__": 56,
+    "__docId__": 57,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1173,7 +1224,7 @@
     "longname": "src/client.js~Client#handshake",
     "access": null,
     "description": "Force disconnect/connect with new handshake factory",
-    "lineNumber": 130,
+    "lineNumber": 131,
     "params": [
       {
         "nullable": null,
@@ -1189,7 +1240,7 @@
     "generator": false
   },
   {
-    "__docId__": 57,
+    "__docId__": 58,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1202,7 +1253,7 @@
     "content": "import { Transport, LongPollingTransport } from 'zetapush-cometd'\n\n/**\n * @access private\n * @desc Implements LongPollingTransport using borwser fetch() API\n * @return {FetchLongPollingTransport}\n */\nexport function FetchLongPollingTransport() {\n  var _super = new LongPollingTransport()\n  var that = Transport.derive(_super)\n\n  /**\n   * @desc Implements transport via fetch() API\n   * @param {Object} packet\n   */\n  that.xhrSend = function(packet) {\n    fetch(packet.url, {\n      method: 'post',\n      body: packet.body,\n      headers: Object.assign(packet.headers, {\n        'Content-Type': 'application/json;charset=UTF-8'\n      })\n    })\n    .then((response) => {\n      return response.json()\n    })\n    .then(packet.onSuccess)\n    .catch(packet.onError)\n  }\n\n  return that\n}\n"
   },
   {
-    "__docId__": 58,
+    "__docId__": 59,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1227,7 +1278,7 @@
     "generator": false
   },
   {
-    "__docId__": 59,
+    "__docId__": 60,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1240,7 +1291,7 @@
     "content": "/**\n * @access public\n * @desc Define life cycle connection methods \n */\nexport class ConnectionStatusListener {\n  /**\n   * @desc Callback fired when connection is broken\n   */\n  onConnectionBroken() {}\n  /**\n   * @desc Callback fired when connection is closed\n   */\n  onConnectionClosed() {}\n  /**\n   * @desc Callback fired when is established\n   */\n  onConnectionEstablished() {}\n  /**\n   * @desc Callback fired when an error occurs in handshake step\n   * @param {Object} error\n   */\n  onFailedHandshake(error) {}\n  /**\n   * @desc Callback fired when a message is lost\n   */\n  onMessageLost() {}\n  /**\n   * @desc Callback fired when handshake step succeed\n   * @param {Object} authentication\n   */\n  onSuccessfulHandshake(authentication) {}\n}\n"
   },
   {
-    "__docId__": 60,
+    "__docId__": 61,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1256,7 +1307,7 @@
     "interface": false
   },
   {
-    "__docId__": 61,
+    "__docId__": 62,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1270,7 +1321,7 @@
     "generator": false
   },
   {
-    "__docId__": 62,
+    "__docId__": 63,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1284,7 +1335,7 @@
     "generator": false
   },
   {
-    "__docId__": 63,
+    "__docId__": 64,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1298,7 +1349,7 @@
     "generator": false
   },
   {
-    "__docId__": 64,
+    "__docId__": 65,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1323,7 +1374,7 @@
     "generator": false
   },
   {
-    "__docId__": 65,
+    "__docId__": 66,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1337,7 +1388,7 @@
     "generator": false
   },
   {
-    "__docId__": 66,
+    "__docId__": 67,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1362,7 +1413,7 @@
     "generator": false
   },
   {
-    "__docId__": 67,
+    "__docId__": 68,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1375,7 +1426,7 @@
     "content": "/**\n * ZetaPush deployables names\n */\nconst DeployableNames = {\n  AUTH_SIMPLE: 'simple',\n  AUTH_WEAK: 'weak',\n  AUTH_DELEGATING: 'delegating'\n}\n\n/**\n * @access protected\n */\nexport class AbstractHandshakeManager {\n  /**\n   *\n   */\n  constructor({ authType, businessId, deploymentId }) {\n    this.authType = authType\n    this.businessId = businessId\n    this.deploymentId = deploymentId\n  }\n  /**\n   * @param {ClientHelper} client\n   * @return {Object}\n   */\n  getHandshakeFields(client) {\n    const authentication = {\n      data: this.authData,\n      type: `${client.getBusinessId()}.${this.deploymentId}.${this.authType}`,\n      version: this.authVersion\n    }\n    if (client.getResource()) {\n      authentication.resource = client.getResource()\n    }\n    return {\n      ext: {\n        authentication\n      }\n    }\n  }\n  /**\n   * Get auth version\n   * @return {string}\n   */\n  get authVersion() {\n    return 'none'\n  }\n\n}\n\n/**\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class TokenHandshakeManager extends AbstractHandshakeManager {\n  /**\n   *\n   */\n  constructor({ authType, deploymentId, token }) {\n    super({ deploymentId, authType })\n    this.token = token\n  }\n  /**\n   * @return {token: string}\n   */\n  get authData() {\n    const { token } = this\n    return {\n      token\n    }\n  }\n\n}\n\n/**\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {\n\n  /**\n   *\n   */\n  constructor({ authType, deploymentId, login, password }) {\n    super({ authType, deploymentId })\n    this.login = login\n    this.password = password\n  }\n  /**\n   * @desc Get auth data\n   * @return {login: string, password: string}\n   */\n  get authData() {\n    const { login, password } = this\n    return {\n      login, password\n    }\n  }\n\n}\n\n/**\n * @access public\n */\nexport class AuthentFactory {\n  /**\n   * @return {DefaultZetapushHandshakeManager}\n   */\n  static createSimpleHandshake({ deploymentId, login, password }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_SIMPLE,\n      deploymentId,\n      login,\n      password\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager}\n   */\n  static createWeakHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_WEAK,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager}\n   */\n  static createDelegatingHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_DELEGATING,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager|DefaultZetapushHandshakeManager}\n   */\n  static createHandshake({ authType, deploymentId, login, password }) {\n    if (null === password) {\n      return new TokenHandshakeManager({ authType, deploymentId, token: login })\n    }\n    return new DefaultZetapushHandshakeManager({ authType, deploymentId, login, password  })\n  }\n\n}\n"
   },
   {
-    "__docId__": 68,
+    "__docId__": 69,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1395,7 +1446,7 @@
     }
   },
   {
-    "__docId__": 69,
+    "__docId__": 70,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1411,7 +1462,7 @@
     "interface": false
   },
   {
-    "__docId__": 70,
+    "__docId__": 71,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1438,7 +1489,7 @@
     "generator": false
   },
   {
-    "__docId__": 71,
+    "__docId__": 72,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1456,7 +1507,7 @@
     }
   },
   {
-    "__docId__": 72,
+    "__docId__": 73,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1474,7 +1525,7 @@
     }
   },
   {
-    "__docId__": 73,
+    "__docId__": 74,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1492,7 +1543,7 @@
     }
   },
   {
-    "__docId__": 74,
+    "__docId__": 75,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1525,7 +1576,7 @@
     "generator": false
   },
   {
-    "__docId__": 75,
+    "__docId__": 76,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -1551,7 +1602,7 @@
     "generator": false
   },
   {
-    "__docId__": 76,
+    "__docId__": 77,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1570,7 +1621,7 @@
     ]
   },
   {
-    "__docId__": 77,
+    "__docId__": 78,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1597,7 +1648,7 @@
     "generator": false
   },
   {
-    "__docId__": 78,
+    "__docId__": 79,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1615,7 +1666,7 @@
     }
   },
   {
-    "__docId__": 79,
+    "__docId__": 80,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -1641,7 +1692,7 @@
     "generator": false
   },
   {
-    "__docId__": 80,
+    "__docId__": 81,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1660,7 +1711,7 @@
     ]
   },
   {
-    "__docId__": 81,
+    "__docId__": 82,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1688,7 +1739,7 @@
     "generator": false
   },
   {
-    "__docId__": 82,
+    "__docId__": 83,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1706,7 +1757,7 @@
     }
   },
   {
-    "__docId__": 83,
+    "__docId__": 84,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1724,7 +1775,7 @@
     }
   },
   {
-    "__docId__": 84,
+    "__docId__": 85,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -1750,7 +1801,7 @@
     "generator": false
   },
   {
-    "__docId__": 85,
+    "__docId__": 86,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1766,7 +1817,7 @@
     "interface": false
   },
   {
-    "__docId__": 86,
+    "__docId__": 87,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -1801,7 +1852,7 @@
     "generator": false
   },
   {
-    "__docId__": 87,
+    "__docId__": 88,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -1835,7 +1886,7 @@
     "generator": false
   },
   {
-    "__docId__": 88,
+    "__docId__": 89,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -1869,7 +1920,7 @@
     "generator": false
   },
   {
-    "__docId__": 89,
+    "__docId__": 90,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -1906,7 +1957,7 @@
     "generator": false
   },
   {
-    "__docId__": 90,
+    "__docId__": 91,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1919,7 +1970,7 @@
     "content": "export { AuthentFactory } from './handshake'\nexport { API_URL, Client } from './client'\nexport { SmartClient } from './smart-client'\nexport { AbstractTokenPersistenceStrategy, LocalStorageTokenPersistenceStrategy } from './token-persistence'\n"
   },
   {
-    "__docId__": 91,
+    "__docId__": 92,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1932,7 +1983,7 @@
     "content": "import { Client } from './client'\nimport { AuthentFactory } from './handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './token-persistence'\n\n/**\n * @access protected\n * @extends {Client}\n */\nexport class SmartClient extends Client {\n  /**\n   *\n   */\n  constructor({ apiUrl, businessId, deploymentId, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {\n    const handshakeStrategy = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     *\n     */\n    super({ apiUrl , businessId, handshakeStrategy, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('SmartClient::onFailedHandshake', error)\n    }\n    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new TokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
   },
   {
-    "__docId__": 92,
+    "__docId__": 93,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1951,7 +2002,7 @@
     ]
   },
   {
-    "__docId__": 93,
+    "__docId__": 94,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1980,7 +2031,7 @@
     "generator": false
   },
   {
-    "__docId__": 94,
+    "__docId__": 95,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2000,7 +2051,7 @@
     }
   },
   {
-    "__docId__": 95,
+    "__docId__": 96,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2022,7 +2073,7 @@
     "generator": false
   },
   {
-    "__docId__": 96,
+    "__docId__": 97,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2035,7 +2086,7 @@
     "content": "/**\n * @type {string}\n */\nconst ZETAPUSH_TOKEN_KEY = 'zetapush.token'\n\n/**\n * @access protected\n * @desc Provide abstraction for token persistence\n */\nexport class AbstractTokenPersistenceStrategy {\n  /**\n   *\n   */\n  constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.key = key\n  }\n  /**\n   * @abstract\n   * @return {string} The stored token\n   */\n  get() {}\n  /**\n   * @abstract\n   */\n  set({ token }) {}\n}\n\n/**\n * @access protected\n * @extends {AbstractTokenPersistenceStrategy}\n */\nexport class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersistenceStrategy {\n  /**\n   * @override\n   * @return {string} The stored token\n   */\n  get() {\n    return localStorage.getItem(this.key)\n  }\n  /**\n   * @override\n   */\n  set({ token }) {\n    localStorage.setItem(this.key, token)\n  }\n}\n"
   },
   {
-    "__docId__": 97,
+    "__docId__": 98,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2058,7 +2109,7 @@
     }
   },
   {
-    "__docId__": 98,
+    "__docId__": 99,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2074,7 +2125,7 @@
     "interface": false
   },
   {
-    "__docId__": 99,
+    "__docId__": 100,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -2098,7 +2149,7 @@
     "generator": false
   },
   {
-    "__docId__": 100,
+    "__docId__": 101,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2118,7 +2169,7 @@
     }
   },
   {
-    "__docId__": 101,
+    "__docId__": 102,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2141,7 +2192,7 @@
     "generator": false
   },
   {
-    "__docId__": 102,
+    "__docId__": 103,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2167,7 +2218,7 @@
     "generator": false
   },
   {
-    "__docId__": 103,
+    "__docId__": 104,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2186,7 +2237,7 @@
     ]
   },
   {
-    "__docId__": 104,
+    "__docId__": 105,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2209,7 +2260,7 @@
     "generator": false
   },
   {
-    "__docId__": 105,
+    "__docId__": 106,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2235,7 +2286,7 @@
     "generator": false
   },
   {
-    "__docId__": 106,
+    "__docId__": 107,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2248,7 +2299,7 @@
     "content": "/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @return {Promise}\n */\nexport const getServers = (url) => {\n  return fetch(url)\n    .then((response) => {\n      return response.json()\n    })\n    .then(({ servers }) => {\n      return servers\n    })\n}\n\n/**\n * @access private\n * @extends {Error}\n */\nexport class NotYetImplementedError extends Error {\n  /**\n   * @param {string} message\n   */\n  constructor(message = '') {\n    super(message)\n    this.name = 'NotImplementedError'\n  }\n\n}\n"
   },
   {
-    "__docId__": 107,
+    "__docId__": 108,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2288,7 +2339,7 @@
     }
   },
   {
-    "__docId__": 108,
+    "__docId__": 109,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2328,7 +2379,7 @@
     }
   },
   {
-    "__docId__": 109,
+    "__docId__": 110,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2347,7 +2398,7 @@
     ]
   },
   {
-    "__docId__": 110,
+    "__docId__": 111,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -2372,7 +2423,7 @@
     "generator": false
   },
   {
-    "__docId__": 111,
+    "__docId__": 112,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2390,7 +2441,7 @@
     }
   },
   {
-    "__docId__": 113,
+    "__docId__": 114,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2403,7 +2454,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 114,
+    "__docId__": 115,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2416,7 +2467,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 115,
+    "__docId__": 116,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2429,7 +2480,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 116,
+    "__docId__": 117,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2442,7 +2493,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 117,
+    "__docId__": 118,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2455,7 +2506,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 118,
+    "__docId__": 119,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2468,7 +2519,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 119,
+    "__docId__": 120,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2481,7 +2532,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 120,
+    "__docId__": 121,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2494,7 +2545,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 121,
+    "__docId__": 122,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2507,7 +2558,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 122,
+    "__docId__": 123,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2520,7 +2571,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 123,
+    "__docId__": 124,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2533,7 +2584,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 124,
+    "__docId__": 125,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2546,7 +2597,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 125,
+    "__docId__": 126,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2559,7 +2610,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 126,
+    "__docId__": 127,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2572,7 +2623,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 127,
+    "__docId__": 128,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2585,7 +2636,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 128,
+    "__docId__": 129,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2598,7 +2649,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 129,
+    "__docId__": 130,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2611,7 +2662,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 130,
+    "__docId__": 131,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2624,7 +2675,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 131,
+    "__docId__": 132,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2637,7 +2688,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 132,
+    "__docId__": 133,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2650,7 +2701,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 133,
+    "__docId__": 134,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2663,7 +2714,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 134,
+    "__docId__": 135,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2676,7 +2727,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 135,
+    "__docId__": 136,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2689,7 +2740,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 136,
+    "__docId__": 137,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2702,7 +2753,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 137,
+    "__docId__": 138,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2715,7 +2766,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 138,
+    "__docId__": 139,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2728,7 +2779,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 139,
+    "__docId__": 140,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2741,7 +2792,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 140,
+    "__docId__": 141,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2754,7 +2805,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 141,
+    "__docId__": 142,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2767,7 +2818,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 142,
+    "__docId__": 143,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2780,7 +2831,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 143,
+    "__docId__": 144,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2793,7 +2844,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 144,
+    "__docId__": 145,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2806,7 +2857,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 145,
+    "__docId__": 146,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2819,7 +2870,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 146,
+    "__docId__": 147,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2832,7 +2883,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 147,
+    "__docId__": 148,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2845,7 +2896,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 148,
+    "__docId__": 149,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2858,7 +2909,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 149,
+    "__docId__": 150,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2871,7 +2922,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 150,
+    "__docId__": 151,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2884,7 +2935,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 151,
+    "__docId__": 152,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2897,7 +2948,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 152,
+    "__docId__": 153,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2910,7 +2961,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 153,
+    "__docId__": 154,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2923,7 +2974,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 154,
+    "__docId__": 155,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2936,7 +2987,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 155,
+    "__docId__": 156,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2949,7 +3000,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 156,
+    "__docId__": 157,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2962,7 +3013,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 157,
+    "__docId__": 158,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2975,7 +3026,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 158,
+    "__docId__": 159,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2988,7 +3039,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 159,
+    "__docId__": 160,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3001,7 +3052,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 161,
+    "__docId__": 162,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3014,7 +3065,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 162,
+    "__docId__": 163,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3027,7 +3078,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 163,
+    "__docId__": 164,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3040,7 +3091,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 164,
+    "__docId__": 165,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3053,7 +3104,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 165,
+    "__docId__": 166,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3066,7 +3117,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 166,
+    "__docId__": 167,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3079,7 +3130,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 167,
+    "__docId__": 168,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3092,7 +3143,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 168,
+    "__docId__": 169,
     "kind": "external",
     "static": true,
     "variation": null,

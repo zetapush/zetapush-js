@@ -1860,66 +1860,312 @@
                   "type": "BlockStatement",
                   "body": [
                     {
-                      "type": "ThrowStatement",
+                      "type": "ReturnStatement",
                       "argument": {
-                        "type": "NewExpression",
+                        "type": "CallExpression",
                         "callee": {
-                          "type": "Identifier",
-                          "name": "NotYetImplementedError",
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "MemberExpression",
+                            "computed": false,
+                            "object": {
+                              "type": "ThisExpression",
+                              "range": [
+                                1187,
+                                1191
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 59,
+                                  "column": 11
+                                },
+                                "end": {
+                                  "line": 59,
+                                  "column": 15
+                                }
+                              }
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "name": "client",
+                              "range": [
+                                1192,
+                                1198
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 59,
+                                  "column": 16
+                                },
+                                "end": {
+                                  "line": 59,
+                                  "column": 22
+                                }
+                              }
+                            },
+                            "range": [
+                              1187,
+                              1198
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 59,
+                                "column": 11
+                              },
+                              "end": {
+                                "line": 59,
+                                "column": 22
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "createServicePublisher",
+                            "range": [
+                              1199,
+                              1221
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 59,
+                                "column": 23
+                              },
+                              "end": {
+                                "line": 59,
+                                "column": 45
+                              }
+                            }
+                          },
                           "range": [
-                            1190,
-                            1212
+                            1187,
+                            1221
                           ],
                           "loc": {
                             "start": {
                               "line": 59,
-                              "column": 14
+                              "column": 11
                             },
                             "end": {
                               "line": 59,
-                              "column": 36
+                              "column": 45
                             }
                           }
                         },
                         "arguments": [
                           {
-                            "type": "Literal",
-                            "value": "createServicePublisher",
-                            "raw": "'createServicePublisher'",
+                            "type": "TemplateLiteral",
+                            "quasis": [
+                              {
+                                "type": "TemplateElement",
+                                "value": {
+                                  "raw": "/service/",
+                                  "cooked": "/service/"
+                                },
+                                "tail": false,
+                                "range": [
+                                  1222,
+                                  1234
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 59,
+                                    "column": 46
+                                  },
+                                  "end": {
+                                    "line": 59,
+                                    "column": 58
+                                  }
+                                }
+                              },
+                              {
+                                "type": "TemplateElement",
+                                "value": {
+                                  "raw": "/",
+                                  "cooked": "/"
+                                },
+                                "tail": false,
+                                "range": [
+                                  1254,
+                                  1258
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 59,
+                                    "column": 78
+                                  },
+                                  "end": {
+                                    "line": 59,
+                                    "column": 82
+                                  }
+                                }
+                              },
+                              {
+                                "type": "TemplateElement",
+                                "value": {
+                                  "raw": "",
+                                  "cooked": ""
+                                },
+                                "tail": true,
+                                "range": [
+                                  1270,
+                                  1272
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 59,
+                                    "column": 94
+                                  },
+                                  "end": {
+                                    "line": 59,
+                                    "column": 96
+                                  }
+                                }
+                              }
+                            ],
+                            "expressions": [
+                              {
+                                "type": "CallExpression",
+                                "callee": {
+                                  "type": "MemberExpression",
+                                  "computed": false,
+                                  "object": {
+                                    "type": "ThisExpression",
+                                    "range": [
+                                      1234,
+                                      1238
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 59,
+                                        "column": 58
+                                      },
+                                      "end": {
+                                        "line": 59,
+                                        "column": 62
+                                      }
+                                    }
+                                  },
+                                  "property": {
+                                    "type": "Identifier",
+                                    "name": "getBusinessId",
+                                    "range": [
+                                      1239,
+                                      1252
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 59,
+                                        "column": 63
+                                      },
+                                      "end": {
+                                        "line": 59,
+                                        "column": 76
+                                      }
+                                    }
+                                  },
+                                  "range": [
+                                    1234,
+                                    1252
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 59,
+                                      "column": 58
+                                    },
+                                    "end": {
+                                      "line": 59,
+                                      "column": 76
+                                    }
+                                  }
+                                },
+                                "arguments": [],
+                                "range": [
+                                  1234,
+                                  1254
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 59,
+                                    "column": 58
+                                  },
+                                  "end": {
+                                    "line": 59,
+                                    "column": 78
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Identifier",
+                                "name": "deploymentId",
+                                "range": [
+                                  1258,
+                                  1270
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 59,
+                                    "column": 82
+                                  },
+                                  "end": {
+                                    "line": 59,
+                                    "column": 94
+                                  }
+                                }
+                              }
+                            ],
                             "range": [
-                              1213,
-                              1237
+                              1222,
+                              1272
                             ],
                             "loc": {
                               "start": {
                                 "line": 59,
-                                "column": 37
+                                "column": 46
                               },
                               "end": {
                                 "line": 59,
-                                "column": 61
+                                "column": 96
+                              }
+                            }
+                          },
+                          {
+                            "type": "Identifier",
+                            "name": "publisher",
+                            "range": [
+                              1274,
+                              1283
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 59,
+                                "column": 98
+                              },
+                              "end": {
+                                "line": 59,
+                                "column": 107
                               }
                             }
                           }
                         ],
                         "range": [
-                          1186,
-                          1238
+                          1187,
+                          1284
                         ],
                         "loc": {
                           "start": {
                             "line": 59,
-                            "column": 10
+                            "column": 11
                           },
                           "end": {
                             "line": 59,
-                            "column": 62
+                            "column": 108
                           }
                         }
                       },
                       "range": [
                         1180,
-                        1241
+                        1287
                       ],
                       "loc": {
                         "start": {
@@ -1935,7 +2181,7 @@
                   ],
                   "range": [
                     1174,
-                    1242
+                    1288
                   ],
                   "loc": {
                     "start": {
@@ -1952,7 +2198,7 @@
                 "expression": false,
                 "range": [
                   1144,
-                  1242
+                  1288
                 ],
                 "loc": {
                   "start": {
@@ -1969,7 +2215,7 @@
               "computed": false,
               "range": [
                 1122,
-                1242
+                1288
               ],
               "loc": {
                 "start": {
@@ -2006,8 +2252,8 @@
                   "type": "Block",
                   "value": "*\n   * @desc Get the client business id\n   * @return {string}\n   ",
                   "range": [
-                    1245,
-                    1314
+                    1291,
+                    1360
                   ],
                   "loc": {
                     "start": {
@@ -2029,8 +2275,8 @@
                 "type": "Identifier",
                 "name": "getBusinessId",
                 "range": [
-                  1317,
-                  1330
+                  1363,
+                  1376
                 ],
                 "loc": {
                   "start": {
@@ -2063,8 +2309,8 @@
                             "object": {
                               "type": "ThisExpression",
                               "range": [
-                                1346,
-                                1350
+                                1392,
+                                1396
                               ],
                               "loc": {
                                 "start": {
@@ -2081,8 +2327,8 @@
                               "type": "Identifier",
                               "name": "client",
                               "range": [
-                                1351,
-                                1357
+                                1397,
+                                1403
                               ],
                               "loc": {
                                 "start": {
@@ -2096,8 +2342,8 @@
                               }
                             },
                             "range": [
-                              1346,
-                              1357
+                              1392,
+                              1403
                             ],
                             "loc": {
                               "start": {
@@ -2114,8 +2360,8 @@
                             "type": "Identifier",
                             "name": "getBusinessId",
                             "range": [
-                              1358,
-                              1371
+                              1404,
+                              1417
                             ],
                             "loc": {
                               "start": {
@@ -2129,8 +2375,8 @@
                             }
                           },
                           "range": [
-                            1346,
-                            1371
+                            1392,
+                            1417
                           ],
                           "loc": {
                             "start": {
@@ -2145,8 +2391,8 @@
                         },
                         "arguments": [],
                         "range": [
-                          1346,
-                          1373
+                          1392,
+                          1419
                         ],
                         "loc": {
                           "start": {
@@ -2160,8 +2406,8 @@
                         }
                       },
                       "range": [
-                        1339,
-                        1376
+                        1385,
+                        1422
                       ],
                       "loc": {
                         "start": {
@@ -2176,8 +2422,8 @@
                     }
                   ],
                   "range": [
-                    1333,
-                    1377
+                    1379,
+                    1423
                   ],
                   "loc": {
                     "start": {
@@ -2193,8 +2439,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  1330,
-                  1377
+                  1376,
+                  1423
                 ],
                 "loc": {
                   "start": {
@@ -2210,8 +2456,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                1317,
-                1377
+                1363,
+                1423
               ],
               "loc": {
                 "start": {
@@ -2228,8 +2474,8 @@
                   "type": "Block",
                   "value": "*\n   * @desc Get the client business id\n   * @return {string}\n   ",
                   "range": [
-                    1245,
-                    1314
+                    1291,
+                    1360
                   ],
                   "loc": {
                     "start": {
@@ -2248,8 +2494,8 @@
                   "type": "Block",
                   "value": "*\n   * @desc Get the client resource\n   * @return {string}\n   ",
                   "range": [
-                    1380,
-                    1446
+                    1426,
+                    1492
                   ],
                   "loc": {
                     "start": {
@@ -2271,8 +2517,8 @@
                 "type": "Identifier",
                 "name": "getResource",
                 "range": [
-                  1449,
-                  1460
+                  1495,
+                  1506
                 ],
                 "loc": {
                   "start": {
@@ -2305,8 +2551,8 @@
                             "object": {
                               "type": "ThisExpression",
                               "range": [
-                                1476,
-                                1480
+                                1522,
+                                1526
                               ],
                               "loc": {
                                 "start": {
@@ -2323,8 +2569,8 @@
                               "type": "Identifier",
                               "name": "client",
                               "range": [
-                                1481,
-                                1487
+                                1527,
+                                1533
                               ],
                               "loc": {
                                 "start": {
@@ -2338,8 +2584,8 @@
                               }
                             },
                             "range": [
-                              1476,
-                              1487
+                              1522,
+                              1533
                             ],
                             "loc": {
                               "start": {
@@ -2356,8 +2602,8 @@
                             "type": "Identifier",
                             "name": "getResource",
                             "range": [
-                              1488,
-                              1499
+                              1534,
+                              1545
                             ],
                             "loc": {
                               "start": {
@@ -2371,8 +2617,8 @@
                             }
                           },
                           "range": [
-                            1476,
-                            1499
+                            1522,
+                            1545
                           ],
                           "loc": {
                             "start": {
@@ -2387,8 +2633,8 @@
                         },
                         "arguments": [],
                         "range": [
-                          1476,
-                          1501
+                          1522,
+                          1547
                         ],
                         "loc": {
                           "start": {
@@ -2402,8 +2648,8 @@
                         }
                       },
                       "range": [
-                        1469,
-                        1504
+                        1515,
+                        1550
                       ],
                       "loc": {
                         "start": {
@@ -2418,8 +2664,8 @@
                     }
                   ],
                   "range": [
-                    1463,
-                    1505
+                    1509,
+                    1551
                   ],
                   "loc": {
                     "start": {
@@ -2435,8 +2681,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  1460,
-                  1505
+                  1506,
+                  1551
                 ],
                 "loc": {
                   "start": {
@@ -2452,8 +2698,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                1449,
-                1505
+                1495,
+                1551
               ],
               "loc": {
                 "start": {
@@ -2470,8 +2716,8 @@
                   "type": "Block",
                   "value": "*\n   * @desc Get the client resource\n   * @return {string}\n   ",
                   "range": [
-                    1380,
-                    1446
+                    1426,
+                    1492
                   ],
                   "loc": {
                     "start": {
@@ -2490,8 +2736,8 @@
                   "type": "Block",
                   "value": "*\n   * @desc Get the client user id\n   * @return {string}\n   ",
                   "range": [
-                    1508,
-                    1573
+                    1554,
+                    1619
                   ],
                   "loc": {
                     "start": {
@@ -2513,8 +2759,8 @@
                 "type": "Identifier",
                 "name": "getUserId",
                 "range": [
-                  1576,
-                  1585
+                  1622,
+                  1631
                 ],
                 "loc": {
                   "start": {
@@ -2547,8 +2793,8 @@
                             "object": {
                               "type": "ThisExpression",
                               "range": [
-                                1601,
-                                1605
+                                1647,
+                                1651
                               ],
                               "loc": {
                                 "start": {
@@ -2565,8 +2811,8 @@
                               "type": "Identifier",
                               "name": "client",
                               "range": [
-                                1606,
-                                1612
+                                1652,
+                                1658
                               ],
                               "loc": {
                                 "start": {
@@ -2580,8 +2826,8 @@
                               }
                             },
                             "range": [
-                              1601,
-                              1612
+                              1647,
+                              1658
                             ],
                             "loc": {
                               "start": {
@@ -2598,8 +2844,8 @@
                             "type": "Identifier",
                             "name": "getUserId",
                             "range": [
-                              1613,
-                              1622
+                              1659,
+                              1668
                             ],
                             "loc": {
                               "start": {
@@ -2613,8 +2859,8 @@
                             }
                           },
                           "range": [
-                            1601,
-                            1622
+                            1647,
+                            1668
                           ],
                           "loc": {
                             "start": {
@@ -2629,8 +2875,8 @@
                         },
                         "arguments": [],
                         "range": [
-                          1601,
-                          1624
+                          1647,
+                          1670
                         ],
                         "loc": {
                           "start": {
@@ -2644,8 +2890,8 @@
                         }
                       },
                       "range": [
-                        1594,
-                        1627
+                        1640,
+                        1673
                       ],
                       "loc": {
                         "start": {
@@ -2660,8 +2906,8 @@
                     }
                   ],
                   "range": [
-                    1588,
-                    1628
+                    1634,
+                    1674
                   ],
                   "loc": {
                     "start": {
@@ -2677,8 +2923,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  1585,
-                  1628
+                  1631,
+                  1674
                 ],
                 "loc": {
                   "start": {
@@ -2694,8 +2940,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                1576,
-                1628
+                1622,
+                1674
               ],
               "loc": {
                 "start": {
@@ -2712,8 +2958,8 @@
                   "type": "Block",
                   "value": "*\n   * @desc Get the client user id\n   * @return {string}\n   ",
                   "range": [
-                    1508,
-                    1573
+                    1554,
+                    1619
                   ],
                   "loc": {
                     "start": {
@@ -2732,8 +2978,8 @@
                   "type": "Block",
                   "value": "*\n   * @desc Get the client session id\n   * @return {string}\n   ",
                   "range": [
-                    1631,
-                    1699
+                    1677,
+                    1745
                   ],
                   "loc": {
                     "start": {
@@ -2755,8 +3001,8 @@
                 "type": "Identifier",
                 "name": "getSessionId",
                 "range": [
-                  1702,
-                  1714
+                  1748,
+                  1760
                 ],
                 "loc": {
                   "start": {
@@ -2789,8 +3035,8 @@
                             "object": {
                               "type": "ThisExpression",
                               "range": [
-                                1730,
-                                1734
+                                1776,
+                                1780
                               ],
                               "loc": {
                                 "start": {
@@ -2807,8 +3053,8 @@
                               "type": "Identifier",
                               "name": "client",
                               "range": [
-                                1735,
-                                1741
+                                1781,
+                                1787
                               ],
                               "loc": {
                                 "start": {
@@ -2822,8 +3068,8 @@
                               }
                             },
                             "range": [
-                              1730,
-                              1741
+                              1776,
+                              1787
                             ],
                             "loc": {
                               "start": {
@@ -2840,8 +3086,8 @@
                             "type": "Identifier",
                             "name": "getSessionId",
                             "range": [
-                              1742,
-                              1754
+                              1788,
+                              1800
                             ],
                             "loc": {
                               "start": {
@@ -2855,8 +3101,8 @@
                             }
                           },
                           "range": [
-                            1730,
-                            1754
+                            1776,
+                            1800
                           ],
                           "loc": {
                             "start": {
@@ -2871,8 +3117,8 @@
                         },
                         "arguments": [],
                         "range": [
-                          1730,
-                          1756
+                          1776,
+                          1802
                         ],
                         "loc": {
                           "start": {
@@ -2886,8 +3132,8 @@
                         }
                       },
                       "range": [
-                        1723,
-                        1759
+                        1769,
+                        1805
                       ],
                       "loc": {
                         "start": {
@@ -2902,8 +3148,8 @@
                     }
                   ],
                   "range": [
-                    1717,
-                    1760
+                    1763,
+                    1806
                   ],
                   "loc": {
                     "start": {
@@ -2919,8 +3165,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  1714,
-                  1760
+                  1760,
+                  1806
                 ],
                 "loc": {
                   "start": {
@@ -2936,8 +3182,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                1702,
-                1760
+                1748,
+                1806
               ],
               "loc": {
                 "start": {
@@ -2954,8 +3200,8 @@
                   "type": "Block",
                   "value": "*\n   * @desc Get the client session id\n   * @return {string}\n   ",
                   "range": [
-                    1631,
-                    1699
+                    1677,
+                    1745
                   ],
                   "loc": {
                     "start": {
@@ -2972,10 +3218,10 @@
               "trailingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n   * @desc Subscribe all methods described in the serviceListener for the given deploymentId\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribeListener({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   ",
+                  "value": "*\n   * @desc Subscribe all methods described in the serviceListener for the given deploymentId\n   * @return {Object} subscription\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribeListener({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   ",
                   "range": [
-                    1763,
-                    2091
+                    1809,
+                    2172
                   ],
                   "loc": {
                     "start": {
@@ -2983,7 +3229,7 @@
                       "column": 2
                     },
                     "end": {
-                      "line": 101,
+                      "line": 102,
                       "column": 5
                     }
                   }
@@ -2997,16 +3243,16 @@
                 "type": "Identifier",
                 "name": "subscribeListener",
                 "range": [
-                  2094,
-                  2111
+                  2175,
+                  2192
                 ],
                 "loc": {
                   "start": {
-                    "line": 102,
+                    "line": 103,
                     "column": 2
                   },
                   "end": {
-                    "line": 102,
+                    "line": 103,
                     "column": 19
                   }
                 }
@@ -3024,16 +3270,16 @@
                           "type": "Identifier",
                           "name": "deploymentId",
                           "range": [
-                            2114,
-                            2126
+                            2195,
+                            2207
                           ],
                           "loc": {
                             "start": {
-                              "line": 102,
+                              "line": 103,
                               "column": 22
                             },
                             "end": {
-                              "line": 102,
+                              "line": 103,
                               "column": 34
                             }
                           }
@@ -3042,16 +3288,16 @@
                           "type": "Identifier",
                           "name": "deploymentId",
                           "range": [
-                            2114,
-                            2126
+                            2195,
+                            2207
                           ],
                           "loc": {
                             "start": {
-                              "line": 102,
+                              "line": 103,
                               "column": 22
                             },
                             "end": {
-                              "line": 102,
+                              "line": 103,
                               "column": 34
                             }
                           }
@@ -3061,16 +3307,16 @@
                         "shorthand": true,
                         "computed": false,
                         "range": [
-                          2114,
-                          2126
+                          2195,
+                          2207
                         ],
                         "loc": {
                           "start": {
-                            "line": 102,
+                            "line": 103,
                             "column": 22
                           },
                           "end": {
-                            "line": 102,
+                            "line": 103,
                             "column": 34
                           }
                         }
@@ -3081,16 +3327,16 @@
                           "type": "Identifier",
                           "name": "serviceListener",
                           "range": [
-                            2128,
-                            2143
+                            2209,
+                            2224
                           ],
                           "loc": {
                             "start": {
-                              "line": 102,
+                              "line": 103,
                               "column": 36
                             },
                             "end": {
-                              "line": 102,
+                              "line": 103,
                               "column": 51
                             }
                           }
@@ -3099,16 +3345,16 @@
                           "type": "Identifier",
                           "name": "serviceListener",
                           "range": [
-                            2128,
-                            2143
+                            2209,
+                            2224
                           ],
                           "loc": {
                             "start": {
-                              "line": 102,
+                              "line": 103,
                               "column": 36
                             },
                             "end": {
-                              "line": 102,
+                              "line": 103,
                               "column": 51
                             }
                           }
@@ -3118,32 +3364,32 @@
                         "shorthand": true,
                         "computed": false,
                         "range": [
-                          2128,
-                          2143
+                          2209,
+                          2224
                         ],
                         "loc": {
                           "start": {
-                            "line": 102,
+                            "line": 103,
                             "column": 36
                           },
                           "end": {
-                            "line": 102,
+                            "line": 103,
                             "column": 51
                           }
                         }
                       }
                     ],
                     "range": [
-                      2112,
-                      2145
+                      2193,
+                      2226
                     ],
                     "loc": {
                       "start": {
-                        "line": 102,
+                        "line": 103,
                         "column": 20
                       },
                       "end": {
-                        "line": 102,
+                        "line": 103,
                         "column": 53
                       }
                     }
@@ -3153,8 +3399,8 @@
                   "type": "BlockStatement",
                   "body": [
                     {
-                      "type": "ExpressionStatement",
-                      "expression": {
+                      "type": "ReturnStatement",
+                      "argument": {
                         "type": "CallExpression",
                         "callee": {
                           "type": "MemberExpression",
@@ -3165,17 +3411,17 @@
                             "object": {
                               "type": "ThisExpression",
                               "range": [
-                                2153,
-                                2157
+                                2241,
+                                2245
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 103,
-                                  "column": 4
+                                  "line": 104,
+                                  "column": 11
                                 },
                                 "end": {
-                                  "line": 103,
-                                  "column": 8
+                                  "line": 104,
+                                  "column": 15
                                 }
                               }
                             },
@@ -3183,32 +3429,32 @@
                               "type": "Identifier",
                               "name": "client",
                               "range": [
-                                2158,
-                                2164
+                                2246,
+                                2252
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 103,
-                                  "column": 9
+                                  "line": 104,
+                                  "column": 16
                                 },
                                 "end": {
-                                  "line": 103,
-                                  "column": 15
+                                  "line": 104,
+                                  "column": 22
                                 }
                               }
                             },
                             "range": [
-                              2153,
-                              2164
+                              2241,
+                              2252
                             ],
                             "loc": {
                               "start": {
-                                "line": 103,
-                                "column": 4
+                                "line": 104,
+                                "column": 11
                               },
                               "end": {
-                                "line": 103,
-                                "column": 15
+                                "line": 104,
+                                "column": 22
                               }
                             }
                           },
@@ -3216,32 +3462,32 @@
                             "type": "Identifier",
                             "name": "subscribe",
                             "range": [
-                              2165,
-                              2174
+                              2253,
+                              2262
                             ],
                             "loc": {
                               "start": {
-                                "line": 103,
-                                "column": 16
+                                "line": 104,
+                                "column": 23
                               },
                               "end": {
-                                "line": 103,
-                                "column": 25
+                                "line": 104,
+                                "column": 32
                               }
                             }
                           },
                           "range": [
-                            2153,
-                            2174
+                            2241,
+                            2262
                           ],
                           "loc": {
                             "start": {
-                              "line": 103,
-                              "column": 4
+                              "line": 104,
+                              "column": 11
                             },
                             "end": {
-                              "line": 103,
-                              "column": 25
+                              "line": 104,
+                              "column": 32
                             }
                           }
                         },
@@ -3257,17 +3503,17 @@
                                 },
                                 "tail": false,
                                 "range": [
-                                  2175,
-                                  2187
+                                  2263,
+                                  2275
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 103,
-                                    "column": 26
+                                    "line": 104,
+                                    "column": 33
                                   },
                                   "end": {
-                                    "line": 103,
-                                    "column": 38
+                                    "line": 104,
+                                    "column": 45
                                   }
                                 }
                               },
@@ -3279,17 +3525,17 @@
                                 },
                                 "tail": false,
                                 "range": [
-                                  2207,
-                                  2211
+                                  2295,
+                                  2299
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 103,
-                                    "column": 58
+                                    "line": 104,
+                                    "column": 65
                                   },
                                   "end": {
-                                    "line": 103,
-                                    "column": 62
+                                    "line": 104,
+                                    "column": 69
                                   }
                                 }
                               },
@@ -3301,17 +3547,17 @@
                                 },
                                 "tail": true,
                                 "range": [
-                                  2223,
-                                  2225
+                                  2311,
+                                  2313
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 103,
-                                    "column": 74
+                                    "line": 104,
+                                    "column": 81
                                   },
                                   "end": {
-                                    "line": 103,
-                                    "column": 76
+                                    "line": 104,
+                                    "column": 83
                                   }
                                 }
                               }
@@ -3325,17 +3571,17 @@
                                   "object": {
                                     "type": "ThisExpression",
                                     "range": [
-                                      2187,
-                                      2191
+                                      2275,
+                                      2279
                                     ],
                                     "loc": {
                                       "start": {
-                                        "line": 103,
-                                        "column": 38
+                                        "line": 104,
+                                        "column": 45
                                       },
                                       "end": {
-                                        "line": 103,
-                                        "column": 42
+                                        "line": 104,
+                                        "column": 49
                                       }
                                     }
                                   },
@@ -3343,48 +3589,48 @@
                                     "type": "Identifier",
                                     "name": "getBusinessId",
                                     "range": [
-                                      2192,
-                                      2205
+                                      2280,
+                                      2293
                                     ],
                                     "loc": {
                                       "start": {
-                                        "line": 103,
-                                        "column": 43
+                                        "line": 104,
+                                        "column": 50
                                       },
                                       "end": {
-                                        "line": 103,
-                                        "column": 56
+                                        "line": 104,
+                                        "column": 63
                                       }
                                     }
                                   },
                                   "range": [
-                                    2187,
-                                    2205
+                                    2275,
+                                    2293
                                   ],
                                   "loc": {
                                     "start": {
-                                      "line": 103,
-                                      "column": 38
+                                      "line": 104,
+                                      "column": 45
                                     },
                                     "end": {
-                                      "line": 103,
-                                      "column": 56
+                                      "line": 104,
+                                      "column": 63
                                     }
                                   }
                                 },
                                 "arguments": [],
                                 "range": [
-                                  2187,
-                                  2207
+                                  2275,
+                                  2295
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 103,
-                                    "column": 38
+                                    "line": 104,
+                                    "column": 45
                                   },
                                   "end": {
-                                    "line": 103,
-                                    "column": 58
+                                    "line": 104,
+                                    "column": 65
                                   }
                                 }
                               },
@@ -3392,33 +3638,33 @@
                                 "type": "Identifier",
                                 "name": "deploymentId",
                                 "range": [
-                                  2211,
-                                  2223
+                                  2299,
+                                  2311
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 103,
-                                    "column": 62
+                                    "line": 104,
+                                    "column": 69
                                   },
                                   "end": {
-                                    "line": 103,
-                                    "column": 74
+                                    "line": 104,
+                                    "column": 81
                                   }
                                 }
                               }
                             ],
                             "range": [
-                              2175,
-                              2225
+                              2263,
+                              2313
                             ],
                             "loc": {
                               "start": {
-                                "line": 103,
-                                "column": 26
+                                "line": 104,
+                                "column": 33
                               },
                               "end": {
-                                "line": 103,
-                                "column": 76
+                                "line": 104,
+                                "column": 83
                               }
                             }
                           },
@@ -3426,63 +3672,63 @@
                             "type": "Identifier",
                             "name": "serviceListener",
                             "range": [
-                              2227,
-                              2242
+                              2315,
+                              2330
                             ],
                             "loc": {
                               "start": {
-                                "line": 103,
-                                "column": 78
+                                "line": 104,
+                                "column": 85
                               },
                               "end": {
-                                "line": 103,
-                                "column": 93
+                                "line": 104,
+                                "column": 100
                               }
                             }
                           }
                         ],
                         "range": [
-                          2153,
-                          2243
+                          2241,
+                          2331
                         ],
                         "loc": {
                           "start": {
-                            "line": 103,
-                            "column": 4
+                            "line": 104,
+                            "column": 11
                           },
                           "end": {
-                            "line": 103,
-                            "column": 94
+                            "line": 104,
+                            "column": 101
                           }
                         }
                       },
                       "range": [
-                        2153,
-                        2246
+                        2234,
+                        2334
                       ],
                       "loc": {
                         "start": {
-                          "line": 103,
+                          "line": 104,
                           "column": 4
                         },
                         "end": {
-                          "line": 104,
+                          "line": 105,
                           "column": 2
                         }
                       }
                     }
                   ],
                   "range": [
-                    2147,
-                    2247
+                    2228,
+                    2335
                   ],
                   "loc": {
                     "start": {
-                      "line": 102,
+                      "line": 103,
                       "column": 55
                     },
                     "end": {
-                      "line": 104,
+                      "line": 105,
                       "column": 3
                     }
                   }
@@ -3490,16 +3736,16 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  2111,
-                  2247
+                  2192,
+                  2335
                 ],
                 "loc": {
                   "start": {
-                    "line": 102,
+                    "line": 103,
                     "column": 19
                   },
                   "end": {
-                    "line": 104,
+                    "line": 105,
                     "column": 3
                   }
                 }
@@ -3507,26 +3753,26 @@
               "kind": "method",
               "computed": false,
               "range": [
-                2094,
-                2247
+                2175,
+                2335
               ],
               "loc": {
                 "start": {
-                  "line": 102,
+                  "line": 103,
                   "column": 2
                 },
                 "end": {
-                  "line": 104,
+                  "line": 105,
                   "column": 3
                 }
               },
               "leadingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n   * @desc Subscribe all methods described in the serviceListener for the given deploymentId\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribeListener({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   ",
+                  "value": "*\n   * @desc Subscribe all methods described in the serviceListener for the given deploymentId\n   * @return {Object} subscription\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribeListener({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   ",
                   "range": [
-                    1763,
-                    2091
+                    1809,
+                    2172
                   ],
                   "loc": {
                     "start": {
@@ -3534,7 +3780,7 @@
                       "column": 2
                     },
                     "end": {
-                      "line": 101,
+                      "line": 102,
                       "column": 5
                     }
                   }
@@ -3545,16 +3791,16 @@
                   "type": "Block",
                   "value": "*\n  * @desc Create a publish/subscribe\n  * @experimental\n  * @return {Object}\n   ",
                   "range": [
-                    2250,
-                    2335
+                    2338,
+                    2423
                   ],
                   "loc": {
                     "start": {
-                      "line": 105,
+                      "line": 106,
                       "column": 2
                     },
                     "end": {
-                      "line": 109,
+                      "line": 110,
                       "column": 5
                     }
                   }
@@ -3568,16 +3814,16 @@
                 "type": "Identifier",
                 "name": "createPubSub",
                 "range": [
-                  2338,
-                  2350
+                  2426,
+                  2438
                 ],
                 "loc": {
                   "start": {
-                    "line": 110,
+                    "line": 111,
                     "column": 2
                   },
                   "end": {
-                    "line": 110,
+                    "line": 111,
                     "column": 14
                   }
                 }
@@ -3595,16 +3841,16 @@
                           "type": "Identifier",
                           "name": "deploymentId",
                           "range": [
-                            2353,
-                            2365
+                            2441,
+                            2453
                           ],
                           "loc": {
                             "start": {
-                              "line": 110,
+                              "line": 111,
                               "column": 17
                             },
                             "end": {
-                              "line": 110,
+                              "line": 111,
                               "column": 29
                             }
                           }
@@ -3613,16 +3859,16 @@
                           "type": "Identifier",
                           "name": "deploymentId",
                           "range": [
-                            2353,
-                            2365
+                            2441,
+                            2453
                           ],
                           "loc": {
                             "start": {
-                              "line": 110,
+                              "line": 111,
                               "column": 17
                             },
                             "end": {
-                              "line": 110,
+                              "line": 111,
                               "column": 29
                             }
                           }
@@ -3632,16 +3878,16 @@
                         "shorthand": true,
                         "computed": false,
                         "range": [
-                          2353,
-                          2365
+                          2441,
+                          2453
                         ],
                         "loc": {
                           "start": {
-                            "line": 110,
+                            "line": 111,
                             "column": 17
                           },
                           "end": {
-                            "line": 110,
+                            "line": 111,
                             "column": 29
                           }
                         }
@@ -3652,16 +3898,16 @@
                           "type": "Identifier",
                           "name": "serviceListener",
                           "range": [
-                            2367,
-                            2382
+                            2455,
+                            2470
                           ],
                           "loc": {
                             "start": {
-                              "line": 110,
+                              "line": 111,
                               "column": 31
                             },
                             "end": {
-                              "line": 110,
+                              "line": 111,
                               "column": 46
                             }
                           }
@@ -3670,16 +3916,16 @@
                           "type": "Identifier",
                           "name": "serviceListener",
                           "range": [
-                            2367,
-                            2382
+                            2455,
+                            2470
                           ],
                           "loc": {
                             "start": {
-                              "line": 110,
+                              "line": 111,
                               "column": 31
                             },
                             "end": {
-                              "line": 110,
+                              "line": 111,
                               "column": 46
                             }
                           }
@@ -3689,16 +3935,16 @@
                         "shorthand": true,
                         "computed": false,
                         "range": [
-                          2367,
-                          2382
+                          2455,
+                          2470
                         ],
                         "loc": {
                           "start": {
-                            "line": 110,
+                            "line": 111,
                             "column": 31
                           },
                           "end": {
-                            "line": 110,
+                            "line": 111,
                             "column": 46
                           }
                         }
@@ -3709,16 +3955,16 @@
                           "type": "Identifier",
                           "name": "publisher",
                           "range": [
-                            2384,
-                            2393
+                            2472,
+                            2481
                           ],
                           "loc": {
                             "start": {
-                              "line": 110,
+                              "line": 111,
                               "column": 48
                             },
                             "end": {
-                              "line": 110,
+                              "line": 111,
                               "column": 57
                             }
                           }
@@ -3727,16 +3973,16 @@
                           "type": "Identifier",
                           "name": "publisher",
                           "range": [
-                            2384,
-                            2393
+                            2472,
+                            2481
                           ],
                           "loc": {
                             "start": {
-                              "line": 110,
+                              "line": 111,
                               "column": 48
                             },
                             "end": {
-                              "line": 110,
+                              "line": 111,
                               "column": 57
                             }
                           }
@@ -3746,32 +3992,32 @@
                         "shorthand": true,
                         "computed": false,
                         "range": [
-                          2384,
-                          2393
+                          2472,
+                          2481
                         ],
                         "loc": {
                           "start": {
-                            "line": 110,
+                            "line": 111,
                             "column": 48
                           },
                           "end": {
-                            "line": 110,
+                            "line": 111,
                             "column": 57
                           }
                         }
                       }
                     ],
                     "range": [
-                      2351,
-                      2395
+                      2439,
+                      2483
                     ],
                     "loc": {
                       "start": {
-                        "line": 110,
+                        "line": 111,
                         "column": 15
                       },
                       "end": {
-                        "line": 110,
+                        "line": 111,
                         "column": 59
                       }
                     }
@@ -3788,16 +4034,16 @@
                           "type": "Identifier",
                           "name": "NotYetImplementedError",
                           "range": [
-                            2413,
-                            2435
+                            2501,
+                            2523
                           ],
                           "loc": {
                             "start": {
-                              "line": 111,
+                              "line": 112,
                               "column": 14
                             },
                             "end": {
-                              "line": 111,
+                              "line": 112,
                               "column": 36
                             }
                           }
@@ -3808,63 +4054,63 @@
                             "value": "createPubSub",
                             "raw": "'createPubSub'",
                             "range": [
-                              2436,
-                              2450
+                              2524,
+                              2538
                             ],
                             "loc": {
                               "start": {
-                                "line": 111,
+                                "line": 112,
                                 "column": 37
                               },
                               "end": {
-                                "line": 111,
+                                "line": 112,
                                 "column": 51
                               }
                             }
                           }
                         ],
                         "range": [
-                          2409,
-                          2451
+                          2497,
+                          2539
                         ],
                         "loc": {
                           "start": {
-                            "line": 111,
+                            "line": 112,
                             "column": 10
                           },
                           "end": {
-                            "line": 111,
+                            "line": 112,
                             "column": 52
                           }
                         }
                       },
                       "range": [
-                        2403,
-                        2454
+                        2491,
+                        2542
                       ],
                       "loc": {
                         "start": {
-                          "line": 111,
+                          "line": 112,
                           "column": 4
                         },
                         "end": {
-                          "line": 112,
+                          "line": 113,
                           "column": 2
                         }
                       }
                     }
                   ],
                   "range": [
-                    2397,
-                    2455
+                    2485,
+                    2543
                   ],
                   "loc": {
                     "start": {
-                      "line": 110,
+                      "line": 111,
                       "column": 61
                     },
                     "end": {
-                      "line": 112,
+                      "line": 113,
                       "column": 3
                     }
                   }
@@ -3872,16 +4118,16 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  2350,
-                  2455
+                  2438,
+                  2543
                 ],
                 "loc": {
                   "start": {
-                    "line": 110,
+                    "line": 111,
                     "column": 14
                   },
                   "end": {
-                    "line": 112,
+                    "line": 113,
                     "column": 3
                   }
                 }
@@ -3889,16 +4135,16 @@
               "kind": "method",
               "computed": false,
               "range": [
-                2338,
-                2455
+                2426,
+                2543
               ],
               "loc": {
                 "start": {
-                  "line": 110,
+                  "line": 111,
                   "column": 2
                 },
                 "end": {
-                  "line": 112,
+                  "line": 113,
                   "column": 3
                 }
               },
@@ -3907,16 +4153,16 @@
                   "type": "Block",
                   "value": "*\n  * @desc Create a publish/subscribe\n  * @experimental\n  * @return {Object}\n   ",
                   "range": [
-                    2250,
-                    2335
+                    2338,
+                    2423
                   ],
                   "loc": {
                     "start": {
-                      "line": 105,
+                      "line": 106,
                       "column": 2
                     },
                     "end": {
-                      "line": 109,
+                      "line": 110,
                       "column": 5
                     }
                   }
@@ -3927,16 +4173,16 @@
                   "type": "Block",
                   "value": "*\n   * @desc Set new client resource value\n   ",
                   "range": [
-                    2458,
-                    2508
+                    2546,
+                    2596
                   ],
                   "loc": {
                     "start": {
-                      "line": 113,
+                      "line": 114,
                       "column": 2
                     },
                     "end": {
-                      "line": 115,
+                      "line": 116,
                       "column": 5
                     }
                   }
@@ -3950,16 +4196,16 @@
                 "type": "Identifier",
                 "name": "setResource",
                 "range": [
-                  2511,
-                  2522
+                  2599,
+                  2610
                 ],
                 "loc": {
                   "start": {
-                    "line": 116,
+                    "line": 117,
                     "column": 2
                   },
                   "end": {
-                    "line": 116,
+                    "line": 117,
                     "column": 13
                   }
                 }
@@ -3972,16 +4218,16 @@
                     "type": "Identifier",
                     "name": "resource",
                     "range": [
-                      2523,
-                      2531
+                      2611,
+                      2619
                     ],
                     "loc": {
                       "start": {
-                        "line": 116,
+                        "line": 117,
                         "column": 14
                       },
                       "end": {
-                        "line": 116,
+                        "line": 117,
                         "column": 22
                       }
                     }
@@ -4003,16 +4249,16 @@
                             "object": {
                               "type": "ThisExpression",
                               "range": [
-                                2539,
-                                2543
+                                2627,
+                                2631
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 117,
+                                  "line": 118,
                                   "column": 4
                                 },
                                 "end": {
-                                  "line": 117,
+                                  "line": 118,
                                   "column": 8
                                 }
                               }
@@ -4021,31 +4267,31 @@
                               "type": "Identifier",
                               "name": "client",
                               "range": [
-                                2544,
-                                2550
+                                2632,
+                                2638
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 117,
+                                  "line": 118,
                                   "column": 9
                                 },
                                 "end": {
-                                  "line": 117,
+                                  "line": 118,
                                   "column": 15
                                 }
                               }
                             },
                             "range": [
-                              2539,
-                              2550
+                              2627,
+                              2638
                             ],
                             "loc": {
                               "start": {
-                                "line": 117,
+                                "line": 118,
                                 "column": 4
                               },
                               "end": {
-                                "line": 117,
+                                "line": 118,
                                 "column": 15
                               }
                             }
@@ -4054,31 +4300,31 @@
                             "type": "Identifier",
                             "name": "setResource",
                             "range": [
-                              2551,
-                              2562
+                              2639,
+                              2650
                             ],
                             "loc": {
                               "start": {
-                                "line": 117,
+                                "line": 118,
                                 "column": 16
                               },
                               "end": {
-                                "line": 117,
+                                "line": 118,
                                 "column": 27
                               }
                             }
                           },
                           "range": [
-                            2539,
-                            2562
+                            2627,
+                            2650
                           ],
                           "loc": {
                             "start": {
-                              "line": 117,
+                              "line": 118,
                               "column": 4
                             },
                             "end": {
-                              "line": 117,
+                              "line": 118,
                               "column": 27
                             }
                           }
@@ -4088,63 +4334,63 @@
                             "type": "Identifier",
                             "name": "resource",
                             "range": [
-                              2563,
-                              2571
+                              2651,
+                              2659
                             ],
                             "loc": {
                               "start": {
-                                "line": 117,
+                                "line": 118,
                                 "column": 28
                               },
                               "end": {
-                                "line": 117,
+                                "line": 118,
                                 "column": 36
                               }
                             }
                           }
                         ],
                         "range": [
-                          2539,
-                          2572
+                          2627,
+                          2660
                         ],
                         "loc": {
                           "start": {
-                            "line": 117,
+                            "line": 118,
                             "column": 4
                           },
                           "end": {
-                            "line": 117,
+                            "line": 118,
                             "column": 37
                           }
                         }
                       },
                       "range": [
-                        2539,
-                        2575
+                        2627,
+                        2663
                       ],
                       "loc": {
                         "start": {
-                          "line": 117,
+                          "line": 118,
                           "column": 4
                         },
                         "end": {
-                          "line": 118,
+                          "line": 119,
                           "column": 2
                         }
                       }
                     }
                   ],
                   "range": [
-                    2533,
-                    2576
+                    2621,
+                    2664
                   ],
                   "loc": {
                     "start": {
-                      "line": 116,
+                      "line": 117,
                       "column": 24
                     },
                     "end": {
-                      "line": 118,
+                      "line": 119,
                       "column": 3
                     }
                   }
@@ -4152,16 +4398,16 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  2522,
-                  2576
+                  2610,
+                  2664
                 ],
                 "loc": {
                   "start": {
-                    "line": 116,
+                    "line": 117,
                     "column": 13
                   },
                   "end": {
-                    "line": 118,
+                    "line": 119,
                     "column": 3
                   }
                 }
@@ -4169,16 +4415,16 @@
               "kind": "method",
               "computed": false,
               "range": [
-                2511,
-                2576
+                2599,
+                2664
               ],
               "loc": {
                 "start": {
-                  "line": 116,
+                  "line": 117,
                   "column": 2
                 },
                 "end": {
-                  "line": 118,
+                  "line": 119,
                   "column": 3
                 }
               },
@@ -4187,16 +4433,16 @@
                   "type": "Block",
                   "value": "*\n   * @desc Set new client resource value\n   ",
                   "range": [
-                    2458,
-                    2508
+                    2546,
+                    2596
                   ],
                   "loc": {
                     "start": {
-                      "line": 113,
+                      "line": 114,
                       "column": 2
                     },
                     "end": {
-                      "line": 115,
+                      "line": 116,
                       "column": 5
                     }
                   }
@@ -4207,16 +4453,16 @@
                   "type": "Block",
                   "value": "*\n   * @desc Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   ",
                   "range": [
-                    2579,
-                    2712
+                    2667,
+                    2800
                   ],
                   "loc": {
                     "start": {
-                      "line": 119,
+                      "line": 120,
                       "column": 2
                     },
                     "end": {
-                      "line": 122,
+                      "line": 123,
                       "column": 5
                     }
                   }
@@ -4230,16 +4476,16 @@
                 "type": "Identifier",
                 "name": "addConnectionStatusListener",
                 "range": [
-                  2715,
-                  2742
+                  2803,
+                  2830
                 ],
                 "loc": {
                   "start": {
-                    "line": 123,
+                    "line": 124,
                     "column": 2
                   },
                   "end": {
-                    "line": 123,
+                    "line": 124,
                     "column": 29
                   }
                 }
@@ -4252,16 +4498,16 @@
                     "type": "Identifier",
                     "name": "listener",
                     "range": [
-                      2743,
-                      2751
+                      2831,
+                      2839
                     ],
                     "loc": {
                       "start": {
-                        "line": 123,
+                        "line": 124,
                         "column": 30
                       },
                       "end": {
-                        "line": 123,
+                        "line": 124,
                         "column": 38
                       }
                     }
@@ -4283,16 +4529,16 @@
                             "object": {
                               "type": "ThisExpression",
                               "range": [
-                                2766,
-                                2770
+                                2854,
+                                2858
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 124,
+                                  "line": 125,
                                   "column": 11
                                 },
                                 "end": {
-                                  "line": 124,
+                                  "line": 125,
                                   "column": 15
                                 }
                               }
@@ -4301,31 +4547,31 @@
                               "type": "Identifier",
                               "name": "client",
                               "range": [
-                                2771,
-                                2777
+                                2859,
+                                2865
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 124,
+                                  "line": 125,
                                   "column": 16
                                 },
                                 "end": {
-                                  "line": 124,
+                                  "line": 125,
                                   "column": 22
                                 }
                               }
                             },
                             "range": [
-                              2766,
-                              2777
+                              2854,
+                              2865
                             ],
                             "loc": {
                               "start": {
-                                "line": 124,
+                                "line": 125,
                                 "column": 11
                               },
                               "end": {
-                                "line": 124,
+                                "line": 125,
                                 "column": 22
                               }
                             }
@@ -4334,31 +4580,31 @@
                             "type": "Identifier",
                             "name": "addConnectionStatusListener",
                             "range": [
-                              2778,
-                              2805
+                              2866,
+                              2893
                             ],
                             "loc": {
                               "start": {
-                                "line": 124,
+                                "line": 125,
                                 "column": 23
                               },
                               "end": {
-                                "line": 124,
+                                "line": 125,
                                 "column": 50
                               }
                             }
                           },
                           "range": [
-                            2766,
-                            2805
+                            2854,
+                            2893
                           ],
                           "loc": {
                             "start": {
-                              "line": 124,
+                              "line": 125,
                               "column": 11
                             },
                             "end": {
-                              "line": 124,
+                              "line": 125,
                               "column": 50
                             }
                           }
@@ -4368,63 +4614,63 @@
                             "type": "Identifier",
                             "name": "listener",
                             "range": [
-                              2806,
-                              2814
+                              2894,
+                              2902
                             ],
                             "loc": {
                               "start": {
-                                "line": 124,
+                                "line": 125,
                                 "column": 51
                               },
                               "end": {
-                                "line": 124,
+                                "line": 125,
                                 "column": 59
                               }
                             }
                           }
                         ],
                         "range": [
-                          2766,
-                          2815
+                          2854,
+                          2903
                         ],
                         "loc": {
                           "start": {
-                            "line": 124,
+                            "line": 125,
                             "column": 11
                           },
                           "end": {
-                            "line": 124,
+                            "line": 125,
                             "column": 60
                           }
                         }
                       },
                       "range": [
-                        2759,
-                        2818
+                        2847,
+                        2906
                       ],
                       "loc": {
                         "start": {
-                          "line": 124,
+                          "line": 125,
                           "column": 4
                         },
                         "end": {
-                          "line": 125,
+                          "line": 126,
                           "column": 2
                         }
                       }
                     }
                   ],
                   "range": [
-                    2753,
-                    2819
+                    2841,
+                    2907
                   ],
                   "loc": {
                     "start": {
-                      "line": 123,
+                      "line": 124,
                       "column": 40
                     },
                     "end": {
-                      "line": 125,
+                      "line": 126,
                       "column": 3
                     }
                   }
@@ -4432,16 +4678,16 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  2742,
-                  2819
+                  2830,
+                  2907
                 ],
                 "loc": {
                   "start": {
-                    "line": 123,
+                    "line": 124,
                     "column": 29
                   },
                   "end": {
-                    "line": 125,
+                    "line": 126,
                     "column": 3
                   }
                 }
@@ -4449,16 +4695,16 @@
               "kind": "method",
               "computed": false,
               "range": [
-                2715,
-                2819
+                2803,
+                2907
               ],
               "loc": {
                 "start": {
-                  "line": 123,
+                  "line": 124,
                   "column": 2
                 },
                 "end": {
-                  "line": 125,
+                  "line": 126,
                   "column": 3
                 }
               },
@@ -4467,16 +4713,16 @@
                   "type": "Block",
                   "value": "*\n   * @desc Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   ",
                   "range": [
-                    2579,
-                    2712
+                    2667,
+                    2800
                   ],
                   "loc": {
                     "start": {
-                      "line": 119,
+                      "line": 120,
                       "column": 2
                     },
                     "end": {
-                      "line": 122,
+                      "line": 123,
                       "column": 5
                     }
                   }
@@ -4487,16 +4733,16 @@
                   "type": "Block",
                   "value": "*\n   * @desc Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   ",
                   "range": [
-                    2822,
-                    2962
+                    2910,
+                    3050
                   ],
                   "loc": {
                     "start": {
-                      "line": 126,
+                      "line": 127,
                       "column": 2
                     },
                     "end": {
-                      "line": 129,
+                      "line": 130,
                       "column": 5
                     }
                   }
@@ -4510,16 +4756,16 @@
                 "type": "Identifier",
                 "name": "handshake",
                 "range": [
-                  2965,
-                  2974
+                  3053,
+                  3062
                 ],
                 "loc": {
                   "start": {
-                    "line": 130,
+                    "line": 131,
                     "column": 2
                   },
                   "end": {
-                    "line": 130,
+                    "line": 131,
                     "column": 11
                   }
                 }
@@ -4532,16 +4778,16 @@
                     "type": "Identifier",
                     "name": "handshakeStrategy",
                     "range": [
-                      2975,
-                      2992
+                      3063,
+                      3080
                     ],
                     "loc": {
                       "start": {
-                        "line": 130,
+                        "line": 131,
                         "column": 12
                       },
                       "end": {
-                        "line": 130,
+                        "line": 131,
                         "column": 29
                       }
                     }
@@ -4560,16 +4806,16 @@
                           "object": {
                             "type": "ThisExpression",
                             "range": [
-                              3000,
-                              3004
+                              3088,
+                              3092
                             ],
                             "loc": {
                               "start": {
-                                "line": 131,
+                                "line": 132,
                                 "column": 4
                               },
                               "end": {
-                                "line": 131,
+                                "line": 132,
                                 "column": 8
                               }
                             }
@@ -4578,62 +4824,62 @@
                             "type": "Identifier",
                             "name": "disconnect",
                             "range": [
-                              3005,
-                              3015
+                              3093,
+                              3103
                             ],
                             "loc": {
                               "start": {
-                                "line": 131,
+                                "line": 132,
                                 "column": 9
                               },
                               "end": {
-                                "line": 131,
+                                "line": 132,
                                 "column": 19
                               }
                             }
                           },
                           "range": [
-                            3000,
-                            3015
+                            3088,
+                            3103
                           ],
                           "loc": {
                             "start": {
-                              "line": 131,
+                              "line": 132,
                               "column": 4
                             },
                             "end": {
-                              "line": 131,
+                              "line": 132,
                               "column": 19
                             }
                           }
                         },
                         "arguments": [],
                         "range": [
-                          3000,
-                          3017
+                          3088,
+                          3105
                         ],
                         "loc": {
                           "start": {
-                            "line": 131,
+                            "line": 132,
                             "column": 4
                           },
                           "end": {
-                            "line": 131,
+                            "line": 132,
                             "column": 21
                           }
                         }
                       },
                       "range": [
-                        3000,
-                        3022
+                        3088,
+                        3110
                       ],
                       "loc": {
                         "start": {
-                          "line": 131,
+                          "line": 132,
                           "column": 4
                         },
                         "end": {
-                          "line": 132,
+                          "line": 133,
                           "column": 4
                         }
                       }
@@ -4644,16 +4890,16 @@
                         "type": "Identifier",
                         "name": "handshakeStrategy",
                         "range": [
-                          3026,
-                          3043
+                          3114,
+                          3131
                         ],
                         "loc": {
                           "start": {
-                            "line": 132,
+                            "line": 133,
                             "column": 8
                           },
                           "end": {
-                            "line": 132,
+                            "line": 133,
                             "column": 25
                           }
                         }
@@ -4674,16 +4920,16 @@
                                   "object": {
                                     "type": "ThisExpression",
                                     "range": [
-                                      3053,
-                                      3057
+                                      3141,
+                                      3145
                                     ],
                                     "loc": {
                                       "start": {
-                                        "line": 133,
+                                        "line": 134,
                                         "column": 6
                                       },
                                       "end": {
-                                        "line": 133,
+                                        "line": 134,
                                         "column": 10
                                       }
                                     }
@@ -4692,31 +4938,31 @@
                                     "type": "Identifier",
                                     "name": "client",
                                     "range": [
-                                      3058,
-                                      3064
+                                      3146,
+                                      3152
                                     ],
                                     "loc": {
                                       "start": {
-                                        "line": 133,
+                                        "line": 134,
                                         "column": 11
                                       },
                                       "end": {
-                                        "line": 133,
+                                        "line": 134,
                                         "column": 17
                                       }
                                     }
                                   },
                                   "range": [
-                                    3053,
-                                    3064
+                                    3141,
+                                    3152
                                   ],
                                   "loc": {
                                     "start": {
-                                      "line": 133,
+                                      "line": 134,
                                       "column": 6
                                     },
                                     "end": {
-                                      "line": 133,
+                                      "line": 134,
                                       "column": 17
                                     }
                                   }
@@ -4725,31 +4971,31 @@
                                   "type": "Identifier",
                                   "name": "setHandshakeStrategy",
                                   "range": [
-                                    3065,
-                                    3085
+                                    3153,
+                                    3173
                                   ],
                                   "loc": {
                                     "start": {
-                                      "line": 133,
+                                      "line": 134,
                                       "column": 18
                                     },
                                     "end": {
-                                      "line": 133,
+                                      "line": 134,
                                       "column": 38
                                     }
                                   }
                                 },
                                 "range": [
-                                  3053,
-                                  3085
+                                  3141,
+                                  3173
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 133,
+                                    "line": 134,
                                     "column": 6
                                   },
                                   "end": {
-                                    "line": 133,
+                                    "line": 134,
                                     "column": 38
                                   }
                                 }
@@ -4759,79 +5005,79 @@
                                   "type": "Identifier",
                                   "name": "handshakeStrategy",
                                   "range": [
-                                    3086,
-                                    3103
+                                    3174,
+                                    3191
                                   ],
                                   "loc": {
                                     "start": {
-                                      "line": 133,
+                                      "line": 134,
                                       "column": 39
                                     },
                                     "end": {
-                                      "line": 133,
+                                      "line": 134,
                                       "column": 56
                                     }
                                   }
                                 }
                               ],
                               "range": [
-                                3053,
-                                3104
+                                3141,
+                                3192
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 133,
+                                  "line": 134,
                                   "column": 6
                                 },
                                 "end": {
-                                  "line": 133,
+                                  "line": 134,
                                   "column": 57
                                 }
                               }
                             },
                             "range": [
-                              3053,
-                              3109
+                              3141,
+                              3197
                             ],
                             "loc": {
                               "start": {
-                                "line": 133,
+                                "line": 134,
                                 "column": 6
                               },
                               "end": {
-                                "line": 134,
+                                "line": 135,
                                 "column": 4
                               }
                             }
                           }
                         ],
                         "range": [
-                          3045,
-                          3110
+                          3133,
+                          3198
                         ],
                         "loc": {
                           "start": {
-                            "line": 132,
+                            "line": 133,
                             "column": 27
                           },
                           "end": {
-                            "line": 134,
+                            "line": 135,
                             "column": 5
                           }
                         }
                       },
                       "alternate": null,
                       "range": [
-                        3022,
-                        3110
+                        3110,
+                        3198
                       ],
                       "loc": {
                         "start": {
-                          "line": 132,
+                          "line": 133,
                           "column": 4
                         },
                         "end": {
-                          "line": 134,
+                          "line": 135,
                           "column": 5
                         }
                       }
@@ -4846,16 +5092,16 @@
                           "object": {
                             "type": "ThisExpression",
                             "range": [
-                              3115,
-                              3119
+                              3203,
+                              3207
                             ],
                             "loc": {
                               "start": {
-                                "line": 135,
+                                "line": 136,
                                 "column": 4
                               },
                               "end": {
-                                "line": 135,
+                                "line": 136,
                                 "column": 8
                               }
                             }
@@ -4864,78 +5110,78 @@
                             "type": "Identifier",
                             "name": "connect",
                             "range": [
-                              3120,
-                              3127
+                              3208,
+                              3215
                             ],
                             "loc": {
                               "start": {
-                                "line": 135,
+                                "line": 136,
                                 "column": 9
                               },
                               "end": {
-                                "line": 135,
+                                "line": 136,
                                 "column": 16
                               }
                             }
                           },
                           "range": [
-                            3115,
-                            3127
+                            3203,
+                            3215
                           ],
                           "loc": {
                             "start": {
-                              "line": 135,
+                              "line": 136,
                               "column": 4
                             },
                             "end": {
-                              "line": 135,
+                              "line": 136,
                               "column": 16
                             }
                           }
                         },
                         "arguments": [],
                         "range": [
-                          3115,
-                          3129
+                          3203,
+                          3217
                         ],
                         "loc": {
                           "start": {
-                            "line": 135,
+                            "line": 136,
                             "column": 4
                           },
                           "end": {
-                            "line": 135,
+                            "line": 136,
                             "column": 18
                           }
                         }
                       },
                       "range": [
-                        3115,
-                        3132
+                        3203,
+                        3220
                       ],
                       "loc": {
                         "start": {
-                          "line": 135,
+                          "line": 136,
                           "column": 4
                         },
                         "end": {
-                          "line": 136,
+                          "line": 137,
                           "column": 2
                         }
                       }
                     }
                   ],
                   "range": [
-                    2994,
-                    3133
+                    3082,
+                    3221
                   ],
                   "loc": {
                     "start": {
-                      "line": 130,
+                      "line": 131,
                       "column": 31
                     },
                     "end": {
-                      "line": 136,
+                      "line": 137,
                       "column": 3
                     }
                   }
@@ -4943,16 +5189,16 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  2974,
-                  3133
+                  3062,
+                  3221
                 ],
                 "loc": {
                   "start": {
-                    "line": 130,
+                    "line": 131,
                     "column": 11
                   },
                   "end": {
-                    "line": 136,
+                    "line": 137,
                     "column": 3
                   }
                 }
@@ -4960,16 +5206,16 @@
               "kind": "method",
               "computed": false,
               "range": [
-                2965,
-                3133
+                3053,
+                3221
               ],
               "loc": {
                 "start": {
-                  "line": 130,
+                  "line": 131,
                   "column": 2
                 },
                 "end": {
-                  "line": 136,
+                  "line": 137,
                   "column": 3
                 }
               },
@@ -4978,16 +5224,16 @@
                   "type": "Block",
                   "value": "*\n   * @desc Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   ",
                   "range": [
-                    2822,
-                    2962
+                    2910,
+                    3050
                   ],
                   "loc": {
                     "start": {
-                      "line": 126,
+                      "line": 127,
                       "column": 2
                     },
                     "end": {
-                      "line": 129,
+                      "line": 130,
                       "column": 5
                     }
                   }
@@ -4998,7 +5244,7 @@
           ],
           "range": [
             539,
-            3136
+            3224
           ],
           "loc": {
             "start": {
@@ -5006,14 +5252,14 @@
               "column": 20
             },
             "end": {
-              "line": 138,
+              "line": 139,
               "column": 1
             }
           }
         },
         "range": [
           526,
-          3136
+          3224
         ],
         "loc": {
           "start": {
@@ -5021,7 +5267,7 @@
             "column": 7
           },
           "end": {
-            "line": 138,
+            "line": 139,
             "column": 1
           }
         },
@@ -5051,7 +5297,7 @@
       "source": null,
       "range": [
         519,
-        3136
+        3224
       ],
       "loc": {
         "start": {
@@ -5059,7 +5305,7 @@
           "column": 0
         },
         "end": {
-          "line": 138,
+          "line": 139,
           "column": 1
         }
       },
@@ -5088,7 +5334,7 @@
   "sourceType": "module",
   "range": [
     0,
-    3136
+    3224
   ],
   "loc": {
     "start": {
@@ -5096,7 +5342,7 @@
       "column": 0
     },
     "end": {
-      "line": 138,
+      "line": 139,
       "column": 1
     }
   },
@@ -5231,8 +5477,8 @@
       "type": "Block",
       "value": "*\n   * @desc Get the client business id\n   * @return {string}\n   ",
       "range": [
-        1245,
-        1314
+        1291,
+        1360
       ],
       "loc": {
         "start": {
@@ -5249,8 +5495,8 @@
       "type": "Block",
       "value": "*\n   * @desc Get the client resource\n   * @return {string}\n   ",
       "range": [
-        1380,
-        1446
+        1426,
+        1492
       ],
       "loc": {
         "start": {
@@ -5267,8 +5513,8 @@
       "type": "Block",
       "value": "*\n   * @desc Get the client user id\n   * @return {string}\n   ",
       "range": [
-        1508,
-        1573
+        1554,
+        1619
       ],
       "loc": {
         "start": {
@@ -5285,8 +5531,8 @@
       "type": "Block",
       "value": "*\n   * @desc Get the client session id\n   * @return {string}\n   ",
       "range": [
-        1631,
-        1699
+        1677,
+        1745
       ],
       "loc": {
         "start": {
@@ -5301,10 +5547,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n   * @desc Subscribe all methods described in the serviceListener for the given deploymentId\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribeListener({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   ",
+      "value": "*\n   * @desc Subscribe all methods described in the serviceListener for the given deploymentId\n   * @return {Object} subscription\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribeListener({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   ",
       "range": [
-        1763,
-        2091
+        1809,
+        2172
       ],
       "loc": {
         "start": {
@@ -5312,7 +5558,7 @@
           "column": 2
         },
         "end": {
-          "line": 101,
+          "line": 102,
           "column": 5
         }
       }
@@ -5321,16 +5567,16 @@
       "type": "Block",
       "value": "*\n  * @desc Create a publish/subscribe\n  * @experimental\n  * @return {Object}\n   ",
       "range": [
-        2250,
-        2335
+        2338,
+        2423
       ],
       "loc": {
         "start": {
-          "line": 105,
+          "line": 106,
           "column": 2
         },
         "end": {
-          "line": 109,
+          "line": 110,
           "column": 5
         }
       }
@@ -5339,16 +5585,16 @@
       "type": "Block",
       "value": "*\n   * @desc Set new client resource value\n   ",
       "range": [
-        2458,
-        2508
+        2546,
+        2596
       ],
       "loc": {
         "start": {
-          "line": 113,
+          "line": 114,
           "column": 2
         },
         "end": {
-          "line": 115,
+          "line": 116,
           "column": 5
         }
       }
@@ -5357,16 +5603,16 @@
       "type": "Block",
       "value": "*\n   * @desc Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   ",
       "range": [
-        2579,
-        2712
+        2667,
+        2800
       ],
       "loc": {
         "start": {
-          "line": 119,
+          "line": 120,
           "column": 2
         },
         "end": {
-          "line": 122,
+          "line": 123,
           "column": 5
         }
       }
@@ -5375,16 +5621,16 @@
       "type": "Block",
       "value": "*\n   * @desc Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   ",
       "range": [
-        2822,
-        2962
+        2910,
+        3050
       ],
       "loc": {
         "start": {
-          "line": 126,
+          "line": 127,
           "column": 2
         },
         "end": {
-          "line": 129,
+          "line": 130,
           "column": 5
         }
       }

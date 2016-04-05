@@ -71,6 +71,11 @@ export class ClientHelper {
     this.serverUrl = null
     /**
      * @access private
+     * @type {Array<Object>}
+     */
+    this.subscribeQueue = []
+    /**
+     * @access private
      * @type {CometD}
      */
     this.cometd = new CometD()
@@ -115,14 +120,24 @@ export class ClientHelper {
       // ConnectionListener
       if (this.cometd.isDisconnected()) {
         this.connected = false
+        // Notify connection is closed
         this.connectionClosed()
       } else {
         this.wasConnected = this.connected
         this.connected = successful
         if (!this.wasConnected && this.connected) {
+          this.cometd.batch(this, () => {
+            // Unqueue subscriptions
+            this.subscribeQueue.forEach(({ prefix, serviceListener, subscriptions }) => {
+              this.subscribe(prefix, serviceListener, subscriptions)
+            })
+            this.subscribeQueue = []
+          })
+          // Notify connection is established
           this.connectionEstablished()
         }
         else if (this.wasConnected && !this.connected) {
+          // Notify connection is broken
           this.connectionBroken()
         }
       }
@@ -277,17 +292,39 @@ export class ClientHelper {
    * @desc Subribe all methods defined in the serviceListener for the given prefixed channel
    * @param {string} prefix - Channel prefix
    * @param {Object} serviceListener
+   * @param {Object} subscriptions
    * @return {Object} subscriptions
    */
-  subscribe(prefix, serviceListener) {
-    const subscriptions = {}
-    for (const method in serviceListener) {
-      if (serviceListener.hasOwnProperty(method)) {
-        const channel = `${prefix}/${method}`
-        subscriptions[method] = this.cometd.subscribe(channel, serviceListener[method])
+  subscribe(prefix, serviceListener, subscriptions = {}) {
+    if (this.cometd.isDisconnected()) {
+      this.subscribeQueue.push({ prefix, serviceListener, subscriptions })
+    } else {
+      for (const method in serviceListener) {
+        if (serviceListener.hasOwnProperty(method)) {
+          const channel = `${prefix}/${method}`
+          subscriptions[method] = this.cometd.subscribe(channel, serviceListener[method])
+        }
       }
     }
     return subscriptions
+  }
+  /**
+   * @desc Get a publisher
+   * @param {string} prefix - Channel prefix
+   * @param {Object} publisherDefinition
+   * @return {Object} servicePublisher
+   */
+  createServicePublisher(prefix, publisherDefinition) {
+    const servicePublisher = {}
+    for (const method in publisherDefinition) {
+      if (publisher.hasOwnProperty(method)) {
+        const channel = `${prefix}/${method}`
+        servicePublisher[method] = (parameters = {}) => {
+          this.cometd.publish(channel, parameters)
+        }
+      }
+    }
+    return servicePublisher
   }
   /**
    * @desc Unsubcribe all subscriptions defined in given subscriptions object

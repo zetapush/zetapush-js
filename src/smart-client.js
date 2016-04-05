@@ -10,11 +10,11 @@ export class SmartClient extends Client {
   /**
    *
    */
-  constructor({ apiUrl, businessId, deploymentId, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {
+  constructor({ apiUrl, authenticationDeploymentId, businessId, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {
     const handshakeStrategy = () => {
       const token = this.getToken()
       const handshake = AuthentFactory.createWeakHandshake({
-        deploymentId,
+        deploymentId: authenticationDeploymentId,
         token
       })
       return handshake

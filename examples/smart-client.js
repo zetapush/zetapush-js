@@ -1,31 +1,33 @@
-const { SmartClient } = ZetaPush
+{
+  const { SmartClient } = ZetaPush
 
-const client = new SmartClient({
-  apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
-  businessId: 'JteMN0To',
-  deploymentId: 'weak_main'
-})
+  const client = new SmartClient({
+    apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
+    businessId: 'JteMN0To',
+    deploymentId: 'weak_main'
+  })
 
-client.addConnectionStatusListener({
-  onSuccessfulHandshake(authentication) {
-    console.debug('onSuccessfulHandshake', authentication)
-  },
+  client.addConnectionStatusListener({
+    onSuccessfulHandshake(authentication) {
+      console.debug('onSuccessfulHandshake', authentication)
+    },
 
-  onFailedHandshake(error) {
-    console.debug('onFailedHandshake', error)
-  },
+    onFailedHandshake(error) {
+      console.debug('onFailedHandshake', error)
+    },
 
-  onConnectionEstablished() {
-    console.debug('onConnectionEstablished')
-  },
+    onConnectionEstablished() {
+      console.debug('onConnectionEstablished')
+    },
 
-  onConnectionBroken() {
-    console.debug('onConnectionBroken')
-  },
+    onConnectionBroken() {
+      console.debug('onConnectionBroken')
+    },
 
-  onConnectionClosed() {
-    console.debug('onConnectionClosed')
-  }
-})
+    onConnectionClosed() {
+      console.debug('onConnectionClosed')
+    }
+  })
 
-client.connect()
+  client.connect()
+}

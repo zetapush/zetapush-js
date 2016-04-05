@@ -51,12 +51,12 @@ export class Client {
     this.client.disconnect()
   }
   /**
-   * @desc Create a service publisher
+   * @desc Create a service publisher based on publisher definition for the given deployment id
    * @experimental
    * @return {Object}
    */
-  createServicePublisher({ deploymentId, publisher }) {
-    throw new NotYetImplementedError('createServicePublisher')
+  createServicePublisher({ deploymentId, publisherDefinition }) {
+    return this.client.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, publisherDefinition)
   }
   /**
    * @desc Get the client business id
@@ -88,6 +88,7 @@ export class Client {
   }
   /**
    * @desc Subscribe all methods described in the serviceListener for the given deploymentId
+   * @return {Object} subscription
    * @example
    * const stackServiceListener = {
    *   list() {},
@@ -100,7 +101,7 @@ export class Client {
    * })
    */
   subscribeListener({ deploymentId, serviceListener }) {
-    this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)
+    return this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)
   }
   /**
   * @desc Create a publish/subscribe

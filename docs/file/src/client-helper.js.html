@@ -335,6 +335,23 @@ export class ClientHelper {
     return subscriptions
   }
   /**
+   * @desc Get a publisher
+   * @param {string} prefix - Channel prefix
+   * @param {Object} publisher
+   * @return {Object} servicePublisher
+   */
+  createServicePublisher(prefix, publisher) {
+    const servicePublisher = {}
+    for (const method in publisher) {
+      if (publisher.hasOwnProperty(method)) {
+        const channel = `${prefix}/${method}`
+        servicePublisher[method] = (parameters = {}) =&gt; {
+          this.cometd.publish(channel, parameters)
+        }
+      }
+    }
+  }
+  /**
    * @desc Unsubcribe all subscriptions defined in given subscriptions object
    * @param {Object} subscriptions
    */
