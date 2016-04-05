@@ -1,5 +1,6 @@
 /**
  * @access public
+ * @desc Define life cycle connection methods 
  */
 export class ConnectionStatusListener {
   /**

@@ -1,10 +1,10 @@
 /**
- *
+ * @type {string}
  */
 const ZETAPUSH_TOKEN_KEY = 'zetapush.token'
 
 /**
- * @access public
+ * @access protected
  * @desc Provide abstraction for token persistence
  */
 export class AbstractTokenPersistenceStrategy {
@@ -13,7 +13,7 @@ export class AbstractTokenPersistenceStrategy {
    */
   constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {
     /**
-     * @access public
+     * @access private
      * @type {string}
      */
     this.key = key
@@ -30,7 +30,7 @@ export class AbstractTokenPersistenceStrategy {
 }
 
 /**
- * @access public
+ * @access protected
  * @extends {AbstractTokenPersistenceStrategy}
  */
 export class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersistenceStrategy {

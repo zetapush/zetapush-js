@@ -1236,8 +1236,8 @@
     "longname": "src/connection-status.js",
     "access": null,
     "description": null,
-    "lineNumber": 4,
-    "content": "/**\n * @access public\n */\nexport class ConnectionStatusListener {\n  /**\n   * @desc Callback fired when connection is broken\n   */\n  onConnectionBroken() {}\n  /**\n   * @desc Callback fired when connection is closed\n   */\n  onConnectionClosed() {}\n  /**\n   * @desc Callback fired when is established\n   */\n  onConnectionEstablished() {}\n  /**\n   * @desc Callback fired when an error occurs in handshake step\n   * @param {Object} error\n   */\n  onFailedHandshake(error) {}\n  /**\n   * @desc Callback fired when a message is lost\n   */\n  onMessageLost() {}\n  /**\n   * @desc Callback fired when handshake step succeed\n   * @param {Object} authentication\n   */\n  onSuccessfulHandshake(authentication) {}\n}\n"
+    "lineNumber": 5,
+    "content": "/**\n * @access public\n * @desc Define life cycle connection methods \n */\nexport class ConnectionStatusListener {\n  /**\n   * @desc Callback fired when connection is broken\n   */\n  onConnectionBroken() {}\n  /**\n   * @desc Callback fired when connection is closed\n   */\n  onConnectionClosed() {}\n  /**\n   * @desc Callback fired when is established\n   */\n  onConnectionEstablished() {}\n  /**\n   * @desc Callback fired when an error occurs in handshake step\n   * @param {Object} error\n   */\n  onFailedHandshake(error) {}\n  /**\n   * @desc Callback fired when a message is lost\n   */\n  onMessageLost() {}\n  /**\n   * @desc Callback fired when handshake step succeed\n   * @param {Object} authentication\n   */\n  onSuccessfulHandshake(authentication) {}\n}\n"
   },
   {
     "__docId__": 60,
@@ -1251,8 +1251,8 @@
     "export": true,
     "importPath": "zetapush-js/src/connection-status.js",
     "importStyle": "{ConnectionStatusListener}",
-    "description": "",
-    "lineNumber": 4,
+    "description": "Define life cycle connection methods ",
+    "lineNumber": 5,
     "interface": false
   },
   {
@@ -1265,7 +1265,7 @@
     "longname": "src/connection-status.js~ConnectionStatusListener#onConnectionBroken",
     "access": null,
     "description": "Callback fired when connection is broken",
-    "lineNumber": 8,
+    "lineNumber": 9,
     "params": [],
     "generator": false
   },
@@ -1279,7 +1279,7 @@
     "longname": "src/connection-status.js~ConnectionStatusListener#onConnectionClosed",
     "access": null,
     "description": "Callback fired when connection is closed",
-    "lineNumber": 12,
+    "lineNumber": 13,
     "params": [],
     "generator": false
   },
@@ -1293,7 +1293,7 @@
     "longname": "src/connection-status.js~ConnectionStatusListener#onConnectionEstablished",
     "access": null,
     "description": "Callback fired when is established",
-    "lineNumber": 16,
+    "lineNumber": 17,
     "params": [],
     "generator": false
   },
@@ -1307,7 +1307,7 @@
     "longname": "src/connection-status.js~ConnectionStatusListener#onFailedHandshake",
     "access": null,
     "description": "Callback fired when an error occurs in handshake step",
-    "lineNumber": 21,
+    "lineNumber": 22,
     "params": [
       {
         "nullable": null,
@@ -1332,7 +1332,7 @@
     "longname": "src/connection-status.js~ConnectionStatusListener#onMessageLost",
     "access": null,
     "description": "Callback fired when a message is lost",
-    "lineNumber": 25,
+    "lineNumber": 26,
     "params": [],
     "generator": false
   },
@@ -1346,7 +1346,7 @@
     "longname": "src/connection-status.js~ConnectionStatusListener#onSuccessfulHandshake",
     "access": null,
     "description": "Callback fired when handshake step succeed",
-    "lineNumber": 30,
+    "lineNumber": 31,
     "params": [
       {
         "nullable": null,
@@ -1372,7 +1372,7 @@
     "access": null,
     "description": null,
     "lineNumber": 4,
-    "content": "/**\n * ZetaPush deployables names\n */\nconst DeployableNames = {\n  AUTH_SIMPLE: 'simple',\n  AUTH_WEAK: 'weak',\n  AUTH_DELEGATING: 'delegating'\n}\n\n/**\n * @access public\n */\nexport class AbstractHandshakeManager {\n  /**\n   *\n   */\n  constructor({ authType, businessId, deploymentId }) {\n    this.authType = authType\n    this.businessId = businessId\n    this.deploymentId = deploymentId\n  }\n  /**\n   * @param {ClientHelper} client\n   * @return {Object}\n   */\n  getHandshakeFields(client) {\n    const authentication = {\n      data: this.authData,\n      type: `${client.getBusinessId()}.${this.deploymentId}.${this.authType}`,\n      version: this.authVersion\n    }\n    if (client.getResource()) {\n      authentication.resource = client.getResource()\n    }\n    return {\n      ext: {\n        authentication\n      }\n    }\n  }\n  /**\n   * Get auth version\n   * @return {string}\n   */\n  get authVersion() {\n    return 'none'\n  }\n\n}\n\n/**\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class TokenHandshakeManager extends AbstractHandshakeManager {\n  /**\n   *\n   */\n  constructor({ authType, deploymentId, token }) {\n    super({ deploymentId, authType })\n    this.token = token\n  }\n  /**\n   * @return {token: string}\n   */\n  get authData() {\n    const { token } = this\n    return {\n      token\n    }\n  }\n\n}\n\n/**\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {\n\n  /**\n   *\n   */\n  constructor({ authType, deploymentId, login, password }) {\n    super({ authType, deploymentId })\n    this.login = login\n    this.password = password\n  }\n  /**\n   * @desc Get auth data\n   * @return {login: string, password: string}\n   */\n  get authData() {\n    const { login, password } = this\n    return {\n      login, password\n    }\n  }\n\n}\n\n/**\n * @access public\n */\nexport class AuthentFactory {\n  /**\n   * @return {DefaultZetapushHandshakeManager}\n   */\n  static createSimpleHandshake({ deploymentId, login, password }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_SIMPLE,\n      deploymentId,\n      login,\n      password\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager}\n   */\n  static createWeakHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_WEAK,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager}\n   */\n  static createDelegatingHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_DELEGATING,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager|DefaultZetapushHandshakeManager}\n   */\n  static createHandshake({ authType, deploymentId, login, password }) {\n    if (null === password) {\n      return new TokenHandshakeManager({ authType, deploymentId, token: login })\n    }\n    return new DefaultZetapushHandshakeManager({ authType, deploymentId, login, password  })\n  }\n\n}\n"
+    "content": "/**\n * ZetaPush deployables names\n */\nconst DeployableNames = {\n  AUTH_SIMPLE: 'simple',\n  AUTH_WEAK: 'weak',\n  AUTH_DELEGATING: 'delegating'\n}\n\n/**\n * @access protected\n */\nexport class AbstractHandshakeManager {\n  /**\n   *\n   */\n  constructor({ authType, businessId, deploymentId }) {\n    this.authType = authType\n    this.businessId = businessId\n    this.deploymentId = deploymentId\n  }\n  /**\n   * @param {ClientHelper} client\n   * @return {Object}\n   */\n  getHandshakeFields(client) {\n    const authentication = {\n      data: this.authData,\n      type: `${client.getBusinessId()}.${this.deploymentId}.${this.authType}`,\n      version: this.authVersion\n    }\n    if (client.getResource()) {\n      authentication.resource = client.getResource()\n    }\n    return {\n      ext: {\n        authentication\n      }\n    }\n  }\n  /**\n   * Get auth version\n   * @return {string}\n   */\n  get authVersion() {\n    return 'none'\n  }\n\n}\n\n/**\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class TokenHandshakeManager extends AbstractHandshakeManager {\n  /**\n   *\n   */\n  constructor({ authType, deploymentId, token }) {\n    super({ deploymentId, authType })\n    this.token = token\n  }\n  /**\n   * @return {token: string}\n   */\n  get authData() {\n    const { token } = this\n    return {\n      token\n    }\n  }\n\n}\n\n/**\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {\n\n  /**\n   *\n   */\n  constructor({ authType, deploymentId, login, password }) {\n    super({ authType, deploymentId })\n    this.login = login\n    this.password = password\n  }\n  /**\n   * @desc Get auth data\n   * @return {login: string, password: string}\n   */\n  get authData() {\n    const { login, password } = this\n    return {\n      login, password\n    }\n  }\n\n}\n\n/**\n * @access public\n */\nexport class AuthentFactory {\n  /**\n   * @return {DefaultZetapushHandshakeManager}\n   */\n  static createSimpleHandshake({ deploymentId, login, password }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_SIMPLE,\n      deploymentId,\n      login,\n      password\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager}\n   */\n  static createWeakHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_WEAK,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager}\n   */\n  static createDelegatingHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_DELEGATING,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager|DefaultZetapushHandshakeManager}\n   */\n  static createHandshake({ authType, deploymentId, login, password }) {\n    if (null === password) {\n      return new TokenHandshakeManager({ authType, deploymentId, token: login })\n    }\n    return new DefaultZetapushHandshakeManager({ authType, deploymentId, login, password  })\n  }\n\n}\n"
   },
   {
     "__docId__": 68,
@@ -1402,7 +1402,7 @@
     "name": "AbstractHandshakeManager",
     "memberof": "src/handshake.js",
     "longname": "src/handshake.js~AbstractHandshakeManager",
-    "access": "public",
+    "access": "protected",
     "export": true,
     "importPath": "zetapush-js/src/handshake.js",
     "importStyle": "{AbstractHandshakeManager}",
@@ -1929,7 +1929,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { Client } from './client'\nimport { AuthentFactory } from './handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './token-persistence'\n\n/**\n * @access public\n * @extends {Client}\n */\nexport class SmartClient extends Client {\n  /**\n   *\n   */\n  constructor({ apiUrl, businessId, deploymentId, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {\n    const handshakeFactory = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     *\n     */\n    super({ apiUrl , businessId, handshakeFactory, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('SmartClient::onFailedHandshake', error)\n    }\n    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new TokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
+    "content": "import { Client } from './client'\nimport { AuthentFactory } from './handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './token-persistence'\n\n/**\n * @access protected\n * @extends {Client}\n */\nexport class SmartClient extends Client {\n  /**\n   *\n   */\n  constructor({ apiUrl, businessId, deploymentId, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {\n    const handshakeFactory = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     *\n     */\n    super({ apiUrl , businessId, handshakeFactory, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('SmartClient::onFailedHandshake', error)\n    }\n    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new TokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
   },
   {
     "__docId__": 92,
@@ -1939,7 +1939,7 @@
     "name": "SmartClient",
     "memberof": "src/smart-client.js",
     "longname": "src/smart-client.js~SmartClient",
-    "access": "public",
+    "access": "protected",
     "export": true,
     "importPath": "zetapush-js/src/smart-client.js",
     "importStyle": "{SmartClient}",
@@ -2032,7 +2032,7 @@
     "access": null,
     "description": null,
     "lineNumber": 4,
-    "content": "/**\n *\n */\nconst ZETAPUSH_TOKEN_KEY = 'zetapush.token'\n\n/**\n * @access public\n * @desc Provide abstraction for token persistence\n */\nexport class AbstractTokenPersistenceStrategy {\n  /**\n   *\n   */\n  constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {\n    /**\n     * @access public\n     * @type {string}\n     */\n    this.key = key\n  }\n  /**\n   * @abstract\n   * @return {string} The stored token\n   */\n  get() {}\n  /**\n   * @abstract\n   */\n  set({ token }) {}\n}\n\n/**\n * @access public\n * @extends {AbstractTokenPersistenceStrategy}\n */\nexport class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersistenceStrategy {\n  /**\n   * @override\n   * @return {string} The stored token\n   */\n  get() {\n    return localStorage.getItem(this.key)\n  }\n  /**\n   * @override\n   */\n  set({ token }) {\n    localStorage.setItem(this.key, token)\n  }\n}\n"
+    "content": "/**\n * @type {string}\n */\nconst ZETAPUSH_TOKEN_KEY = 'zetapush.token'\n\n/**\n * @access protected\n * @desc Provide abstraction for token persistence\n */\nexport class AbstractTokenPersistenceStrategy {\n  /**\n   *\n   */\n  constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.key = key\n  }\n  /**\n   * @abstract\n   * @return {string} The stored token\n   */\n  get() {}\n  /**\n   * @abstract\n   */\n  set({ token }) {}\n}\n\n/**\n * @access protected\n * @extends {AbstractTokenPersistenceStrategy}\n */\nexport class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersistenceStrategy {\n  /**\n   * @override\n   * @return {string} The stored token\n   */\n  get() {\n    return localStorage.getItem(this.key)\n  }\n  /**\n   * @override\n   */\n  set({ token }) {\n    localStorage.setItem(this.key, token)\n  }\n}\n"
   },
   {
     "__docId__": 97,
@@ -2049,9 +2049,12 @@
     "description": "",
     "lineNumber": 4,
     "type": {
+      "nullable": null,
       "types": [
         "string"
-      ]
+      ],
+      "spread": false,
+      "description": null
     }
   },
   {
@@ -2062,7 +2065,7 @@
     "name": "AbstractTokenPersistenceStrategy",
     "memberof": "src/token-persistence.js",
     "longname": "src/token-persistence.js~AbstractTokenPersistenceStrategy",
-    "access": "public",
+    "access": "protected",
     "export": true,
     "importPath": "zetapush-js/src/token-persistence.js",
     "importStyle": "{AbstractTokenPersistenceStrategy}",
@@ -2102,7 +2105,7 @@
     "name": "key",
     "memberof": "src/token-persistence.js~AbstractTokenPersistenceStrategy",
     "longname": "src/token-persistence.js~AbstractTokenPersistenceStrategy#key",
-    "access": "public",
+    "access": "private",
     "description": "",
     "lineNumber": 19,
     "type": {
@@ -2171,7 +2174,7 @@
     "name": "LocalStorageTokenPersistenceStrategy",
     "memberof": "src/token-persistence.js",
     "longname": "src/token-persistence.js~LocalStorageTokenPersistenceStrategy",
-    "access": "public",
+    "access": "protected",
     "export": true,
     "importPath": "zetapush-js/src/token-persistence.js",
     "importStyle": "{LocalStorageTokenPersistenceStrategy}",

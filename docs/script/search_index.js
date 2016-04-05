@@ -6,18 +6,6 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "zetapush-js/src/handshake.js~abstracthandshakemanager",
-    "class/src/handshake.js~AbstractHandshakeManager.html",
-    "<span>AbstractHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/src/token-persistence.js~abstracttokenpersistencestrategy",
-    "class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html",
-    "<span>AbstractTokenPersistenceStrategy</span> <span class=\"search-result-import-path\">zetapush-js/src/token-persistence.js</span>",
-    "class"
-  ],
-  [
     "zetapush-js/src/handshake.js~authentfactory",
     "class/src/handshake.js~AuthentFactory.html",
     "<span>AuthentFactory</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
@@ -39,18 +27,6 @@ window.esdocSearchIndex = [
     "zetapush-js/src/handshake.js~defaultzetapushhandshakemanager",
     "class/src/handshake.js~DefaultZetapushHandshakeManager.html",
     "<span>DefaultZetapushHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/src/token-persistence.js~localstoragetokenpersistencestrategy",
-    "class/src/token-persistence.js~LocalStorageTokenPersistenceStrategy.html",
-    "<span>LocalStorageTokenPersistenceStrategy</span> <span class=\"search-result-import-path\">zetapush-js/src/token-persistence.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/src/smart-client.js~smartclient",
-    "class/src/smart-client.js~SmartClient.html",
-    "<span>SmartClient</span> <span class=\"search-result-import-path\">zetapush-js/src/smart-client.js</span>",
     "class"
   ],
   [
@@ -534,42 +510,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/handshake.js~abstracthandshakemanager#authtype",
-    "class/src/handshake.js~AbstractHandshakeManager.html#instance-member-authType",
-    "src/handshake.js~AbstractHandshakeManager#authType",
-    "member"
-  ],
-  [
-    "src/handshake.js~abstracthandshakemanager#authversion",
-    "class/src/handshake.js~AbstractHandshakeManager.html#instance-get-authVersion",
-    "src/handshake.js~AbstractHandshakeManager#authVersion",
-    "member"
-  ],
-  [
-    "src/handshake.js~abstracthandshakemanager#businessid",
-    "class/src/handshake.js~AbstractHandshakeManager.html#instance-member-businessId",
-    "src/handshake.js~AbstractHandshakeManager#businessId",
-    "member"
-  ],
-  [
-    "src/handshake.js~abstracthandshakemanager#constructor",
-    "class/src/handshake.js~AbstractHandshakeManager.html#instance-constructor-constructor",
-    "src/handshake.js~AbstractHandshakeManager#constructor",
-    "method"
-  ],
-  [
-    "src/handshake.js~abstracthandshakemanager#deploymentid",
-    "class/src/handshake.js~AbstractHandshakeManager.html#instance-member-deploymentId",
-    "src/handshake.js~AbstractHandshakeManager#deploymentId",
-    "member"
-  ],
-  [
-    "src/handshake.js~abstracthandshakemanager#gethandshakefields",
-    "class/src/handshake.js~AbstractHandshakeManager.html#instance-method-getHandshakeFields",
-    "src/handshake.js~AbstractHandshakeManager#getHandshakeFields",
-    "method"
-  ],
-  [
     "src/handshake.js~authentfactory.createdelegatinghandshake",
     "class/src/handshake.js~AuthentFactory.html#static-method-createDelegatingHandshake",
     "src/handshake.js~AuthentFactory.createDelegatingHandshake",
@@ -648,58 +588,10 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/smart-client.js~smartclient#constructor",
-    "class/src/smart-client.js~SmartClient.html#instance-constructor-constructor",
-    "src/smart-client.js~SmartClient#constructor",
-    "method"
-  ],
-  [
-    "src/smart-client.js~smartclient#gettoken",
-    "class/src/smart-client.js~SmartClient.html#instance-method-getToken",
-    "src/smart-client.js~SmartClient#getToken",
-    "method"
-  ],
-  [
     "src/token-persistence.js",
     "file/src/token-persistence.js.html",
     "src/token-persistence.js",
     "file"
-  ],
-  [
-    "src/token-persistence.js~abstracttokenpersistencestrategy#constructor",
-    "class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html#instance-constructor-constructor",
-    "src/token-persistence.js~AbstractTokenPersistenceStrategy#constructor",
-    "method"
-  ],
-  [
-    "src/token-persistence.js~abstracttokenpersistencestrategy#get",
-    "class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html#instance-method-get",
-    "src/token-persistence.js~AbstractTokenPersistenceStrategy#get",
-    "method"
-  ],
-  [
-    "src/token-persistence.js~abstracttokenpersistencestrategy#key",
-    "class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html#instance-member-key",
-    "src/token-persistence.js~AbstractTokenPersistenceStrategy#key",
-    "member"
-  ],
-  [
-    "src/token-persistence.js~abstracttokenpersistencestrategy#set",
-    "class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html#instance-method-set",
-    "src/token-persistence.js~AbstractTokenPersistenceStrategy#set",
-    "method"
-  ],
-  [
-    "src/token-persistence.js~localstoragetokenpersistencestrategy#get",
-    "class/src/token-persistence.js~LocalStorageTokenPersistenceStrategy.html#instance-method-get",
-    "src/token-persistence.js~LocalStorageTokenPersistenceStrategy#get",
-    "method"
-  ],
-  [
-    "src/token-persistence.js~localstoragetokenpersistencestrategy#set",
-    "class/src/token-persistence.js~LocalStorageTokenPersistenceStrategy.html#instance-method-set",
-    "src/token-persistence.js~LocalStorageTokenPersistenceStrategy#set",
-    "method"
   ],
   [
     "src/utils.js",

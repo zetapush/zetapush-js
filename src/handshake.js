@@ -8,7 +8,7 @@ const DeployableNames = {
 }
 
 /**
- * @access public
+ * @access protected
  */
 export class AbstractHandshakeManager {
   /**

@@ -3,7 +3,7 @@ import { AuthentFactory } from './handshake'
 import { LocalStorageTokenPersistenceStrategy } from './token-persistence'
 
 /**
- * @access public
+ * @access protected
  * @extends {Client}
  */
 export class SmartClient extends Client {
