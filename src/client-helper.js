@@ -1,46 +1,78 @@
 import { CometD, WebSocketTransport } from 'zetapush-cometd'
 import { FetchLongPollingTransport } from './cometd'
 import { getServers, shuffle } from './utils'
+import { ConnectionStatusListener } from './connection-status'
 
+/**
+ * @desc CometD Messages enumeration
+ */
 const Message = {
   RECONNECT_HANDSHAKE_VALUE: 'handshake',
   RECONNECT_NONE_VALUE: 'none',
   RECONNECT_RETRY_VALUE: 'retry'
 }
 
+/**
+ * @desc CometD Transports enumeration
+ */
 const Transport = {
   LONG_POLLING: 'long-polling',
   WEBSOCKET: 'websocket'
 }
 
-class ConnectionStatusListener {
-
-  onSuccessfulHandshake() {}
-
-  onFailedHandshake() {}
-
-  onConnectionEstablished() {}
-
-  onConnectionBroken() {}
-
-  onConnectionClosed() {}
-
-  onMessageLost() {}
-}
-
+/**
+ * @desc Provide utilities and abstraction on CometD Transport layer
+ * @access private
+ */
 export class ClientHelper {
   /**
    *
    */
   constructor({ apiUrl, businessId, handshakeFactory, resource }) {
+    /**
+     * @access private
+     * @type {string}
+     */
     this.businessId = businessId
+    /**
+     * @access private
+     * @type {function():AbstractHandshakeManager}
+     */
     this.handshakeFactory = handshakeFactory
+    /**
+     * @access private
+     * @type {string}
+     */
     this.resource = resource
+    /**
+     * @access private
+     * @type {Promise}
+     */
     this.servers = getServers(`${apiUrl}${businessId}`)
+    /**
+     * @access private
+     * @type {Array<Object>}
+     */
     this.connectionListeners = []
+    /**
+     * @access private
+     * @type {boolean}
+     */
     this.connected = false
+    /**
+     * @access private
+     * @type {boolean}
+     */
     this.wasConnected = false
+    /**
+     * @access private
+     * @type {string}
+     */
     this.serverUrl = null
+    /**
+     * @access private
+     * @type {CometD}
+     */
     this.cometd = new CometD()
     this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())
     this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())
@@ -48,7 +80,7 @@ export class ClientHelper {
       if (Transport.LONG_POLLING === transport) {
         // Try to find an other available server
         // Remove the current one from the _serverList array
-        this.handshakeFailure()
+        this.updateServerUrl()
       }
     }
     this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {
@@ -97,7 +129,7 @@ export class ClientHelper {
     })
   }
   /**
-   *
+   * @desc Connect client using CometD Transport
    */
   connect() {
     this.servers.then((servers) => {
@@ -114,7 +146,7 @@ export class ClientHelper {
     })
   }
   /**
-   *
+   * @desc Notify listeners when connection is established
    */
   connectionEstablished() {
     this.connectionListeners.forEach((listener) => {
@@ -122,7 +154,7 @@ export class ClientHelper {
     })
   }
   /**
-   *
+   * @desc Notify listeners when connection is broken
    */
   connectionBroken() {
     this.connectionListeners.forEach((listener) => {
@@ -130,7 +162,7 @@ export class ClientHelper {
     })
   }
   /**
-   *
+   * @desc Notify listeners when a message is lost
    */
   messageLost(channel, data) {
     this.connectionListeners.forEach((listener) => {
@@ -138,7 +170,7 @@ export class ClientHelper {
     })
   }
   /**
-   *
+   * @desc Notify listeners when connection is closed
    */
   connectionClosed() {
     this.connectionListeners.forEach((listener) => {
@@ -146,7 +178,7 @@ export class ClientHelper {
     })
   }
   /**
-   *
+   * @desc Notify listeners when connection is established
    */
   initialized(authentication) {
     if (authentication) {
@@ -157,7 +189,7 @@ export class ClientHelper {
     })
   }
   /**
-   *
+   * @desc Notify listeners when handshake step succeed
    */
   authenticationFailed(error) {
     this.connectionListeners.forEach((listener) => {
@@ -168,6 +200,12 @@ export class ClientHelper {
    *
    */
   handshakeFailure() {
+
+  }
+  /**
+  * @desc Remove current server url from the server list and shuffle for another one
+  */
+  updateServerUrl() {
     this.servers.then((servers) => {
       const index = servers.indexOf(this.serverUrl)
       if (index > -1) {
@@ -194,67 +232,77 @@ export class ClientHelper {
     console.debug('ClientHelper::negotiate', ext)
   }
   /**
-   *
+   * @desc Disconnect CometD client
    */
   disconnect() {
     this.cometd.disconnect()
   }
   /**
-   *
+   * @desc Get CometD handshake parameters
+   * @return {Object}
    */
   getHandshakeFields() {
     const handshake = this.handshakeFactory()
     return handshake.getHandshakeFields(this)
   }
   /**
-   *
+   * @desc Set a new handshake factory methods
+   * @param {function():AbstractHandshakeManager} handshakeFactory
    */
   setHandshakeFactory(handshakeFactory) {
     this.handshakeFactory = handshakeFactory
   }
   /**
-   *
+   * @desc Get business id
+   * @return {string}
    */
   getBusinessId() {
     return this.businessId
   }
   /**
-   *
+   * @desc Get session id
+   * @return {string}
    */
   getSessionId() {
     throw NotYetImplementedError()
   }
   /**
-   *
+   * @desc Get resource
+   * @return {string}
    */
   getResource() {
     return this.resource
   }
   /**
-   *
+   * @desc Subribe all methods defined in the serviceListener for the given prefixed channel
+   * @param {string} prefix - Channel prefix
+   * @param {Object} serviceListener
+   * @return {Object} subscriptions
    */
   subscribe(prefix, serviceListener) {
-    const subscripions = {}
+    const subscriptions = {}
     for (const method in serviceListener) {
       if (serviceListener.hasOwnProperty(method)) {
         const channel = `${prefix}/${method}`
-        subscripions[method] = this.cometd.subscribe(channel, serviceListener[method])
+        subscriptions[method] = this.cometd.subscribe(channel, serviceListener[method])
       }
     }
-    return subscripions
+    return subscriptions
   }
   /**
-   *
+   * @desc Unsubcribe all subscriptions defined in given subscriptions object
+   * @param {Object} subscriptions
    */
-  unsubscribe(subscripions) {
-    for (const method in subscripions) {
-      if (subscripions.hasOwnProperty(method)) {
-        this.cometd.unsubscribe(subscripions[method])
+  unsubscribe(subscriptions) {
+    for (const method in subscriptions) {
+      if (subscriptions.hasOwnProperty(method)) {
+        this.cometd.unsubscribe(subscriptions[method])
       }
     }
   }
   /**
-   *
+   * @desc Add a connection listener to handle life cycle connection events
+   * @param {ConnectionStatusListener} listener
    */
   addConnectionStatusListener(listener) {
     const connectionListener = Object.assign(new ConnectionStatusListener(), listener)

@@ -15,7 +15,7 @@
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
@@ -34,7 +34,11 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html">ClientHelper</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html">AbstractTokenPersistenceStrategy</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/token-persistence.js~LocalStorageTokenPersistenceStrategy.html">LocalStorageTokenPersistenceStrategy</a></span></span></li>
@@ -49,12 +53,12 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">Function</h1>
 <div data-ice="summaries"><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Static Public Summary</td></tr></thead>
+  <thead><tr><td data-ice="title" colspan="3">Static Private Summary</td></tr></thead>
   <tbody>
   
   <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">public</span>
+      <span class="access" data-ice="access">private</span>
       
       
       
@@ -63,13 +67,14 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="function/index.html#static-function-FetchLongPollingTransport">FetchLongPollingTransport</a></span></span><span data-ice="signature">(): <span>*</span></span>
+           <span data-ice="name"><span><a href="function/index.html#static-function-FetchLongPollingTransport">FetchLongPollingTransport</a></span></span><span data-ice="signature">(): <span><a href="function/index.html#static-function-FetchLongPollingTransport">FetchLongPollingTransport</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Implements LongPollingTransport using borwser fetch() API</p>
+</div>
       </div>
     </td>
     <td>
@@ -80,27 +85,28 @@
 </tbody>
 </table>
 </div>
-<div data-ice="details"><h2 data-ice="title">Static Public </h2>
+<div data-ice="details"><h2 data-ice="title">Static Private </h2>
 
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="static-function-FetchLongPollingTransport">
-    <span class="access" data-ice="access">public</span>
+    <span class="access" data-ice="access">private</span>
     
     
     
     
-    <span data-ice="name">FetchLongPollingTransport</span><span data-ice="signature">(): <span>*</span></span>
+    <span data-ice="name">FetchLongPollingTransport</span><span data-ice="signature">(): <span><a href="function/index.html#static-function-FetchLongPollingTransport">FetchLongPollingTransport</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/cometd.js.html#lineNumber6">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/cometd.js.html#lineNumber8">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {FetchLongPollingTransport} from &apos;<span><a href="file/src/cometd.js.html#lineNumber6">zetapush-js/src/cometd.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {FetchLongPollingTransport} from &apos;<span><a href="file/src/cometd.js.html#lineNumber8">zetapush-js/src/cometd.js</a></span>&apos;</code></pre></div>
   
   
-  
+  <div data-ice="description"><p>Implements LongPollingTransport using borwser fetch() API</p>
+</div>
 
   
 
@@ -111,7 +117,7 @@
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span>*</span></td>
+        <td class="return-type" data-ice="returnType"><span><a href="function/index.html#static-function-FetchLongPollingTransport">FetchLongPollingTransport</a></span></td>
         
       </tr>
     </table>

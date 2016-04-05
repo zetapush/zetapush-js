@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../">
-  <title data-ice="title">AbstractTokenPersistenceStrategy | API Document</title>
+  <title data-ice="title">TokenHandshakeManager | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -47,24 +47,24 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {AbstractTokenPersistenceStrategy} from &apos;<span><a href="file/src/token-persistence.js.html#lineNumber10">zetapush-js/src/token-persistence.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {TokenHandshakeManager} from &apos;<span><a href="file/src/handshake.js.html#lineNumber55">zetapush-js/src/handshake.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/token-persistence.js.html#lineNumber10">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/handshake.js.html#lineNumber55">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
-  <h1 data-ice="name">AbstractTokenPersistenceStrategy</h1>
+  <h1 data-ice="name">TokenHandshakeManager</h1>
 
   
 
   
   
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span><a href="class/src/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span> &#x2192; TokenHandshakeManager</div></div>
   
-  <div class="flat-list" data-ice="directSubclass"><h4>Direct Subclass:</h4><div><span><a href="class/src/token-persistence.js~LocalStorageTokenPersistenceStrategy.html">LocalStorageTokenPersistenceStrategy</a></span></div></div>
   
   
   
@@ -73,8 +73,7 @@
 
   
   
-  <div class="description" data-ice="description"><p>Provide abstraction for token persistence</p>
-</div>
+  
 
   
 
@@ -102,7 +101,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(objectPattern: {&quot;key&quot;: <span>*</span>})</span>
+           <span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(objectPattern: {&quot;authType&quot;: <span>*</span>, &quot;deploymentId&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>})</span>
         </p>
       </div>
       <div>
@@ -127,46 +126,14 @@
     <td>
       <span class="access" data-ice="access">public</span>
       
-      
+      <span class="kind" data-ice="kind">get</span>
       
       <span class="override" data-ice="override"></span>
     </td>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html#instance-member-key">key</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
-<div data-ice="methodSummary"><h2>Method Summary</h2><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Public Methods</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      <span class="abstract" data-ice="abstract">abstract</span>
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html#instance-method-get">get</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+           <span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html#instance-get-authData">authData</a></span></span><span data-ice="signature">: <span>token: string</span>: <span>*</span></span>
         </p>
       </div>
       <div>
@@ -185,13 +152,148 @@
       <span class="access" data-ice="access">public</span>
       
       
-      <span class="abstract" data-ice="abstract">abstract</span>
+      
       <span class="override" data-ice="override"></span>
     </td>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html#instance-method-set">set</a></span></span><span data-ice="signature">(objectPattern: {&quot;token&quot;: <span>*</span>})</span>
+           <span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html#instance-member-token">token</a></span></span><span data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+
+<div class="inherited-summary" data-ice="inheritedSummary"><h2>Inherited Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3"><span class="toggle closed"></span> From class <span><a href="class/src/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/handshake.js~AbstractHandshakeManager.html#instance-get-authVersion">authVersion</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get auth version</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/handshake.js~AbstractHandshakeManager.html#instance-member-authType">authType</a></span></span><span data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/handshake.js~AbstractHandshakeManager.html#instance-member-businessId">businessId</a></span></span><span data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/handshake.js~AbstractHandshakeManager.html#instance-member-deploymentId">deploymentId</a></span></span><span data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/handshake.js~AbstractHandshakeManager.html#instance-method-getHandshakeFields">getHandshakeFields</a></span></span><span data-ice="signature">(client: <span>ClientHelper</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
         </p>
       </div>
       <div>
@@ -211,8 +313,6 @@
 
 
 
-
-
 <div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
 
 <div class="detail" data-ice="detail">
@@ -222,11 +322,11 @@
     
     
     
-    <span data-ice="name">constructor</span><span data-ice="signature">(objectPattern: {&quot;key&quot;: <span>*</span>})</span>
+    <span data-ice="name">constructor</span><span data-ice="signature">(objectPattern: {&quot;authType&quot;: <span>*</span>, &quot;deploymentId&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>})</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/token-persistence.js.html#lineNumber14">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/handshake.js.html#lineNumber59">source</a></span></span>
     </span>
   </h3>
 
@@ -235,7 +335,7 @@
   
   
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/handshake.js~AbstractHandshakeManager.html#instance-constructor-constructor">AbstractHandshakeManager#constructor</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -247,9 +347,8 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">objectPattern</td>
-      <td data-ice="type">{&quot;key&quot;: <span>*</span>}</td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: {}</li></ul></td>
+      <td data-ice="type">{&quot;authType&quot;: <span>*</span>, &quot;deploymentId&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;authType&quot;:null,&quot;deploymentId&quot;:null,&quot;token&quot;:null}</li></ul></td>
       <td data-ice="description"></td>
     </tr>
 </tbody>
@@ -276,60 +375,17 @@
 <div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
 
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-key">
+  <h3 data-ice="anchor" id="instance-get-authData">
     <span class="access" data-ice="access">public</span>
     
+    <span class="kind" data-ice="kind">get</span>
     
     
-    
-    <span data-ice="name">key</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span data-ice="name">authData</span><span data-ice="signature">: <span>token: string</span>: <span>*</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/token-persistence.js.html#lineNumber19">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-</div>
-<div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
-
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-get">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    <span class="abstract" data-ice="abstract">abstract</span>
-    
-    <span data-ice="name">get</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/token-persistence.js.html#lineNumber25">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/handshake.js.html#lineNumber66">source</a></span></span>
     </span>
   </h3>
 
@@ -347,9 +403,8 @@
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-        <td class="return-desc" data-ice="returnDescription"><p>The stored token</p>
-</td>
+        <td class="return-type" data-ice="returnType"><span>token: string</span></td>
+        
       </tr>
     </table>
     <div data-ice="returnProperties">
@@ -370,17 +425,17 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-set">
+  <h3 data-ice="anchor" id="instance-member-token">
     <span class="access" data-ice="access">public</span>
     
     
-    <span class="abstract" data-ice="abstract">abstract</span>
     
-    <span data-ice="name">set</span><span data-ice="signature">(objectPattern: {&quot;token&quot;: <span>*</span>})</span>
+    
+    <span data-ice="name">token</span><span data-ice="signature">: <span>*</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/token-persistence.js.html#lineNumber29">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/handshake.js.html#lineNumber61">source</a></span></span>
     </span>
   </h3>
 
@@ -391,23 +446,7 @@
 
   
 
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">objectPattern</td>
-      <td data-ice="type">{&quot;token&quot;: <span>*</span>}</td>
-      <td data-ice="appendix"><ul><li>default: {&quot;token&quot;:null}</li></ul></td>
-      <td data-ice="description"></td>
-    </tr>
-</tbody>
-  </table>
-</div>
+  <div data-ice="properties">
 </div>
 
   
@@ -426,6 +465,7 @@
   
 </div>
 </div>
+
 </div>
 
 <footer class="footer">

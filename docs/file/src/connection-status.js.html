@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../">
-  <title data-ice="title">src/handshake.js | API Document</title>
+  <title data-ice="title">src/connection-status.js | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -46,155 +46,37 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/handshake.js</h1>
+<div class="content" data-ice="content"><h1 data-ice="title">src/connection-status.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
- * ZetaPush deployables names
- */
-const DeployableNames = {
-  AUTH_SIMPLE: &apos;simple&apos;,
-  AUTH_WEAK: &apos;weak&apos;,
-  AUTH_DELEGATING: &apos;delegating&apos;
-}
-
-/**
  * @access public
  */
-export class AbstractHandshakeManager {
+export class ConnectionStatusListener {
   /**
-   *
+   * @desc Callback fired when connection is broken
    */
-  constructor({ authType, businessId, deploymentId }) {
-    this.authType = authType
-    this.businessId = businessId
-    this.deploymentId = deploymentId
-  }
+  onConnectionBroken() {}
   /**
-   * @param {ClientHelper} client
-   * @return {Object}
+   * @desc Callback fired when connection is closed
    */
-  getHandshakeFields(client) {
-    const authentication = {
-      data: this.authData,
-      type: `${client.getBusinessId()}.${this.deploymentId}.${this.authType}`,
-      version: this.authVersion
-    }
-    if (client.getResource()) {
-      authentication.resource = client.getResource()
-    }
-    return {
-      ext: {
-        authentication
-      }
-    }
-  }
+  onConnectionClosed() {}
   /**
-   * Get auth version
-   * @return {string}
+   * @desc Callback fired when is established
    */
-  get authVersion() {
-    return &apos;none&apos;
-  }
-
-}
-
-/**
- * @access public
- * @extends {AbstractHandshakeManager}
- */
-export class TokenHandshakeManager extends AbstractHandshakeManager {
+  onConnectionEstablished() {}
   /**
-   *
+   * @desc Callback fired when an error occurs in handshake step
+   * @param {Object} error
    */
-  constructor({ authType, deploymentId, token }) {
-    super({ deploymentId, authType })
-    this.token = token
-  }
+  onFailedHandshake(error) {}
   /**
-   * @return {token: string}
+   * @desc Callback fired when a message is lost
    */
-  get authData() {
-    const { token } = this
-    return {
-      token
-    }
-  }
-
-}
-
-/**
- * @access public
- * @extends {AbstractHandshakeManager}
- */
-export class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {
-
+  onMessageLost() {}
   /**
-   *
+   * @desc Callback fired when handshake step succeed
+   * @param {Object} authentication
    */
-  constructor({ authType, deploymentId, login, password }) {
-    super({ authType, deploymentId })
-    this.login = login
-    this.password = password
-  }
-  /**
-   * @desc Get auth data
-   * @return {login: string, password: string}
-   */
-  get authData() {
-    const { login, password } = this
-    return {
-      login, password
-    }
-  }
-
-}
-
-/**
- * @access public
- */
-export class AuthentFactory {
-  /**
-   * @return {DefaultZetapushHandshakeManager}
-   */
-  static createSimpleHandshake({ deploymentId, login, password }) {
-    return AuthentFactory.createHandshake({
-      authType: DeployableNames.AUTH_SIMPLE,
-      deploymentId,
-      login,
-      password
-    })
-  }
-  /**
-   * @return {TokenHandshakeManager}
-   */
-  static createWeakHandshake({ deploymentId, token }) {
-    return AuthentFactory.createHandshake({
-      authType: DeployableNames.AUTH_WEAK,
-      deploymentId,
-      login: token,
-      password: null
-    })
-  }
-  /**
-   * @return {TokenHandshakeManager}
-   */
-  static createDelegatingHandshake({ deploymentId, token }) {
-    return AuthentFactory.createHandshake({
-      authType: DeployableNames.AUTH_DELEGATING,
-      deploymentId,
-      login: token,
-      password: null
-    })
-  }
-  /**
-   * @return {TokenHandshakeManager|DefaultZetapushHandshakeManager}
-   */
-  static createHandshake({ authType, deploymentId, login, password }) {
-    if (null === password) {
-      return new TokenHandshakeManager({ authType, deploymentId, token: login })
-    }
-    return new DefaultZetapushHandshakeManager({ authType, deploymentId, login, password  })
-  }
-
+  onSuccessfulHandshake(authentication) {}
 }
 </code></pre>
 

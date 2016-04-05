@@ -3,7 +3,8 @@ import { AuthentFactory } from './handshake'
 import { LocalStorageTokenPersistenceStrategy } from './token-persistence'
 
 /**
- *
+ * @access public
+ * @extends {Client}
  */
 export class SmartClient extends Client {
   /**
@@ -32,11 +33,15 @@ export class SmartClient extends Client {
     const onFailedHandshake = (error) => {
       console.debug('SmartClient::onFailedHandshake', error)
     }
-    this.client.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })
+    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })
+    /**
+     * @access private
+     * @type {TokenPersistenceStrategy}
+     */
     this.strategy = new TokenPersistenceStrategy()
   }
   /**
-   *
+   * @return {string} The stored token
    */
   getToken() {
     return this.strategy.get()

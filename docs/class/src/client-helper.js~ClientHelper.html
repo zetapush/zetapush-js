@@ -15,7 +15,7 @@
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
@@ -34,7 +34,11 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html">ClientHelper</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html">AbstractTokenPersistenceStrategy</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/token-persistence.js~LocalStorageTokenPersistenceStrategy.html">LocalStorageTokenPersistenceStrategy</a></span></span></li>
@@ -48,13 +52,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {ClientHelper} from &apos;<span><a href="file/src/client-helper.js.html#lineNumber31">zetapush-js/src/client-helper.js</a></span>&apos;</code></pre></div>
-  <span data-ice="access">public</span>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {ClientHelper} from &apos;<span><a href="file/src/client-helper.js.html#lineNumber27">zetapush-js/src/client-helper.js</a></span>&apos;</code></pre></div>
+  <span data-ice="access">private</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/client-helper.js.html#lineNumber31">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/client-helper.js.html#lineNumber27">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -74,7 +78,8 @@
 
   
   
-  
+  <div class="description" data-ice="description"><p>Provide utilities and abstraction on CometD Transport layer</p>
+</div>
 
   
 
@@ -134,7 +139,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-businessId">businessId</a></span></span><span data-ice="signature">: <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-userId">userId</a></span></span><span data-ice="signature">: <span>*</span></span>
         </p>
       </div>
       <div>
@@ -148,9 +153,15 @@
       
     </td>
   </tr>
-<tr data-ice="target">
+</tbody>
+</table>
+<table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Private Members</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">public</span>
+      <span class="access" data-ice="access">private</span>
       
       
       
@@ -159,7 +170,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-cometd">cometd</a></span></span><span data-ice="signature">: <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-businessId">businessId</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
@@ -175,7 +186,32 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">public</span>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-cometd">cometd</a></span></span><span data-ice="signature">: <span>CometD</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
       
       
       
@@ -200,7 +236,7 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">public</span>
+      <span class="access" data-ice="access">private</span>
       
       
       
@@ -209,7 +245,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-connectionListeners">connectionListeners</a></span></span><span data-ice="signature">: <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-connectionListeners">connectionListeners</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>&gt;</span>
         </p>
       </div>
       <div>
@@ -225,7 +261,7 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">public</span>
+      <span class="access" data-ice="access">private</span>
       
       
       
@@ -234,7 +270,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-handshakeFactory">handshakeFactory</a></span></span><span data-ice="signature">: <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-handshakeFactory">handshakeFactory</a></span></span><span data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span>: <span><a href="class/src/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></span>
         </p>
       </div>
       <div>
@@ -250,7 +286,7 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">public</span>
+      <span class="access" data-ice="access">private</span>
       
       
       
@@ -259,7 +295,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-resource">resource</a></span></span><span data-ice="signature">: <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-resource">resource</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
@@ -275,7 +311,7 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">public</span>
+      <span class="access" data-ice="access">private</span>
       
       
       
@@ -284,7 +320,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-serverUrl">serverUrl</a></span></span><span data-ice="signature">: <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-serverUrl">serverUrl</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
@@ -300,7 +336,7 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">public</span>
+      <span class="access" data-ice="access">private</span>
       
       
       
@@ -309,7 +345,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-servers">servers</a></span></span><span data-ice="signature">: <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-servers">servers</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
         </p>
       </div>
       <div>
@@ -325,32 +361,7 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-member-userId">userId</a></span></span><span data-ice="signature">: <span>*</span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
+      <span class="access" data-ice="access">private</span>
       
       
       
@@ -391,13 +402,14 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-addConnectionStatusListener">addConnectionStatusListener</a></span></span><span data-ice="signature">(listener: <span>*</span>)</span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-addConnectionStatusListener">addConnectionStatusListener</a></span></span><span data-ice="signature">(listener: <span><a href="class/src/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span>)</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Add a connection listener to handle life cycle connection events</p>
+</div>
       </div>
     </td>
     <td>
@@ -422,7 +434,8 @@
       <div>
         
         
-        
+        <div data-ice="description"><p>Notify listeners when handshake step succeed</p>
+</div>
       </div>
     </td>
     <td>
@@ -447,7 +460,8 @@
       <div>
         
         
-        
+        <div data-ice="description"><p>Connect client using CometD Transport</p>
+</div>
       </div>
     </td>
     <td>
@@ -472,7 +486,8 @@
       <div>
         
         
-        
+        <div data-ice="description"><p>Notify listeners when connection is broken</p>
+</div>
       </div>
     </td>
     <td>
@@ -497,7 +512,8 @@
       <div>
         
         
-        
+        <div data-ice="description"><p>Notify listeners when connection is closed</p>
+</div>
       </div>
     </td>
     <td>
@@ -522,7 +538,8 @@
       <div>
         
         
-        
+        <div data-ice="description"><p>Notify listeners when connection is established</p>
+</div>
       </div>
     </td>
     <td>
@@ -547,7 +564,8 @@
       <div>
         
         
-        
+        <div data-ice="description"><p>Disconnect CometD client</p>
+</div>
       </div>
     </td>
     <td>
@@ -566,13 +584,14 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-getBusinessId">getBusinessId</a></span></span><span data-ice="signature">(): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-getBusinessId">getBusinessId</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Get business id</p>
+</div>
       </div>
     </td>
     <td>
@@ -591,13 +610,14 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-getHandshakeFields">getHandshakeFields</a></span></span><span data-ice="signature">(): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-getHandshakeFields">getHandshakeFields</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Get CometD handshake parameters</p>
+</div>
       </div>
     </td>
     <td>
@@ -616,13 +636,14 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-getResource">getResource</a></span></span><span data-ice="signature">(): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-getResource">getResource</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Get resource</p>
+</div>
       </div>
     </td>
     <td>
@@ -641,13 +662,14 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-getSessionId">getSessionId</a></span></span><span data-ice="signature">()</span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-getSessionId">getSessionId</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Get session id</p>
+</div>
       </div>
     </td>
     <td>
@@ -697,7 +719,8 @@
       <div>
         
         
-        
+        <div data-ice="description"><p>Notify listeners when connection is established</p>
+</div>
       </div>
     </td>
     <td>
@@ -722,7 +745,8 @@
       <div>
         
         
-        
+        <div data-ice="description"><p>Notify listeners when a message is lost</p>
+</div>
       </div>
     </td>
     <td>
@@ -766,13 +790,14 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-setHandshakeFactory">setHandshakeFactory</a></span></span><span data-ice="signature">(handshakeFactory: <span>*</span>)</span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-setHandshakeFactory">setHandshakeFactory</a></span></span><span data-ice="signature">(handshakeFactory: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span>: <span><a href="class/src/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span>)</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Set a new handshake factory methods</p>
+</div>
       </div>
     </td>
     <td>
@@ -791,13 +816,14 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-subscribe">subscribe</a></span></span><span data-ice="signature">(prefix: <span>*</span>, serviceListener: <span>*</span>): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-subscribe">subscribe</a></span></span><span data-ice="signature">(prefix: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, serviceListener: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Subribe all methods defined in the serviceListener for the given prefixed channel</p>
+</div>
       </div>
     </td>
     <td>
@@ -816,13 +842,40 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-unsubscribe">unsubscribe</a></span></span><span data-ice="signature">(subscripions: <span>*</span>)</span>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-unsubscribe">unsubscribe</a></span></span><span data-ice="signature">(subscriptions: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>)</span>
         </p>
       </div>
       <div>
         
         
+        <div data-ice="description"><p>Unsubcribe all subscriptions defined in given subscriptions object</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html#instance-method-updateServerUrl">updateServerUrl</a></span></span><span data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
         
+        
+        <div data-ice="description"><p>Remove current server url from the server list and shuffle for another one</p>
+</div>
       </div>
     </td>
     <td>
@@ -851,7 +904,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber35">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber31">source</a></span></span>
     </span>
   </h3>
 
@@ -900,13 +953,55 @@
 <div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
 
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-businessId">
+  <h3 data-ice="anchor" id="instance-member-userId">
     <span class="access" data-ice="access">public</span>
     
     
     
     
-    <span data-ice="name">businessId</span><span data-ice="signature">: <span>*</span></span>
+    <span data-ice="name">userId</span><span data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber185">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<h2 data-ice="title">Private Members</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-businessId">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    <span data-ice="name">businessId</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
@@ -941,16 +1036,16 @@
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-cometd">
-    <span class="access" data-ice="access">public</span>
+    <span class="access" data-ice="access">private</span>
     
     
     
     
-    <span data-ice="name">cometd</span><span data-ice="signature">: <span>*</span></span>
+    <span data-ice="name">cometd</span><span data-ice="signature">: <span>CometD</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber44">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber76">source</a></span></span>
     </span>
   </h3>
 
@@ -981,12 +1076,92 @@
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-connected">
-    <span class="access" data-ice="access">public</span>
+    <span class="access" data-ice="access">private</span>
     
     
     
     
     <span data-ice="name">connected</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber61">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-connectionListeners">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    <span data-ice="name">connectionListeners</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber56">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-handshakeFactory">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    <span data-ice="name">handshakeFactory</span><span data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span>: <span><a href="class/src/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></span>
     <span class="right-info">
       
       
@@ -1020,97 +1195,17 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-connectionListeners">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">connectionListeners</span><span data-ice="signature">: <span>*</span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber40">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-handshakeFactory">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">handshakeFactory</span><span data-ice="signature">: <span>*</span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber37">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-resource">
-    <span class="access" data-ice="access">public</span>
+    <span class="access" data-ice="access">private</span>
     
     
     
     
-    <span data-ice="name">resource</span><span data-ice="signature">: <span>*</span></span>
+    <span data-ice="name">resource</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber38">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber46">source</a></span></span>
     </span>
   </h3>
 
@@ -1141,16 +1236,16 @@
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-serverUrl">
-    <span class="access" data-ice="access">public</span>
+    <span class="access" data-ice="access">private</span>
     
     
     
     
-    <span data-ice="name">serverUrl</span><span data-ice="signature">: <span>*</span></span>
+    <span data-ice="name">serverUrl</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber43">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber71">source</a></span></span>
     </span>
   </h3>
 
@@ -1181,56 +1276,16 @@
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-servers">
-    <span class="access" data-ice="access">public</span>
+    <span class="access" data-ice="access">private</span>
     
     
     
     
-    <span data-ice="name">servers</span><span data-ice="signature">: <span>*</span></span>
+    <span data-ice="name">servers</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber39">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-userId">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">userId</span><span data-ice="signature">: <span>*</span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber153">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber51">source</a></span></span>
     </span>
   </h3>
 
@@ -1261,7 +1316,7 @@
 </div>
 <div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-wasConnected">
-    <span class="access" data-ice="access">public</span>
+    <span class="access" data-ice="access">private</span>
     
     
     
@@ -1270,7 +1325,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber42">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber66">source</a></span></span>
     </span>
   </h3>
 
@@ -1309,18 +1364,19 @@
     
     
     
-    <span data-ice="name">addConnectionStatusListener</span><span data-ice="signature">(listener: <span>*</span>)</span>
+    <span data-ice="name">addConnectionStatusListener</span><span data-ice="signature">(listener: <span><a href="class/src/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber259">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber307">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Add a connection listener to handle life cycle connection events</p>
+</div>
 
   
 
@@ -1334,7 +1390,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">listener</td>
-      <td data-ice="type"><span>*</span></td>
+      <td data-ice="type"><span><a href="class/src/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -1369,14 +1425,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber162">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber194">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Notify listeners when handshake step succeed</p>
+</div>
 
   
 
@@ -1425,14 +1482,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber102">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber134">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Connect client using CometD Transport</p>
+</div>
 
   
 
@@ -1465,14 +1523,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber127">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber159">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Notify listeners when connection is broken</p>
+</div>
 
   
 
@@ -1505,14 +1564,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber143">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber175">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Notify listeners when connection is closed</p>
+</div>
 
   
 
@@ -1545,14 +1605,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber119">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber151">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Notify listeners when connection is established</p>
+</div>
 
   
 
@@ -1585,14 +1646,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber199">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber237">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Disconnect CometD client</p>
+</div>
 
   
 
@@ -1621,18 +1683,19 @@
     
     
     
-    <span data-ice="name">getBusinessId</span><span data-ice="signature">(): <span>*</span></span>
+    <span data-ice="name">getBusinessId</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber218">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber259">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Get business id</p>
+</div>
 
   
 
@@ -1643,7 +1706,7 @@
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span>*</span></td>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
         
       </tr>
     </table>
@@ -1671,18 +1734,19 @@
     
     
     
-    <span data-ice="name">getHandshakeFields</span><span data-ice="signature">(): <span>*</span></span>
+    <span data-ice="name">getHandshakeFields</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber205">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber244">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Get CometD handshake parameters</p>
+</div>
 
   
 
@@ -1693,7 +1757,7 @@
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span>*</span></td>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
         
       </tr>
     </table>
@@ -1721,18 +1785,19 @@
     
     
     
-    <span data-ice="name">getResource</span><span data-ice="signature">(): <span>*</span></span>
+    <span data-ice="name">getResource</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber230">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber273">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Get resource</p>
+</div>
 
   
 
@@ -1743,7 +1808,7 @@
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span>*</span></td>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
         
       </tr>
     </table>
@@ -1771,25 +1836,36 @@
     
     
     
-    <span data-ice="name">getSessionId</span><span data-ice="signature">()</span>
+    <span data-ice="name">getSessionId</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber224">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber266">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Get session id</p>
+</div>
 
   
 
   <div data-ice="properties">
 </div>
 
-  
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+        
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 
@@ -1815,7 +1891,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber170">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber202">source</a></span></span>
     </span>
   </h3>
 
@@ -1855,14 +1931,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber151">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber183">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Notify listeners when connection is established</p>
+</div>
 
   
 
@@ -1911,14 +1988,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber135">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber167">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Notify listeners when a message is lost</p>
+</div>
 
   
 
@@ -1973,7 +2051,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber193">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber231">source</a></span></span>
     </span>
   </h3>
 
@@ -2025,18 +2103,19 @@
     
     
     
-    <span data-ice="name">setHandshakeFactory</span><span data-ice="signature">(handshakeFactory: <span>*</span>)</span>
+    <span data-ice="name">setHandshakeFactory</span><span data-ice="signature">(handshakeFactory: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span>: <span><a href="class/src/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber212">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber252">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Set a new handshake factory methods</p>
+</div>
 
   
 
@@ -2050,7 +2129,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">handshakeFactory</td>
-      <td data-ice="type"><span>*</span></td>
+      <td data-ice="type"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span>: <span><a href="class/src/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -2081,18 +2160,19 @@
     
     
     
-    <span data-ice="name">subscribe</span><span data-ice="signature">(prefix: <span>*</span>, serviceListener: <span>*</span>): <span>*</span></span>
+    <span data-ice="name">subscribe</span><span data-ice="signature">(prefix: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, serviceListener: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber236">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber282">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Subribe all methods defined in the serviceListener for the given prefixed channel</p>
+</div>
 
   
 
@@ -2106,13 +2186,14 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">prefix</td>
-      <td data-ice="type"><span>*</span></td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>Channel prefix</p>
+</td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">serviceListener</td>
-      <td data-ice="type"><span>*</span></td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -2125,8 +2206,9 @@
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span>*</span></td>
-        
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>subscriptions</p>
+</td>
       </tr>
     </table>
     <div data-ice="returnProperties">
@@ -2153,18 +2235,19 @@
     
     
     
-    <span data-ice="name">unsubscribe</span><span data-ice="signature">(subscripions: <span>*</span>)</span>
+    <span data-ice="name">unsubscribe</span><span data-ice="signature">(subscriptions: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber249">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber296">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Unsubcribe all subscriptions defined in given subscriptions object</p>
+</div>
 
   
 
@@ -2177,14 +2260,55 @@
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">subscripions</td>
-      <td data-ice="type"><span>*</span></td>
+      <td data-ice="name" data-depth="0">subscriptions</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 </tbody>
   </table>
 </div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-updateServerUrl">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">updateServerUrl</span><span data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/client-helper.js.html#lineNumber208">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Remove current server url from the server list and shuffle for another one</p>
+</div>
+
+  
+
+  <div data-ice="properties">
 </div>
 
   

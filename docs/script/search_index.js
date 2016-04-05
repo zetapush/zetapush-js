@@ -6,6 +6,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "zetapush-js/src/handshake.js~abstracthandshakemanager",
+    "class/src/handshake.js~AbstractHandshakeManager.html",
+    "<span>AbstractHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
+    "class"
+  ],
+  [
     "zetapush-js/src/token-persistence.js~abstracttokenpersistencestrategy",
     "class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html",
     "<span>AbstractTokenPersistenceStrategy</span> <span class=\"search-result-import-path\">zetapush-js/src/token-persistence.js</span>",
@@ -24,27 +30,21 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "zetapush-js/src/client-helper.js~clienthelper",
-    "class/src/client-helper.js~ClientHelper.html",
-    "<span>ClientHelper</span> <span class=\"search-result-import-path\">zetapush-js/src/client-helper.js</span>",
+    "zetapush-js/src/connection-status.js~connectionstatuslistener",
+    "class/src/connection-status.js~ConnectionStatusListener.html",
+    "<span>ConnectionStatusListener</span> <span class=\"search-result-import-path\">zetapush-js/src/connection-status.js</span>",
     "class"
   ],
   [
-    "zetapush-js/src/cometd.js~fetchlongpollingtransport",
-    "function/index.html#static-function-FetchLongPollingTransport",
-    "<span>FetchLongPollingTransport</span> <span class=\"search-result-import-path\">zetapush-js/src/cometd.js</span>",
-    "function"
+    "zetapush-js/src/handshake.js~defaultzetapushhandshakemanager",
+    "class/src/handshake.js~DefaultZetapushHandshakeManager.html",
+    "<span>DefaultZetapushHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
+    "class"
   ],
   [
     "zetapush-js/src/token-persistence.js~localstoragetokenpersistencestrategy",
     "class/src/token-persistence.js~LocalStorageTokenPersistenceStrategy.html",
     "<span>LocalStorageTokenPersistenceStrategy</span> <span class=\"search-result-import-path\">zetapush-js/src/token-persistence.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/src/utils.js~notyetimplementederror",
-    "class/src/utils.js~NotYetImplementedError.html",
-    "<span>NotYetImplementedError</span> <span class=\"search-result-import-path\">zetapush-js/src/utils.js</span>",
     "class"
   ],
   [
@@ -54,16 +54,10 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "zetapush-js/src/utils.js~getservers",
-    "variable/index.html#static-variable-getServers",
-    "<span>getServers</span> <span class=\"search-result-import-path\">zetapush-js/src/utils.js</span>",
-    "variable"
-  ],
-  [
-    "zetapush-js/src/utils.js~shuffle",
-    "variable/index.html#static-variable-shuffle",
-    "<span>shuffle</span> <span class=\"search-result-import-path\">zetapush-js/src/utils.js</span>",
-    "variable"
+    "zetapush-js/src/handshake.js~tokenhandshakemanager",
+    "class/src/handshake.js~TokenHandshakeManager.html",
+    "<span>TokenHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
+    "class"
   ],
   [
     "builtinexternal/ecmascriptexternal.js~array",
@@ -402,180 +396,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/client-helper.js~clienthelper#addconnectionstatuslistener",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-addConnectionStatusListener",
-    "src/client-helper.js~ClientHelper#addConnectionStatusListener",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#authenticationfailed",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-authenticationFailed",
-    "src/client-helper.js~ClientHelper#authenticationFailed",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#businessid",
-    "class/src/client-helper.js~ClientHelper.html#instance-member-businessId",
-    "src/client-helper.js~ClientHelper#businessId",
-    "member"
-  ],
-  [
-    "src/client-helper.js~clienthelper#cometd",
-    "class/src/client-helper.js~ClientHelper.html#instance-member-cometd",
-    "src/client-helper.js~ClientHelper#cometd",
-    "member"
-  ],
-  [
-    "src/client-helper.js~clienthelper#connect",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-connect",
-    "src/client-helper.js~ClientHelper#connect",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#connected",
-    "class/src/client-helper.js~ClientHelper.html#instance-member-connected",
-    "src/client-helper.js~ClientHelper#connected",
-    "member"
-  ],
-  [
-    "src/client-helper.js~clienthelper#connectionbroken",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-connectionBroken",
-    "src/client-helper.js~ClientHelper#connectionBroken",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#connectionclosed",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-connectionClosed",
-    "src/client-helper.js~ClientHelper#connectionClosed",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#connectionestablished",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-connectionEstablished",
-    "src/client-helper.js~ClientHelper#connectionEstablished",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#connectionlisteners",
-    "class/src/client-helper.js~ClientHelper.html#instance-member-connectionListeners",
-    "src/client-helper.js~ClientHelper#connectionListeners",
-    "member"
-  ],
-  [
-    "src/client-helper.js~clienthelper#constructor",
-    "class/src/client-helper.js~ClientHelper.html#instance-constructor-constructor",
-    "src/client-helper.js~ClientHelper#constructor",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#disconnect",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-disconnect",
-    "src/client-helper.js~ClientHelper#disconnect",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#getbusinessid",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-getBusinessId",
-    "src/client-helper.js~ClientHelper#getBusinessId",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#gethandshakefields",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-getHandshakeFields",
-    "src/client-helper.js~ClientHelper#getHandshakeFields",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#getresource",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-getResource",
-    "src/client-helper.js~ClientHelper#getResource",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#getsessionid",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-getSessionId",
-    "src/client-helper.js~ClientHelper#getSessionId",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#handshakefactory",
-    "class/src/client-helper.js~ClientHelper.html#instance-member-handshakeFactory",
-    "src/client-helper.js~ClientHelper#handshakeFactory",
-    "member"
-  ],
-  [
-    "src/client-helper.js~clienthelper#handshakefailure",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-handshakeFailure",
-    "src/client-helper.js~ClientHelper#handshakeFailure",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#initialized",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-initialized",
-    "src/client-helper.js~ClientHelper#initialized",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#messagelost",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-messageLost",
-    "src/client-helper.js~ClientHelper#messageLost",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#negotiate",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-negotiate",
-    "src/client-helper.js~ClientHelper#negotiate",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#resource",
-    "class/src/client-helper.js~ClientHelper.html#instance-member-resource",
-    "src/client-helper.js~ClientHelper#resource",
-    "member"
-  ],
-  [
-    "src/client-helper.js~clienthelper#serverurl",
-    "class/src/client-helper.js~ClientHelper.html#instance-member-serverUrl",
-    "src/client-helper.js~ClientHelper#serverUrl",
-    "member"
-  ],
-  [
-    "src/client-helper.js~clienthelper#servers",
-    "class/src/client-helper.js~ClientHelper.html#instance-member-servers",
-    "src/client-helper.js~ClientHelper#servers",
-    "member"
-  ],
-  [
-    "src/client-helper.js~clienthelper#sethandshakefactory",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-setHandshakeFactory",
-    "src/client-helper.js~ClientHelper#setHandshakeFactory",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#subscribe",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-subscribe",
-    "src/client-helper.js~ClientHelper#subscribe",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#unsubscribe",
-    "class/src/client-helper.js~ClientHelper.html#instance-method-unsubscribe",
-    "src/client-helper.js~ClientHelper#unsubscribe",
-    "method"
-  ],
-  [
-    "src/client-helper.js~clienthelper#userid",
-    "class/src/client-helper.js~ClientHelper.html#instance-member-userId",
-    "src/client-helper.js~ClientHelper#userId",
-    "member"
-  ],
-  [
-    "src/client-helper.js~clienthelper#wasconnected",
-    "class/src/client-helper.js~ClientHelper.html#instance-member-wasConnected",
-    "src/client-helper.js~ClientHelper#wasConnected",
-    "member"
-  ],
-  [
     "src/client.js",
     "file/src/client.js.html",
     "src/client.js",
@@ -586,12 +406,6 @@ window.esdocSearchIndex = [
     "class/src/client.js~Client.html#instance-method-addConnectionStatusListener",
     "src/client.js~Client#addConnectionStatusListener",
     "method"
-  ],
-  [
-    "src/client.js~client#client",
-    "class/src/client.js~Client.html#instance-member-client",
-    "src/client.js~Client#client",
-    "member"
   ],
   [
     "src/client.js~client#connect",
@@ -672,10 +486,88 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/connection-status.js",
+    "file/src/connection-status.js.html",
+    "src/connection-status.js",
+    "file"
+  ],
+  [
+    "src/connection-status.js~connectionstatuslistener#onconnectionbroken",
+    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionBroken",
+    "src/connection-status.js~ConnectionStatusListener#onConnectionBroken",
+    "method"
+  ],
+  [
+    "src/connection-status.js~connectionstatuslistener#onconnectionclosed",
+    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionClosed",
+    "src/connection-status.js~ConnectionStatusListener#onConnectionClosed",
+    "method"
+  ],
+  [
+    "src/connection-status.js~connectionstatuslistener#onconnectionestablished",
+    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionEstablished",
+    "src/connection-status.js~ConnectionStatusListener#onConnectionEstablished",
+    "method"
+  ],
+  [
+    "src/connection-status.js~connectionstatuslistener#onfailedhandshake",
+    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onFailedHandshake",
+    "src/connection-status.js~ConnectionStatusListener#onFailedHandshake",
+    "method"
+  ],
+  [
+    "src/connection-status.js~connectionstatuslistener#onmessagelost",
+    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onMessageLost",
+    "src/connection-status.js~ConnectionStatusListener#onMessageLost",
+    "method"
+  ],
+  [
+    "src/connection-status.js~connectionstatuslistener#onsuccessfulhandshake",
+    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onSuccessfulHandshake",
+    "src/connection-status.js~ConnectionStatusListener#onSuccessfulHandshake",
+    "method"
+  ],
+  [
     "src/handshake.js",
     "file/src/handshake.js.html",
     "src/handshake.js",
     "file"
+  ],
+  [
+    "src/handshake.js~abstracthandshakemanager#authtype",
+    "class/src/handshake.js~AbstractHandshakeManager.html#instance-member-authType",
+    "src/handshake.js~AbstractHandshakeManager#authType",
+    "member"
+  ],
+  [
+    "src/handshake.js~abstracthandshakemanager#authversion",
+    "class/src/handshake.js~AbstractHandshakeManager.html#instance-get-authVersion",
+    "src/handshake.js~AbstractHandshakeManager#authVersion",
+    "member"
+  ],
+  [
+    "src/handshake.js~abstracthandshakemanager#businessid",
+    "class/src/handshake.js~AbstractHandshakeManager.html#instance-member-businessId",
+    "src/handshake.js~AbstractHandshakeManager#businessId",
+    "member"
+  ],
+  [
+    "src/handshake.js~abstracthandshakemanager#constructor",
+    "class/src/handshake.js~AbstractHandshakeManager.html#instance-constructor-constructor",
+    "src/handshake.js~AbstractHandshakeManager#constructor",
+    "method"
+  ],
+  [
+    "src/handshake.js~abstracthandshakemanager#deploymentid",
+    "class/src/handshake.js~AbstractHandshakeManager.html#instance-member-deploymentId",
+    "src/handshake.js~AbstractHandshakeManager#deploymentId",
+    "member"
+  ],
+  [
+    "src/handshake.js~abstracthandshakemanager#gethandshakefields",
+    "class/src/handshake.js~AbstractHandshakeManager.html#instance-method-getHandshakeFields",
+    "src/handshake.js~AbstractHandshakeManager#getHandshakeFields",
+    "method"
   ],
   [
     "src/handshake.js~authentfactory.createdelegatinghandshake",
@@ -702,6 +594,48 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/handshake.js~defaultzetapushhandshakemanager#authdata",
+    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-get-authData",
+    "src/handshake.js~DefaultZetapushHandshakeManager#authData",
+    "member"
+  ],
+  [
+    "src/handshake.js~defaultzetapushhandshakemanager#constructor",
+    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-constructor-constructor",
+    "src/handshake.js~DefaultZetapushHandshakeManager#constructor",
+    "method"
+  ],
+  [
+    "src/handshake.js~defaultzetapushhandshakemanager#login",
+    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-member-login",
+    "src/handshake.js~DefaultZetapushHandshakeManager#login",
+    "member"
+  ],
+  [
+    "src/handshake.js~defaultzetapushhandshakemanager#password",
+    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-member-password",
+    "src/handshake.js~DefaultZetapushHandshakeManager#password",
+    "member"
+  ],
+  [
+    "src/handshake.js~tokenhandshakemanager#authdata",
+    "class/src/handshake.js~TokenHandshakeManager.html#instance-get-authData",
+    "src/handshake.js~TokenHandshakeManager#authData",
+    "member"
+  ],
+  [
+    "src/handshake.js~tokenhandshakemanager#constructor",
+    "class/src/handshake.js~TokenHandshakeManager.html#instance-constructor-constructor",
+    "src/handshake.js~TokenHandshakeManager#constructor",
+    "method"
+  ],
+  [
+    "src/handshake.js~tokenhandshakemanager#token",
+    "class/src/handshake.js~TokenHandshakeManager.html#instance-member-token",
+    "src/handshake.js~TokenHandshakeManager#token",
+    "member"
+  ],
+  [
     "src/index.js",
     "file/src/index.js.html",
     "src/index.js",
@@ -724,12 +658,6 @@ window.esdocSearchIndex = [
     "class/src/smart-client.js~SmartClient.html#instance-method-getToken",
     "src/smart-client.js~SmartClient#getToken",
     "method"
-  ],
-  [
-    "src/smart-client.js~smartclient#strategy",
-    "class/src/smart-client.js~SmartClient.html#instance-member-strategy",
-    "src/smart-client.js~SmartClient#strategy",
-    "member"
   ],
   [
     "src/token-persistence.js",
@@ -778,17 +706,5 @@ window.esdocSearchIndex = [
     "file/src/utils.js.html",
     "src/utils.js",
     "file"
-  ],
-  [
-    "src/utils.js~notyetimplementederror#constructor",
-    "class/src/utils.js~NotYetImplementedError.html#instance-constructor-constructor",
-    "src/utils.js~NotYetImplementedError#constructor",
-    "method"
-  ],
-  [
-    "src/utils.js~notyetimplementederror#name",
-    "class/src/utils.js~NotYetImplementedError.html#instance-member-name",
-    "src/utils.js~NotYetImplementedError#name",
-    "member"
   ]
 ]

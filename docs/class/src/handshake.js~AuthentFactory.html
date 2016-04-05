@@ -15,7 +15,7 @@
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
@@ -32,29 +32,28 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client-helper.js~ClientHelper.html">ClientHelper</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~Client.html">Client</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/token-persistence.js~AbstractTokenPersistenceStrategy.html">AbstractTokenPersistenceStrategy</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/token-persistence.js~LocalStorageTokenPersistenceStrategy.html">LocalStorageTokenPersistenceStrategy</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils.js~NotYetImplementedError.html">NotYetImplementedError</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-FetchLongPollingTransport">FetchLongPollingTransport</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-API_URL">API_URL</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-getServers">getServers</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-shuffle">shuffle</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {AuthentFactory} from &apos;<span><a href="file/src/handshake.js.html#lineNumber100">zetapush-js/src/handshake.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {AuthentFactory} from &apos;<span><a href="file/src/handshake.js.html#lineNumber105">zetapush-js/src/handshake.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/handshake.js.html#lineNumber100">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/handshake.js.html#lineNumber105">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -101,7 +100,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html#static-method-createDelegatingHandshake">createDelegatingHandshake</a></span></span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html#static-method-createDelegatingHandshake">createDelegatingHandshake</a></span></span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}): <span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span>
         </p>
       </div>
       <div>
@@ -126,7 +125,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html#static-method-createHandshake">createHandshake</a></span></span><span data-ice="signature">(objectPattern: {&quot;authType&quot;: <span>*</span>, &quot;deploymentId&quot;: <span>*</span>, &quot;login&quot;: <span>*</span>, &quot;password&quot;: <span>*</span>}): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html#static-method-createHandshake">createHandshake</a></span></span><span data-ice="signature">(objectPattern: {&quot;authType&quot;: <span>*</span>, &quot;deploymentId&quot;: <span>*</span>, &quot;login&quot;: <span>*</span>, &quot;password&quot;: <span>*</span>}): <span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span> | <span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span>
         </p>
       </div>
       <div>
@@ -151,7 +150,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html#static-method-createSimpleHandshake">createSimpleHandshake</a></span></span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;login&quot;: <span>*</span>, &quot;password&quot;: <span>*</span>}): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html#static-method-createSimpleHandshake">createSimpleHandshake</a></span></span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;login&quot;: <span>*</span>, &quot;password&quot;: <span>*</span>}): <span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span>
         </p>
       </div>
       <div>
@@ -176,7 +175,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html#static-method-createWeakHandshake">createWeakHandshake</a></span></span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html#static-method-createWeakHandshake">createWeakHandshake</a></span></span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}): <span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span>
         </p>
       </div>
       <div>
@@ -209,11 +208,11 @@
     
     
     
-    <span data-ice="name">createDelegatingHandshake</span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}): <span>*</span></span>
+    <span data-ice="name">createDelegatingHandshake</span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}): <span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/handshake.js.html#lineNumber126">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/handshake.js.html#lineNumber131">source</a></span></span>
     </span>
   </h3>
 
@@ -247,7 +246,7 @@
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span>*</span></td>
+        <td class="return-type" data-ice="returnType"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></td>
         
       </tr>
     </table>
@@ -275,11 +274,11 @@
     
     
     
-    <span data-ice="name">createHandshake</span><span data-ice="signature">(objectPattern: {&quot;authType&quot;: <span>*</span>, &quot;deploymentId&quot;: <span>*</span>, &quot;login&quot;: <span>*</span>, &quot;password&quot;: <span>*</span>}): <span>*</span></span>
+    <span data-ice="name">createHandshake</span><span data-ice="signature">(objectPattern: {&quot;authType&quot;: <span>*</span>, &quot;deploymentId&quot;: <span>*</span>, &quot;login&quot;: <span>*</span>, &quot;password&quot;: <span>*</span>}): <span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span> | <span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/handshake.js.html#lineNumber137">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/handshake.js.html#lineNumber142">source</a></span></span>
     </span>
   </h3>
 
@@ -313,7 +312,7 @@
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span>*</span></td>
+        <td class="return-type" data-ice="returnType"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span> | <span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></td>
         
       </tr>
     </table>
@@ -341,11 +340,11 @@
     
     
     
-    <span data-ice="name">createSimpleHandshake</span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;login&quot;: <span>*</span>, &quot;password&quot;: <span>*</span>}): <span>*</span></span>
+    <span data-ice="name">createSimpleHandshake</span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;login&quot;: <span>*</span>, &quot;password&quot;: <span>*</span>}): <span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/handshake.js.html#lineNumber104">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/handshake.js.html#lineNumber109">source</a></span></span>
     </span>
   </h3>
 
@@ -379,7 +378,7 @@
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span>*</span></td>
+        <td class="return-type" data-ice="returnType"><span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></td>
         
       </tr>
     </table>
@@ -407,11 +406,11 @@
     
     
     
-    <span data-ice="name">createWeakHandshake</span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}): <span>*</span></span>
+    <span data-ice="name">createWeakHandshake</span><span data-ice="signature">(objectPattern: {&quot;deploymentId&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}): <span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/handshake.js.html#lineNumber115">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/handshake.js.html#lineNumber120">source</a></span></span>
     </span>
   </h3>
 
@@ -445,7 +444,7 @@
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span>*</span></td>
+        <td class="return-type" data-ice="returnType"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></td>
         
       </tr>
     </table>

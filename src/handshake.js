@@ -1,5 +1,5 @@
 /**
- *
+ * ZetaPush deployables names
  */
 const DeployableNames = {
   AUTH_SIMPLE: 'simple',
@@ -8,9 +8,9 @@ const DeployableNames = {
 }
 
 /**
- *
+ * @access public
  */
-class AbstractHandshakeManager {
+export class AbstractHandshakeManager {
   /**
    *
    */
@@ -20,7 +20,8 @@ class AbstractHandshakeManager {
     this.deploymentId = deploymentId
   }
   /**
-   *
+   * @param {ClientHelper} client
+   * @return {Object}
    */
   getHandshakeFields(client) {
     const authentication = {
@@ -38,7 +39,8 @@ class AbstractHandshakeManager {
     }
   }
   /**
-   *
+   * Get auth version
+   * @return {string}
    */
   get authVersion() {
     return 'none'
@@ -47,9 +49,10 @@ class AbstractHandshakeManager {
 }
 
 /**
- *
+ * @access public
+ * @extends {AbstractHandshakeManager}
  */
-class TokenHandshakeManager extends AbstractHandshakeManager {
+export class TokenHandshakeManager extends AbstractHandshakeManager {
   /**
    *
    */
@@ -58,7 +61,7 @@ class TokenHandshakeManager extends AbstractHandshakeManager {
     this.token = token
   }
   /**
-   *
+   * @return {token: string}
    */
   get authData() {
     const { token } = this
@@ -70,9 +73,10 @@ class TokenHandshakeManager extends AbstractHandshakeManager {
 }
 
 /**
- *
+ * @access public
+ * @extends {AbstractHandshakeManager}
  */
-class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {
+export class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {
 
   /**
    *
@@ -83,7 +87,8 @@ class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {
     this.password = password
   }
   /**
-   *
+   * @desc Get auth data
+   * @return {login: string, password: string}
    */
   get authData() {
     const { login, password } = this
@@ -95,11 +100,11 @@ class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {
 }
 
 /**
- *
+ * @access public
  */
 export class AuthentFactory {
   /**
-   *
+   * @return {DefaultZetapushHandshakeManager}
    */
   static createSimpleHandshake({ deploymentId, login, password }) {
     return AuthentFactory.createHandshake({
@@ -110,7 +115,7 @@ export class AuthentFactory {
     })
   }
   /**
-   *
+   * @return {TokenHandshakeManager}
    */
   static createWeakHandshake({ deploymentId, token }) {
     return AuthentFactory.createHandshake({
@@ -121,7 +126,7 @@ export class AuthentFactory {
     })
   }
   /**
-   *
+   * @return {TokenHandshakeManager}
    */
   static createDelegatingHandshake({ deploymentId, token }) {
     return AuthentFactory.createHandshake({
@@ -132,7 +137,7 @@ export class AuthentFactory {
     })
   }
   /**
-   *
+   * @return {TokenHandshakeManager|DefaultZetapushHandshakeManager}
    */
   static createHandshake({ authType, deploymentId, login, password }) {
     if (null === password) {
