@@ -1,21 +1,11 @@
 {
-  const { SmartClient } = ZetaPush
+  const { SmartClient, definitions: { StackPublisherDefinition } } = ZetaPush
 
   const client = new SmartClient({
     apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
     businessId: 'JteMN0To',
     authenticationDeploymentId: 'weak_main'
   })
-
-  const StackPublisherDefinition = {
-    getListeners() { },
-    list() { },
-    purge() { },
-    push() { },
-    remove() { },
-    setListeners() { },
-    update() { }
-  }
 
   const DEPLOYMENT_ID = 'kiRa'
 

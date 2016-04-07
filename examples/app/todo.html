@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZetaPush SDK Examples - Todo</title>
+    <style>
+      form, ul {
+        border: 1px dotted grey;
+        margin: 0.5rem;
+      }
+      form {
+        padding: 0.5rem;
+      }
+      label {
+        font-weight: bold;
+      }
+      :checked + strong {
+        text-decoration: line-through;;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Todo App Example <i></i></h1>
+      <section>
+        <ul class="list"></ul>
+        <form autocomplete="off" name="list">
+          <label>Task</label>
+          <input type="text" name="task">
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </main>
+    <script src="../../dist/zetapush.js"></script>
+    <script src="../api/_common.js"></script>
+    <script src="./todo.js"></script>
+  </body>
+</html>
