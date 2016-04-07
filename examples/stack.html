@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZetaPush SDK Examples - Stack</title>
+    <style>
+      section {
+        border: 1px dotted grey;
+        margin: 0.5rem;
+        padding: 0.5rem;
+      }
+      label {
+        display: block;
+        font-weight: bold;
+      }
+      textarea {
+        display: block;
+        height: 4rem;
+        width: calc(100% - 1rem);
+      }
+      nav {
+        margin: 0.5rem 0 0 0;
+      }
+      h3, em {
+        margin: 0.5rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Stack Service Example <i></i></h1>
+      <section>
+        <form autocomplete="off" name="list">
+          <h3>list()</h3>
+          <em>Returns a paginated list of contents for the given stack.</em>
+          <div>
+            <label>Parameters</label>
+            <textarea name="parameters">{"stack": "id"}</textarea>
+          </div>
+          <div>
+            <label>Output</label>
+            <textarea name="output" readonly></textarea>
+          </div>
+          <nav>
+            <button type="button" method="list">list()</button>
+          </nav>
+        </form>
+      </section>
+      <section>
+        <form autocomplete="off" name="purge">
+          <h3>purge()</h3>
+          <em>Removes all items from the given stack.</em>
+          <div>
+            <label>Parameters</label>
+            <textarea name="parameters">{"stack": "id"}</textarea>
+          </div>
+          <div>
+            <label>Output</label>
+            <textarea name="output" readonly></textarea>
+          </div>
+          <nav>
+            <button type="button" method="purge">purge()</button>
+          </nav>
+        </form>
+      </section>
+      <section>
+        <form autocomplete="off" name="push">
+          <h3>push()</h3>
+          <em>Pushes an item onto the given stack.</em>
+          <div>
+            <label>Parameters</label>
+            <textarea name="parameters">{"stack": "id", "data": {"message": "Hello !!!"}}</textarea>
+          </div>
+          <div>
+            <label>Output</label>
+            <textarea name="output" readonly></textarea>
+          </div>
+          <nav>
+            <button type="button" method="push">push()</button>
+          </nav>
+        </form>
+      </section>
+      <section>
+        <form autocomplete="off" name="remove">
+          <h3>remove()</h3>
+          <em>Removes the item with the given guid from the given stack.</em>
+          <div>
+            <label>Parameters</label>
+            <textarea name="parameters">{"stack": "id", "guids": []}</textarea>
+          </div>
+          <div>
+            <label>Output</label>
+            <textarea name="output" readonly></textarea>
+          </div>
+          <nav>
+            <button type="button" method="remove">remove()</button>
+          </nav>
+        </form>
+      </section>
+      <section>
+        <form autocomplete="off" name="update">
+          <h3>update()</h3>
+          <em>Updates an existing item of the given stack.</em>
+          <div>
+            <label>Parameters</label>
+            <textarea name="parameters">{"stack": "id", "guid": "", "data": {"message": "Hello (Updated) !!!"}}</textarea>
+          </div>
+          <div>
+            <label>Output</label>
+            <textarea name="output" readonly></textarea>
+          </div>
+          <nav>
+            <button type="button" method="update">update()</button>
+          </nav>
+        </form>
+      </section>
+      <section>
+        <form autocomplete="off" name="error">
+          <h3>error</h3>
+          <div>
+            <label>Output</label>
+            <textarea name="output" readonly></textarea>
+          </div>
+        </form>
+      </section>
+    </main>
+    <script src="../dist/zetapush.js"></script>
+    <script src="./stack.js"></script>
+  </body>
+</html>
