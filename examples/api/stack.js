@@ -17,9 +17,9 @@
     update() { }
   }
 
-  const STACK_DEPLOYMENT_ID = 'kiRa'
+  const DEPLOYMENT_ID = 'kiRa'
 
-  const stackServiceListener = SmartClient.getServiceListener({
+  const serviceListener = SmartClient.getServiceListener({
     methods: ['error', ...Object.getOwnPropertyNames(StackPublisherDefinition)],
     handler: ({ channel, data, method }) => {
       console.debug(`Stack::${method}`, { channel, data })
@@ -28,65 +28,36 @@
   })
 
   client.subscribeListener({
-    deploymentId: STACK_DEPLOYMENT_ID,
-    serviceListener: stackServiceListener
+    deploymentId: DEPLOYMENT_ID,
+    serviceListener: serviceListener
   })
 
   client.addConnectionStatusListener({
     onSuccessfulHandshake(authentication) {
-      console.debug('Stack::onSuccessfulHandshake', authentication)
+      console.debug('App::onSuccessfulHandshake', authentication)
 
       document.querySelector('i').textContent = `User Id: ${authentication.userId}`
     }
   })
 
-  const stackServicePublisher = client.createServicePublisher({
-    deploymentId: STACK_DEPLOYMENT_ID,
+  const servicePublisher = client.createServicePublisher({
+    deploymentId: DEPLOYMENT_ID,
     publisherDefinition: StackPublisherDefinition
   })
-
-  const getCurrentTarget = ({ node, target, selector }) => {
-    if (target.matches(selector)) {
-      return target
-    }
-    while (target = target.parentNode && node !== target) {
-      if (target.nodeType !== 1) {
-        return false
-      }
-      if (target.matches(selector)) {
-        return target
-      }
-    }
-    return false
-  }
-
-  const on = ({ node, type, selector = null, handler }) => {
-    node.addEventListener(type, (event) => {
-      const { target } = event
-      const current = (selector === null) ? node : getCurrentTarget({ node, target, selector })
-      if (current) {
-        handler.call(current, event)
-      }
-    }, false)
-  }
 
   client.connect()
 
   document.addEventListener('DOMContentLoaded', () => {
     const main = document.querySelector('main')
-    const form = document.querySelector('form')
 
-    on({ node: form, type: 'submit', handler: (event) => {
-      event.preventDefault()
-    }})
     on({ node: main, type: 'click', selector: 'form button', handler: (event) => {
       event.preventDefault()
       const { target } = event
       const method = target.getAttribute('method')
       const parameters = document.querySelector(`form[name="${method}"] [name="parameters"]`)
-      if (stackServicePublisher.hasOwnProperty(method)) {
+      if (servicePublisher.hasOwnProperty(method)) {
         const params = JSON.parse(parameters.value)
-        stackServicePublisher[method](params)
+        servicePublisher[method](params)
       }
     }})
   })

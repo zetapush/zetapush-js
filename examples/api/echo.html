@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZetaPush SDK Examples - Stack</title>
+    <style>
+      section {
+        border: 1px dotted grey;
+        margin: 0.5rem;
+        padding: 0.5rem;
+      }
+      label {
+        display: block;
+        font-weight: bold;
+      }
+      textarea {
+        display: block;
+        height: 4rem;
+        width: calc(100% - 1rem);
+      }
+      nav {
+        margin: 0.5rem 0 0 0;
+      }
+      h3, em {
+        margin: 0.5rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Echo Service Example <i></i></h1>
+      <section>
+        <form autocomplete="off" name="echo">
+          <h3>echo()</h3>
+          <em>Simple echo service, for development purposes.</em>
+          <div>
+            <label>Parameters</label>
+            <textarea name="parameters">{"key": "value"}</textarea>
+          </div>
+          <div>
+            <label>Output</label>
+            <textarea name="output" readonly></textarea>
+          </div>
+          <nav>
+            <button type="button" method="echo">echo()</button>
+          </nav>
+        </form>
+      </section>
+      <section>
+        <form autocomplete="off" name="error">
+          <h3>error</h3>
+          <div>
+            <label>Output</label>
+            <textarea name="output" readonly></textarea>
+          </div>
+        </form>
+      </section>
+    </main>
+    <script src="../../dist/zetapush.js"></script>
+    <script src="./_common.js"></script>
+    <script src="./echo.js"></script>
+  </body>
+</html>
