@@ -136,4 +136,25 @@ export class Client {
     this.connect()
   }
 
+  /**
+   * @desc Get a service lister from methods list with a default handler
+   * @return {Object} listener
+   * @example
+   * const getStackServiceListener = () => {
+   *   return Client.getServiceListener({
+   *     methods: ['getListeners', 'list', 'purge', 'push', 'remove', 'setListeners', 'update', 'error'],
+   *     handler: ({ channel, data }) => {
+   *       console.debug(`Stack::${method}`, { channel, data })
+   *       document.querySelector(`form[name="${method}"] [name="output"]`).value = JSON.stringify(data)
+   *     }
+   *   })
+   * }
+   */
+  static getServiceListener({ methods = [], handler = () => {} }) {
+    return methods.reduce((listener, method) => {
+      listener[method] = ({ channel, data }) => handler({ channel, data, method })
+      return listener
+    }, {})
+  }
+
 }
