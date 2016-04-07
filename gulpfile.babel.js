@@ -12,7 +12,9 @@ import files from 'main-bower-files'
 import minimist from 'minimist'
 import sequence from 'run-sequence'
 import uglify from 'gulp-uglify'
+import github from 'gulp-gh-pages'
 
+const pkg = require('./package')
 const { optimize = false } = minimist(process.argv)
 
 const paths = {
@@ -83,6 +85,15 @@ gulp.task('clean', (callback) => {
   return del([
     paths.output
   ], callback)
+})
+
+gulp.task('publish', () => {
+  return gulp.src([__dirname + '/docs/**/**.*'])
+    .pipe(github({
+      remoteUrl : pkg.repository.url,
+      branch : 'gh-pages',
+      cacheDir : __dirname + '/.publish/'
+    }))
 })
 
 gulp.task('build', () => {
