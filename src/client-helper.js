@@ -317,7 +317,7 @@ export class ClientHelper {
   createServicePublisher(prefix, publisherDefinition) {
     const servicePublisher = {}
     for (const method in publisherDefinition) {
-      if (publisher.hasOwnProperty(method)) {
+      if (publisherDefinition.hasOwnProperty(method)) {
         const channel = `${prefix}/${method}`
         servicePublisher[method] = (parameters = {}) => {
           this.cometd.publish(channel, parameters)
