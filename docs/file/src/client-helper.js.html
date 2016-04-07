@@ -38,6 +38,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-API_URL">API_URL</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EchoPublisherDefinition">EchoPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-StackPublisherDefinition">StackPublisherDefinition</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -116,6 +118,11 @@ export class ClientHelper {
     this.serverUrl = null
     /**
      * @access private
+     * @type {Array&lt;Object&gt;}
+     */
+    this.subscribeQueue = []
+    /**
+     * @access private
      * @type {CometD}
      */
     this.cometd = new CometD()
@@ -160,14 +167,24 @@ export class ClientHelper {
       // ConnectionListener
       if (this.cometd.isDisconnected()) {
         this.connected = false
+        // Notify connection is closed
         this.connectionClosed()
       } else {
         this.wasConnected = this.connected
         this.connected = successful
         if (!this.wasConnected &amp;&amp; this.connected) {
+          this.cometd.batch(this, () =&gt; {
+            // Unqueue subscriptions
+            this.subscribeQueue.forEach(({ prefix, serviceListener, subscriptions }) =&gt; {
+              this.subscribe(prefix, serviceListener, subscriptions)
+            })
+            this.subscribeQueue = []
+          })
+          // Notify connection is established
           this.connectionEstablished()
         }
         else if (this.wasConnected &amp;&amp; !this.connected) {
+          // Notify connection is broken
           this.connectionBroken()
         }
       }
@@ -322,14 +339,18 @@ export class ClientHelper {
    * @desc Subribe all methods defined in the serviceListener for the given prefixed channel
    * @param {string} prefix - Channel prefix
    * @param {Object} serviceListener
+   * @param {Object} subscriptions
    * @return {Object} subscriptions
    */
-  subscribe(prefix, serviceListener) {
-    const subscriptions = {}
-    for (const method in serviceListener) {
-      if (serviceListener.hasOwnProperty(method)) {
-        const channel = `${prefix}/${method}`
-        subscriptions[method] = this.cometd.subscribe(channel, serviceListener[method])
+  subscribe(prefix, serviceListener, subscriptions = {}) {
+    if (this.cometd.isDisconnected()) {
+      this.subscribeQueue.push({ prefix, serviceListener, subscriptions })
+    } else {
+      for (const method in serviceListener) {
+        if (serviceListener.hasOwnProperty(method)) {
+          const channel = `${prefix}/${method}`
+          subscriptions[method] = this.cometd.subscribe(channel, serviceListener[method])
+        }
       }
     }
     return subscriptions
@@ -337,19 +358,20 @@ export class ClientHelper {
   /**
    * @desc Get a publisher
    * @param {string} prefix - Channel prefix
-   * @param {Object} publisher
+   * @param {Object} publisherDefinition
    * @return {Object} servicePublisher
    */
-  createServicePublisher(prefix, publisher) {
+  createServicePublisher(prefix, publisherDefinition) {
     const servicePublisher = {}
-    for (const method in publisher) {
-      if (publisher.hasOwnProperty(method)) {
+    for (const method in publisherDefinition) {
+      if (publisherDefinition.hasOwnProperty(method)) {
         const channel = `${prefix}/${method}`
         servicePublisher[method] = (parameters = {}) =&gt; {
           this.cometd.publish(channel, parameters)
         }
       }
     }
+    return servicePublisher
   }
   /**
    * @desc Unsubcribe all subscriptions defined in given subscriptions object

@@ -30,6 +30,18 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "zetapush-js/src/definitions.js~echopublisherdefinition",
+    "variable/index.html#static-variable-EchoPublisherDefinition",
+    "<span>EchoPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~stackpublisherdefinition",
+    "variable/index.html#static-variable-StackPublisherDefinition",
+    "<span>StackPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
     "zetapush-js/src/handshake.js~tokenhandshakemanager",
     "class/src/handshake.js~TokenHandshakeManager.html",
     "<span>TokenHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
@@ -456,6 +468,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/client.js~client.getservicelistener",
+    "class/src/client.js~Client.html#static-method-getServiceListener",
+    "src/client.js~Client.getServiceListener",
+    "method"
+  ],
+  [
     "src/cometd.js",
     "file/src/cometd.js.html",
     "src/cometd.js",
@@ -502,6 +520,12 @@ window.esdocSearchIndex = [
     "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onSuccessfulHandshake",
     "src/connection-status.js~ConnectionStatusListener#onSuccessfulHandshake",
     "method"
+  ],
+  [
+    "src/definitions.js",
+    "file/src/definitions.js.html",
+    "src/definitions.js",
+    "file"
   ],
   [
     "src/handshake.js",

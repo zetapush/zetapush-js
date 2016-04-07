@@ -38,15 +38,20 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-API_URL">API_URL</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EchoPublisherDefinition">EchoPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-StackPublisherDefinition">StackPublisherDefinition</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/index.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">export { AuthentFactory } from &apos;./handshake&apos;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import * as definitions from &apos;./definitions&apos;
+
+export { AuthentFactory } from &apos;./handshake&apos;
 export { API_URL, Client } from &apos;./client&apos;
 export { SmartClient } from &apos;./smart-client&apos;
 export { AbstractTokenPersistenceStrategy, LocalStorageTokenPersistenceStrategy } from &apos;./token-persistence&apos;
+export { definitions }
 </code></pre>
 
 </div>

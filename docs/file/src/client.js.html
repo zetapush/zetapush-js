@@ -38,6 +38,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-API_URL">API_URL</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EchoPublisherDefinition">EchoPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-StackPublisherDefinition">StackPublisherDefinition</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -96,12 +98,12 @@ export class Client {
     this.client.disconnect()
   }
   /**
-   * @desc Create a service publisher
+   * @desc Create a service publisher based on publisher definition for the given deployment id
    * @experimental
    * @return {Object}
    */
-  createServicePublisher({ deploymentId, publisher }) {
-    return this.client.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, publisher)
+  createServicePublisher({ deploymentId, publisherDefinition }) {
+    return this.client.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, publisherDefinition)
   }
   /**
    * @desc Get the client business id
@@ -179,6 +181,27 @@ export class Client {
       this.client.setHandshakeStrategy(handshakeStrategy)
     }
     this.connect()
+  }
+
+  /**
+   * @desc Get a service lister from methods list with a default handler
+   * @return {Object} listener
+   * @example
+   * const getStackServiceListener = () =&gt; {
+   *   return Client.getServiceListener({
+   *     methods: [&apos;getListeners&apos;, &apos;list&apos;, &apos;purge&apos;, &apos;push&apos;, &apos;remove&apos;, &apos;setListeners&apos;, &apos;update&apos;, &apos;error&apos;],
+   *     handler: ({ channel, data }) =&gt; {
+   *       console.debug(`Stack::${method}`, { channel, data })
+   *       document.querySelector(`form[name=&quot;${method}&quot;] [name=&quot;output&quot;]`).value = JSON.stringify(data)
+   *     }
+   *   })
+   * }
+   */
+  static getServiceListener({ methods = [], handler = () =&gt; {} }) {
+    return methods.reduce((listener, method) =&gt; {
+      listener[method] = ({ channel, data }) =&gt; handler({ channel, data, method })
+      return listener
+    }, {})
   }
 
 }
