@@ -1,0 +1,3580 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "Client",
+            "range": [
+              9,
+              15
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 15
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "Client",
+            "range": [
+              9,
+              15
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 15
+              }
+            }
+          },
+          "range": [
+            9,
+            15
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 15
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./client",
+        "raw": "'./client'",
+        "range": [
+          23,
+          33
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 23
+          },
+          "end": {
+            "line": 1,
+            "column": 33
+          }
+        }
+      },
+      "range": [
+        0,
+        34
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 0
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "AuthentFactory",
+            "range": [
+              43,
+              57
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 23
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "AuthentFactory",
+            "range": [
+              43,
+              57
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 23
+              }
+            }
+          },
+          "range": [
+            43,
+            57
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
+              "column": 23
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./handshake",
+        "raw": "'./handshake'",
+        "range": [
+          65,
+          78
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 31
+          },
+          "end": {
+            "line": 2,
+            "column": 44
+          }
+        }
+      },
+      "range": [
+        34,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 0
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "LocalStorageTokenPersistenceStrategy",
+            "range": [
+              88,
+              124
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 9
+              },
+              "end": {
+                "line": 3,
+                "column": 45
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "LocalStorageTokenPersistenceStrategy",
+            "range": [
+              88,
+              124
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 9
+              },
+              "end": {
+                "line": 3,
+                "column": 45
+              }
+            }
+          },
+          "range": [
+            88,
+            124
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 9
+            },
+            "end": {
+              "line": 3,
+              "column": 45
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./token-persistence",
+        "raw": "'./token-persistence'",
+        "range": [
+          132,
+          153
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 53
+          },
+          "end": {
+            "line": 3,
+            "column": 74
+          }
+        },
+        "trailingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * @access protected\n * @extends {Client}\n ",
+            "range": [
+              155,
+              204
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 8,
+                "column": 3
+              }
+            }
+          }
+        ]
+      },
+      "range": [
+        79,
+        205
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 0
+        }
+      }
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "ClassDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "SmartClient",
+          "range": [
+            218,
+            229
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 13
+            },
+            "end": {
+              "line": 9,
+              "column": 24
+            }
+          }
+        },
+        "superClass": {
+          "type": "Identifier",
+          "name": "Client",
+          "range": [
+            238,
+            244
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 33
+            },
+            "end": {
+              "line": 9,
+              "column": 39
+            }
+          }
+        },
+        "body": {
+          "type": "ClassBody",
+          "body": [
+            {
+              "type": "MethodDefinition",
+              "key": {
+                "type": "Identifier",
+                "name": "constructor",
+                "range": [
+                  266,
+                  277
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 13
+                  }
+                }
+              },
+              "value": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [
+                  {
+                    "type": "ObjectPattern",
+                    "properties": [
+                      {
+                        "type": "Property",
+                        "key": {
+                          "type": "Identifier",
+                          "name": "apiUrl",
+                          "range": [
+                            280,
+                            286
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 16
+                            },
+                            "end": {
+                              "line": 13,
+                              "column": 22
+                            }
+                          }
+                        },
+                        "value": {
+                          "type": "Identifier",
+                          "name": "apiUrl",
+                          "range": [
+                            280,
+                            286
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 16
+                            },
+                            "end": {
+                              "line": 13,
+                              "column": 22
+                            }
+                          }
+                        },
+                        "kind": "init",
+                        "method": false,
+                        "shorthand": true,
+                        "computed": false,
+                        "range": [
+                          280,
+                          286
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 13,
+                            "column": 16
+                          },
+                          "end": {
+                            "line": 13,
+                            "column": 22
+                          }
+                        }
+                      },
+                      {
+                        "type": "Property",
+                        "key": {
+                          "type": "Identifier",
+                          "name": "authenticationDeploymentId",
+                          "range": [
+                            288,
+                            314
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 24
+                            },
+                            "end": {
+                              "line": 13,
+                              "column": 50
+                            }
+                          }
+                        },
+                        "value": {
+                          "type": "Identifier",
+                          "name": "authenticationDeploymentId",
+                          "range": [
+                            288,
+                            314
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 24
+                            },
+                            "end": {
+                              "line": 13,
+                              "column": 50
+                            }
+                          }
+                        },
+                        "kind": "init",
+                        "method": false,
+                        "shorthand": true,
+                        "computed": false,
+                        "range": [
+                          288,
+                          314
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 13,
+                            "column": 24
+                          },
+                          "end": {
+                            "line": 13,
+                            "column": 50
+                          }
+                        }
+                      },
+                      {
+                        "type": "Property",
+                        "key": {
+                          "type": "Identifier",
+                          "name": "businessId",
+                          "range": [
+                            316,
+                            326
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 52
+                            },
+                            "end": {
+                              "line": 13,
+                              "column": 62
+                            }
+                          }
+                        },
+                        "value": {
+                          "type": "Identifier",
+                          "name": "businessId",
+                          "range": [
+                            316,
+                            326
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 52
+                            },
+                            "end": {
+                              "line": 13,
+                              "column": 62
+                            }
+                          }
+                        },
+                        "kind": "init",
+                        "method": false,
+                        "shorthand": true,
+                        "computed": false,
+                        "range": [
+                          316,
+                          326
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 13,
+                            "column": 52
+                          },
+                          "end": {
+                            "line": 13,
+                            "column": 62
+                          }
+                        }
+                      },
+                      {
+                        "type": "Property",
+                        "key": {
+                          "type": "Identifier",
+                          "name": "resource",
+                          "range": [
+                            328,
+                            336
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 64
+                            },
+                            "end": {
+                              "line": 13,
+                              "column": 72
+                            }
+                          }
+                        },
+                        "value": {
+                          "type": "AssignmentPattern",
+                          "operator": "=",
+                          "left": {
+                            "type": "Identifier",
+                            "name": "resource",
+                            "range": [
+                              328,
+                              336
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 13,
+                                "column": 64
+                              },
+                              "end": {
+                                "line": 13,
+                                "column": 72
+                              }
+                            }
+                          },
+                          "right": {
+                            "type": "Literal",
+                            "value": null,
+                            "raw": "null",
+                            "range": [
+                              339,
+                              343
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 13,
+                                "column": 75
+                              },
+                              "end": {
+                                "line": 13,
+                                "column": 79
+                              }
+                            }
+                          },
+                          "range": [
+                            328,
+                            343
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 64
+                            },
+                            "end": {
+                              "line": 13,
+                              "column": 79
+                            }
+                          }
+                        },
+                        "kind": "init",
+                        "method": false,
+                        "shorthand": true,
+                        "computed": false,
+                        "range": [
+                          328,
+                          343
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 13,
+                            "column": 64
+                          },
+                          "end": {
+                            "line": 13,
+                            "column": 79
+                          }
+                        }
+                      },
+                      {
+                        "type": "Property",
+                        "key": {
+                          "type": "Identifier",
+                          "name": "TokenPersistenceStrategy",
+                          "range": [
+                            345,
+                            369
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 81
+                            },
+                            "end": {
+                              "line": 13,
+                              "column": 105
+                            }
+                          }
+                        },
+                        "value": {
+                          "type": "AssignmentPattern",
+                          "operator": "=",
+                          "left": {
+                            "type": "Identifier",
+                            "name": "TokenPersistenceStrategy",
+                            "range": [
+                              345,
+                              369
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 13,
+                                "column": 81
+                              },
+                              "end": {
+                                "line": 13,
+                                "column": 105
+                              }
+                            }
+                          },
+                          "right": {
+                            "type": "Identifier",
+                            "name": "LocalStorageTokenPersistenceStrategy",
+                            "range": [
+                              372,
+                              408
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 13,
+                                "column": 108
+                              },
+                              "end": {
+                                "line": 13,
+                                "column": 144
+                              }
+                            }
+                          },
+                          "range": [
+                            345,
+                            408
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 13,
+                              "column": 81
+                            },
+                            "end": {
+                              "line": 13,
+                              "column": 144
+                            }
+                          }
+                        },
+                        "kind": "init",
+                        "method": false,
+                        "shorthand": true,
+                        "computed": false,
+                        "range": [
+                          345,
+                          408
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 13,
+                            "column": 81
+                          },
+                          "end": {
+                            "line": 13,
+                            "column": 144
+                          }
+                        }
+                      }
+                    ],
+                    "range": [
+                      278,
+                      410
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 13,
+                        "column": 14
+                      },
+                      "end": {
+                        "line": 13,
+                        "column": 146
+                      }
+                    }
+                  }
+                ],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [
+                    {
+                      "type": "VariableDeclaration",
+                      "declarations": [
+                        {
+                          "type": "VariableDeclarator",
+                          "id": {
+                            "type": "Identifier",
+                            "name": "handshakeStrategy",
+                            "range": [
+                              424,
+                              441
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 14,
+                                "column": 10
+                              },
+                              "end": {
+                                "line": 14,
+                                "column": 27
+                              }
+                            }
+                          },
+                          "init": {
+                            "type": "ArrowFunctionExpression",
+                            "id": null,
+                            "params": [],
+                            "body": {
+                              "type": "BlockStatement",
+                              "body": [
+                                {
+                                  "type": "VariableDeclaration",
+                                  "declarations": [
+                                    {
+                                      "type": "VariableDeclarator",
+                                      "id": {
+                                        "type": "Identifier",
+                                        "name": "token",
+                                        "range": [
+                                          464,
+                                          469
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 15,
+                                            "column": 12
+                                          },
+                                          "end": {
+                                            "line": 15,
+                                            "column": 17
+                                          }
+                                        }
+                                      },
+                                      "init": {
+                                        "type": "CallExpression",
+                                        "callee": {
+                                          "type": "MemberExpression",
+                                          "computed": false,
+                                          "object": {
+                                            "type": "ThisExpression",
+                                            "range": [
+                                              472,
+                                              476
+                                            ],
+                                            "loc": {
+                                              "start": {
+                                                "line": 15,
+                                                "column": 20
+                                              },
+                                              "end": {
+                                                "line": 15,
+                                                "column": 24
+                                              }
+                                            }
+                                          },
+                                          "property": {
+                                            "type": "Identifier",
+                                            "name": "getToken",
+                                            "range": [
+                                              477,
+                                              485
+                                            ],
+                                            "loc": {
+                                              "start": {
+                                                "line": 15,
+                                                "column": 25
+                                              },
+                                              "end": {
+                                                "line": 15,
+                                                "column": 33
+                                              }
+                                            }
+                                          },
+                                          "range": [
+                                            472,
+                                            485
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 15,
+                                              "column": 20
+                                            },
+                                            "end": {
+                                              "line": 15,
+                                              "column": 33
+                                            }
+                                          }
+                                        },
+                                        "arguments": [],
+                                        "range": [
+                                          472,
+                                          487
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 15,
+                                            "column": 20
+                                          },
+                                          "end": {
+                                            "line": 15,
+                                            "column": 35
+                                          }
+                                        }
+                                      },
+                                      "range": [
+                                        464,
+                                        487
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 15,
+                                          "column": 12
+                                        },
+                                        "end": {
+                                          "line": 15,
+                                          "column": 35
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  "kind": "const",
+                                  "range": [
+                                    458,
+                                    494
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 15,
+                                      "column": 6
+                                    },
+                                    "end": {
+                                      "line": 16,
+                                      "column": 6
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "VariableDeclaration",
+                                  "declarations": [
+                                    {
+                                      "type": "VariableDeclarator",
+                                      "id": {
+                                        "type": "Identifier",
+                                        "name": "handshake",
+                                        "range": [
+                                          500,
+                                          509
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 16,
+                                            "column": 12
+                                          },
+                                          "end": {
+                                            "line": 16,
+                                            "column": 21
+                                          }
+                                        }
+                                      },
+                                      "init": {
+                                        "type": "CallExpression",
+                                        "callee": {
+                                          "type": "MemberExpression",
+                                          "computed": false,
+                                          "object": {
+                                            "type": "Identifier",
+                                            "name": "AuthentFactory",
+                                            "range": [
+                                              512,
+                                              526
+                                            ],
+                                            "loc": {
+                                              "start": {
+                                                "line": 16,
+                                                "column": 24
+                                              },
+                                              "end": {
+                                                "line": 16,
+                                                "column": 38
+                                              }
+                                            }
+                                          },
+                                          "property": {
+                                            "type": "Identifier",
+                                            "name": "createWeakHandshake",
+                                            "range": [
+                                              527,
+                                              546
+                                            ],
+                                            "loc": {
+                                              "start": {
+                                                "line": 16,
+                                                "column": 39
+                                              },
+                                              "end": {
+                                                "line": 16,
+                                                "column": 58
+                                              }
+                                            }
+                                          },
+                                          "range": [
+                                            512,
+                                            546
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 16,
+                                              "column": 24
+                                            },
+                                            "end": {
+                                              "line": 16,
+                                              "column": 58
+                                            }
+                                          }
+                                        },
+                                        "arguments": [
+                                          {
+                                            "type": "ObjectExpression",
+                                            "properties": [
+                                              {
+                                                "type": "Property",
+                                                "key": {
+                                                  "type": "Identifier",
+                                                  "name": "deploymentId",
+                                                  "range": [
+                                                    557,
+                                                    569
+                                                  ],
+                                                  "loc": {
+                                                    "start": {
+                                                      "line": 17,
+                                                      "column": 8
+                                                    },
+                                                    "end": {
+                                                      "line": 17,
+                                                      "column": 20
+                                                    }
+                                                  }
+                                                },
+                                                "value": {
+                                                  "type": "Identifier",
+                                                  "name": "authenticationDeploymentId",
+                                                  "range": [
+                                                    571,
+                                                    597
+                                                  ],
+                                                  "loc": {
+                                                    "start": {
+                                                      "line": 17,
+                                                      "column": 22
+                                                    },
+                                                    "end": {
+                                                      "line": 17,
+                                                      "column": 48
+                                                    }
+                                                  }
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "shorthand": false,
+                                                "computed": false,
+                                                "range": [
+                                                  557,
+                                                  597
+                                                ],
+                                                "loc": {
+                                                  "start": {
+                                                    "line": 17,
+                                                    "column": 8
+                                                  },
+                                                  "end": {
+                                                    "line": 17,
+                                                    "column": 48
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "type": "Property",
+                                                "key": {
+                                                  "type": "Identifier",
+                                                  "name": "token",
+                                                  "range": [
+                                                    607,
+                                                    612
+                                                  ],
+                                                  "loc": {
+                                                    "start": {
+                                                      "line": 18,
+                                                      "column": 8
+                                                    },
+                                                    "end": {
+                                                      "line": 18,
+                                                      "column": 13
+                                                    }
+                                                  }
+                                                },
+                                                "value": {
+                                                  "type": "Identifier",
+                                                  "name": "token",
+                                                  "range": [
+                                                    607,
+                                                    612
+                                                  ],
+                                                  "loc": {
+                                                    "start": {
+                                                      "line": 18,
+                                                      "column": 8
+                                                    },
+                                                    "end": {
+                                                      "line": 18,
+                                                      "column": 13
+                                                    }
+                                                  }
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "shorthand": true,
+                                                "computed": false,
+                                                "range": [
+                                                  607,
+                                                  612
+                                                ],
+                                                "loc": {
+                                                  "start": {
+                                                    "line": 18,
+                                                    "column": 8
+                                                  },
+                                                  "end": {
+                                                    "line": 18,
+                                                    "column": 13
+                                                  }
+                                                }
+                                              }
+                                            ],
+                                            "range": [
+                                              547,
+                                              620
+                                            ],
+                                            "loc": {
+                                              "start": {
+                                                "line": 16,
+                                                "column": 59
+                                              },
+                                              "end": {
+                                                "line": 19,
+                                                "column": 7
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "range": [
+                                          512,
+                                          621
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 16,
+                                            "column": 24
+                                          },
+                                          "end": {
+                                            "line": 19,
+                                            "column": 8
+                                          }
+                                        }
+                                      },
+                                      "range": [
+                                        500,
+                                        621
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 16,
+                                          "column": 12
+                                        },
+                                        "end": {
+                                          "line": 19,
+                                          "column": 8
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  "kind": "const",
+                                  "range": [
+                                    494,
+                                    628
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 16,
+                                      "column": 6
+                                    },
+                                    "end": {
+                                      "line": 20,
+                                      "column": 6
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "ReturnStatement",
+                                  "argument": {
+                                    "type": "Identifier",
+                                    "name": "handshake",
+                                    "range": [
+                                      635,
+                                      644
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 20,
+                                        "column": 13
+                                      },
+                                      "end": {
+                                        "line": 20,
+                                        "column": 22
+                                      }
+                                    }
+                                  },
+                                  "range": [
+                                    628,
+                                    649
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 20,
+                                      "column": 6
+                                    },
+                                    "end": {
+                                      "line": 21,
+                                      "column": 4
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                450,
+                                650
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 14,
+                                  "column": 36
+                                },
+                                "end": {
+                                  "line": 21,
+                                  "column": 5
+                                }
+                              }
+                            },
+                            "generator": false,
+                            "expression": false,
+                            "range": [
+                              444,
+                              650
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 14,
+                                "column": 30
+                              },
+                              "end": {
+                                "line": 21,
+                                "column": 5
+                              }
+                            }
+                          },
+                          "range": [
+                            424,
+                            650
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 14,
+                              "column": 10
+                            },
+                            "end": {
+                              "line": 21,
+                              "column": 5
+                            }
+                          },
+                          "trailingComments": [
+                            {
+                              "type": "Block",
+                              "value": "*\n     *\n     ",
+                              "range": [
+                                655,
+                                673
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 22,
+                                  "column": 4
+                                },
+                                "end": {
+                                  "line": 24,
+                                  "column": 7
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "kind": "const",
+                      "range": [
+                        418,
+                        678
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 14,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 25,
+                          "column": 4
+                        }
+                      }
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "CallExpression",
+                        "callee": {
+                          "type": "Super",
+                          "range": [
+                            678,
+                            683
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 25,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 25,
+                              "column": 9
+                            }
+                          }
+                        },
+                        "arguments": [
+                          {
+                            "type": "ObjectExpression",
+                            "properties": [
+                              {
+                                "type": "Property",
+                                "key": {
+                                  "type": "Identifier",
+                                  "name": "apiUrl",
+                                  "range": [
+                                    686,
+                                    692
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 25,
+                                      "column": 12
+                                    },
+                                    "end": {
+                                      "line": 25,
+                                      "column": 18
+                                    }
+                                  }
+                                },
+                                "value": {
+                                  "type": "Identifier",
+                                  "name": "apiUrl",
+                                  "range": [
+                                    686,
+                                    692
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 25,
+                                      "column": 12
+                                    },
+                                    "end": {
+                                      "line": 25,
+                                      "column": 18
+                                    }
+                                  }
+                                },
+                                "kind": "init",
+                                "method": false,
+                                "shorthand": true,
+                                "computed": false,
+                                "range": [
+                                  686,
+                                  692
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 25,
+                                    "column": 12
+                                  },
+                                  "end": {
+                                    "line": 25,
+                                    "column": 18
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Property",
+                                "key": {
+                                  "type": "Identifier",
+                                  "name": "businessId",
+                                  "range": [
+                                    695,
+                                    705
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 25,
+                                      "column": 21
+                                    },
+                                    "end": {
+                                      "line": 25,
+                                      "column": 31
+                                    }
+                                  }
+                                },
+                                "value": {
+                                  "type": "Identifier",
+                                  "name": "businessId",
+                                  "range": [
+                                    695,
+                                    705
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 25,
+                                      "column": 21
+                                    },
+                                    "end": {
+                                      "line": 25,
+                                      "column": 31
+                                    }
+                                  }
+                                },
+                                "kind": "init",
+                                "method": false,
+                                "shorthand": true,
+                                "computed": false,
+                                "range": [
+                                  695,
+                                  705
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 25,
+                                    "column": 21
+                                  },
+                                  "end": {
+                                    "line": 25,
+                                    "column": 31
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Property",
+                                "key": {
+                                  "type": "Identifier",
+                                  "name": "handshakeStrategy",
+                                  "range": [
+                                    707,
+                                    724
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 25,
+                                      "column": 33
+                                    },
+                                    "end": {
+                                      "line": 25,
+                                      "column": 50
+                                    }
+                                  }
+                                },
+                                "value": {
+                                  "type": "Identifier",
+                                  "name": "handshakeStrategy",
+                                  "range": [
+                                    707,
+                                    724
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 25,
+                                      "column": 33
+                                    },
+                                    "end": {
+                                      "line": 25,
+                                      "column": 50
+                                    }
+                                  }
+                                },
+                                "kind": "init",
+                                "method": false,
+                                "shorthand": true,
+                                "computed": false,
+                                "range": [
+                                  707,
+                                  724
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 25,
+                                    "column": 33
+                                  },
+                                  "end": {
+                                    "line": 25,
+                                    "column": 50
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Property",
+                                "key": {
+                                  "type": "Identifier",
+                                  "name": "resource",
+                                  "range": [
+                                    726,
+                                    734
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 25,
+                                      "column": 52
+                                    },
+                                    "end": {
+                                      "line": 25,
+                                      "column": 60
+                                    }
+                                  }
+                                },
+                                "value": {
+                                  "type": "Identifier",
+                                  "name": "resource",
+                                  "range": [
+                                    726,
+                                    734
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 25,
+                                      "column": 52
+                                    },
+                                    "end": {
+                                      "line": 25,
+                                      "column": 60
+                                    }
+                                  }
+                                },
+                                "kind": "init",
+                                "method": false,
+                                "shorthand": true,
+                                "computed": false,
+                                "range": [
+                                  726,
+                                  734
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 25,
+                                    "column": 52
+                                  },
+                                  "end": {
+                                    "line": 25,
+                                    "column": 60
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              684,
+                              736
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 25,
+                                "column": 10
+                              },
+                              "end": {
+                                "line": 25,
+                                "column": 62
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          678,
+                          737
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 25,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 25,
+                            "column": 63
+                          }
+                        }
+                      },
+                      "range": [
+                        678,
+                        742
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 25,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 26,
+                          "column": 4
+                        }
+                      },
+                      "leadingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     *\n     ",
+                          "range": [
+                            655,
+                            673
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 22,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 24,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "VariableDeclaration",
+                      "declarations": [
+                        {
+                          "type": "VariableDeclarator",
+                          "id": {
+                            "type": "Identifier",
+                            "name": "onSuccessfulHandshake",
+                            "range": [
+                              748,
+                              769
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 26,
+                                "column": 10
+                              },
+                              "end": {
+                                "line": 26,
+                                "column": 31
+                              }
+                            }
+                          },
+                          "init": {
+                            "type": "ArrowFunctionExpression",
+                            "id": null,
+                            "params": [
+                              {
+                                "type": "ObjectPattern",
+                                "properties": [
+                                  {
+                                    "type": "Property",
+                                    "key": {
+                                      "type": "Identifier",
+                                      "name": "publicToken",
+                                      "range": [
+                                        775,
+                                        786
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 26,
+                                          "column": 37
+                                        },
+                                        "end": {
+                                          "line": 26,
+                                          "column": 48
+                                        }
+                                      }
+                                    },
+                                    "value": {
+                                      "type": "Identifier",
+                                      "name": "publicToken",
+                                      "range": [
+                                        775,
+                                        786
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 26,
+                                          "column": 37
+                                        },
+                                        "end": {
+                                          "line": 26,
+                                          "column": 48
+                                        }
+                                      }
+                                    },
+                                    "kind": "init",
+                                    "method": false,
+                                    "shorthand": true,
+                                    "computed": false,
+                                    "range": [
+                                      775,
+                                      786
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 26,
+                                        "column": 37
+                                      },
+                                      "end": {
+                                        "line": 26,
+                                        "column": 48
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "Property",
+                                    "key": {
+                                      "type": "Identifier",
+                                      "name": "userId",
+                                      "range": [
+                                        788,
+                                        794
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 26,
+                                          "column": 50
+                                        },
+                                        "end": {
+                                          "line": 26,
+                                          "column": 56
+                                        }
+                                      }
+                                    },
+                                    "value": {
+                                      "type": "Identifier",
+                                      "name": "userId",
+                                      "range": [
+                                        788,
+                                        794
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 26,
+                                          "column": 50
+                                        },
+                                        "end": {
+                                          "line": 26,
+                                          "column": 56
+                                        }
+                                      }
+                                    },
+                                    "kind": "init",
+                                    "method": false,
+                                    "shorthand": true,
+                                    "computed": false,
+                                    "range": [
+                                      788,
+                                      794
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 26,
+                                        "column": 50
+                                      },
+                                      "end": {
+                                        "line": 26,
+                                        "column": 56
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "Property",
+                                    "key": {
+                                      "type": "Identifier",
+                                      "name": "token",
+                                      "range": [
+                                        796,
+                                        801
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 26,
+                                          "column": 58
+                                        },
+                                        "end": {
+                                          "line": 26,
+                                          "column": 63
+                                        }
+                                      }
+                                    },
+                                    "value": {
+                                      "type": "Identifier",
+                                      "name": "token",
+                                      "range": [
+                                        796,
+                                        801
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 26,
+                                          "column": 58
+                                        },
+                                        "end": {
+                                          "line": 26,
+                                          "column": 63
+                                        }
+                                      }
+                                    },
+                                    "kind": "init",
+                                    "method": false,
+                                    "shorthand": true,
+                                    "computed": false,
+                                    "range": [
+                                      796,
+                                      801
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 26,
+                                        "column": 58
+                                      },
+                                      "end": {
+                                        "line": 26,
+                                        "column": 63
+                                      }
+                                    }
+                                  }
+                                ],
+                                "range": [
+                                  773,
+                                  803
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 26,
+                                    "column": 35
+                                  },
+                                  "end": {
+                                    "line": 26,
+                                    "column": 65
+                                  }
+                                }
+                              }
+                            ],
+                            "body": {
+                              "type": "BlockStatement",
+                              "body": [
+                                {
+                                  "type": "ExpressionStatement",
+                                  "expression": {
+                                    "type": "CallExpression",
+                                    "callee": {
+                                      "type": "MemberExpression",
+                                      "computed": false,
+                                      "object": {
+                                        "type": "Identifier",
+                                        "name": "console",
+                                        "range": [
+                                          816,
+                                          823
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 27,
+                                            "column": 6
+                                          },
+                                          "end": {
+                                            "line": 27,
+                                            "column": 13
+                                          }
+                                        }
+                                      },
+                                      "property": {
+                                        "type": "Identifier",
+                                        "name": "debug",
+                                        "range": [
+                                          824,
+                                          829
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 27,
+                                            "column": 14
+                                          },
+                                          "end": {
+                                            "line": 27,
+                                            "column": 19
+                                          }
+                                        }
+                                      },
+                                      "range": [
+                                        816,
+                                        829
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 27,
+                                          "column": 6
+                                        },
+                                        "end": {
+                                          "line": 27,
+                                          "column": 19
+                                        }
+                                      }
+                                    },
+                                    "arguments": [
+                                      {
+                                        "type": "Literal",
+                                        "value": "SmartClient::onSuccessfulHandshake",
+                                        "raw": "'SmartClient::onSuccessfulHandshake'",
+                                        "range": [
+                                          830,
+                                          866
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 27,
+                                            "column": 20
+                                          },
+                                          "end": {
+                                            "line": 27,
+                                            "column": 56
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "type": "ObjectExpression",
+                                        "properties": [
+                                          {
+                                            "type": "Property",
+                                            "key": {
+                                              "type": "Identifier",
+                                              "name": "publicToken",
+                                              "range": [
+                                                870,
+                                                881
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 27,
+                                                  "column": 60
+                                                },
+                                                "end": {
+                                                  "line": 27,
+                                                  "column": 71
+                                                }
+                                              }
+                                            },
+                                            "value": {
+                                              "type": "Identifier",
+                                              "name": "publicToken",
+                                              "range": [
+                                                870,
+                                                881
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 27,
+                                                  "column": 60
+                                                },
+                                                "end": {
+                                                  "line": 27,
+                                                  "column": 71
+                                                }
+                                              }
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "shorthand": true,
+                                            "computed": false,
+                                            "range": [
+                                              870,
+                                              881
+                                            ],
+                                            "loc": {
+                                              "start": {
+                                                "line": 27,
+                                                "column": 60
+                                              },
+                                              "end": {
+                                                "line": 27,
+                                                "column": 71
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "type": "Property",
+                                            "key": {
+                                              "type": "Identifier",
+                                              "name": "userId",
+                                              "range": [
+                                                883,
+                                                889
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 27,
+                                                  "column": 73
+                                                },
+                                                "end": {
+                                                  "line": 27,
+                                                  "column": 79
+                                                }
+                                              }
+                                            },
+                                            "value": {
+                                              "type": "Identifier",
+                                              "name": "userId",
+                                              "range": [
+                                                883,
+                                                889
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 27,
+                                                  "column": 73
+                                                },
+                                                "end": {
+                                                  "line": 27,
+                                                  "column": 79
+                                                }
+                                              }
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "shorthand": true,
+                                            "computed": false,
+                                            "range": [
+                                              883,
+                                              889
+                                            ],
+                                            "loc": {
+                                              "start": {
+                                                "line": 27,
+                                                "column": 73
+                                              },
+                                              "end": {
+                                                "line": 27,
+                                                "column": 79
+                                              }
+                                            }
+                                          },
+                                          {
+                                            "type": "Property",
+                                            "key": {
+                                              "type": "Identifier",
+                                              "name": "token",
+                                              "range": [
+                                                891,
+                                                896
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 27,
+                                                  "column": 81
+                                                },
+                                                "end": {
+                                                  "line": 27,
+                                                  "column": 86
+                                                }
+                                              }
+                                            },
+                                            "value": {
+                                              "type": "Identifier",
+                                              "name": "token",
+                                              "range": [
+                                                891,
+                                                896
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 27,
+                                                  "column": 81
+                                                },
+                                                "end": {
+                                                  "line": 27,
+                                                  "column": 86
+                                                }
+                                              }
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "shorthand": true,
+                                            "computed": false,
+                                            "range": [
+                                              891,
+                                              896
+                                            ],
+                                            "loc": {
+                                              "start": {
+                                                "line": 27,
+                                                "column": 81
+                                              },
+                                              "end": {
+                                                "line": 27,
+                                                "column": 86
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "range": [
+                                          868,
+                                          898
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 27,
+                                            "column": 58
+                                          },
+                                          "end": {
+                                            "line": 27,
+                                            "column": 88
+                                          }
+                                        }
+                                      }
+                                    ],
+                                    "range": [
+                                      816,
+                                      899
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 27,
+                                        "column": 6
+                                      },
+                                      "end": {
+                                        "line": 27,
+                                        "column": 89
+                                      }
+                                    }
+                                  },
+                                  "range": [
+                                    816,
+                                    907
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 27,
+                                      "column": 6
+                                    },
+                                    "end": {
+                                      "line": 29,
+                                      "column": 6
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "IfStatement",
+                                  "test": {
+                                    "type": "Identifier",
+                                    "name": "token",
+                                    "range": [
+                                      911,
+                                      916
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 29,
+                                        "column": 10
+                                      },
+                                      "end": {
+                                        "line": 29,
+                                        "column": 15
+                                      }
+                                    }
+                                  },
+                                  "consequent": {
+                                    "type": "BlockStatement",
+                                    "body": [
+                                      {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                          "type": "CallExpression",
+                                          "callee": {
+                                            "type": "MemberExpression",
+                                            "computed": false,
+                                            "object": {
+                                              "type": "MemberExpression",
+                                              "computed": false,
+                                              "object": {
+                                                "type": "ThisExpression",
+                                                "range": [
+                                                  928,
+                                                  932
+                                                ],
+                                                "loc": {
+                                                  "start": {
+                                                    "line": 30,
+                                                    "column": 8
+                                                  },
+                                                  "end": {
+                                                    "line": 30,
+                                                    "column": 12
+                                                  }
+                                                }
+                                              },
+                                              "property": {
+                                                "type": "Identifier",
+                                                "name": "strategy",
+                                                "range": [
+                                                  933,
+                                                  941
+                                                ],
+                                                "loc": {
+                                                  "start": {
+                                                    "line": 30,
+                                                    "column": 13
+                                                  },
+                                                  "end": {
+                                                    "line": 30,
+                                                    "column": 21
+                                                  }
+                                                }
+                                              },
+                                              "range": [
+                                                928,
+                                                941
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 30,
+                                                  "column": 8
+                                                },
+                                                "end": {
+                                                  "line": 30,
+                                                  "column": 21
+                                                }
+                                              }
+                                            },
+                                            "property": {
+                                              "type": "Identifier",
+                                              "name": "set",
+                                              "range": [
+                                                942,
+                                                945
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 30,
+                                                  "column": 22
+                                                },
+                                                "end": {
+                                                  "line": 30,
+                                                  "column": 25
+                                                }
+                                              }
+                                            },
+                                            "range": [
+                                              928,
+                                              945
+                                            ],
+                                            "loc": {
+                                              "start": {
+                                                "line": 30,
+                                                "column": 8
+                                              },
+                                              "end": {
+                                                "line": 30,
+                                                "column": 25
+                                              }
+                                            }
+                                          },
+                                          "arguments": [
+                                            {
+                                              "type": "ObjectExpression",
+                                              "properties": [
+                                                {
+                                                  "type": "Property",
+                                                  "key": {
+                                                    "type": "Identifier",
+                                                    "name": "token",
+                                                    "range": [
+                                                      948,
+                                                      953
+                                                    ],
+                                                    "loc": {
+                                                      "start": {
+                                                        "line": 30,
+                                                        "column": 28
+                                                      },
+                                                      "end": {
+                                                        "line": 30,
+                                                        "column": 33
+                                                      }
+                                                    }
+                                                  },
+                                                  "value": {
+                                                    "type": "Identifier",
+                                                    "name": "token",
+                                                    "range": [
+                                                      948,
+                                                      953
+                                                    ],
+                                                    "loc": {
+                                                      "start": {
+                                                        "line": 30,
+                                                        "column": 28
+                                                      },
+                                                      "end": {
+                                                        "line": 30,
+                                                        "column": 33
+                                                      }
+                                                    }
+                                                  },
+                                                  "kind": "init",
+                                                  "method": false,
+                                                  "shorthand": true,
+                                                  "computed": false,
+                                                  "range": [
+                                                    948,
+                                                    953
+                                                  ],
+                                                  "loc": {
+                                                    "start": {
+                                                      "line": 30,
+                                                      "column": 28
+                                                    },
+                                                    "end": {
+                                                      "line": 30,
+                                                      "column": 33
+                                                    }
+                                                  }
+                                                }
+                                              ],
+                                              "range": [
+                                                946,
+                                                955
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 30,
+                                                  "column": 26
+                                                },
+                                                "end": {
+                                                  "line": 30,
+                                                  "column": 35
+                                                }
+                                              }
+                                            }
+                                          ],
+                                          "range": [
+                                            928,
+                                            956
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 30,
+                                              "column": 8
+                                            },
+                                            "end": {
+                                              "line": 30,
+                                              "column": 36
+                                            }
+                                          }
+                                        },
+                                        "range": [
+                                          928,
+                                          963
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 30,
+                                            "column": 8
+                                          },
+                                          "end": {
+                                            "line": 31,
+                                            "column": 6
+                                          }
+                                        }
+                                      }
+                                    ],
+                                    "range": [
+                                      918,
+                                      964
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 29,
+                                        "column": 17
+                                      },
+                                      "end": {
+                                        "line": 31,
+                                        "column": 7
+                                      }
+                                    }
+                                  },
+                                  "alternate": null,
+                                  "range": [
+                                    907,
+                                    964
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 29,
+                                      "column": 6
+                                    },
+                                    "end": {
+                                      "line": 31,
+                                      "column": 7
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                808,
+                                970
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 26,
+                                  "column": 70
+                                },
+                                "end": {
+                                  "line": 32,
+                                  "column": 5
+                                }
+                              }
+                            },
+                            "generator": false,
+                            "expression": false,
+                            "range": [
+                              772,
+                              970
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 26,
+                                "column": 34
+                              },
+                              "end": {
+                                "line": 32,
+                                "column": 5
+                              }
+                            }
+                          },
+                          "range": [
+                            748,
+                            970
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 26,
+                              "column": 10
+                            },
+                            "end": {
+                              "line": 32,
+                              "column": 5
+                            }
+                          }
+                        }
+                      ],
+                      "kind": "const",
+                      "range": [
+                        742,
+                        975
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 26,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 33,
+                          "column": 4
+                        }
+                      }
+                    },
+                    {
+                      "type": "VariableDeclaration",
+                      "declarations": [
+                        {
+                          "type": "VariableDeclarator",
+                          "id": {
+                            "type": "Identifier",
+                            "name": "onFailedHandshake",
+                            "range": [
+                              981,
+                              998
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 33,
+                                "column": 10
+                              },
+                              "end": {
+                                "line": 33,
+                                "column": 27
+                              }
+                            }
+                          },
+                          "init": {
+                            "type": "ArrowFunctionExpression",
+                            "id": null,
+                            "params": [
+                              {
+                                "type": "Identifier",
+                                "name": "error",
+                                "range": [
+                                  1002,
+                                  1007
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 33,
+                                    "column": 31
+                                  },
+                                  "end": {
+                                    "line": 33,
+                                    "column": 36
+                                  }
+                                }
+                              }
+                            ],
+                            "body": {
+                              "type": "BlockStatement",
+                              "body": [
+                                {
+                                  "type": "ExpressionStatement",
+                                  "expression": {
+                                    "type": "CallExpression",
+                                    "callee": {
+                                      "type": "MemberExpression",
+                                      "computed": false,
+                                      "object": {
+                                        "type": "Identifier",
+                                        "name": "console",
+                                        "range": [
+                                          1020,
+                                          1027
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 34,
+                                            "column": 6
+                                          },
+                                          "end": {
+                                            "line": 34,
+                                            "column": 13
+                                          }
+                                        }
+                                      },
+                                      "property": {
+                                        "type": "Identifier",
+                                        "name": "debug",
+                                        "range": [
+                                          1028,
+                                          1033
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 34,
+                                            "column": 14
+                                          },
+                                          "end": {
+                                            "line": 34,
+                                            "column": 19
+                                          }
+                                        }
+                                      },
+                                      "range": [
+                                        1020,
+                                        1033
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 34,
+                                          "column": 6
+                                        },
+                                        "end": {
+                                          "line": 34,
+                                          "column": 19
+                                        }
+                                      }
+                                    },
+                                    "arguments": [
+                                      {
+                                        "type": "Literal",
+                                        "value": "SmartClient::onFailedHandshake",
+                                        "raw": "'SmartClient::onFailedHandshake'",
+                                        "range": [
+                                          1034,
+                                          1066
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 34,
+                                            "column": 20
+                                          },
+                                          "end": {
+                                            "line": 34,
+                                            "column": 52
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "type": "Identifier",
+                                        "name": "error",
+                                        "range": [
+                                          1068,
+                                          1073
+                                        ],
+                                        "loc": {
+                                          "start": {
+                                            "line": 34,
+                                            "column": 54
+                                          },
+                                          "end": {
+                                            "line": 34,
+                                            "column": 59
+                                          }
+                                        }
+                                      }
+                                    ],
+                                    "range": [
+                                      1020,
+                                      1074
+                                    ],
+                                    "loc": {
+                                      "start": {
+                                        "line": 34,
+                                        "column": 6
+                                      },
+                                      "end": {
+                                        "line": 34,
+                                        "column": 60
+                                      }
+                                    }
+                                  },
+                                  "range": [
+                                    1020,
+                                    1079
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 34,
+                                      "column": 6
+                                    },
+                                    "end": {
+                                      "line": 35,
+                                      "column": 4
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                1012,
+                                1080
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 33,
+                                  "column": 41
+                                },
+                                "end": {
+                                  "line": 35,
+                                  "column": 5
+                                }
+                              }
+                            },
+                            "generator": false,
+                            "expression": false,
+                            "range": [
+                              1001,
+                              1080
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 33,
+                                "column": 30
+                              },
+                              "end": {
+                                "line": 35,
+                                "column": 5
+                              }
+                            }
+                          },
+                          "range": [
+                            981,
+                            1080
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 33,
+                              "column": 10
+                            },
+                            "end": {
+                              "line": 35,
+                              "column": 5
+                            }
+                          }
+                        }
+                      ],
+                      "kind": "const",
+                      "range": [
+                        975,
+                        1085
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 33,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 36,
+                          "column": 4
+                        }
+                      }
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "CallExpression",
+                        "callee": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ThisExpression",
+                            "range": [
+                              1085,
+                              1089
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 36,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 36,
+                                "column": 8
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "addConnectionStatusListener",
+                            "range": [
+                              1090,
+                              1117
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 36,
+                                "column": 9
+                              },
+                              "end": {
+                                "line": 36,
+                                "column": 36
+                              }
+                            }
+                          },
+                          "range": [
+                            1085,
+                            1117
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 36,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 36,
+                              "column": 36
+                            }
+                          }
+                        },
+                        "arguments": [
+                          {
+                            "type": "ObjectExpression",
+                            "properties": [
+                              {
+                                "type": "Property",
+                                "key": {
+                                  "type": "Identifier",
+                                  "name": "onFailedHandshake",
+                                  "range": [
+                                    1120,
+                                    1137
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 36,
+                                      "column": 39
+                                    },
+                                    "end": {
+                                      "line": 36,
+                                      "column": 56
+                                    }
+                                  }
+                                },
+                                "value": {
+                                  "type": "Identifier",
+                                  "name": "onFailedHandshake",
+                                  "range": [
+                                    1120,
+                                    1137
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 36,
+                                      "column": 39
+                                    },
+                                    "end": {
+                                      "line": 36,
+                                      "column": 56
+                                    }
+                                  }
+                                },
+                                "kind": "init",
+                                "method": false,
+                                "shorthand": true,
+                                "computed": false,
+                                "range": [
+                                  1120,
+                                  1137
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 36,
+                                    "column": 39
+                                  },
+                                  "end": {
+                                    "line": 36,
+                                    "column": 56
+                                  }
+                                }
+                              },
+                              {
+                                "type": "Property",
+                                "key": {
+                                  "type": "Identifier",
+                                  "name": "onSuccessfulHandshake",
+                                  "range": [
+                                    1139,
+                                    1160
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 36,
+                                      "column": 58
+                                    },
+                                    "end": {
+                                      "line": 36,
+                                      "column": 79
+                                    }
+                                  }
+                                },
+                                "value": {
+                                  "type": "Identifier",
+                                  "name": "onSuccessfulHandshake",
+                                  "range": [
+                                    1139,
+                                    1160
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 36,
+                                      "column": 58
+                                    },
+                                    "end": {
+                                      "line": 36,
+                                      "column": 79
+                                    }
+                                  }
+                                },
+                                "kind": "init",
+                                "method": false,
+                                "shorthand": true,
+                                "computed": false,
+                                "range": [
+                                  1139,
+                                  1160
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 36,
+                                    "column": 58
+                                  },
+                                  "end": {
+                                    "line": 36,
+                                    "column": 79
+                                  }
+                                }
+                              }
+                            ],
+                            "range": [
+                              1118,
+                              1162
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 36,
+                                "column": 37
+                              },
+                              "end": {
+                                "line": 36,
+                                "column": 81
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          1085,
+                          1163
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 36,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 36,
+                            "column": 82
+                          }
+                        },
+                        "trailingComments": [
+                          {
+                            "type": "Block",
+                            "value": "*\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     ",
+                            "range": [
+                              1168,
+                              1242
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 37,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 40,
+                                "column": 7
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "range": [
+                        1085,
+                        1247
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 36,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 41,
+                          "column": 4
+                        }
+                      }
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ThisExpression",
+                            "range": [
+                              1247,
+                              1251
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 41,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 41,
+                                "column": 8
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "strategy",
+                            "range": [
+                              1252,
+                              1260
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 41,
+                                "column": 9
+                              },
+                              "end": {
+                                "line": 41,
+                                "column": 17
+                              }
+                            }
+                          },
+                          "range": [
+                            1247,
+                            1260
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 41,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 41,
+                              "column": 17
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "NewExpression",
+                          "callee": {
+                            "type": "Identifier",
+                            "name": "TokenPersistenceStrategy",
+                            "range": [
+                              1267,
+                              1291
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 41,
+                                "column": 24
+                              },
+                              "end": {
+                                "line": 41,
+                                "column": 48
+                              }
+                            }
+                          },
+                          "arguments": [],
+                          "range": [
+                            1263,
+                            1293
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 41,
+                              "column": 20
+                            },
+                            "end": {
+                              "line": 41,
+                              "column": 50
+                            }
+                          }
+                        },
+                        "range": [
+                          1247,
+                          1293
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 41,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 41,
+                            "column": 50
+                          }
+                        }
+                      },
+                      "range": [
+                        1247,
+                        1296
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 41,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 42,
+                          "column": 2
+                        }
+                      },
+                      "leadingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     ",
+                          "range": [
+                            1168,
+                            1242
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 37,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 40,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "range": [
+                    412,
+                    1297
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 148
+                    },
+                    "end": {
+                      "line": 42,
+                      "column": 3
+                    }
+                  }
+                },
+                "generator": false,
+                "expression": false,
+                "range": [
+                  277,
+                  1297
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 13
+                  },
+                  "end": {
+                    "line": 42,
+                    "column": 3
+                  }
+                }
+              },
+              "kind": "constructor",
+              "computed": false,
+              "range": [
+                266,
+                1297
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 2
+                },
+                "end": {
+                  "line": 42,
+                  "column": 3
+                }
+              },
+              "leadingComments": [
+                {
+                  "type": "Block",
+                  "value": "*\n   *\n   ",
+                  "range": [
+                    249,
+                    263
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 5
+                    }
+                  }
+                }
+              ],
+              "trailingComments": [
+                {
+                  "type": "Block",
+                  "value": "*\n   * @return {string} The stored token\n   ",
+                  "range": [
+                    1300,
+                    1348
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 43,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 45,
+                      "column": 5
+                    }
+                  }
+                }
+              ],
+              "static": false
+            },
+            {
+              "type": "MethodDefinition",
+              "key": {
+                "type": "Identifier",
+                "name": "getToken",
+                "range": [
+                  1351,
+                  1359
+                ],
+                "loc": {
+                  "start": {
+                    "line": 46,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 46,
+                    "column": 10
+                  }
+                }
+              },
+              "value": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [
+                    {
+                      "type": "ReturnStatement",
+                      "argument": {
+                        "type": "CallExpression",
+                        "callee": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "MemberExpression",
+                            "computed": false,
+                            "object": {
+                              "type": "ThisExpression",
+                              "range": [
+                                1375,
+                                1379
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 47,
+                                  "column": 11
+                                },
+                                "end": {
+                                  "line": 47,
+                                  "column": 15
+                                }
+                              }
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "name": "strategy",
+                              "range": [
+                                1380,
+                                1388
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 47,
+                                  "column": 16
+                                },
+                                "end": {
+                                  "line": 47,
+                                  "column": 24
+                                }
+                              }
+                            },
+                            "range": [
+                              1375,
+                              1388
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 11
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 24
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "get",
+                            "range": [
+                              1389,
+                              1392
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 25
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 28
+                              }
+                            }
+                          },
+                          "range": [
+                            1375,
+                            1392
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 47,
+                              "column": 11
+                            },
+                            "end": {
+                              "line": 47,
+                              "column": 28
+                            }
+                          }
+                        },
+                        "arguments": [],
+                        "range": [
+                          1375,
+                          1394
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 47,
+                            "column": 11
+                          },
+                          "end": {
+                            "line": 47,
+                            "column": 30
+                          }
+                        }
+                      },
+                      "range": [
+                        1368,
+                        1397
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 47,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 48,
+                          "column": 2
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1362,
+                    1398
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 46,
+                      "column": 13
+                    },
+                    "end": {
+                      "line": 48,
+                      "column": 3
+                    }
+                  }
+                },
+                "generator": false,
+                "expression": false,
+                "range": [
+                  1359,
+                  1398
+                ],
+                "loc": {
+                  "start": {
+                    "line": 46,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 48,
+                    "column": 3
+                  }
+                }
+              },
+              "kind": "method",
+              "computed": false,
+              "range": [
+                1351,
+                1398
+              ],
+              "loc": {
+                "start": {
+                  "line": 46,
+                  "column": 2
+                },
+                "end": {
+                  "line": 48,
+                  "column": 3
+                }
+              },
+              "leadingComments": [
+                {
+                  "type": "Block",
+                  "value": "*\n   * @return {string} The stored token\n   ",
+                  "range": [
+                    1300,
+                    1348
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 43,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 45,
+                      "column": 5
+                    }
+                  }
+                }
+              ],
+              "static": false
+            }
+          ],
+          "range": [
+            245,
+            1400
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 40
+            },
+            "end": {
+              "line": 49,
+              "column": 1
+            }
+          }
+        },
+        "range": [
+          212,
+          1400
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 7
+          },
+          "end": {
+            "line": 49,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * @access protected\n * @extends {Client}\n ",
+            "range": [
+              155,
+              204
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 8,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        205,
+        1400
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 49,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @access protected\n * @extends {Client}\n ",
+          "range": [
+            155,
+            204
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1400
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 49,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * @access protected\n * @extends {Client}\n ",
+      "range": [
+        155,
+        204
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n   *\n   ",
+      "range": [
+        249,
+        263
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n     *\n     ",
+      "range": [
+        655,
+        673
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 4
+        },
+        "end": {
+          "line": 24,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     ",
+      "range": [
+        1168,
+        1242
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 4
+        },
+        "end": {
+          "line": 40,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n   * @return {string} The stored token\n   ",
+      "range": [
+        1300,
+        1348
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 2
+        },
+        "end": {
+          "line": 45,
+          "column": 5
+        }
+      }
+    }
+  ]
+}
