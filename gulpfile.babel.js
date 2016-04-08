@@ -87,12 +87,12 @@ gulp.task('clean', (callback) => {
   ], callback)
 })
 
-gulp.task('publish', () => {
+gulp.task('deploy', () => {
   return gulp.src([__dirname + '/docs/**/**.*'])
     .pipe(github({
       remoteUrl : pkg.repository.url,
       branch : 'gh-pages',
-      cacheDir : __dirname + '/.publish/'
+      cacheDir : __dirname + '/.deploy/'
     }))
 })
 
