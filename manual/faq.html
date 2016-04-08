@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../">
-  <title data-ice="title">Changelog</title>
+  <title data-ice="title">FAQ</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -63,17 +63,16 @@
   <div class="manual-breadcrumb-list">
     <a href="./manual/./index.html">Manual</a>
     <span>&#xBB;</span>
-    <span data-ice="title">Changelog</span>
+    <span data-ice="title">FAQ</span>
   </div>
-  <div data-ice="content"><h1 id="2-0-0-alpha-1-2016-04-05-">2.0.0-alpha.1 (2016-04-05)</h1>
-<h3 id="features">Features</h3>
-<ul>
-<li><strong>core:</strong> Complete</li>
-</ul>
-<h3 id="breaking-changes">BREAKING CHANGES</h3>
-<ul>
-<li>2.x API is no longer compatible with 1.X</li>
-</ul>
+  <div data-ice="content"><h1 id="frequently-asked-questions">Frequently Asked Questions</h1>
+<h2 id="how-force-zeapush-to-use-https-instead-http-">How force ZeaPush to use https instead http ?</h2>
+<p>ZetaPush client allow you to declare a specific apiUrl</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const client = new ZetaPush.Client({
+  apiUrl: &apos;https://api.zpush.io/&apos;,
+  businessId: &apos;&lt;YOUR-BUSINESS-ID&gt;&apos;
+})</code>
+</code></pre>
 </div>
 </div>
 </div>
