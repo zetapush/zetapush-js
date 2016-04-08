@@ -12,16 +12,22 @@
   const serviceListener = {
     list({ channel, data }) {
       const { result: { content } } = data
-      document.querySelector('ul').innerHTML = content.map((item) => getTaskTemplate(item)).join('')
+      const fragment = document.createDocumentFragment()
+      content.map((item) => {
+        fragment.appendChild(getTodoDom(item))
+      })
+      document.querySelector('.todo-list').appendChild(fragment)
     },
     purge({ channel, data })  {
       const list = document.querySelector('.todo-list')
-      list.innerHTML = ''
+      while (list.firstChild) {
+        list.removeChild(list.firstChild)
+      }
     },
     push({ channel, data })  {
       const list = document.querySelector('.todo-list')
-      list.innerHTML = `${getTaskTemplate(data)}${list.innerHTML}`
-      document.querySelector('[name="todo"]').value = ''
+      const todo = getTodoDom(data)
+      section.insertBefore(todo, list.firstChild)
     },
     remove({ channel, data }) {
       const { guids = [] } = data
@@ -32,21 +38,28 @@
     },
     update({ channel, data }) {
       const { guid } = data
-      const li = document.querySelector(`input[data-guid="${guid}"]`).parentNode.parentNode
-      li.innerHTML = getTaskTemplate(data, false)
+      const li = document.querySelector(`li[data-guid="${guid}"]`)
       li.className = data.data.completed ? 'completed' : ''
+      while (li.firstChild) {
+        li.removeChild(li.firstChild)
+      }
+      const todo = getTodoDom(data, false)
+      li.appendChild(todo)
     }
   }
 
-  const getTaskTemplate = ({ guid, data }, wrapper = true) => {
+  const getTodoDom = ({ guid, data }, wrapper = true) => {
     const { completed, text } = data
-    return `${wrapper ? `<li class="${completed ? 'completed' : ''}">` : ''}
-      <div class="view">
-        <input class="toggle" type="checkbox" data-guid="${guid}" data-text="${text}" ${completed ? 'checked' : ''}>
-        <label>${text}</label>
-        <button class="destroy" data-guid="${guid}"></button>
-      </div>
-    ${wrapper ? '</li>' : ''}`
+    const checkbox = dom('input', { 'class': 'toggle', 'type': 'checkbox', 'data-guid': guid, 'data-text': text})
+    if (completed) {
+      checkbox.setAttribute('checked', completed)
+    }
+    const content = dom('div', { 'class': 'view' },
+      checkbox,
+      dom('label', {}, text),
+      dom('button', { 'class': 'destroy', 'data-guid': guid })
+    )
+    return wrapper ? dom('li', { 'class': completed ? 'completed' : '', 'data-guid': guid }, content) : content
   }
 
   const servicePublisher = client.createServicePublisher({
