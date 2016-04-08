@@ -11,30 +11,41 @@
 
   const serviceListener = {
     list({ channel, data }) {
-      console.debug(`Stack::list`, { channel, data })
       const { result: { content } } = data
       document.querySelector('ul').innerHTML = content.map((item) => getTaskTemplate(item)).join('')
     },
+    purge({ channel, data })  {
+      const list = document.querySelector('.todo-list')
+      list.innerHTML = ''
+    },
     push({ channel, data })  {
-      console.debug(`Stack::push`, { channel, data })
-      const tasks = document.querySelector('ul')
-      tasks.innerHTML = `${getTaskTemplate(data)}${tasks.innerHTML}`
-      document.querySelector('[name="task"]').value = ''
+      const list = document.querySelector('.todo-list')
+      list.innerHTML = `${getTaskTemplate(data)}${list.innerHTML}`
+      document.querySelector('[name="todo"]').value = ''
+    },
+    remove({ channel, data }) {
+      const { guids = [] } = data
+      guids.forEach((guid) => {
+        const li = document.querySelector(`input[data-guid="${guid}"]`).parentNode.parentNode
+        li.parentNode.removeChild(li)
+      })
     },
     update({ channel, data }) {
-      console.debug(`Stack::update`, { channel, data })
       const { guid } = data
-      document.querySelector(`[data-guid="${guid}"]`).parentNode.parentNode.innerHTML = getTaskTemplate(data, false)
+      const li = document.querySelector(`input[data-guid="${guid}"]`).parentNode.parentNode
+      li.innerHTML = getTaskTemplate(data, false)
+      li.className = data.data.completed ? 'completed' : ''
     }
   }
 
   const getTaskTemplate = ({ guid, data }, wrapper = true) => {
     const { completed, text } = data
-    return `${wrapper ? '<li>' : ''}
-      <label>
-        <input type="checkbox" ${completed ? 'checked' : ''} data-guid="${guid}" data-text="${text}">
-        <strong>${text}</strong>
-      </label>
+    return `${wrapper ? `<li class="${completed ? 'completed' : ''}">` : ''}
+      <div class="view">
+        <input class="toggle" type="checkbox" data-guid="${guid}" data-text="${text}" ${completed ? 'checked' : ''}>
+        <label>${text}</label>
+        <button class="destroy" data-guid="${guid}"></button>
+      </div>
     ${wrapper ? '</li>' : ''}`
   }
 
@@ -49,14 +60,9 @@
   })
 
   client.addConnectionStatusListener({
-    onSuccessfulHandshake(authentication) {
-      console.debug('App::onSuccessfulHandshake', authentication)
-      document.querySelector('i').textContent = `User Id: ${authentication.userId}`
-    },
     onConnectionEstablished() {
-      console.debug('App::onConnectionEstablished')
       servicePublisher.list({
-        stack: 'id'
+        stack: 'todo-list'
       })
     }
   })
@@ -65,30 +71,43 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     const main = document.querySelector('main')
-    const task = document.querySelector('[name="task"]')
+    const todo = document.querySelector('[name="todo"]')
 
     on({ node: main, type: 'submit', selector: 'form', handler: (event) => {
       event.preventDefault()
-
       servicePublisher.push({
-        stack: 'id',
+        stack: 'todo-list',
         data: {
-          text: task.value,
+          text: todo.value,
           completed: false
         }
       })
     }})
-    on({ node: main, type: 'change', selector: 'input', handler: (event) => {
+    on({ node: main, type: 'change', selector: '.toggle', handler: (event) => {
       event.preventDefault()
       const { target } = event
       const { guid, text } = target.dataset
       servicePublisher.update({
-        stack: 'id',
+        stack: 'todo-list',
         guid,
         data: {
           text,
           completed: target.checked
         }
+      })
+    }})
+    on({ node: main, type: 'click', selector: '.destroy', handler: (event) => {
+      event.preventDefault()
+      const { target } = event
+      const { guid } = target.dataset
+      servicePublisher.remove({
+        stack: 'todo-list',
+        guids: [guid]
+      })
+    }})
+    on({ node: main, type: 'click', selector: '.clear-all', handler: (event) => {
+      servicePublisher.purge({
+        stack: 'todo-list'
       })
     }})
   })

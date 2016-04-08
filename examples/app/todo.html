@@ -4,33 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ZetaPush SDK Examples - Todo</title>
-    <style>
-      form, ul {
-        border: 1px dotted grey;
-        margin: 0.5rem;
-      }
-      form {
-        padding: 0.5rem;
-      }
-      label {
-        font-weight: bold;
-      }
-      :checked + strong {
-        text-decoration: line-through;;
-      }
-    </style>
+    <link rel="stylesheet" href="./todo.css"></style>
   </head>
   <body>
     <main>
-      <h1>Todo App Example <i></i></h1>
-      <section>
-        <ul class="list"></ul>
-        <form autocomplete="off" name="list">
-          <label>Task</label>
-          <input type="text" name="task">
-          <button type="submit">Send</button>
-        </form>
+      <section class="todoapp">
+        <header class="header">
+          <h1>todos</h1>
+          <form autocomplete="off">
+            <input class="new-todo" placeholder="What needs to be done?" autofocus name="todo">
+          </form>
+        </header>
+        <section class="main">
+          <input class="toggle-all" type="checkbox">
+          <label for="toggle-all">Mark all as complete</label>
+          <ul class="todo-list"></ul>
+        </section>
+        <footer class="footer">
+          <span class="todo-count"></span>
+          <ul class="filters"></ul>
+          <button class="clear-all">Clear all</button>
+        </footer>
       </section>
+      <footer class="info">
+        <p>Double-click to edit a todo</p>
+        <p>Created by <a href="http://twitter.com/ghoullier">Grégory Houllier</a></p>
+      </footer>
     </main>
     <script src="../../dist/zetapush.js"></script>
     <script src="../api/_common.js"></script>
