@@ -25,8 +25,8 @@
     "prebuild": "npm run doc",
     "build": "gulp build --optimize",
     "build:dev": "gulp build",
-    "prepublish": "npm run doc",
-    "publish": "gulp publish"
+    "predeploy": "npm run doc",
+    "deploy": "gulp deploy"
   },
   "dependencies": {},
   "devDependencies": {
