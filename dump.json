@@ -1508,7 +1508,7 @@
     "access": null,
     "description": null,
     "lineNumber": 5,
-    "content": "/**\n * @desc Echo Service API\n * @access public\n */\nexport const EchoPublisherDefinition = {\n  echo() { }\n}\n\n/**\n * @desc Stack Service API\n * @access public\n */\nexport const StackPublisherDefinition = {\n  getListeners() { },\n  list() { },\n  purge() { },\n  push() { },\n  remove() { },\n  setListeners() { },\n  update() { }\n}\n"
+    "content": "/**\n * @desc Echo Service API\n * @access public\n */\nexport const EchoPublisherDefinition = {\n  /**\n   * @desc Echoes an object: the server will echo that object on channel 'echo' for the current user.\n   */\n  echo() { }\n}\n\n/**\n * @desc Stack Service API\n * @access public\n */\nexport const StackPublisherDefinition = {\n  /**\n   * @desc Returns the whole list of listeners for the given stack.\n   */\n  getListeners() { },\n  /**\n   * @desc Returns a paginated list of contents for the given stack. Content is sorted according to the statically configured order.\n   */\n  list() { },\n  /**\n   * @desc Removes all items from the given stack.\n   */\n  purge() { },\n  /**\n   * @desc Pushes an item onto the given stack. The stack does not need to be created.\n   */\n  push() { },\n  /**\n   * @desc Removes the item with the given guid from the given stack.\n   */\n  remove() { },\n  /**\n   * @desc Sets the listeners for the given stack.\n   */\n  setListeners() { },\n  /**\n   * @desc Updates an existing item of the given stack. The item MUST exist prior to the call.\n   */\n  update() { }\n}\n"
   },
   {
     "__docId__": 72,
@@ -1543,7 +1543,7 @@
     "importPath": "zetapush-js/src/definitions.js",
     "importStyle": "{StackPublisherDefinition}",
     "description": "Stack Service API",
-    "lineNumber": 13,
+    "lineNumber": 16,
     "type": {
       "types": [
         "*"
