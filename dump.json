@@ -10,7 +10,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './cometd'\nimport { getServers, shuffle } from './utils'\nimport { ConnectionStatusListener } from './connection-status'\n\n/**\n * @desc CometD Messages enumeration\n */\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\n/**\n * @desc CometD Transports enumeration\n */\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\n/**\n * @desc Provide utilities and abstraction on CometD Transport layer\n * @access private\n */\nexport class ClientHelper {\n  /**\n   *\n   */\n  constructor({ apiUrl, businessId, handshakeStrategy, resource }) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.businessId = businessId\n    /**\n     * @access private\n     * @type {function():AbstractHandshakeManager}\n     */\n    this.handshakeStrategy = handshakeStrategy\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.resource = resource\n    /**\n     * @access private\n     * @type {Promise}\n     */\n    this.servers = getServers(`${apiUrl}${businessId}`)\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.connectionListeners = []\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.connected = false\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.wasConnected = false\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.serverUrl = null\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.subscribeQueue = []\n    /**\n     * @access private\n     * @type {CometD}\n     */\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.updateServerUrl()\n      }\n    }\n    this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      if (successful) {\n        const { authentication = null } = ext\n        this.initialized(authentication)\n      }\n      else {\n        // this.handshakeFailure(error)\n      }\n    })\n\n    this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      // AuthNegotiation\n      if (!successful) {\n        if (advice === null) {\n          return\n        }\n        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n          this.authenticationFailed(error)\n        }\n        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n          this.negotiate(ext)\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n      console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n      // ConnectionListener\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection is closed\n        this.connectionClosed()\n      } else {\n        this.wasConnected = this.connected\n        this.connected = successful\n        if (!this.wasConnected && this.connected) {\n          this.cometd.batch(this, () => {\n            // Unqueue subscriptions\n            this.subscribeQueue.forEach(({ prefix, serviceListener, subscriptions }) => {\n              this.subscribe(prefix, serviceListener, subscriptions)\n            })\n            this.subscribeQueue = []\n          })\n          // Notify connection is established\n          this.connectionEstablished()\n        }\n        else if (this.wasConnected && !this.connected) {\n          // Notify connection is broken\n          this.connectionBroken()\n        }\n      }\n    })\n  }\n  /**\n   * @desc Connect client using CometD Transport\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is established\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is broken\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   * @desc Notify listeners when a message is lost\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is closed\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is established\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   * @desc Notify listeners when handshake step succeed\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   *\n   */\n  handshakeFailure() {\n\n  }\n  /**\n  * @desc Remove current server url from the server list and shuffle for another one\n  */\n  updateServerUrl() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   *\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   * @desc Disconnect CometD client\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   * @desc Get CometD handshake parameters\n   * @return {Object}\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeStrategy()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   * @desc Set a new handshake factory methods\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  setHandshakeStrategy(handshakeStrategy) {\n    this.handshakeStrategy = handshakeStrategy\n  }\n  /**\n   * @desc Get business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.businessId\n  }\n  /**\n   * @desc Get session id\n   * @return {string}\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   * @desc Get resource\n   * @return {string}\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   * @desc Subribe all methods defined in the serviceListener for the given prefixed channel\n   * @param {string} prefix - Channel prefix\n   * @param {Object} serviceListener\n   * @param {Object} subscriptions\n   * @return {Object} subscriptions\n   */\n  subscribe(prefix, serviceListener, subscriptions = {}) {\n    if (this.cometd.isDisconnected()) {\n      this.subscribeQueue.push({ prefix, serviceListener, subscriptions })\n    } else {\n      for (const method in serviceListener) {\n        if (serviceListener.hasOwnProperty(method)) {\n          const channel = `${prefix}/${method}`\n          subscriptions[method] = this.cometd.subscribe(channel, serviceListener[method])\n        }\n      }\n    }\n    return subscriptions\n  }\n  /**\n   * @desc Get a publisher\n   * @param {string} prefix - Channel prefix\n   * @param {Object} publisherDefinition\n   * @return {Object} servicePublisher\n   */\n  createServicePublisher(prefix, publisherDefinition) {\n    const servicePublisher = {}\n    for (const method in publisherDefinition) {\n      if (publisherDefinition.hasOwnProperty(method)) {\n        const channel = `${prefix}/${method}`\n        servicePublisher[method] = (parameters = {}) => {\n          this.cometd.publish(channel, parameters)\n        }\n      }\n    }\n    return servicePublisher\n  }\n  /**\n   * @desc Unsubcribe all subscriptions defined in given subscriptions object\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscriptions[method])\n      }\n    }\n  }\n  /**\n   * @desc Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    this.connectionListeners.push(connectionListener)\n  }\n\n}\n"
+    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './cometd'\nimport { getServers, shuffle } from './utils'\nimport { ConnectionStatusListener } from './connection-status'\n\n/**\n * @desc CometD Messages enumeration\n */\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\n/**\n * @desc CometD Transports enumeration\n */\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\n/**\n * @desc Provide utilities and abstraction on CometD Transport layer\n * @access private\n */\nexport class ClientHelper {\n  /**\n   *\n   */\n  constructor({ apiUrl, businessId, enableHttps = false, handshakeStrategy, resource }) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.businessId = businessId\n    /**\n     * @access private\n     * @type {function():AbstractHandshakeManager}\n     */\n    this.handshakeStrategy = handshakeStrategy\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.resource = resource\n    /**\n     * @access private\n     * @type {Promise}\n     */\n    this.servers = getServers({ apiUrl, businessId, enableHttps })\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.connectionListeners = []\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.connected = false\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.wasConnected = false\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.serverUrl = null\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.subscribeQueue = []\n    /**\n     * @access private\n     * @type {CometD}\n     */\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.updateServerUrl()\n      }\n    }\n    this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      if (successful) {\n        const { authentication = null } = ext\n        this.initialized(authentication)\n      }\n      else {\n        // this.handshakeFailure(error)\n      }\n    })\n\n    this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      // AuthNegotiation\n      if (!successful) {\n        if (advice === null) {\n          return\n        }\n        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n          this.authenticationFailed(error)\n        }\n        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n          this.negotiate(ext)\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n      console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n      // ConnectionListener\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection is closed\n        this.connectionClosed()\n      } else {\n        this.wasConnected = this.connected\n        this.connected = successful\n        if (!this.wasConnected && this.connected) {\n          this.cometd.batch(this, () => {\n            // Unqueue subscriptions\n            this.subscribeQueue.forEach(({ prefix, serviceListener, subscriptions }) => {\n              this.subscribe(prefix, serviceListener, subscriptions)\n            })\n            this.subscribeQueue = []\n          })\n          // Notify connection is established\n          this.connectionEstablished()\n        }\n        else if (this.wasConnected && !this.connected) {\n          // Notify connection is broken\n          this.connectionBroken()\n        }\n      }\n    })\n  }\n  /**\n   * @desc Connect client using CometD Transport\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is established\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is broken\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   * @desc Notify listeners when a message is lost\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is closed\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   * @desc Notify listeners when connection is established\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   * @desc Notify listeners when handshake step succeed\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   *\n   */\n  handshakeFailure() {\n\n  }\n  /**\n  * @desc Remove current server url from the server list and shuffle for another one\n  */\n  updateServerUrl() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   *\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   * @desc Disconnect CometD client\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   * @desc Get CometD handshake parameters\n   * @return {Object}\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeStrategy()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   * @desc Set a new handshake factory methods\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  setHandshakeStrategy(handshakeStrategy) {\n    this.handshakeStrategy = handshakeStrategy\n  }\n  /**\n   * @desc Get business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.businessId\n  }\n  /**\n   * @desc Get session id\n   * @return {string}\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   * @desc Get resource\n   * @return {string}\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   * @desc Subribe all methods defined in the serviceListener for the given prefixed channel\n   * @param {string} prefix - Channel prefix\n   * @param {Object} serviceListener\n   * @param {Object} subscriptions\n   * @return {Object} subscriptions\n   */\n  subscribe(prefix, serviceListener, subscriptions = {}) {\n    if (this.cometd.isDisconnected()) {\n      this.subscribeQueue.push({ prefix, serviceListener, subscriptions })\n    } else {\n      for (const method in serviceListener) {\n        if (serviceListener.hasOwnProperty(method)) {\n          const channel = `${prefix}/${method}`\n          subscriptions[method] = this.cometd.subscribe(channel, serviceListener[method])\n        }\n      }\n    }\n    return subscriptions\n  }\n  /**\n   * @desc Get a publisher\n   * @param {string} prefix - Channel prefix\n   * @param {Object} publisherDefinition\n   * @return {Object} servicePublisher\n   */\n  createServicePublisher(prefix, publisherDefinition) {\n    const servicePublisher = {}\n    for (const method in publisherDefinition) {\n      if (publisherDefinition.hasOwnProperty(method)) {\n        const channel = `${prefix}/${method}`\n        servicePublisher[method] = (parameters = {}) => {\n          this.cometd.publish(channel, parameters)\n        }\n      }\n    }\n    return servicePublisher\n  }\n  /**\n   * @desc Unsubcribe all subscriptions defined in given subscriptions object\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscriptions[method])\n      }\n    }\n  }\n  /**\n   * @desc Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    this.connectionListeners.push(connectionListener)\n  }\n\n}\n"
   },
   {
     "__docId__": 1,
@@ -83,15 +83,16 @@
       {
         "name": "objectPattern",
         "types": [
-          "{\"apiUrl\": *, \"businessId\": *, \"handshakeStrategy\": *, \"resource\": *}"
+          "{\"apiUrl\": *, \"businessId\": *, \"enableHttps\": *, \"handshakeStrategy\": *, \"resource\": *}"
         ],
         "defaultRaw": {
           "apiUrl": null,
           "businessId": null,
+          "enableHttps": null,
           "handshakeStrategy": null,
           "resource": null
         },
-        "defaultValue": "{\"apiUrl\":null,\"businessId\":null,\"handshakeStrategy\":null,\"resource\":null}"
+        "defaultValue": "{\"apiUrl\":null,\"businessId\":null,\"enableHttps\":null,\"handshakeStrategy\":null,\"resource\":null}"
       }
     ],
     "generator": false
@@ -898,7 +899,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { ClientHelper } from './client-helper'\n\nimport { NotYetImplementedError } from './utils'\n\n/**\n * @access public\n * @desc Default ZetaPush API URL\n */\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access public\n * @desc ZetaPush Client to connect\n * @example\n * const client = new Client({\n *   businessId: '<YOUR-BUSINESS-ID>',\n *   handshakeStrategy() {\n *     return AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   *\n   */\n  constructor({ apiUrl = API_URL, businessId, handshakeStrategy, resource = null }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.client = new ClientHelper({\n      apiUrl,\n      businessId,\n      handshakeStrategy,\n      resource\n    })\n  }\n  /**\n   * @desc Connect client to ZetaPush\n   */\n  connect() {\n    this.client.connect()\n  }\n  /**\n   * @desc Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.client.disconnect()\n  }\n  /**\n   * @desc Create a service publisher based on publisher definition for the given deployment id\n   * @return {Object}\n   */\n  createServicePublisher({ deploymentId, publisherDefinition }) {\n    return this.client.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, publisherDefinition)\n  }\n  /**\n   * @desc Get the client business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.client.getBusinessId()\n  }\n  /**\n   * @desc Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.client.getResource()\n  }\n  /**\n   * @desc Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.client.getUserId()\n  }\n  /**\n   * @desc Get the client session id\n   * @return {string}\n   */\n  getSessionId() {\n    return this.client.getSessionId()\n  }\n  /**\n   * @desc Subscribe all methods described in the serviceListener for the given deploymentId\n   * @return {Object} subscription\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribeListener({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   */\n  subscribeListener({ deploymentId, serviceListener }) {\n    return this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)\n  }\n  /**\n  * @desc Create a publish/subscribe\n  * @experimental\n  * @return {Object}\n   */\n  createPubSub({ deploymentId, serviceListener, publisher }) {\n    throw new NotYetImplementedError('createPubSub')\n  }\n  /**\n   * @desc Set new client resource value\n   */\n  setResource(resource) {\n    this.client.setResource(resource)\n  }\n  /**\n   * @desc Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    return this.client.addConnectionStatusListener(listener)\n  }\n  /**\n   * @desc Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  handshake(handshakeStrategy) {\n    this.disconnect()\n    if (handshakeStrategy) {\n      this.client.setHandshakeStrategy(handshakeStrategy)\n    }\n    this.connect()\n  }\n\n  /**\n   * @desc Get a service lister from methods list with a default handler\n   * @return {Object} listener\n   * @example\n   * const getStackServiceListener = () => {\n   *   return Client.getServiceListener({\n   *     methods: ['getListeners', 'list', 'purge', 'push', 'remove', 'setListeners', 'update', 'error'],\n   *     handler: ({ channel, data }) => {\n   *       console.debug(`Stack::${method}`, { channel, data })\n   *       document.querySelector(`form[name=\"${method}\"] [name=\"output\"]`).value = JSON.stringify(data)\n   *     }\n   *   })\n   * }\n   */\n  static getServiceListener({ methods = [], handler = () => {} }) {\n    return methods.reduce((listener, method) => {\n      listener[method] = ({ channel, data }) => handler({ channel, data, method })\n      return listener\n    }, {})\n  }\n\n}\n"
+    "content": "import { ClientHelper } from './client-helper'\n\nimport { NotYetImplementedError } from './utils'\n\n/**\n * @access public\n * @desc Default ZetaPush API URL\n */\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access public\n * @desc ZetaPush Client to connect\n * @example\n * const client = new Client({\n *   businessId: '<YOUR-BUSINESS-ID>',\n *   handshakeStrategy() {\n *     return AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n * @example\n * const client = new Client({\n *   businessId: '<YOUR-BUSINESS-ID>',\n *   enableHttps: true,\n *   handshakeStrategy() {\n *     return AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   *\n   */\n  constructor({ apiUrl = API_URL, businessId, enableHttps = false, handshakeStrategy, resource = null }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.client = new ClientHelper({\n      apiUrl,\n      businessId,\n      enableHttps,\n      handshakeStrategy,\n      resource\n    })\n  }\n  /**\n   * @desc Connect client to ZetaPush\n   */\n  connect() {\n    this.client.connect()\n  }\n  /**\n   * @desc Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.client.disconnect()\n  }\n  /**\n   * @desc Create a service publisher based on publisher definition for the given deployment id\n   * @return {Object}\n   */\n  createServicePublisher({ deploymentId, publisherDefinition }) {\n    return this.client.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, publisherDefinition)\n  }\n  /**\n   * @desc Get the client business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.client.getBusinessId()\n  }\n  /**\n   * @desc Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.client.getResource()\n  }\n  /**\n   * @desc Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.client.getUserId()\n  }\n  /**\n   * @desc Get the client session id\n   * @return {string}\n   */\n  getSessionId() {\n    return this.client.getSessionId()\n  }\n  /**\n   * @desc Subscribe all methods described in the serviceListener for the given deploymentId\n   * @return {Object} subscription\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribeListener({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   */\n  subscribeListener({ deploymentId, serviceListener }) {\n    return this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)\n  }\n  /**\n  * @desc Create a publish/subscribe\n  * @experimental\n  * @return {Object}\n   */\n  createPubSub({ deploymentId, serviceListener, publisher }) {\n    throw new NotYetImplementedError('createPubSub')\n  }\n  /**\n   * @desc Set new client resource value\n   */\n  setResource(resource) {\n    this.client.setResource(resource)\n  }\n  /**\n   * @desc Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    return this.client.addConnectionStatusListener(listener)\n  }\n  /**\n   * @desc Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  handshake(handshakeStrategy) {\n    this.disconnect()\n    if (handshakeStrategy) {\n      this.client.setHandshakeStrategy(handshakeStrategy)\n    }\n    this.connect()\n  }\n\n  /**\n   * @desc Get a service lister from methods list with a default handler\n   * @return {Object} listener\n   * @example\n   * const getStackServiceListener = () => {\n   *   return Client.getServiceListener({\n   *     methods: ['getListeners', 'list', 'purge', 'push', 'remove', 'setListeners', 'update', 'error'],\n   *     handler: ({ channel, data }) => {\n   *       console.debug(`Stack::${method}`, { channel, data })\n   *       document.querySelector(`form[name=\"${method}\"] [name=\"output\"]`).value = JSON.stringify(data)\n   *     }\n   *   })\n   * }\n   */\n  static getServiceListener({ methods = [], handler = () => {} }) {\n    return methods.reduce((listener, method) => {\n      listener[method] = ({ channel, data }) => handler({ channel, data, method })\n      return listener\n    }, {})\n  }\n\n}\n"
   },
   {
     "__docId__": 44,
@@ -934,9 +935,10 @@
     "importStyle": "{Client}",
     "description": "ZetaPush Client to connect",
     "examples": [
-      "const client = new Client({\n  businessId: '<YOUR-BUSINESS-ID>',\n  handshakeStrategy() {\n    return AuthentFactory.createWeakHandshake({\n      token: null,\n      deploymentId: '<YOUR-DEPLOYMENT-ID>'\n   })\n  }\n})"
+      "const client = new Client({\n  businessId: '<YOUR-BUSINESS-ID>',\n  handshakeStrategy() {\n    return AuthentFactory.createWeakHandshake({\n      token: null,\n      deploymentId: '<YOUR-DEPLOYMENT-ID>'\n   })\n  }\n})",
+      "const client = new Client({\n  businessId: '<YOUR-BUSINESS-ID>',\n  enableHttps: true,\n  handshakeStrategy() {\n    return AuthentFactory.createWeakHandshake({\n      token: null,\n      deploymentId: '<YOUR-DEPLOYMENT-ID>'\n   })\n  }\n})"
     ],
-    "lineNumber": 25,
+    "lineNumber": 36,
     "interface": false
   },
   {
@@ -949,20 +951,21 @@
     "longname": "src/client.js~Client#constructor",
     "access": null,
     "description": "",
-    "lineNumber": 29,
+    "lineNumber": 40,
     "params": [
       {
         "name": "objectPattern",
         "types": [
-          "{\"apiUrl\": *, \"businessId\": *, \"handshakeStrategy\": *, \"resource\": *}"
+          "{\"apiUrl\": *, \"businessId\": *, \"enableHttps\": *, \"handshakeStrategy\": *, \"resource\": *}"
         ],
         "defaultRaw": {
           "apiUrl": null,
           "businessId": null,
+          "enableHttps": null,
           "handshakeStrategy": null,
           "resource": null
         },
-        "defaultValue": "{\"apiUrl\":null,\"businessId\":null,\"handshakeStrategy\":null,\"resource\":null}"
+        "defaultValue": "{\"apiUrl\":null,\"businessId\":null,\"enableHttps\":null,\"handshakeStrategy\":null,\"resource\":null}"
       }
     ],
     "generator": false
@@ -977,7 +980,7 @@
     "longname": "src/client.js~Client#client",
     "access": "private",
     "description": "",
-    "lineNumber": 34,
+    "lineNumber": 45,
     "type": {
       "nullable": null,
       "types": [
@@ -997,7 +1000,7 @@
     "longname": "src/client.js~Client#connect",
     "access": null,
     "description": "Connect client to ZetaPush",
-    "lineNumber": 44,
+    "lineNumber": 56,
     "params": [],
     "generator": false
   },
@@ -1011,7 +1014,7 @@
     "longname": "src/client.js~Client#disconnect",
     "access": null,
     "description": "Disonnect client from ZetaPush",
-    "lineNumber": 50,
+    "lineNumber": 62,
     "params": [],
     "generator": false
   },
@@ -1025,7 +1028,7 @@
     "longname": "src/client.js~Client#createServicePublisher",
     "access": null,
     "description": "Create a service publisher based on publisher definition for the given deployment id",
-    "lineNumber": 57,
+    "lineNumber": 69,
     "params": [
       {
         "name": "objectPattern",
@@ -1059,7 +1062,7 @@
     "longname": "src/client.js~Client#getBusinessId",
     "access": null,
     "description": "Get the client business id",
-    "lineNumber": 64,
+    "lineNumber": 76,
     "params": [],
     "return": {
       "nullable": null,
@@ -1081,7 +1084,7 @@
     "longname": "src/client.js~Client#getResource",
     "access": null,
     "description": "Get the client resource",
-    "lineNumber": 71,
+    "lineNumber": 83,
     "params": [],
     "return": {
       "nullable": null,
@@ -1103,7 +1106,7 @@
     "longname": "src/client.js~Client#getUserId",
     "access": null,
     "description": "Get the client user id",
-    "lineNumber": 78,
+    "lineNumber": 90,
     "params": [],
     "return": {
       "nullable": null,
@@ -1125,7 +1128,7 @@
     "longname": "src/client.js~Client#getSessionId",
     "access": null,
     "description": "Get the client session id",
-    "lineNumber": 85,
+    "lineNumber": 97,
     "params": [],
     "return": {
       "nullable": null,
@@ -1150,7 +1153,7 @@
     "examples": [
       "const stackServiceListener = {\n  list() {},\n  push() {},\n  update() {}\n}\nclient.subscribeListener({\n  deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n  serviceListener\n})"
     ],
-    "lineNumber": 102,
+    "lineNumber": 114,
     "params": [
       {
         "name": "objectPattern",
@@ -1184,7 +1187,7 @@
     "longname": "src/client.js~Client#createPubSub",
     "access": null,
     "description": "Create a publish/subscribe",
-    "lineNumber": 110,
+    "lineNumber": 122,
     "experimental": true,
     "params": [
       {
@@ -1220,7 +1223,7 @@
     "longname": "src/client.js~Client#setResource",
     "access": null,
     "description": "Set new client resource value",
-    "lineNumber": 116,
+    "lineNumber": 128,
     "params": [
       {
         "name": "resource",
@@ -1241,7 +1244,7 @@
     "longname": "src/client.js~Client#addConnectionStatusListener",
     "access": null,
     "description": "Add a connection listener to handle life cycle connection events",
-    "lineNumber": 123,
+    "lineNumber": 135,
     "params": [
       {
         "nullable": null,
@@ -1271,7 +1274,7 @@
     "longname": "src/client.js~Client#handshake",
     "access": null,
     "description": "Force disconnect/connect with new handshake factory",
-    "lineNumber": 130,
+    "lineNumber": 142,
     "params": [
       {
         "nullable": null,
@@ -1299,7 +1302,7 @@
     "examples": [
       "const getStackServiceListener = () => {\n  return Client.getServiceListener({\n    methods: ['getListeners', 'list', 'purge', 'push', 'remove', 'setListeners', 'update', 'error'],\n    handler: ({ channel, data }) => {\n      console.debug(`Stack::${method}`, { channel, data })\n      document.querySelector(`form[name=\"${method}\"] [name=\"output\"]`).value = JSON.stringify(data)\n    }\n  })\n}"
     ],
-    "lineNumber": 152,
+    "lineNumber": 164,
     "params": [
       {
         "name": "objectPattern",
@@ -2432,11 +2435,34 @@
     "longname": "src/utils.js",
     "access": null,
     "description": null,
-    "lineNumber": 6,
-    "content": "/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @return {Promise}\n */\nexport const getServers = (url) => {\n  return fetch(url)\n    .then((response) => {\n      return response.json()\n    })\n    .then(({ servers }) => {\n      return servers\n    })\n}\n\n/**\n * @access private\n * @extends {Error}\n */\nexport class NotYetImplementedError extends Error {\n  /**\n   * @param {string} message\n   */\n  constructor(message = '') {\n    super(message)\n    this.name = 'NotImplementedError'\n  }\n\n}\n"
+    "lineNumber": 5,
+    "content": "/**\n * @desc Match unsecure pattern web\n * @type {RegExp}\n */\nconst UNSECURE_PATTERN = /^http:\\/\\/|^\\/\\//\n\n/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @return {Promise}\n */\nexport const getServers = ({ apiUrl, businessId, enableHttps }) => {\n  const secureApiUrl = getSecureUrl(apiUrl, enableHttps)\n  const url = `${secureApiUrl}${businessId}`\n  return fetch(url)\n    .then((response) => {\n      return response.json()\n    })\n    .then(({ servers }) => {\n      // TODO: Replace by a server side implementation when available\n      return servers.map((server) => {\n        return getSecureUrl(server, enableHttps)\n      })\n    })\n}\n\n/**\n * @access private\n * @param {string} url\n * @param {boolean} enableHttps\n * @return {string}\n */\nexport const getSecureUrl = (url, enableHttps) => {\n  return enableHttps ? url.replace(UNSECURE_PATTERN, 'https://') : server\n}\n\n/**\n * @access private\n * @extends {Error}\n */\nexport class NotYetImplementedError extends Error {\n  /**\n   * @param {string} message\n   */\n  constructor(message = '') {\n    super(message)\n    this.name = 'NotImplementedError'\n  }\n\n}\n"
   },
   {
     "__docId__": 114,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "UNSECURE_PATTERN",
+    "memberof": "src/utils.js",
+    "longname": "src/utils.js~UNSECURE_PATTERN",
+    "access": null,
+    "export": false,
+    "importPath": "zetapush-js/src/utils.js",
+    "importStyle": null,
+    "description": "Match unsecure pattern web",
+    "lineNumber": 5,
+    "type": {
+      "nullable": null,
+      "types": [
+        "RegExp"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 115,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2448,7 +2474,7 @@
     "importPath": "zetapush-js/src/utils.js",
     "importStyle": "{shuffle}",
     "description": "",
-    "lineNumber": 6,
+    "lineNumber": 12,
     "params": [
       {
         "nullable": null,
@@ -2476,7 +2502,7 @@
     }
   },
   {
-    "__docId__": 115,
+    "__docId__": 116,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2488,19 +2514,7 @@
     "importPath": "zetapush-js/src/utils.js",
     "importStyle": "{getServers}",
     "description": "",
-    "lineNumber": 16,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "string"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "url",
-        "description": ""
-      }
-    ],
+    "lineNumber": 21,
     "return": {
       "nullable": null,
       "types": [
@@ -2516,7 +2530,57 @@
     }
   },
   {
-    "__docId__": 116,
+    "__docId__": 117,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "getSecureUrl",
+    "memberof": "src/utils.js",
+    "longname": "src/utils.js~getSecureUrl",
+    "access": "private",
+    "export": true,
+    "importPath": "zetapush-js/src/utils.js",
+    "importStyle": "{getSecureUrl}",
+    "description": "",
+    "lineNumber": 42,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "url",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "enableHttps",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 118,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2528,14 +2592,14 @@
     "importPath": "zetapush-js/src/utils.js",
     "importStyle": "{NotYetImplementedError}",
     "description": "",
-    "lineNumber": 30,
+    "lineNumber": 50,
     "interface": false,
     "extends": [
       "Error"
     ]
   },
   {
-    "__docId__": 117,
+    "__docId__": 119,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -2544,7 +2608,7 @@
     "longname": "src/utils.js~NotYetImplementedError#constructor",
     "access": null,
     "description": "",
-    "lineNumber": 34,
+    "lineNumber": 54,
     "params": [
       {
         "nullable": null,
@@ -2560,7 +2624,7 @@
     "generator": false
   },
   {
-    "__docId__": 118,
+    "__docId__": 120,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2569,7 +2633,7 @@
     "longname": "src/utils.js~NotYetImplementedError#name",
     "access": null,
     "description": null,
-    "lineNumber": 36,
+    "lineNumber": 56,
     "undocument": true,
     "type": {
       "types": [
@@ -2578,7 +2642,7 @@
     }
   },
   {
-    "__docId__": 120,
+    "__docId__": 122,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2591,7 +2655,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 121,
+    "__docId__": 123,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2604,7 +2668,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 122,
+    "__docId__": 124,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2617,7 +2681,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 123,
+    "__docId__": 125,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2630,7 +2694,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 124,
+    "__docId__": 126,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2643,7 +2707,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 125,
+    "__docId__": 127,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2656,7 +2720,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 126,
+    "__docId__": 128,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2669,7 +2733,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 127,
+    "__docId__": 129,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2682,7 +2746,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 128,
+    "__docId__": 130,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2695,7 +2759,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 129,
+    "__docId__": 131,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2708,7 +2772,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 130,
+    "__docId__": 132,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2721,7 +2785,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 131,
+    "__docId__": 133,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2734,7 +2798,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 132,
+    "__docId__": 134,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2747,7 +2811,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 133,
+    "__docId__": 135,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2760,7 +2824,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 134,
+    "__docId__": 136,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2773,7 +2837,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 135,
+    "__docId__": 137,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2786,7 +2850,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 136,
+    "__docId__": 138,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2799,7 +2863,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 137,
+    "__docId__": 139,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2812,7 +2876,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 138,
+    "__docId__": 140,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2825,7 +2889,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 139,
+    "__docId__": 141,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2838,7 +2902,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 140,
+    "__docId__": 142,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2851,7 +2915,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 141,
+    "__docId__": 143,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2864,7 +2928,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 142,
+    "__docId__": 144,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2877,7 +2941,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 143,
+    "__docId__": 145,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2890,7 +2954,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 144,
+    "__docId__": 146,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2903,7 +2967,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 145,
+    "__docId__": 147,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2916,7 +2980,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 146,
+    "__docId__": 148,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2929,7 +2993,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 147,
+    "__docId__": 149,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2942,7 +3006,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 148,
+    "__docId__": 150,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2955,7 +3019,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 149,
+    "__docId__": 151,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2968,7 +3032,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 150,
+    "__docId__": 152,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2981,7 +3045,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 151,
+    "__docId__": 153,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2994,7 +3058,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 152,
+    "__docId__": 154,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3007,7 +3071,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 153,
+    "__docId__": 155,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3020,7 +3084,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 154,
+    "__docId__": 156,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3033,7 +3097,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 155,
+    "__docId__": 157,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3046,7 +3110,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 156,
+    "__docId__": 158,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3059,7 +3123,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 157,
+    "__docId__": 159,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3072,7 +3136,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 158,
+    "__docId__": 160,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3085,7 +3149,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 159,
+    "__docId__": 161,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3098,7 +3162,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 160,
+    "__docId__": 162,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3111,7 +3175,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 161,
+    "__docId__": 163,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3124,7 +3188,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 162,
+    "__docId__": 164,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3137,7 +3201,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 163,
+    "__docId__": 165,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3150,7 +3214,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 164,
+    "__docId__": 166,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3163,7 +3227,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 165,
+    "__docId__": 167,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3176,7 +3240,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 166,
+    "__docId__": 168,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3189,7 +3253,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 168,
+    "__docId__": 170,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3202,7 +3266,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 169,
+    "__docId__": 171,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3215,7 +3279,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 170,
+    "__docId__": 172,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3228,7 +3292,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 171,
+    "__docId__": 173,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3241,7 +3305,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 172,
+    "__docId__": 174,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3254,7 +3318,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 173,
+    "__docId__": 175,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3267,7 +3331,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 174,
+    "__docId__": 176,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3280,7 +3344,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 175,
+    "__docId__": 177,
     "kind": "external",
     "static": true,
     "variation": null,
