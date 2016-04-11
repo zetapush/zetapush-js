@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const client = new Client({
     apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
     businessId: 'JteMN0To',
-    enableHttps: true,
     handshakeStrategy() {
       return AuthentFactory.createSimpleHandshake({
         login: login.value,
