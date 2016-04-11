@@ -52,7 +52,6 @@ export class Client {
   }
   /**
    * @desc Create a service publisher based on publisher definition for the given deployment id
-   * @experimental
    * @return {Object}
    */
   createServicePublisher({ deploymentId, publisherDefinition }) {

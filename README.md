@@ -1,3 +1,5 @@
+[![Document](http://zetapush.github.io/zetapush-js/badge.svg?t=0)](http://zetapush.github.io/zetapush-js/)
+
 # ZetaPush JavaScript SDK
 
 ## Install
