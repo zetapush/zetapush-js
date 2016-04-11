@@ -21,12 +21,23 @@ export const API_URL = 'https://api.zpush.io/'
   *    })
  *   }
  * })
+ * @example
+ * const client = new Client({
+ *   businessId: '<YOUR-BUSINESS-ID>',
+ *   enableHttps: true,
+ *   handshakeStrategy() {
+ *     return AuthentFactory.createWeakHandshake({
+ *       token: null,
+ *       deploymentId: '<YOUR-DEPLOYMENT-ID>'
+  *    })
+ *   }
+ * })
  */
 export class Client {
   /**
    *
    */
-  constructor({ apiUrl = API_URL, businessId, handshakeStrategy, resource = null }) {
+  constructor({ apiUrl = API_URL, businessId, enableHttps = false, handshakeStrategy, resource = null }) {
     /**
      * @access private
      * @type {ClientHelper}
@@ -34,6 +45,7 @@ export class Client {
     this.client = new ClientHelper({
       apiUrl,
       businessId,
+      enableHttps,
       handshakeStrategy,
       resource
     })

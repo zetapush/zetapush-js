@@ -28,7 +28,7 @@ export class ClientHelper {
   /**
    *
    */
-  constructor({ apiUrl, businessId, handshakeStrategy, resource }) {
+  constructor({ apiUrl, businessId, enableHttps = false, handshakeStrategy, resource }) {
     /**
      * @access private
      * @type {string}
@@ -48,7 +48,7 @@ export class ClientHelper {
      * @access private
      * @type {Promise}
      */
-    this.servers = getServers(`${apiUrl}${businessId}`)
+    this.servers = getServers({ apiUrl, businessId, enableHttps })
     /**
      * @access private
      * @type {Array<Object>}
