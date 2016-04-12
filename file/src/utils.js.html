@@ -87,7 +87,7 @@ export const getServers = ({ apiUrl, businessId, enableHttps }) =&gt; {
  * @return {string}
  */
 export const getSecureUrl = (url, enableHttps) =&gt; {
-  return enableHttps ? url.replace(UNSECURE_PATTERN, &apos;https://&apos;) : server
+  return enableHttps ? url.replace(UNSECURE_PATTERN, &apos;https://&apos;) : url
 }
 
 /**

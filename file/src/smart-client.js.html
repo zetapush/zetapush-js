@@ -55,9 +55,12 @@ import { LocalStorageTokenPersistenceStrategy } from &apos;./token-persistence&a
  */
 export class SmartClient extends Client {
   /**
-   *
+   * @desc Create a new ZetaPush smart client
    */
-  constructor({ apiUrl, authenticationDeploymentId, businessId, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {
+  constructor({
+    apiUrl, authenticationDeploymentId, businessId, enableHttps, resource = null,
+    TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy
+  }) {
     const handshakeStrategy = () =&gt; {
       const token = this.getToken()
       const handshake = AuthentFactory.createWeakHandshake({
@@ -69,7 +72,7 @@ export class SmartClient extends Client {
     /**
      *
      */
-    super({ apiUrl , businessId, handshakeStrategy, resource })
+    super({ apiUrl , businessId, enableHttps, handshakeStrategy, resource })
     const onSuccessfulHandshake = ({ publicToken, userId, token }) =&gt; {
       console.debug(&apos;SmartClient::onSuccessfulHandshake&apos;, { publicToken, userId, token })
 
