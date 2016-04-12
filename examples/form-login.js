@@ -1,19 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
   const { AuthentFactory, Client } = ZetaPush
 
+  const BUSINESS_ID = '5mln3Zxw'
+  const AUTHENTICATION_DEPLOYMENT_ID = 'LkvA'
+
   const aside = document.querySelector('aside')
   const form = document.querySelector('form')
   const login = document.querySelector('input[name="login"]')
   const password = document.querySelector('input[name="password"]')
 
   const client = new Client({
-    apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
-    businessId: 'JteMN0To',
+    businessId: BUSINESS_ID,
     handshakeStrategy() {
       return AuthentFactory.createSimpleHandshake({
         login: login.value,
         password: password.value,
-        deploymentId: 'simple_user'
+        deploymentId: AUTHENTICATION_DEPLOYMENT_ID
       })
     }
   })

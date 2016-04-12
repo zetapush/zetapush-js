@@ -1,13 +1,14 @@
 {
   const { SmartClient, definitions: { EchoPublisherDefinition } } = ZetaPush
 
-  const client = new SmartClient({
-    apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
-    businessId: 'JteMN0To',
-    authenticationDeploymentId: 'weak_main'
-  })
+  const BUSINESS_ID = '5mln3Zxw'
+  const DEPLOYMENT_ID = 'vS7y'
+  const AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
 
-  const DEPLOYMENT_ID = 'XYld'
+  const client = new SmartClient({
+    businessId: BUSINESS_ID,
+    authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
+  })
 
   const serviceListener = SmartClient.getServiceListener({
     methods: ['error', ...Object.getOwnPropertyNames(EchoPublisherDefinition)],

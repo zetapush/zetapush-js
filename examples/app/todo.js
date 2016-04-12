@@ -2,14 +2,15 @@
   var SmartClient = ZetaPush.SmartClient
   var StackPublisherDefinition = ZetaPush.definitions.StackPublisherDefinition
 
-  var BUSINESS_ID = 'JteMN0To'
-  var DEPLOYMENT_ID = 'kiRa'
+  var BUSINESS_ID = '5mln3Zxw'
+  var DEPLOYMENT_ID = '5CO-'
+  var AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
 
   // Create a Zetapush SmartClient
   var client = new SmartClient({
-    apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
     businessId: BUSINESS_ID,
-    authenticationDeploymentId: 'weak_main'
+    enableHttps: true,
+    authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
   })
 
   // Declare a service listner mapping stack methods

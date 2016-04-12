@@ -1,10 +1,12 @@
 {
   const { SmartClient } = ZetaPush
 
+  const BUSINESS_ID = '5mln3Zxw'
+  const AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
+
   const client = new SmartClient({
-    apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
-    businessId: 'JteMN0To',
-    authenticationDeploymentId: 'weak_main'
+    businessId: BUSINESS_ID,
+    authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
   })
 
   client.addConnectionStatusListener({

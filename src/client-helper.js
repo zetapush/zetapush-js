@@ -26,7 +26,7 @@ const Transport = {
  */
 export class ClientHelper {
   /**
-   *
+   * @desc Create a new ZetaPush client helper
    */
   constructor({ apiUrl, businessId, enableHttps = false, handshakeStrategy, resource }) {
     /**
@@ -103,7 +103,7 @@ export class ClientHelper {
       console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })
       // AuthNegotiation
       if (!successful) {
-        if (advice === null) {
+        if ('undefined' === typeof advice) {
           return
         }
         if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {

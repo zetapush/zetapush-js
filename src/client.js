@@ -35,7 +35,7 @@ export const API_URL = 'https://api.zpush.io/'
  */
 export class Client {
   /**
-   *
+   * @desc Create a new ZetaPush client
    */
   constructor({ apiUrl = API_URL, businessId, enableHttps = false, handshakeStrategy, resource = null }) {
     /**

@@ -1,13 +1,16 @@
 {
   const { AuthentFactory, Client } = ZetaPush
 
+  const BUSINESS_ID = '5mln3Zxw'
+  const AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
+
   const client = new Client({
     apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
-    businessId: 'JteMN0To',
+    businessId: BUSINESS_ID,
     handshakeStrategy() {
       return AuthentFactory.createWeakHandshake({
         token: null,
-        deploymentId: 'weak_main'
+        deploymentId: AUTHENTICATION_DEPLOYMENT_ID
       })
     }
   })

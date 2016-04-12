@@ -3,12 +3,12 @@
 
   const BUSINESS_ID = 'JteMN0To'
   const DEPLOYMENT_ID = 'kiRa'
+  const AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
 
   // Create a Zetapush SmartClient
   const client = new SmartClient({
-    apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
     businessId: BUSINESS_ID,
-    authenticationDeploymentId: 'weak_main'
+    authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
   })
 
   // Declare a service listner mapping stack methods
