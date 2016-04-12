@@ -3813,7 +3813,7 @@ org.cometd.LongPollingTransport = function()
 	'use strict';
 
 	/**
-	 * Class for managing core functionnalities.     
+	 * Class for managing core functionnalities.
 	 *
 	 * @class ZetaPush Manages core functionnalities
 	 */
@@ -3837,7 +3837,7 @@ org.cometd.LongPollingTransport = function()
 		{
 			for (var headerName in headers)
 			{
-				headersArray[headerName]= headers[headerName];				
+				headersArray[headerName]= headers[headerName];
 			}
 		}
 	}
@@ -3867,15 +3867,15 @@ org.cometd.LongPollingTransport = function()
 			.then(
 				packet.onSuccess
 			)
-			.catch(function(e,url){				
+			.catch(function(e,url){
 				var reason="Connection Failed for server " + url;
 				packet.onError(reason, e);
-			})							
+			})
 		};
 
 		return that;
 	}
-	
+
 	// Bind CometD
 	var cometd = new org.cometd.CometD();
 
@@ -3890,7 +3890,8 @@ org.cometd.LongPollingTransport = function()
 	connected = false,
 	_businessId= null,
 	_clientId= null,
-	_serverUrl= null, 
+	_enableHttps=false,
+	_serverUrl= null,
 	_serverList=[],
 	_debugLevel= null,
 	subscriptions = [];
@@ -3910,8 +3911,8 @@ org.cometd.LongPollingTransport = function()
 		if (!wasConnected && connected) { // reconnected
 			log.info('connection established');
 			cometd.notifyListeners('/meta/connected', msg);
-			cometd.batch(function(){ 
-				_zp.refresh(); 
+			cometd.batch(function(){
+				_zp.refresh();
 			});
 		} else if (wasConnected && !connected) {
 			log.warn('connection broken');
@@ -3929,7 +3930,7 @@ org.cometd.LongPollingTransport = function()
 		}
 	});
 
-	cometd.onTransportException= function(_cometd, transport){		
+	cometd.onTransportException= function(_cometd, transport){
 		if (transport==='long-polling'){
 			log.debug('onTransportException for long-polling');
 
@@ -3949,10 +3950,10 @@ org.cometd.LongPollingTransport = function()
 					url: _serverUrl+'/strd'
 				});
 				log.debug('CometD Url', _serverUrl);
-				setTimeout(function(){ 
+				setTimeout(function(){
 					cometd.handshake(_connectionData);
 				},500);
-				
+
 			}
 
 		}
@@ -3962,8 +3963,8 @@ org.cometd.LongPollingTransport = function()
 	*/
 	function getServer(businessId, force, apiUrl, callback){
 		// Get the server list from a server
-		
-		var headers=[];		
+
+		var headers=[];
 		headers['Content-Type']= 'application/json;charset=UTF-8';
 		qwest.get(
 			apiUrl + businessId,
@@ -3979,7 +3980,7 @@ org.cometd.LongPollingTransport = function()
 			data.lastCheck= Date.now();
 			data.lastBusinessId= businessId;
 			var error= null;
-			_serverList= data.servers;						
+			_serverList= data.servers;
 			callback(error, data.servers[Math.floor(Math.random()*data.servers.length)]);
 		})
 		.catch(function(error,url){
@@ -3987,11 +3988,11 @@ org.cometd.LongPollingTransport = function()
 			callback(error, null);
 		})
 		;
-		
+
 	}
 
 	/*
-		Init ZetaPush with the BusinessId of the user		
+		Init ZetaPush with the BusinessId of the user
 	*/
 	proto.init= function(businessId, debugLevel){
 		_businessId= businessId;
@@ -4004,6 +4005,20 @@ org.cometd.LongPollingTransport = function()
 	}
 
 	/*
+		Enable or disable Https
+	*/
+	proto.setEnableHttps= function(enableHttps){
+		_enableHttps= enableHttps;
+	}
+
+	/*
+		Expose CometD Transport
+	*/
+	proto.getTransport= function() {
+		return cometd.getTransport()
+	}
+
+	/*
 		Connect to ZetaPush
 		connectionData must be given by an Authent Object
 	*/
@@ -4012,27 +4027,32 @@ org.cometd.LongPollingTransport = function()
 		if (proto.isConnected())
 			return;
 
-		if (arguments.length === 1){			
-			apiUrl= "//api.zpush.io/";
+		if ('undefined' === typeof apiUrl) {
+			apiUrl = "//api.zpush.io/";
 			if (location.protocol === "file:")
 				apiUrl= "http:" + apiUrl
 		}
 
+		if (_enableHttps) {
+			apiUrl= apiUrl.replace(/^http:\/\/|^\/\//, "https://")
+		}
+
 		_connectionData= connectionData;
-		
+
 		/*
 			Get the server Url
 		*/
 
 		getServer(_businessId, false, apiUrl, function(error, serverUrl){
 			_serverUrl= serverUrl;
-				
-			if (location.protocol === "https:")
-				_serverUrl= _serverUrl.replace("http://", "https://")
+
+			if (_enableHttps) {
+				_serverUrl= _serverUrl.replace(/^http:\/\/|^\/\//, "https://")
+			}
 
 			if (_debugLevel === 'debug')
-				cometd.websocketEnabled= false;	
-					
+				cometd.websocketEnabled= false;
+
 			cometd.configure({
 				url: _serverUrl+'/strd',
 				logLevel: _debugLevel,
@@ -4040,8 +4060,8 @@ org.cometd.LongPollingTransport = function()
 				maxBackoff: 60000,
 				appendMessageTypeToURL: false
 			});
-			
-			cometd.handshake(connectionData);	
+
+			cometd.handshake(connectionData);
 		});
 
 	};
@@ -4091,8 +4111,8 @@ org.cometd.LongPollingTransport = function()
 		if (arguments.length== 1){
 			var key= arguments[0];
 		}
-		else if (arguments.length == 2){			
-			var key={};			
+		else if (arguments.length == 2){
+			var key={};
 			key.channel= arguments[0];
 			key.callback= arguments[1];
 			subscriptions.push(key);
@@ -4110,7 +4130,7 @@ org.cometd.LongPollingTransport = function()
 			cometd.notifyListeners('/meta/error', "Syntax error in the channel name");
 			return null;
 		}
-		
+
 		if (tokens[1]=='service'){
 			key.isService= true;
 
@@ -4168,7 +4188,7 @@ org.cometd.LongPollingTransport = function()
 		if ((arguments.length== 2) || (arguments.length==1)){
 			evt= arguments[0];
 			sendData= arguments[1];
-		} 
+		}
 		else if ((arguments.length==3) || (arguments.length==4)){
 			evt= proto.generateChannel(businessId, deploymentId, verb);
 			sendData= data;
@@ -4184,7 +4204,7 @@ org.cometd.LongPollingTransport = function()
 			if (connected){
 				cometd.publish(evt, sendData);
 			}
-		} 
+		}
 		else if (tokens[1]=='meta'){
 			cometd.notifyListeners(evt, sendData);
 		}
@@ -4232,7 +4252,7 @@ org.cometd.LongPollingTransport = function()
 	/*
 		Refresh subscriptions
 	*/
-	proto.refresh= function() {		
+	proto.refresh= function() {
 		log.debug('refreshing subscriptions');
 		var renew = [];
 		subscriptions.forEach(function(key) {
@@ -4249,7 +4269,7 @@ org.cometd.LongPollingTransport = function()
 		renew.forEach(function(key) {
 			//proto.on(key.channel, key.callback);
 			proto.on(key);
-		});		
+		});
 	};
 
 	/*
@@ -4267,13 +4287,13 @@ org.cometd.LongPollingTransport = function()
 		return text;
 	}
 
-		
+
 
 	/*
 		Reconnect
 	*/
 	proto.reconnect= function(){
-		connect(_connectionData);		
+		connect(_connectionData);
 	}
 
 	/*
@@ -4296,12 +4316,12 @@ org.cometd.LongPollingTransport = function()
 	'use strict';
 
 	/**
-	 * Base class for all the services.     
+	 * Base class for all the services.
 	 *
 	 * @class Base class
 	 */
 	function zpBase(){
-	}    
+	}
 
 	var proto = zpBase.prototype;
 	var exports = this;
@@ -4332,7 +4352,7 @@ org.cometd.LongPollingTransport = function()
 	}
 
 	exports.zp.service._base = zpBase;
-	
+
 }.call(this));
 
 /*
@@ -4345,7 +4365,7 @@ org.cometd.LongPollingTransport = function()
 	'use strict';
 
 	/**
-	 * Class for managing Generic Service.     
+	 * Class for managing Generic Service.
 	 *
 	 * @class Manages Generic Service for ZetaPush
 	 */
@@ -4356,10 +4376,10 @@ org.cometd.LongPollingTransport = function()
 
 	zpGenericService.prototype= Object.create(zp.service._base.prototype);
 	var proto = zpGenericService.prototype;
-	var exports = this;	
+	var exports = this;
 
 	exports.zp.service.Generic = zpGenericService;
-	
+
 }.call(this));
 
 /*
@@ -4372,12 +4392,12 @@ org.cometd.LongPollingTransport = function()
 	'use strict';
 
 	/**
-	 * Class for managing Simple Authentication.     
+	 * Class for managing Simple Authentication.
 	 *
 	 * @class Manages Simple Authentication for ZetaPush
 	 */
 	function zpSimpleAuthent(deploymentId) {
-		_deploymentId= deploymentId;	
+		_deploymentId= deploymentId;
 
 		zp.on('/meta/handshake', function(msg){
 			if (msg.successful){
@@ -4386,7 +4406,7 @@ org.cometd.LongPollingTransport = function()
 			}
 		});
 	}
-	
+
 	var proto = zpSimpleAuthent.prototype;
 	var exports = this;
 	var _userId, _token, _deploymentId;
@@ -4408,7 +4428,7 @@ org.cometd.LongPollingTransport = function()
 		var loginData;
 		var resourceName;
 
-		if (arguments.length === 2){		
+		if (arguments.length === 2){
 			loginData={token: login};
 			resourceName= password;
 		} else {
@@ -4431,7 +4451,7 @@ org.cometd.LongPollingTransport = function()
 	}
 
 	exports.zp.authent.Simple = zpSimpleAuthent;
-	
+
 }.call(this));
 
 /*
@@ -4444,12 +4464,12 @@ org.cometd.LongPollingTransport = function()
 	'use strict';
 
 	/**
-	 * Class for managing Weak Authentication.     
+	 * Class for managing Weak Authentication.
 	 *
 	 * @class Manages Weak Authentication for ZetaPush
 	 */
 	function zpWeakAuthent(deploymentId) {
-		_deploymentId= deploymentId;	
+		_deploymentId= deploymentId;
 
 		_authType = zp.getBusinessId() +'.' + _deploymentId + '.' + 'weak';
 		zp.on('/meta/handshake', function(msg){
@@ -4458,7 +4478,7 @@ org.cometd.LongPollingTransport = function()
 				_publicToken= msg.ext.authentication.publicToken;
 				_userId= msg.ext.authentication.userId;
 			}
-		});	
+		});
 
 		zp.on(zp.generateChannel(_deploymentId,'control'), function(msg){
 			console.log("control", msg);
@@ -4475,19 +4495,19 @@ org.cometd.LongPollingTransport = function()
 			if (zp.isConnected(_authType))
 				zp.reconnect();
 		});
-	}    
-	
+	}
+
 	var proto = zpWeakAuthent.prototype;
 	var exports = this;
 	// These 2 token are usefull to reconnect with the same Id on the server
 	var _token, _publicToken;
 	// This token is the id of the user
-	var _userId, _authType, _deploymentId;	
+	var _userId, _authType, _deploymentId;
 
 	proto.getConnectionData= function(token, resource){
-		
+
 		var loginData= {"token": token};
-		
+
 		if (_token){
 			loginData= {"token": _token};
 		}
@@ -4507,9 +4527,9 @@ org.cometd.LongPollingTransport = function()
 	}
 
 	proto.getUserId= function(){
-		return _userId;		
+		return _userId;
 	}
-	
+
 	proto.getToken= function(){
 		return _token;
 	}
@@ -4523,7 +4543,7 @@ org.cometd.LongPollingTransport = function()
 	}
 
 	exports.zp.authent.Weak = zpWeakAuthent;
-	
+
 }.call(this));
 
 /*
@@ -4536,34 +4556,34 @@ org.cometd.LongPollingTransport = function()
 	'use strict';
 
 	/**
-	 * Class for managing Delegating Authentication.     
+	 * Class for managing Delegating Authentication.
 	 *
 	 * @class Manages Delegating Authentication for ZetaPush
 	 */
 	function zpDelegatingAuthent(deploymentId) {
-		_deploymentId= deploymentId;	
+		_deploymentId= deploymentId;
 
 		_authType = zp.getBusinessId() +'.' + _deploymentId + '.' + 'delegating';
 		zp.on('/meta/handshake', function(msg){
 			if (msg.successful){
-				_token= msg.ext.authentication.token;				
+				_token= msg.ext.authentication.token;
 				_userId= msg.ext.authentication.userId;
 			}
-		});	
-		
-	}    
-	
+		});
+
+	}
+
 	var proto = zpDelegatingAuthent.prototype;
 	var exports = this;
 	// These 2 token are usefull to reconnect with the same Id on the server
 	var _token, _publicToken;
 	// This token is the id of the user
-	var _userId, _authType, _deploymentId;	
+	var _userId, _authType, _deploymentId;
 
 	proto.getConnectionData= function(token, resource){
-		
+
 		var loginData= {"token": token};
-		
+
 		if (_token){
 			loginData= {"token": _token};
 		}
@@ -4583,13 +4603,13 @@ org.cometd.LongPollingTransport = function()
 	}
 
 	proto.getUserId= function(){
-		return _userId;		
+		return _userId;
 	}
-	
+
 	proto.getToken= function(){
 		return _token;
 	}
 
 	exports.zp.authent.Delegating = zpDelegatingAuthent;
-	
+
 }.call(this));
