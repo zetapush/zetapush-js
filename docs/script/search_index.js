@@ -408,9 +408,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/client.js~client#createpubsub",
-    "class/src/client.js~Client.html#instance-method-createPubSub",
-    "src/client.js~Client#createPubSub",
+    "src/client.js~client#createpublishersubscriber",
+    "class/src/client.js~Client.html#instance-method-createPublisherSubscriber",
+    "src/client.js~Client#createPublisherSubscriber",
     "method"
   ],
   [
@@ -462,9 +462,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/client.js~client#subscribelistener",
-    "class/src/client.js~Client.html#instance-method-subscribeListener",
-    "src/client.js~Client#subscribeListener",
+    "src/client.js~client#subscribe",
+    "class/src/client.js~Client.html#instance-method-subscribe",
+    "src/client.js~Client#subscribe",
     "method"
   ],
   [

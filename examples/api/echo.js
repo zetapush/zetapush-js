@@ -18,7 +18,7 @@
     }
   })
 
-  client.subscribeListener({
+  client.Listener({
     deploymentId: DEPLOYMENT_ID,
     serviceListener: serviceListener
   })

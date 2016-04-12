@@ -86,7 +86,7 @@
     publisherDefinition: StackPublisherDefinition
   })
   // Subscribe listener methods for a given deploymentId
-  client.subscribeListener({
+  client.Listener({
     deploymentId: DEPLOYMENT_ID,
     serviceListener: serviceListener
   })

@@ -1,13 +1,10 @@
 ;(function () {
-  var SmartClient = ZetaPush.SmartClient
-  var StackPublisherDefinition = ZetaPush.definitions.StackPublisherDefinition
-
   var BUSINESS_ID = '5mln3Zxw'
   var DEPLOYMENT_ID = '5CO-'
   var AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
 
   // Create a Zetapush SmartClient
-  var client = new SmartClient({
+  var client = new ZetaPush.SmartClient({
     businessId: BUSINESS_ID,
     enableHttps: true,
     authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
@@ -90,10 +87,10 @@
   // Create a service publish to interact with remote API
   var servicePublisher = client.createServicePublisher({
     deploymentId: DEPLOYMENT_ID,
-    publisherDefinition: StackPublisherDefinition
+    publisherDefinition: ZetaPush.definitions.StackPublisherDefinition
   })
   // Subscribe listener methods for a given deploymentId
-  client.subscribeListener({
+  client.Listener({
     deploymentId: DEPLOYMENT_ID,
     serviceListener: serviceListener
   })

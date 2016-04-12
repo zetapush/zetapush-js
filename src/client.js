@@ -106,21 +106,23 @@ export class Client {
    *   push() {},
    *   update() {}
    * }
-   * client.subscribeListener({
+   * client.subscribe({
    *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',
    *   serviceListener
    * })
    */
-  subscribeListener({ deploymentId, serviceListener }) {
+  subscribe({ deploymentId, serviceListener }) {
     return this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)
   }
   /**
-  * Create a publish/subscribe
-  * @experimental
-  * @return {Object}
+   * Create a publish/subscribe
+   * @return {Object}
    */
-  createPubSub({ deploymentId, serviceListener, publisher }) {
-    throw new NotYetImplementedError('createPubSub')
+  createPublisherSubscriber({ deploymentId, serviceListener, publisherDefinition }) {
+    return {
+      subscription: this.subscribe({ deploymentId, serviceListener }),
+      publisher: this.createServicePublisher({ deploymentId, publisherDefinition })
+    }
   }
   /**
    * Set new client resource value

@@ -899,7 +899,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { ClientHelper } from './client-helper'\n\nimport { NotYetImplementedError } from './utils'\n\n/**\n * Default ZetaPush API URL\n * @access public\n */\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * ZetaPush Client to connect\n * @access public\n * @example\n * const client = new Client({\n *   businessId: '<YOUR-BUSINESS-ID>',\n *   handshakeStrategy() {\n *     return AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n * @example\n * const client = new Client({\n *   businessId: '<YOUR-BUSINESS-ID>',\n *   enableHttps: true,\n *   handshakeStrategy() {\n *     return AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   * Create a new ZetaPush client\n   */\n  constructor({ apiUrl = API_URL, businessId, enableHttps = false, handshakeStrategy, resource = null }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.client = new ClientHelper({\n      apiUrl,\n      businessId,\n      enableHttps,\n      handshakeStrategy,\n      resource\n    })\n  }\n  /**\n   * Connect client to ZetaPush\n   */\n  connect() {\n    this.client.connect()\n  }\n  /**\n   * Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.client.disconnect()\n  }\n  /**\n   * Create a service publisher based on publisher definition for the given deployment id\n   * @return {Object}\n   */\n  createServicePublisher({ deploymentId, publisherDefinition }) {\n    return this.client.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, publisherDefinition)\n  }\n  /**\n   * Get the client business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.client.getBusinessId()\n  }\n  /**\n   * Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.client.getResource()\n  }\n  /**\n   * Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.client.getUserId()\n  }\n  /**\n   * Get the client session id\n   * @return {string}\n   */\n  getSessionId() {\n    return this.client.getSessionId()\n  }\n  /**\n   * Subscribe all methods described in the serviceListener for the given deploymentId\n   * @return {Object} subscription\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribeListener({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   */\n  subscribeListener({ deploymentId, serviceListener }) {\n    return this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)\n  }\n  /**\n  * Create a publish/subscribe\n  * @experimental\n  * @return {Object}\n   */\n  createPubSub({ deploymentId, serviceListener, publisher }) {\n    throw new NotYetImplementedError('createPubSub')\n  }\n  /**\n   * Set new client resource value\n   */\n  setResource(resource) {\n    this.client.setResource(resource)\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    return this.client.addConnectionStatusListener(listener)\n  }\n  /**\n   * Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  handshake(handshakeStrategy) {\n    this.disconnect()\n    if (handshakeStrategy) {\n      this.client.setHandshakeStrategy(handshakeStrategy)\n    }\n    this.connect()\n  }\n\n  /**\n   * Get a service lister from methods list with a default handler\n   * @return {Object} listener\n   * @example\n   * const getStackServiceListener = () => {\n   *   return Client.getServiceListener({\n   *     methods: ['getListeners', 'list', 'purge', 'push', 'remove', 'setListeners', 'update', 'error'],\n   *     handler: ({ channel, data }) => {\n   *       console.debug(`Stack::${method}`, { channel, data })\n   *       document.querySelector(`form[name=\"${method}\"] [name=\"output\"]`).value = JSON.stringify(data)\n   *     }\n   *   })\n   * }\n   */\n  static getServiceListener({ methods = [], handler = () => {} }) {\n    return methods.reduce((listener, method) => {\n      listener[method] = ({ channel, data }) => handler({ channel, data, method })\n      return listener\n    }, {})\n  }\n\n}\n"
+    "content": "import { ClientHelper } from './client-helper'\n\nimport { NotYetImplementedError } from './utils'\n\n/**\n * Default ZetaPush API URL\n * @access public\n */\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * ZetaPush Client to connect\n * @access public\n * @example\n * const client = new Client({\n *   businessId: '<YOUR-BUSINESS-ID>',\n *   handshakeStrategy() {\n *     return AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n * @example\n * const client = new Client({\n *   businessId: '<YOUR-BUSINESS-ID>',\n *   enableHttps: true,\n *   handshakeStrategy() {\n *     return AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   * Create a new ZetaPush client\n   */\n  constructor({ apiUrl = API_URL, businessId, enableHttps = false, handshakeStrategy, resource = null }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.client = new ClientHelper({\n      apiUrl,\n      businessId,\n      enableHttps,\n      handshakeStrategy,\n      resource\n    })\n  }\n  /**\n   * Connect client to ZetaPush\n   */\n  connect() {\n    this.client.connect()\n  }\n  /**\n   * Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.client.disconnect()\n  }\n  /**\n   * Create a service publisher based on publisher definition for the given deployment id\n   * @return {Object}\n   */\n  createServicePublisher({ deploymentId, publisherDefinition }) {\n    return this.client.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, publisherDefinition)\n  }\n  /**\n   * Get the client business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.client.getBusinessId()\n  }\n  /**\n   * Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.client.getResource()\n  }\n  /**\n   * Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.client.getUserId()\n  }\n  /**\n   * Get the client session id\n   * @return {string}\n   */\n  getSessionId() {\n    return this.client.getSessionId()\n  }\n  /**\n   * Subscribe all methods described in the serviceListener for the given deploymentId\n   * @return {Object} subscription\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribe({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   serviceListener\n   * })\n   */\n  subscribe({ deploymentId, serviceListener }) {\n    return this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)\n  }\n  /**\n   * Create a publish/subscribe\n   * @return {Object}\n   */\n  createPublisherSubscriber({ deploymentId, serviceListener, publisherDefinition }) {\n    return {\n      subscription: this.subscribe({ deploymentId, serviceListener }),\n      publisher: this.createServicePublisher({ deploymentId, publisherDefinition })\n    }\n  }\n  /**\n   * Set new client resource value\n   */\n  setResource(resource) {\n    this.client.setResource(resource)\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    return this.client.addConnectionStatusListener(listener)\n  }\n  /**\n   * Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  handshake(handshakeStrategy) {\n    this.disconnect()\n    if (handshakeStrategy) {\n      this.client.setHandshakeStrategy(handshakeStrategy)\n    }\n    this.connect()\n  }\n\n  /**\n   * Get a service lister from methods list with a default handler\n   * @return {Object} listener\n   * @example\n   * const getStackServiceListener = () => {\n   *   return Client.getServiceListener({\n   *     methods: ['getListeners', 'list', 'purge', 'push', 'remove', 'setListeners', 'update', 'error'],\n   *     handler: ({ channel, data }) => {\n   *       console.debug(`Stack::${method}`, { channel, data })\n   *       document.querySelector(`form[name=\"${method}\"] [name=\"output\"]`).value = JSON.stringify(data)\n   *     }\n   *   })\n   * }\n   */\n  static getServiceListener({ methods = [], handler = () => {} }) {\n    return methods.reduce((listener, method) => {\n      listener[method] = ({ channel, data }) => handler({ channel, data, method })\n      return listener\n    }, {})\n  }\n\n}\n"
   },
   {
     "__docId__": 44,
@@ -1145,13 +1145,13 @@
     "kind": "method",
     "static": false,
     "variation": null,
-    "name": "subscribeListener",
+    "name": "subscribe",
     "memberof": "src/client.js~Client",
-    "longname": "src/client.js~Client#subscribeListener",
+    "longname": "src/client.js~Client#subscribe",
     "access": null,
     "description": "Subscribe all methods described in the serviceListener for the given deploymentId",
     "examples": [
-      "const stackServiceListener = {\n  list() {},\n  push() {},\n  update() {}\n}\nclient.subscribeListener({\n  deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n  serviceListener\n})"
+      "const stackServiceListener = {\n  list() {},\n  push() {},\n  update() {}\n}\nclient.subscribe({\n  deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n  serviceListener\n})"
     ],
     "lineNumber": 114,
     "params": [
@@ -1182,25 +1182,24 @@
     "kind": "method",
     "static": false,
     "variation": null,
-    "name": "createPubSub",
+    "name": "createPublisherSubscriber",
     "memberof": "src/client.js~Client",
-    "longname": "src/client.js~Client#createPubSub",
+    "longname": "src/client.js~Client#createPublisherSubscriber",
     "access": null,
     "description": "Create a publish/subscribe",
-    "lineNumber": 122,
-    "experimental": true,
+    "lineNumber": 121,
     "params": [
       {
         "name": "objectPattern",
         "types": [
-          "{\"deploymentId\": *, \"serviceListener\": *, \"publisher\": *}"
+          "{\"deploymentId\": *, \"serviceListener\": *, \"publisherDefinition\": *}"
         ],
         "defaultRaw": {
           "deploymentId": null,
           "serviceListener": null,
-          "publisher": null
+          "publisherDefinition": null
         },
-        "defaultValue": "{\"deploymentId\":null,\"serviceListener\":null,\"publisher\":null}"
+        "defaultValue": "{\"deploymentId\":null,\"serviceListener\":null,\"publisherDefinition\":null}"
       }
     ],
     "return": {
@@ -1223,7 +1222,7 @@
     "longname": "src/client.js~Client#setResource",
     "access": null,
     "description": "Set new client resource value",
-    "lineNumber": 128,
+    "lineNumber": 130,
     "params": [
       {
         "name": "resource",
@@ -1244,7 +1243,7 @@
     "longname": "src/client.js~Client#addConnectionStatusListener",
     "access": null,
     "description": "Add a connection listener to handle life cycle connection events",
-    "lineNumber": 135,
+    "lineNumber": 137,
     "params": [
       {
         "nullable": null,
@@ -1274,7 +1273,7 @@
     "longname": "src/client.js~Client#handshake",
     "access": null,
     "description": "Force disconnect/connect with new handshake factory",
-    "lineNumber": 142,
+    "lineNumber": 144,
     "params": [
       {
         "nullable": null,
@@ -1302,7 +1301,7 @@
     "examples": [
       "const getStackServiceListener = () => {\n  return Client.getServiceListener({\n    methods: ['getListeners', 'list', 'purge', 'push', 'remove', 'setListeners', 'update', 'error'],\n    handler: ({ channel, data }) => {\n      console.debug(`Stack::${method}`, { channel, data })\n      document.querySelector(`form[name=\"${method}\"] [name=\"output\"]`).value = JSON.stringify(data)\n    }\n  })\n}"
     ],
-    "lineNumber": 164,
+    "lineNumber": 166,
     "params": [
       {
         "name": "objectPattern",
