@@ -4,7 +4,7 @@
   const client = new SmartClient({
     apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
     businessId: 'JteMN0To',
-    deploymentId: 'weak_main'
+    authenticationDeploymentId: 'weak_main'
   })
 
   client.addConnectionStatusListener({
