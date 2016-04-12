@@ -1,5 +1,5 @@
 /*
-	ZetaPushCore v1.0
+	ZetaPushCore v1.1.13
 	Javascript core sdk for ZetaPush
 	Mikael Morvan - March 2015
 */
@@ -205,13 +205,6 @@
 	*/
 	proto.setEnableHttps= function(enableHttps){
 		_enableHttps= enableHttps;
-	}
-
-	/*
-		Expose CometD Transport
-	*/
-	proto.getTransport= function() {
-		return cometd.getTransport()
 	}
 
 	/*

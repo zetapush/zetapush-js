@@ -3803,7 +3803,7 @@ org.cometd.LongPollingTransport = function()
 }()));
 
 /*
-	ZetaPushCore v1.0
+	ZetaPushCore v1.1.13
 	Javascript core sdk for ZetaPush
 	Mikael Morvan - March 2015
 */
@@ -4009,13 +4009,6 @@ org.cometd.LongPollingTransport = function()
 	*/
 	proto.setEnableHttps= function(enableHttps){
 		_enableHttps= enableHttps;
-	}
-
-	/*
-		Expose CometD Transport
-	*/
-	proto.getTransport= function() {
-		return cometd.getTransport()
 	}
 
 	/*
@@ -4316,12 +4309,12 @@ org.cometd.LongPollingTransport = function()
 	'use strict';
 
 	/**
-	 * Base class for all the services.
+	 * Base class for all the services.     
 	 *
 	 * @class Base class
 	 */
 	function zpBase(){
-	}
+	}    
 
 	var proto = zpBase.prototype;
 	var exports = this;
@@ -4352,7 +4345,7 @@ org.cometd.LongPollingTransport = function()
 	}
 
 	exports.zp.service._base = zpBase;
-
+	
 }.call(this));
 
 /*
@@ -4365,7 +4358,7 @@ org.cometd.LongPollingTransport = function()
 	'use strict';
 
 	/**
-	 * Class for managing Generic Service.
+	 * Class for managing Generic Service.     
 	 *
 	 * @class Manages Generic Service for ZetaPush
 	 */
@@ -4376,10 +4369,10 @@ org.cometd.LongPollingTransport = function()
 
 	zpGenericService.prototype= Object.create(zp.service._base.prototype);
 	var proto = zpGenericService.prototype;
-	var exports = this;
+	var exports = this;	
 
 	exports.zp.service.Generic = zpGenericService;
-
+	
 }.call(this));
 
 /*
@@ -4392,12 +4385,12 @@ org.cometd.LongPollingTransport = function()
 	'use strict';
 
 	/**
-	 * Class for managing Simple Authentication.
+	 * Class for managing Simple Authentication.     
 	 *
 	 * @class Manages Simple Authentication for ZetaPush
 	 */
 	function zpSimpleAuthent(deploymentId) {
-		_deploymentId= deploymentId;
+		_deploymentId= deploymentId;	
 
 		zp.on('/meta/handshake', function(msg){
 			if (msg.successful){
@@ -4406,7 +4399,7 @@ org.cometd.LongPollingTransport = function()
 			}
 		});
 	}
-
+	
 	var proto = zpSimpleAuthent.prototype;
 	var exports = this;
 	var _userId, _token, _deploymentId;
@@ -4428,7 +4421,7 @@ org.cometd.LongPollingTransport = function()
 		var loginData;
 		var resourceName;
 
-		if (arguments.length === 2){
+		if (arguments.length === 2){		
 			loginData={token: login};
 			resourceName= password;
 		} else {
@@ -4451,7 +4444,7 @@ org.cometd.LongPollingTransport = function()
 	}
 
 	exports.zp.authent.Simple = zpSimpleAuthent;
-
+	
 }.call(this));
 
 /*
@@ -4464,12 +4457,12 @@ org.cometd.LongPollingTransport = function()
 	'use strict';
 
 	/**
-	 * Class for managing Weak Authentication.
+	 * Class for managing Weak Authentication.     
 	 *
 	 * @class Manages Weak Authentication for ZetaPush
 	 */
 	function zpWeakAuthent(deploymentId) {
-		_deploymentId= deploymentId;
+		_deploymentId= deploymentId;	
 
 		_authType = zp.getBusinessId() +'.' + _deploymentId + '.' + 'weak';
 		zp.on('/meta/handshake', function(msg){
@@ -4478,7 +4471,7 @@ org.cometd.LongPollingTransport = function()
 				_publicToken= msg.ext.authentication.publicToken;
 				_userId= msg.ext.authentication.userId;
 			}
-		});
+		});	
 
 		zp.on(zp.generateChannel(_deploymentId,'control'), function(msg){
 			console.log("control", msg);
@@ -4495,19 +4488,19 @@ org.cometd.LongPollingTransport = function()
 			if (zp.isConnected(_authType))
 				zp.reconnect();
 		});
-	}
-
+	}    
+	
 	var proto = zpWeakAuthent.prototype;
 	var exports = this;
 	// These 2 token are usefull to reconnect with the same Id on the server
 	var _token, _publicToken;
 	// This token is the id of the user
-	var _userId, _authType, _deploymentId;
+	var _userId, _authType, _deploymentId;	
 
 	proto.getConnectionData= function(token, resource){
-
+		
 		var loginData= {"token": token};
-
+		
 		if (_token){
 			loginData= {"token": _token};
 		}
@@ -4527,9 +4520,9 @@ org.cometd.LongPollingTransport = function()
 	}
 
 	proto.getUserId= function(){
-		return _userId;
+		return _userId;		
 	}
-
+	
 	proto.getToken= function(){
 		return _token;
 	}
@@ -4543,7 +4536,7 @@ org.cometd.LongPollingTransport = function()
 	}
 
 	exports.zp.authent.Weak = zpWeakAuthent;
-
+	
 }.call(this));
 
 /*
@@ -4556,34 +4549,34 @@ org.cometd.LongPollingTransport = function()
 	'use strict';
 
 	/**
-	 * Class for managing Delegating Authentication.
+	 * Class for managing Delegating Authentication.     
 	 *
 	 * @class Manages Delegating Authentication for ZetaPush
 	 */
 	function zpDelegatingAuthent(deploymentId) {
-		_deploymentId= deploymentId;
+		_deploymentId= deploymentId;	
 
 		_authType = zp.getBusinessId() +'.' + _deploymentId + '.' + 'delegating';
 		zp.on('/meta/handshake', function(msg){
 			if (msg.successful){
-				_token= msg.ext.authentication.token;
+				_token= msg.ext.authentication.token;				
 				_userId= msg.ext.authentication.userId;
 			}
-		});
-
-	}
-
+		});	
+		
+	}    
+	
 	var proto = zpDelegatingAuthent.prototype;
 	var exports = this;
 	// These 2 token are usefull to reconnect with the same Id on the server
 	var _token, _publicToken;
 	// This token is the id of the user
-	var _userId, _authType, _deploymentId;
+	var _userId, _authType, _deploymentId;	
 
 	proto.getConnectionData= function(token, resource){
-
+		
 		var loginData= {"token": token};
-
+		
 		if (_token){
 			loginData= {"token": _token};
 		}
@@ -4603,13 +4596,13 @@ org.cometd.LongPollingTransport = function()
 	}
 
 	proto.getUserId= function(){
-		return _userId;
+		return _userId;		
 	}
-
+	
 	proto.getToken= function(){
 		return _token;
 	}
 
 	exports.zp.authent.Delegating = zpDelegatingAuthent;
-
+	
 }.call(this));
