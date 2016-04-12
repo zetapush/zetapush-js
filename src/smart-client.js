@@ -8,7 +8,7 @@ import { LocalStorageTokenPersistenceStrategy } from './token-persistence'
  */
 export class SmartClient extends Client {
   /**
-   * @desc Create a new ZetaPush smart client
+   * Create a new ZetaPush smart client
    */
   constructor({
     apiUrl, authenticationDeploymentId, businessId, enableHttps, resource = null,

@@ -1,31 +1,31 @@
 /**
+ * Define life cycle connection methods 
  * @access public
- * @desc Define life cycle connection methods 
  */
 export class ConnectionStatusListener {
   /**
-   * @desc Callback fired when connection is broken
+   * Callback fired when connection is broken
    */
   onConnectionBroken() {}
   /**
-   * @desc Callback fired when connection is closed
+   * Callback fired when connection is closed
    */
   onConnectionClosed() {}
   /**
-   * @desc Callback fired when is established
+   * Callback fired when is established
    */
   onConnectionEstablished() {}
   /**
-   * @desc Callback fired when an error occurs in handshake step
+   * Callback fired when an error occurs in handshake step
    * @param {Object} error
    */
   onFailedHandshake(error) {}
   /**
-   * @desc Callback fired when a message is lost
+   * Callback fired when a message is lost
    */
   onMessageLost() {}
   /**
-   * @desc Callback fired when handshake step succeed
+   * Callback fired when handshake step succeed
    * @param {Object} authentication
    */
   onSuccessfulHandshake(authentication) {}

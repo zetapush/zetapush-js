@@ -4,7 +4,7 @@ import { getServers, shuffle } from './utils'
 import { ConnectionStatusListener } from './connection-status'
 
 /**
- * @desc CometD Messages enumeration
+ * CometD Messages enumeration
  */
 const Message = {
   RECONNECT_HANDSHAKE_VALUE: 'handshake',
@@ -13,7 +13,7 @@ const Message = {
 }
 
 /**
- * @desc CometD Transports enumeration
+ * CometD Transports enumeration
  */
 const Transport = {
   LONG_POLLING: 'long-polling',
@@ -21,12 +21,12 @@ const Transport = {
 }
 
 /**
- * @desc Provide utilities and abstraction on CometD Transport layer
+ * Provide utilities and abstraction on CometD Transport layer
  * @access private
  */
 export class ClientHelper {
   /**
-   * @desc Create a new ZetaPush client helper
+   * Create a new ZetaPush client helper
    */
   constructor({ apiUrl, businessId, enableHttps = false, handshakeStrategy, resource }) {
     /**
@@ -122,7 +122,8 @@ export class ClientHelper {
         this.connected = false
         // Notify connection is closed
         this.connectionClosed()
-      } else {
+      }
+      else {
         this.wasConnected = this.connected
         this.connected = successful
         if (!this.wasConnected && this.connected) {
@@ -144,7 +145,7 @@ export class ClientHelper {
     })
   }
   /**
-   * @desc Connect client using CometD Transport
+   * Connect client using CometD Transport
    */
   connect() {
     this.servers.then((servers) => {
@@ -161,7 +162,7 @@ export class ClientHelper {
     })
   }
   /**
-   * @desc Notify listeners when connection is established
+   * Notify listeners when connection is established
    */
   connectionEstablished() {
     this.connectionListeners.forEach((listener) => {
@@ -169,7 +170,7 @@ export class ClientHelper {
     })
   }
   /**
-   * @desc Notify listeners when connection is broken
+   * Notify listeners when connection is broken
    */
   connectionBroken() {
     this.connectionListeners.forEach((listener) => {
@@ -177,7 +178,7 @@ export class ClientHelper {
     })
   }
   /**
-   * @desc Notify listeners when a message is lost
+   * Notify listeners when a message is lost
    */
   messageLost(channel, data) {
     this.connectionListeners.forEach((listener) => {
@@ -185,7 +186,7 @@ export class ClientHelper {
     })
   }
   /**
-   * @desc Notify listeners when connection is closed
+   * Notify listeners when connection is closed
    */
   connectionClosed() {
     this.connectionListeners.forEach((listener) => {
@@ -193,7 +194,7 @@ export class ClientHelper {
     })
   }
   /**
-   * @desc Notify listeners when connection is established
+   * Notify listeners when connection is established
    */
   initialized(authentication) {
     if (authentication) {
@@ -204,7 +205,7 @@ export class ClientHelper {
     })
   }
   /**
-   * @desc Notify listeners when handshake step succeed
+   * Notify listeners when handshake step succeed
    */
   authenticationFailed(error) {
     this.connectionListeners.forEach((listener) => {
@@ -212,13 +213,13 @@ export class ClientHelper {
     })
   }
   /**
-   *
+   * Manage handshake failure case
    */
   handshakeFailure() {
 
   }
   /**
-  * @desc Remove current server url from the server list and shuffle for another one
+  * Remove current server url from the server list and shuffle for another one
   */
   updateServerUrl() {
     this.servers.then((servers) => {
@@ -241,19 +242,19 @@ export class ClientHelper {
     })
   }
   /**
-   *
+   * Negociate authentication
    */
   negotiate(ext) {
     console.debug('ClientHelper::negotiate', ext)
   }
   /**
-   * @desc Disconnect CometD client
+   * Disconnect CometD client
    */
   disconnect() {
     this.cometd.disconnect()
   }
   /**
-   * @desc Get CometD handshake parameters
+   * Get CometD handshake parameters
    * @return {Object}
    */
   getHandshakeFields() {
@@ -261,35 +262,35 @@ export class ClientHelper {
     return handshake.getHandshakeFields(this)
   }
   /**
-   * @desc Set a new handshake factory methods
+   * Set a new handshake factory methods
    * @param {function():AbstractHandshakeManager} handshakeStrategy
    */
   setHandshakeStrategy(handshakeStrategy) {
     this.handshakeStrategy = handshakeStrategy
   }
   /**
-   * @desc Get business id
+   * Get business id
    * @return {string}
    */
   getBusinessId() {
     return this.businessId
   }
   /**
-   * @desc Get session id
+   * Get session id
    * @return {string}
    */
   getSessionId() {
     throw NotYetImplementedError()
   }
   /**
-   * @desc Get resource
+   * Get resource
    * @return {string}
    */
   getResource() {
     return this.resource
   }
   /**
-   * @desc Subribe all methods defined in the serviceListener for the given prefixed channel
+   * Subribe all methods defined in the serviceListener for the given prefixed channel
    * @param {string} prefix - Channel prefix
    * @param {Object} serviceListener
    * @param {Object} subscriptions
@@ -298,7 +299,8 @@ export class ClientHelper {
   subscribe(prefix, serviceListener, subscriptions = {}) {
     if (this.cometd.isDisconnected()) {
       this.subscribeQueue.push({ prefix, serviceListener, subscriptions })
-    } else {
+    }
+    else {
       for (const method in serviceListener) {
         if (serviceListener.hasOwnProperty(method)) {
           const channel = `${prefix}/${method}`
@@ -309,7 +311,7 @@ export class ClientHelper {
     return subscriptions
   }
   /**
-   * @desc Get a publisher
+   * Get a publisher
    * @param {string} prefix - Channel prefix
    * @param {Object} publisherDefinition
    * @return {Object} servicePublisher
@@ -327,7 +329,7 @@ export class ClientHelper {
     return servicePublisher
   }
   /**
-   * @desc Unsubcribe all subscriptions defined in given subscriptions object
+   * Unsubcribe all subscriptions defined in given subscriptions object
    * @param {Object} subscriptions
    */
   unsubscribe(subscriptions) {
@@ -338,7 +340,7 @@ export class ClientHelper {
     }
   }
   /**
-   * @desc Add a connection listener to handle life cycle connection events
+   * Add a connection listener to handle life cycle connection events
    * @param {ConnectionStatusListener} listener
    */
   addConnectionStatusListener(listener) {

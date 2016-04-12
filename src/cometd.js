@@ -1,19 +1,19 @@
 import { Transport, LongPollingTransport } from 'zetapush-cometd'
 
 /**
+ * Implements LongPollingTransport using borwser fetch() API
  * @access private
- * @desc Implements LongPollingTransport using borwser fetch() API
  * @return {FetchLongPollingTransport}
  */
 export function FetchLongPollingTransport() {
-  var _super = new LongPollingTransport()
-  var that = Transport.derive(_super)
+  const _super = new LongPollingTransport()
+  const that = Transport.derive(_super)
 
   /**
-   * @desc Implements transport via fetch() API
+   * Implements transport via fetch() API
    * @param {Object} packet
    */
-  that.xhrSend = function(packet) {
+  that.xhrSend = function (packet) {
     fetch(packet.url, {
       method: 'post',
       body: packet.body,

@@ -4,8 +4,8 @@
 const ZETAPUSH_TOKEN_KEY = 'zetapush.token'
 
 /**
+ * Provide abstraction for token persistence
  * @access protected
- * @desc Provide abstraction for token persistence
  */
 export class AbstractTokenPersistenceStrategy {
   /**

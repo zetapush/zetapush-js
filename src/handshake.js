@@ -87,7 +87,7 @@ export class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {
     this.password = password
   }
   /**
-   * @desc Get auth data
+   * Get auth data
    * @return {login: string, password: string}
    */
   get authData() {
@@ -100,6 +100,7 @@ export class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {
 }
 
 /**
+ * Factory to create handshake
  * @access public
  */
 export class AuthentFactory {

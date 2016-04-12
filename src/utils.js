@@ -1,5 +1,5 @@
 /**
- * @desc Match unsecure pattern web
+ * Match unsecure pattern web
  * @type {RegExp}
  */
 const UNSECURE_PATTERN = /^http:\/\/|^\/\//
@@ -12,6 +12,16 @@ const UNSECURE_PATTERN = /^http:\/\/|^\/\//
 export const shuffle = (list) => {
   const index = Math.floor(Math.random() * list.length)
   return list[index]
+}
+
+/**
+ * @access private
+ * @param {string} url
+ * @param {boolean} enableHttps
+ * @return {string}
+ */
+export const getSecureUrl = (url, enableHttps) => {
+  return enableHttps ? url.replace(UNSECURE_PATTERN, 'https://') : url
 }
 
 /**
@@ -31,16 +41,6 @@ export const getServers = ({ apiUrl, businessId, enableHttps }) => {
         return getSecureUrl(server, enableHttps)
       })
     })
-}
-
-/**
- * @access private
- * @param {string} url
- * @param {boolean} enableHttps
- * @return {string}
- */
-export const getSecureUrl = (url, enableHttps) => {
-  return enableHttps ? url.replace(UNSECURE_PATTERN, 'https://') : url
 }
 
 /**
