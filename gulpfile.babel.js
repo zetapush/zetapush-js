@@ -13,9 +13,12 @@ import minimist from 'minimist'
 import sequence from 'run-sequence'
 import uglify from 'gulp-uglify'
 import github from 'gulp-gh-pages'
+import request from 'request'
 
 const pkg = require('./package')
 const { optimize = false } = minimist(process.argv)
+
+const REMOTE_DEFINITIONS_URL = 'http://pinte-silver-2/sdks/generated/2.3.15/js/zp_services.js'
 
 const paths = {
   input: './src/index.js',
@@ -73,6 +76,11 @@ const getSourceStream = () => {
     .pipe(stream('zetapush.js'))
     .pipe(buffer())
 }
+
+gulp.task('remote', (done) => {
+  return request(REMOTE_DEFINITIONS_URL)
+    .pipe(fs.createWriteStream('./src/definitions.js'))
+})
 
 gulp.task('bundle', () => {
   return merge(getVendorStream(), getSourceStream())
