@@ -2,7 +2,7 @@
   const { SmartClient, definitions: { StackPublisherDefinition } } = ZetaPush
 
   const BUSINESS_ID = '5mln3Zxw'
-  const DEPLOYMENT_ID = 'vS7y'
+  const DEPLOYMENT_ID = '5CO-'
   const AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
 
   const client = new SmartClient({
