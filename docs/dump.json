@@ -1508,23 +1508,23 @@
     "longname": "src/definitions.js",
     "access": null,
     "description": null,
-    "lineNumber": 5,
-    "content": "/**\n * Echo Service API\n * @access public\n */\nexport const EchoPublisherDefinition = {\n  /**\n   * Echoes an object: the server will echo that object on channel 'echo' for the current user.\n   */\n  echo() { }\n}\n\n/**\n * Stack Service API\n * @access public\n */\nexport const StackPublisherDefinition = {\n  /**\n   * Returns the whole list of listeners for the given stack.\n   */\n  getListeners() { },\n  /**\n   * Returns a paginated list of contents for the given stack.\n   * Content is sorted according to the statically configured order.\n   */\n  list() { },\n  /**\n   * Removes all items from the given stack.\n   */\n  purge() { },\n  /**\n   * Pushes an item onto the given stack. The stack does not need to be created.\n   */\n  push() { },\n  /**\n   * Removes the item with the given guid from the given stack.\n   */\n  remove() { },\n  /**\n   * Sets the listeners for the given stack.\n   */\n  setListeners() { },\n  /**\n   * Updates an existing item of the given stack. The item MUST exist prior to the call.\n   */\n  update() { }\n}\n"
+    "lineNumber": 17,
+    "content": "/**\n * Data aggregation\n * \n * Provides data aggregation over time and across different items\n *  User devices push items data on developer-defined categories\n *  This service automatically aggregates the data\n * Raw data is not available for reading, only the generated aggregation result\n * \n * */\n/**\n * User API for item aggregation\n * \n * Users can push data and be notified of aggregated data.\n * This service does not allow you to read the data. To achieve that kind of behavior, you could configure a callback to store the data.\n * @access public\n * */\nexport const AggregPublisherDefinition = {\n\t/**\n\t * Pushes some data\n\t * \n\t * Pushes the given data.\n\t * All the items are processed according to the defined rules.\n\t * At least one push for a given item is needed during a time period to trigger processing and calling of the corresponding callback verb/macro.\n\t * */\n\tpush({items,owner}) {}\n}\n/**\n * Data stacks\n * \n * Stacks are a per-user named persistent queue of data\n *  An administrator creates a stack service\n *  End-users can push data on an arbitrary number of their own arbitrary named stacks\n * */\n/**\n * Data stack user API\n * \n * Data is stored on a per user basis. However, notifications can be sent to a configurable set of listeners.\n * Stack names are arbitrary and do not need to be explicitly initalized.\n * @access public\n * */\nexport const StackPublisherDefinition = {\n\t/**\n\t * Lists the listeners\n\t * \n\t * Returns the whole list of listeners for the given stack.\n\t * */\n\tgetListeners({owner,stack}) {},\n\t/**\n\t * Lists content\n\t * \n\t * Returns a paginated list of contents for the given stack.\n\t * Content is sorted according to the statically configured order.\n\t * */\n\tlist({owner,page,stack}) {},\n\t/**\n\t * Empties a stack\n\t * \n\t * Removes all items from the given stack.\n\t * */\n\tpurge({owner,stack}) {},\n\t/**\n\t * Pushes an item\n\t * \n\t * Pushes an item onto the given stack.\n\t * The stack does not need to be created.\n\t * */\n\tpush({stack,data,owner}) {},\n\t/**\n\t * Removes items\n\t * \n\t * Removes the item with the given guid from the given stack.\n\t * */\n\tremove({guids,owner,stack}) {},\n\t/**\n\t * Sets the listeners\n\t * \n\t * Sets the listeners for the given stack.\n\t * */\n\tsetListeners({listeners,owner,stack}) {},\n\t/**\n\t * Updates an item\n\t * \n\t * Updates an existing item of the given stack.\n\t * The item MUST exist prior to the call.\n\t * */\n\tupdate({guid,stack,data,owner}) {}\n}\n/**\n * Echo\n * \n * Echo\n * */\n/**\n * Echo service\n * \n * Simple echo service, for development purposes.\n * @access public\n * */\nexport const EchoPublisherDefinition = {\n\t/**\n\t * Echoes an object\n\t * \n\t * Echoes an object: the server will echo that object on channel 'echo' for the current user.\n\t * */\n\techo({}) {}\n}\n/**\n * Game engine\n * \n * Abstract Game Engine\n *  Concrete game engines are remote cometd clients or internal macros\n * */\n/**\n * Game Engine API\n * \n * The Game Engine API is for game engine clients, not end-users.\n * @access public\n * */\nexport const GameEnginePublisherDefinition = {\n\t/**\n\t * Notify the result for a join request\n\t * \n\t * A Game Engine notifies the STR of the result of a join request that it received on join_callback\n\t * */\n\tjoin_result({callerId,error,msgId,payload}) {},\n\t/**\n\t * Notify the result for an organization request\n\t * \n\t * A Game Engine notifies the STR of the result of an organization request that it received on organize_callback\n\t * */\n\torganize_result({callerId,error,msgId,payload}) {},\n\t/**\n\t * Registers a game engine\n\t * \n\t * A client registers itself to the STR as a Game Engine.\n\t * The STR may, from now on, dispatch game of the given game type to said client.\n\t * Unregistration is done automatically on logoff.\n\t * */\n\tregister({gameInfo,location,maxGames}) {},\n\t/**\n\t * Notify the result for a start request\n\t * \n\t * A Game Engine notifies the STR of the result of a start request that it received on start_callback\n\t * */\n\tstart_result({gameId}) {},\n\t/**\n\t * Notify a game event\n\t * \n\t * A Game Engine notifies the STR of some arbitrary game event.\n\t * */\n\tstate({data,gameId,status}) {},\n\t/**\n\t * Notify the result for an unjoin request\n\t * \n\t * A Game Engine notifies the STR of the result of an unjoin request that it received on unjoin_callback\n\t * */\n\tunjoin_result({callerId,error,msgId,payload}) {}\n}\n/**\n * User API for games\n * \n * Users can list, start, join games, and play.\n * @access public\n * */\nexport const GamePublisherDefinition = {\n\t/**\n\t * Lists game types\n\t * \n\t * Returns the list of game types supported by the server and the currently registered game engines.\n\t * */\n\tavailable({}) {},\n\t/**A user joins a game*/\n\tjoin({gameId,role,userId,userName}) {},\n\t/**Organizes a game*/\n\torganize({type,owner,options}) {},\n\t/**Gives some command to the game engine*/\n\tplay({data,gameId,userId}) {},\n\t/**Starts a game*/\n\tstart({gameId}) {},\n\t/**A user cancels joining a game*/\n\tunjoin({gameId,role,userId,userName}) {}\n}\n/**\n * Generic Data Access\n * \n * Generic Data Access Service : NoSQL storage\n * */\n/**\n * GDA User API\n * \n * User API for Generic Data Access.\n * Data is stored on a per-user basis.\n * Users can put, get, list their data.\n * @access public\n * */\nexport const GdaPublisherDefinition = {\n\t/**\n\t * Asks for a data row\n\t * \n\t * Returns a full data row.\n\t * */\n\tget({key,owner,table}) {},\n\t/**\n\t * Asks for a data cell\n\t * \n\t * Returns a precise list of cells from a column in a data row.\n\t * */\n\tgetCells({column,key,key2,owner,table}) {},\n\t/**\n\t * Increments an integer value\n\t * \n\t * Increments a cell 64-bit signed integer value and returns the result in the data field.\n\t * The increment is atomic : if you concurrently increment 10 times a value by 1, the final result will be the initial value plus 10. The actual individual resulting values seen by the 10 concurrent callers may vary discontinuously, with duplicates : at least one of them will see the final (+10) result.\n\t * */\n\tinc({table,data,key,key2,owner,column}) {},\n\t/**\n\t * Asks for a list of rows\n\t * \n\t * Returns a paginated list of rows from the given table.\n\t * */\n\tlist({columns,owner,page,table}) {},\n\t/**\n\t * Puts some data into a cell\n\t * \n\t * Creates or replaces the contents of a particular cell.\n\t * */\n\tput({column,data,key,key2,owner,table}) {},\n\t/**\n\t * Puts several rows\n\t * \n\t * Creates or replaces the (maybe partial) contents of a collection of rows.\n\t * This method only creates or replaces cells for non-null input values.\n\t * */\n\tputs({owner,rows,table}) {},\n\t/**\n\t * Asks for a range of rows\n\t * \n\t * Returns a paginated range of rows from the given table.\n\t * A range consists of consecutive rows from the start key (inclusive) to the stop key (exclusive).\n\t * You can specify partial keys for the start and stop fields.\n\t * */\n\trange({columns,owner,page,start,stop,table}) {},\n\t/**\n\t * Reduces a range of rows\n\t * \n\t * Returns a computed single reduced result from a range of rows from the given table.\n\t * A range consists of consecutive rows from the start key (inclusive) to the stop key (exclusive).\n\t * You can specify partial keys for the start and stop fields.\n\t * */\n\treduce({}) {},\n\t/**\n\t * Removes one cell inside a column of a row\n\t * \n\t * Removes only one cell of the given column of the given row from the given table.\n\t * */\n\tremoveCell({column,key,key2,owner,table}) {},\n\t/**\n\t * Removes one full column of a row\n\t * \n\t * Removes all cells of the given column of the given row from the given table.\n\t * */\n\tremoveColumn({column,key,owner,table}) {},\n\t/**\n\t * Removes a range of rows\n\t * \n\t * Removes the specified columns of the given range of rows from the given table.\n\t * */\n\tremoveRange({columns,owner,start,stop,table}) {},\n\t/**\n\t * Removes one full row\n\t * \n\t * Removes all columns of the given row from the given table.\n\t * */\n\tremoveRow({key,owner,table}) {}\n}\n/**\n * Groups Management\n * \n * Groups management for users, grants on resources, remote commands on devices\n *  This is where you can configure rights for any resource\n * \n * */\n/**\n * User API for remote control\n * \n * @access public\n * */\nexport const RemotingPublisherDefinition = {\n\t/**\n\t * Adds a listener\n\t * \n\t * A user requests notifications from a device owned by anyone who granted him the right authorizations.\n\t * Whenever the device calls 'notify', notifications will be sent to the caller of this verb.\n\t * */\n\taddListener({cmd,data,from,fromResource,owner,resource}) {},\n\t/**Response to 'getCapabilities'*/\n\tcapabilities({answeringResource,askingResource,capabilities}) {},\n\t/**\n\t * Executes a command\n\t * \n\t * A user executes a command on a device owned by anyone who granted him the right authorizations.\n\t * The command is issued on channel 'command'\n\t * */\n\texecute({resource,cmd,data,owner}) {},\n\t/**\n\t * Requests capabilities\n\t * \n\t * A user requests all his devices for the whole list of their capabilities.\n\t * Devices are expected to answer on channel 'capabilities'\n\t * */\n\tgetCapabilities({}) {},\n\t/**\n\t * Notifies of some event\n\t * \n\t * A device notifies the registered users/devices on this channel.\n\t * The server forwards the notification to said users.\n\t * */\n\tnotify({cmd,data,from,fromResource,owner,resource}) {},\n\t/**\n\t * Pings devices\n\t * \n\t * A user requests all devices (of all owners) on which he has authorizations to respond on channel 'pong'\n\t * */\n\tping({action}) {},\n\t/**Response to ping*/\n\tpong({action,available,owner,resource,uid,user}) {},\n\t/**\n\t * Removes a listener\n\t * \n\t * A user stops requesting notifications from a device owned by anyone who granted him the right authorizations\n\t * */\n\tremoveListener({cmd,data,from,fromResource,owner,resource}) {}\n}\n/**\n * User API for groups and rights.\n * \n * Groups are stored per user.\n * This means that two users can own a group with the same identifier. A couple (owner, group) is needed to uniquely identify a group inside a group management service.\n * The triplet (deploymentId, owner, group) is actually needed to fully qualify a group outside of the scope of this service.\n * @access public\n * */\nexport const GroupManagementPublisherDefinition = {\n\t/**\n\t * Adds me to a group\n\t * \n\t * Adds me (the caller) to a group.\n\t * This verb exists so that group owners may grant the right to join their groups without granting the right to add other users to those groups.\n\t * The 'user' field is implicitly set to the current user's key.\n\t * */\n\taddMe({group,owner}) {},\n\t/**\n\t * Adds a user to a group\n\t * \n\t * Adds the given user to the given group.\n\t * Addition may fail if the given group does not already exist.\n\t * */\n\taddUser({user,group,owner}) {},\n\t/**Adds users to a group*/\n\taddUsers({users,group,owner}) {},\n\t/**\n\t * Lists my owned groups, with details\n\t * \n\t * Returns the whole list of groups owned by the current user, with their members\n\t * */\n\tallGroups({owner}) {},\n\t/**\n\t * Creates a group\n\t * \n\t * Creates a group owned by the current user.\n\t * Group creation may fail if the group already exists.\n\t * */\n\tcreateGroup({group,groupName,owner}) {},\n\t/**\n\t * Removes a group\n\t * \n\t * Removes the given group owned by the current user or the given owner.\n\t * Also removes all grants to that group.\n\t * */\n\tdelGroup({group,owner}) {},\n\t/**Removes a user from a group*/\n\tdelUser({group,owner,user}) {},\n\t/**Removes users from a group*/\n\tdelUsers({group,groupName,owner,users}) {},\n\t/**\n\t * Tests for a group's existence\n\t * \n\t * Returns whether a group exists or not.\n\t * */\n\texists({group,owner}) {},\n\t/**\n\t * Grants a right to a group\n\t * \n\t * The granting API does not do any check when storing permissions.\n\t * In particular when granting rights on a verb and resource of another API, the existence of said verb and resource is not checked.\n\t * */\n\tgrant({action,group,owner,resource}) {},\n\t/**\n\t * Lists the group users\n\t * \n\t * Returns the whole list of users configured inside the given group.\n\t * */\n\tgroupUsers({group,owner}) {},\n\t/**\n\t * Lists my owned groups\n\t * \n\t * Returns the whole list of groups owned by the current user\n\t * */\n\tgroups({owner}) {},\n\t/**\n\t * Lists rights for a group\n\t * \n\t * This API lists explicitly configured rights.\n\t * Effective rights include configured rights, implicit rights and inherited rights.\n\t * */\n\tlistGrants({group,owner}) {},\n\t/**\n\t * Lists presences for a group\n\t * \n\t * Returns the list of members of the given groups, along with their actual and current presence on the zetapush server.\n\t * The current implementation does not include information about the particular devices users are connected with.\n\t * If a user is connected twice with two different devices, two identical entries will be returned.\n\t * */\n\tlistPresences({group,owner}) {},\n\t/**\n\t * Tests membership\n\t * \n\t * Tests whether I (the caller) am a member of the given group.\n\t * This verb exists so that users can determine if they are part of a group without being granted particular rights.\n\t * The 'user' field is implicitly set to the current user's key.\n\t * */\n\tmemberOf({hardFail,group,owner}) {},\n\t/**\n\t * Grants rights to a group\n\t * \n\t * Grant several rights at once.\n\t * */\n\tmgrant({actions,group,owner,resource}) {},\n\t/**Revokes rights for a group*/\n\tmrevoke({actions,group,owner,resource}) {},\n\t/**\n\t * Lists the groups I am part of\n\t * \n\t * Returns the whole list of groups the current user is part of.\n\t * Groups may be owned by anyone, including the current user.\n\t * */\n\tmyGroups({owner}) {},\n\t/**Revokes a right for a group*/\n\trevoke({action,group,owner,resource}) {}\n}\n/**\n * HTTP client\n * \n * Web-service client\n *  An admin records URL templates that can be called by users\n *  Calls are not configurable by end-users\n *  However an admin may leverage the macro service to achieve URL, headers and body configurability\n * */\n/**\n * User API for http requests\n * \n * @access public\n * */\nexport const HttpclientPublisherDefinition = {\n\t/**\n\t * Makes a predefined request\n\t * \n\t * Lookups a predefined request by name, and executes it.\n\t * */\n\tcall({name,requestId}) {},\n\t/**\n\t * Makes a parameterized request\n\t * \n\t * Executes an HTTP request with the given url, method, headers and body.\n\t * */\n\trequest({}) {}\n}\n/**\n * Macros\n * \n * Macro-command service\n *  An admin defines macro-commands that can sequentially call any number of other api verbs, loop on collections of data, make decisions, etc\n * \n * \n *  End-users play them, with contextual parameters\n * */\n/**\n * User API for macro execution\n * \n * Simple errors are reported as usual.\n * However, the macro execution verbs treat most errors in a particular way : instead of reporting errors on the usual 'error' channel, errors are put in the returned 'MacroCompletion' result.\n * This behavior can be tuned on a per-call basis with the hardFail parameter.\n * Note that some particular errors will always behave as if hardFail were true, because they are related to programming errors, or prevent processing from ending gracefully : STACK_OVERFLOW, NO_SUCH_FUNCTION, RAM_EXCEEDED, CYCLES_EXCEEDED, TIME_EXCEEDED, QUOTA_EXCEEDED, RATE_EXCEEDED, BAD_COMPARATOR_VALUE\n * @access public\n * */\nexport const MacroPublisherDefinition = {\n\t/**\n\t * Plays a previously recorded macro\n\t * \n\t * DO NOT use this verb from inside an enclosing macro when you need the result in order to proceed with the enclosing macro.\n\t * You can override the default notification channel when defining the macro.\n\t * */\n\tcall({debug,hardFail,name,parameters}) {},\n\t/**\n\t * Plays a previously recorded macro and returns the result.\n\t * \n\t * Use this verb when you want to synchronously call a macro from inside another macro.\n\t * */\n\tfunc({}) {},\n\t/**\n\t * Similar to func, with the ability to impersonate any user at will.\n\t * \n\t * Use this verb when you do not want to use or cannot use the standard rights system and wish to bypass it completely.\n\t * Use this verb sparingly, as it can give the caller any right on any resource.\n\t * */\n\tsudo({}) {}\n}\n/**\n * Mail sender\n * \n * Sends email through SMTP\n * */\n/**\n * Mail service user API\n * \n * This service is statically configured with an outgoing SMTP server.\n * Users call the API here to actually send emails.\n * @access public\n * */\nexport const SendmailPublisherDefinition = {\n\t/**\n\t * Sends an email\n\t * \n\t * Sends an email with the given body to the intended recipients.\n\t * */\n\tsend({}) {}\n}\n/**\n * Messaging service\n * \n * Messaging service\n * */\n/**\n * Messaging service\n * \n * Simple and flexible user-to-user or user-to-group messaging service.\n * @access public\n * */\nexport const MessagingPublisherDefinition = {\n\t/**\n\t * Sends a message to a target\n\t * \n\t * Sends the given message to the specified target on the given (optional) channel.\n\t * The administratively given default channel name is used when none is provided in the message itself.\n\t * */\n\tsend({target,channel,data}) {}\n}\n/**\n * Producer consumer\n * \n * Producer consumer service\n *  Users can submit tasks and other users consume them\n * */\n/**\n * Producer / consumer real-time API\n * \n * Task producers submits their tasks.\n * The server dispatches the tasks.\n * Consumers process them and report completion back to the server.\n * Tasks are global to the service (i.e. NOT per user).\n * @access public\n * */\nexport const QueuePublisherDefinition = {\n\t/**\n\t * Submits a task\n\t * \n\t * Producer API.\n\t * A task producer submits the given task to the server.\n\t * The server will find a tasker with processing capacity and dispatch the task.\n\t * The task result will be returned to the caller.\n\t * When called from inside a macro, the comsumer generated result is available for further use.\n\t * */\n\tcall({description,originBusinessId,originDeploymentId,data,owner}) {},\n\t/**\n\t * Notifies completion of a task\n\t * \n\t * Consumer API.\n\t * The tasker notifies completion of the given task to the server.\n\t * The tasker can optionally include a result or an error code.\n\t * */\n\tdone({result,success,taskId}) {},\n\t/**\n\t * Registers a consumer\n\t * \n\t * Consumer API.\n\t * Registers the current user resource as an available task consumer.\n\t * Tasks will be then dispatched to that consumer.\n\t * */\n\tregister({capacity}) {},\n\t/**\n\t * Submits a task\n\t * \n\t * Producer API.\n\t * A task producer submits the given task to the server.\n\t * The server will find a tasker with processing capacity and dispatch the task.\n\t * The task result will be ignored : the producer will not receive any notification of any kind, even in case of errors (including capacity exceeded errors).\n\t * This verb will return immediately : you can use this API to asynchronously submit a task.\n\t * */\n\tsubmit({description,originBusinessId,originDeploymentId,data,owner}) {},\n\t/**\n\t * Unregisters a consumer\n\t * \n\t * Consumer API.\n\t * Unregisters the current user resource as an available task consumer.\n\t * All non finished tasks are returned to the server.\n\t * */\n\tunregister({}) {}\n}\n/**\n * SMS via OVH\n * \n * SMS sender, to send text messages to mobile phones\n * This SMS sending service uses the OVH API\n * \n * */\n/**\n * SMS service\n * \n * User API for SMS.\n * @access public\n * */\nexport const Sms_ovhPublisherDefinition = {\n\t/**\n\t * Sends an SMS\n\t * \n\t * Sends the given message to the given recipients.\n\t * */\n\tsend({}) {}\n}\n/**\n * Scheduler\n * \n * Scheduler service\n *  End-users can schedule one-time or repetitive tasks using a classical cron syntax (with the year field) or a timestamp (milliseconds from the epoch)\n * */\n/**\n * User API for the Scheduler\n * \n * User endpoints for scheduling : users can schedule, list and delete tasks.\n * Tasks are stored on a per-user basis: a task will run with the priviledges of the user who stored it.\n * Tasks are run on the server and thus can call api verbs marked as server-only.\n * @access public\n * */\nexport const CronPublisherDefinition = {\n\t/**\n\t * List the configured tasks\n\t * \n\t * Returns a paginated list of the asking user's tasks.\n\t * */\n\tlist({owner,page,start,stop}) {},\n\t/**\n\t * Schedules a task\n\t * \n\t * Schedules a task for later execution.\n\t * If a task already exists with the same cronName, this new task completely replaces it.\n\t * A task can be scheduled with a cron-like syntax for repetitive or one-shot execution.\n\t * Wildcards are not allowed for minutes and hours.\n\t * When scheduling for one-shot execution, the time must be at least two minutes into the future.\n\t * */\n\tschedule({}) {},\n\t/**\n\t * Removes a scheduled task\n\t * \n\t * Removes a previously scheduled task.\n\t * Does absolutely nothing if asked to remove a non-existent task.\n\t * */\n\tunschedule({cronName,owner}) {}\n}\n/**\n * Search engine\n * \n * ElasticSearch engine, to index and search data\n *  An admin creates indices\n *  Users index and search documents\n * \n * */\n/**\n * ElasticSearch Service\n * \n * This API is a very thin wrapper around ElasticSearch's API.\n * @access public\n * */\nexport const SearchPublisherDefinition = {\n\t/**\n\t * Deletes data\n\t * \n\t * Deletes a document from the elasticsearch engine by id.\n\t * */\n\tdelete({id,index,type}) {},\n\t/**\n\t * Gets data\n\t * \n\t * Retrieves a document from the elasticsearch engine by id.\n\t * */\n\tget({id,index,type}) {},\n\t/**\n\t * Indexes data\n\t * \n\t * Inserts or updates a document into the elasticsearch engine.\n\t * */\n\tindex({data,id,index,type}) {},\n\t/**Searches for data*/\n\tsearch({indices,page,query,sort}) {}\n}\n/**\n * Template engine\n * \n * Template engine to produce documents from parameterized templates\n * <br>An admin creates templates\n * <br> Users produce documents\n * <br>The implementation uses the <a href='http://freemarker\n * org/'>freemarker</a> engine\n * \n * */\n/**\n * User API for templates\n * \n * Users use this API to evaluate pre-configured templates.\n * @access public\n * */\nexport const TemplatePublisherDefinition = {\n\t/**\n\t * Evaluates a template\n\t * \n\t * Evaluates the given template and returns the result as a string.\n\t * Templates are parsed the first time they are evaluated. Evaluation may fail early due to a parsing error.\n\t * */\n\tevaluate({data,languageTag,name,requestId}) {}\n}\n/**\n * Upload: S3\n * \n * Upload service with S3 storage\n * */\n/**\n * User API for file management\n * \n * User API for virtual file management and http file upload\n * This API contains all the verbs needed to browse, upload and remove files.\n * Files are stored on a per-user basis: each user has his or her own whole virtual filesystem.\n * Uploading a file is a 3-step process : request an upload URL, upload via HTTP, notify this service of completion.\n * @access public\n * */\nexport const Zpfs_s3PublisherDefinition = {\n\t/**\n\t * Copies a file\n\t * \n\t * Copies a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tcp({oldPath,owner,path}) {},\n\t/**\n\t * Returns disk usage\n\t * \n\t * Returns an recursively aggregated number of used bytes, starting at the given path.\n\t * */\n\tdu({owner,path}) {},\n\t/**Requests an upload URL without constraints.*/\n\tfreeUploadUrl({}) {},\n\t/**\n\t * Links a file\n\t * \n\t * Links a file or folder to another location.\n\t * May fail if the target location is not empty.\n\t * */\n\tlink({oldPath,owner,path}) {},\n\t/**\n\t * Lists a folder content\n\t * \n\t * Returns a paginated list of the folder's content.\n\t * */\n\tls({folder,owner,page}) {},\n\t/**\n\t * Creates a folder\n\t * \n\t * Creates a new folder.\n\t * May fail if the target location is not empty.\n\t * */\n\tmkdir({folder,owner,parents}) {},\n\t/**\n\t * Moves a file\n\t * \n\t * Moves a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tmv({oldPath,owner,path}) {},\n\t/**\n\t * Notifies of upload completion\n\t * \n\t * The client application calls this verb to notify that it's done uploading to the cloud.\n\t * Calling that verb MAY trigger additional events such as thumbnail/metadata creation.\n\t * */\n\tnewFile({guid,metadata,owner,tags}) {},\n\t/**\n\t * Requests an upload URL\n\t * \n\t * Requests an HTTP upload URL.\n\t * The URL contains temporary credentials (typically valid for a few minutes) and is meant for immediate use.\n\t * */\n\tnewUploadUrl({contentType,owner,path}) {},\n\t/**\n\t * Removes a file\n\t * \n\t * Removes a file or folder (recursively).\n\t * */\n\trm({owner,path}) {},\n\t/**\n\t * Returns information about a file\n\t * \n\t * Returns information about a single file.\n\t * The entry field will be null if the path does not exist\n\t * */\n\tstat({owner,path}) {},\n\t/**Updates a file's metadata*/\n\tupdateMeta({metadata,metadataFiles,owner,path}) {}\n}\n/**\n * Upload: local\n * \n * Upload service with local HDFS storage\n * */\n/**\n * User API for file management\n * \n * User API for virtual file management and http file upload\n * This API contains all the verbs needed to browse, upload and remove files.\n * Files are stored on a per-user basis: each user has his or her own whole virtual filesystem.\n * Uploading a file is a 3-step process : request an upload URL, upload via HTTP, notify this service of completion.\n * @access public\n * */\nexport const Zpfs_hdfsPublisherDefinition = {\n\t/**\n\t * Copies a file\n\t * \n\t * Copies a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tcp({oldPath,owner,path}) {},\n\t/**\n\t * Returns disk usage\n\t * \n\t * Returns an recursively aggregated number of used bytes, starting at the given path.\n\t * */\n\tdu({owner,path}) {},\n\t/**Requests an upload URL without constraints.*/\n\tfreeUploadUrl({}) {},\n\t/**\n\t * Links a file\n\t * \n\t * Links a file or folder to another location.\n\t * May fail if the target location is not empty.\n\t * */\n\tlink({oldPath,owner,path}) {},\n\t/**\n\t * Lists a folder content\n\t * \n\t * Returns a paginated list of the folder's content.\n\t * */\n\tls({folder,owner,page}) {},\n\t/**\n\t * Creates a folder\n\t * \n\t * Creates a new folder.\n\t * May fail if the target location is not empty.\n\t * */\n\tmkdir({folder,owner,parents}) {},\n\t/**\n\t * Moves a file\n\t * \n\t * Moves a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tmv({oldPath,owner,path}) {},\n\t/**\n\t * Notifies of upload completion\n\t * \n\t * The client application calls this verb to notify that it's done uploading to the cloud.\n\t * Calling that verb MAY trigger additional events such as thumbnail/metadata creation.\n\t * */\n\tnewFile({guid,metadata,owner,tags}) {},\n\t/**\n\t * Requests an upload URL\n\t * \n\t * Requests an HTTP upload URL.\n\t * The URL contains temporary credentials (typically valid for a few minutes) and is meant for immediate use.\n\t * */\n\tnewUploadUrl({contentType,owner,path}) {},\n\t/**\n\t * Removes a file\n\t * \n\t * Removes a file or folder (recursively).\n\t * */\n\trm({owner,path}) {},\n\t/**\n\t * Returns information about a file\n\t * \n\t * Returns information about a single file.\n\t * The entry field will be null if the path does not exist\n\t * */\n\tstat({owner,path}) {},\n\t/**Updates a file's metadata*/\n\tupdateMeta({metadata,metadataFiles,owner,path}) {}\n}\n/**\n * Upload: pseudo-S3\n * \n * Upload service with pseudo-S3compatible storage\n * */\n/**\n * User API for file management\n * \n * User API for virtual file management and http file upload\n * This API contains all the verbs needed to browse, upload and remove files.\n * Files are stored on a per-user basis: each user has his or her own whole virtual filesystem.\n * Uploading a file is a 3-step process : request an upload URL, upload via HTTP, notify this service of completion.\n * @access public\n * */\nexport const Zpfs_s3compatPublisherDefinition = {\n\t/**\n\t * Copies a file\n\t * \n\t * Copies a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tcp({oldPath,owner,path}) {},\n\t/**\n\t * Returns disk usage\n\t * \n\t * Returns an recursively aggregated number of used bytes, starting at the given path.\n\t * */\n\tdu({owner,path}) {},\n\t/**Requests an upload URL without constraints.*/\n\tfreeUploadUrl({}) {},\n\t/**\n\t * Links a file\n\t * \n\t * Links a file or folder to another location.\n\t * May fail if the target location is not empty.\n\t * */\n\tlink({oldPath,owner,path}) {},\n\t/**\n\t * Lists a folder content\n\t * \n\t * Returns a paginated list of the folder's content.\n\t * */\n\tls({folder,owner,page}) {},\n\t/**\n\t * Creates a folder\n\t * \n\t * Creates a new folder.\n\t * May fail if the target location is not empty.\n\t * */\n\tmkdir({folder,owner,parents}) {},\n\t/**\n\t * Moves a file\n\t * \n\t * Moves a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tmv({oldPath,owner,path}) {},\n\t/**\n\t * Notifies of upload completion\n\t * \n\t * The client application calls this verb to notify that it's done uploading to the cloud.\n\t * Calling that verb MAY trigger additional events such as thumbnail/metadata creation.\n\t * */\n\tnewFile({guid,metadata,owner,tags}) {},\n\t/**\n\t * Requests an upload URL\n\t * \n\t * Requests an HTTP upload URL.\n\t * The URL contains temporary credentials (typically valid for a few minutes) and is meant for immediate use.\n\t * */\n\tnewUploadUrl({contentType,owner,path}) {},\n\t/**\n\t * Removes a file\n\t * \n\t * Removes a file or folder (recursively).\n\t * */\n\trm({owner,path}) {},\n\t/**\n\t * Returns information about a file\n\t * \n\t * Returns information about a single file.\n\t * The entry field will be null if the path does not exist\n\t * */\n\tstat({owner,path}) {},\n\t/**Updates a file's metadata*/\n\tupdateMeta({metadata,metadataFiles,owner,path}) {}\n}\n/**\n * User directory service\n * \n * User directory service\n * */\n/**\n * User API for user information\n * \n * @access public\n * */\nexport const UserdirPublisherDefinition = {\n\t/**Searches for users matching the request*/\n\tsearch({page,query,requestId}) {},\n\t/**Requests public data for the specified users*/\n\tuserInfo({userKeys}) {}\n}\n/**\n * Delegating authentication\n * \n * This authentication delegates authentication to an external auth provider\n * <br>When a zetapush client handshakes with a delegated authentication, the 'token' field given by the client is sent to the configured remote server as part of the URL\n * <br>The response must be in JSON format\n *  Each key of the response will be considered a user information field name\n * \n * */\n/**\n * End-user API for the delegating authentication\n * \n * Provisionning verbs.\n * @access public\n * */\nexport const DelegatingPublisherDefinition = {\n\t/**\n\t * Get user info\n\t * \n\t * Retrieves cached user info or (if missing) eagerly creates a zetapush key for the user.\n\t * The returned field 'zetapushKey' is a unique and permanent ID identifying a user in a sandbox.\n\t * */\n\tuserInfo({}) {}\n}\n/**\n * Local authentication\n * \n * Zetapush local authentication\n *  The configurer can choose the primary key and mandatory user fields for account creation\n *  The field 'zetapushKey' is generated by the server and MUST not be used : it contains the unique key of the user inside a sandbox (it can be obtained from inside a macro with the <b>__userKey</b> pseudo-constant)\n * */\n/**\n * End-user API for the simple local authentication\n * \n * These API verbs allow end-users to manage their account.\n * @access public\n * */\nexport const SimplePublisherDefinition = {\n\t/**\n\t * Changes a password\n\t * \n\t * Changes a user password for this authentication realm.\n\t * The user can be either implicit (the current user) or deduced from the token.\n\t * The change is effective immediately. However, already logged in users might stay connected.\n\t * */\n\tchangePassword({}) {},\n\t/**\n\t * Checks some account's existence\n\t * \n\t * Checks whether the given user already exists in this 'simple' authentication realm.\n\t * */\n\tcheckUser({}) {},\n\t/**\n\t * Creates a user\n\t * \n\t * Creates a new user in this 'simple' authentication realm.\n\t * */\n\tcreateUser({}) {},\n\t/**\n\t * Deletes a user\n\t * \n\t * Deletes an existing user in this 'simple' authentication realm.\n\t * */\n\tdeleteUser({}) {},\n\t/**\n\t * Requests a password reset\n\t * \n\t * Requests a password reset for the given userKey.\n\t * The userKey must exist and must be given, as it cannot obviously be deduced from the currently logged in user.\n\t * The returned token needs to be sent to the intended recipient only. The typical use case is to define a macro that requests a reset, generates a email template and emails the user. The macro can then be safely called by a weakly authenticated user.\n\t * Requesting a reset does not invalidate the password.\n\t * Requesting a reset again invalidates previous reset requests (only the last token is usable)\n\t * */\n\trequestReset({}) {},\n\t/**\n\t * Updates a user\n\t * \n\t * Updates an existing user in this 'simple' authentication realm.\n\t * */\n\tupdateUser({}) {}\n}\n/**\n * Weak authentication\n * \n * The weak authentication allows for anonymous authentication of devices\n *  Such devices can display a qrcode to allow regular users to take control of them\n * */\n/**\n * User API for weak devices control\n * \n * User API for control and release of weakly authenticated user sessions.\n * @access public\n * */\nexport const WeakPublisherDefinition = {\n\t/**\n\t * Controls a session\n\t * \n\t * Takes control of a weak user session, identified by the given public token.\n\t * The public token has been previously made available by the controlled device, for example by displaying a QRCode.\n\t * Upon control notification, the client SDK of the controlled session is expected to re-handshake.\n\t * */\n\tcontrol({fullRights,publicToken}) {},\n\t/**\n\t * Releases a session\n\t * \n\t * Releases control of a weak user session, identified by the given public token.\n\t * The weak user session must have been previously controlled by a call to 'control'.\n\t * */\n\trelease({fullRights,publicToken}) {}\n}\n"
   },
   {
     "__docId__": 72,
     "kind": "variable",
     "static": true,
     "variation": null,
-    "name": "EchoPublisherDefinition",
+    "name": "AggregPublisherDefinition",
     "memberof": "src/definitions.js",
-    "longname": "src/definitions.js~EchoPublisherDefinition",
+    "longname": "src/definitions.js~AggregPublisherDefinition",
     "access": "public",
     "export": true,
     "importPath": "zetapush-js/src/definitions.js",
-    "importStyle": "{EchoPublisherDefinition}",
-    "description": "Echo Service API",
-    "lineNumber": 5,
+    "importStyle": "{AggregPublisherDefinition}",
+    "description": "User API for item aggregation\n\nUsers can push data and be notified of aggregated data.\nThis service does not allow you to read the data. To achieve that kind of behavior, you could configure a callback to store the data.",
+    "lineNumber": 17,
     "type": {
       "types": [
         "*"
@@ -1543,8 +1543,8 @@
     "export": true,
     "importPath": "zetapush-js/src/definitions.js",
     "importStyle": "{StackPublisherDefinition}",
-    "description": "Stack Service API",
-    "lineNumber": 16,
+    "description": "Data stack user API\n\nData is stored on a per user basis. However, notifications can be sent to a configurable set of listeners.\nStack names are arbitrary and do not need to be explicitly initalized.",
+    "lineNumber": 41,
     "type": {
       "types": [
         "*"
@@ -1553,6 +1553,446 @@
   },
   {
     "__docId__": 74,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "EchoPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~EchoPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{EchoPublisherDefinition}",
+    "description": "Echo service\n\nSimple echo service, for development purposes.",
+    "lineNumber": 99,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 75,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "GameEnginePublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~GameEnginePublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{GameEnginePublisherDefinition}",
+    "description": "Game Engine API\n\nThe Game Engine API is for game engine clients, not end-users.",
+    "lineNumber": 119,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 76,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "GamePublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~GamePublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{GamePublisherDefinition}",
+    "description": "User API for games\n\nUsers can list, start, join games, and play.",
+    "lineNumber": 165,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 77,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "GdaPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~GdaPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{GdaPublisherDefinition}",
+    "description": "GDA User API\n\nUser API for Generic Data Access.\nData is stored on a per-user basis.\nUsers can put, get, list their data.",
+    "lineNumber": 196,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 78,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "RemotingPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~RemotingPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{RemotingPublisherDefinition}",
+    "description": "User API for remote control",
+    "lineNumber": 288,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 79,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "GroupManagementPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~GroupManagementPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{GroupManagementPublisherDefinition}",
+    "description": "User API for groups and rights.\n\nGroups are stored per user.\nThis means that two users can own a group with the same identifier. A couple (owner, group) is needed to uniquely identify a group inside a group management service.\nThe triplet (deploymentId, owner, group) is actually needed to fully qualify a group outside of the scope of this service.",
+    "lineNumber": 342,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 80,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "HttpclientPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~HttpclientPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{HttpclientPublisherDefinition}",
+    "description": "User API for http requests",
+    "lineNumber": 463,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 81,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "MacroPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~MacroPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{MacroPublisherDefinition}",
+    "description": "User API for macro execution\n\nSimple errors are reported as usual.\nHowever, the macro execution verbs treat most errors in a particular way : instead of reporting errors on the usual 'error' channel, errors are put in the returned 'MacroCompletion' result.\nThis behavior can be tuned on a per-call basis with the hardFail parameter.\nNote that some particular errors will always behave as if hardFail were true, because they are related to programming errors, or prevent processing from ending gracefully : STACK_OVERFLOW, NO_SUCH_FUNCTION, RAM_EXCEEDED, CYCLES_EXCEEDED, TIME_EXCEEDED, QUOTA_EXCEEDED, RATE_EXCEEDED, BAD_COMPARATOR_VALUE",
+    "lineNumber": 495,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 82,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "SendmailPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~SendmailPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{SendmailPublisherDefinition}",
+    "description": "Mail service user API\n\nThis service is statically configured with an outgoing SMTP server.\nUsers call the API here to actually send emails.",
+    "lineNumber": 529,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 83,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "MessagingPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~MessagingPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{MessagingPublisherDefinition}",
+    "description": "Messaging service\n\nSimple and flexible user-to-user or user-to-group messaging service.",
+    "lineNumber": 548,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 84,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "QueuePublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~QueuePublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{QueuePublisherDefinition}",
+    "description": "Producer / consumer real-time API\n\nTask producers submits their tasks.\nThe server dispatches the tasks.\nConsumers process them and report completion back to the server.\nTasks are global to the service (i.e. NOT per user).",
+    "lineNumber": 572,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 85,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "Sms_ovhPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~Sms_ovhPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{Sms_ovhPublisherDefinition}",
+    "description": "SMS service\n\nUser API for SMS.",
+    "lineNumber": 631,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 86,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "CronPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~CronPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{CronPublisherDefinition}",
+    "description": "User API for the Scheduler\n\nUser endpoints for scheduling : users can schedule, list and delete tasks.\nTasks are stored on a per-user basis: a task will run with the priviledges of the user who stored it.\nTasks are run on the server and thus can call api verbs marked as server-only.",
+    "lineNumber": 653,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 87,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "SearchPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~SearchPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{SearchPublisherDefinition}",
+    "description": "ElasticSearch Service\n\nThis API is a very thin wrapper around ElasticSearch's API.",
+    "lineNumber": 692,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 88,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "TemplatePublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~TemplatePublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{TemplatePublisherDefinition}",
+    "description": "User API for templates\n\nUsers use this API to evaluate pre-configured templates.",
+    "lineNumber": 730,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 89,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "Zpfs_s3PublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~Zpfs_s3PublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{Zpfs_s3PublisherDefinition}",
+    "description": "User API for file management\n\nUser API for virtual file management and http file upload\nThis API contains all the verbs needed to browse, upload and remove files.\nFiles are stored on a per-user basis: each user has his or her own whole virtual filesystem.\nUploading a file is a 3-step process : request an upload URL, upload via HTTP, notify this service of completion.",
+    "lineNumber": 753,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 90,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "Zpfs_hdfsPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~Zpfs_hdfsPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{Zpfs_hdfsPublisherDefinition}",
+    "description": "User API for file management\n\nUser API for virtual file management and http file upload\nThis API contains all the verbs needed to browse, upload and remove files.\nFiles are stored on a per-user basis: each user has his or her own whole virtual filesystem.\nUploading a file is a 3-step process : request an upload URL, upload via HTTP, notify this service of completion.",
+    "lineNumber": 840,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 91,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "Zpfs_s3compatPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~Zpfs_s3compatPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{Zpfs_s3compatPublisherDefinition}",
+    "description": "User API for file management\n\nUser API for virtual file management and http file upload\nThis API contains all the verbs needed to browse, upload and remove files.\nFiles are stored on a per-user basis: each user has his or her own whole virtual filesystem.\nUploading a file is a 3-step process : request an upload URL, upload via HTTP, notify this service of completion.",
+    "lineNumber": 927,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 92,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "UserdirPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~UserdirPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{UserdirPublisherDefinition}",
+    "description": "User API for user information",
+    "lineNumber": 1010,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 93,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "DelegatingPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~DelegatingPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{DelegatingPublisherDefinition}",
+    "description": "End-user API for the delegating authentication\n\nProvisionning verbs.",
+    "lineNumber": 1031,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 94,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "SimplePublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~SimplePublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{SimplePublisherDefinition}",
+    "description": "End-user API for the simple local authentication\n\nThese API verbs allow end-users to manage their account.",
+    "lineNumber": 1053,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 95,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "WeakPublisherDefinition",
+    "memberof": "src/definitions.js",
+    "longname": "src/definitions.js~WeakPublisherDefinition",
+    "access": "public",
+    "export": true,
+    "importPath": "zetapush-js/src/definitions.js",
+    "importStyle": "{WeakPublisherDefinition}",
+    "description": "User API for weak devices control\n\nUser API for control and release of weakly authenticated user sessions.",
+    "lineNumber": 1109,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 96,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1565,7 +2005,7 @@
     "content": "/**\n * ZetaPush deployables names\n */\nconst DeployableNames = {\n  AUTH_SIMPLE: 'simple',\n  AUTH_WEAK: 'weak',\n  AUTH_DELEGATING: 'delegating'\n}\n\n/**\n * @access protected\n */\nexport class AbstractHandshakeManager {\n  /**\n   *\n   */\n  constructor({ authType, businessId, deploymentId }) {\n    this.authType = authType\n    this.businessId = businessId\n    this.deploymentId = deploymentId\n  }\n  /**\n   * @param {ClientHelper} client\n   * @return {Object}\n   */\n  getHandshakeFields(client) {\n    const authentication = {\n      data: this.authData,\n      type: `${client.getBusinessId()}.${this.deploymentId}.${this.authType}`,\n      version: this.authVersion\n    }\n    if (client.getResource()) {\n      authentication.resource = client.getResource()\n    }\n    return {\n      ext: {\n        authentication\n      }\n    }\n  }\n  /**\n   * Get auth version\n   * @return {string}\n   */\n  get authVersion() {\n    return 'none'\n  }\n\n}\n\n/**\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class TokenHandshakeManager extends AbstractHandshakeManager {\n  /**\n   *\n   */\n  constructor({ authType, deploymentId, token }) {\n    super({ deploymentId, authType })\n    this.token = token\n  }\n  /**\n   * @return {token: string}\n   */\n  get authData() {\n    const { token } = this\n    return {\n      token\n    }\n  }\n\n}\n\n/**\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {\n\n  /**\n   *\n   */\n  constructor({ authType, deploymentId, login, password }) {\n    super({ authType, deploymentId })\n    this.login = login\n    this.password = password\n  }\n  /**\n   * Get auth data\n   * @return {login: string, password: string}\n   */\n  get authData() {\n    const { login, password } = this\n    return {\n      login, password\n    }\n  }\n\n}\n\n/**\n * Factory to create handshake\n * @access public\n */\nexport class AuthentFactory {\n  /**\n   * @return {DefaultZetapushHandshakeManager}\n   */\n  static createSimpleHandshake({ deploymentId, login, password }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_SIMPLE,\n      deploymentId,\n      login,\n      password\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager}\n   */\n  static createWeakHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_WEAK,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager}\n   */\n  static createDelegatingHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_DELEGATING,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @return {TokenHandshakeManager|DefaultZetapushHandshakeManager}\n   */\n  static createHandshake({ authType, deploymentId, login, password }) {\n    if (null === password) {\n      return new TokenHandshakeManager({ authType, deploymentId, token: login })\n    }\n    return new DefaultZetapushHandshakeManager({ authType, deploymentId, login, password  })\n  }\n\n}\n"
   },
   {
-    "__docId__": 75,
+    "__docId__": 97,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1585,7 +2025,7 @@
     }
   },
   {
-    "__docId__": 76,
+    "__docId__": 98,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1601,7 +2041,7 @@
     "interface": false
   },
   {
-    "__docId__": 77,
+    "__docId__": 99,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1628,7 +2068,7 @@
     "generator": false
   },
   {
-    "__docId__": 78,
+    "__docId__": 100,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1646,7 +2086,7 @@
     }
   },
   {
-    "__docId__": 79,
+    "__docId__": 101,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1664,7 +2104,7 @@
     }
   },
   {
-    "__docId__": 80,
+    "__docId__": 102,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1682,7 +2122,7 @@
     }
   },
   {
-    "__docId__": 81,
+    "__docId__": 103,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1715,7 +2155,7 @@
     "generator": false
   },
   {
-    "__docId__": 82,
+    "__docId__": 104,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -1741,7 +2181,7 @@
     "generator": false
   },
   {
-    "__docId__": 83,
+    "__docId__": 105,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1760,7 +2200,7 @@
     ]
   },
   {
-    "__docId__": 84,
+    "__docId__": 106,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1787,7 +2227,7 @@
     "generator": false
   },
   {
-    "__docId__": 85,
+    "__docId__": 107,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1805,7 +2245,7 @@
     }
   },
   {
-    "__docId__": 86,
+    "__docId__": 108,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -1831,7 +2271,7 @@
     "generator": false
   },
   {
-    "__docId__": 87,
+    "__docId__": 109,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1850,7 +2290,7 @@
     ]
   },
   {
-    "__docId__": 88,
+    "__docId__": 110,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1878,7 +2318,7 @@
     "generator": false
   },
   {
-    "__docId__": 89,
+    "__docId__": 111,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1896,7 +2336,7 @@
     }
   },
   {
-    "__docId__": 90,
+    "__docId__": 112,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1914,7 +2354,7 @@
     }
   },
   {
-    "__docId__": 91,
+    "__docId__": 113,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -1940,7 +2380,7 @@
     "generator": false
   },
   {
-    "__docId__": 92,
+    "__docId__": 114,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1956,7 +2396,7 @@
     "interface": false
   },
   {
-    "__docId__": 93,
+    "__docId__": 115,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -1991,7 +2431,7 @@
     "generator": false
   },
   {
-    "__docId__": 94,
+    "__docId__": 116,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -2025,7 +2465,7 @@
     "generator": false
   },
   {
-    "__docId__": 95,
+    "__docId__": 117,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -2059,7 +2499,7 @@
     "generator": false
   },
   {
-    "__docId__": 96,
+    "__docId__": 118,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -2096,7 +2536,7 @@
     "generator": false
   },
   {
-    "__docId__": 97,
+    "__docId__": 119,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2109,7 +2549,7 @@
     "content": "import * as definitions from './definitions'\n\nexport { AuthentFactory } from './handshake'\nexport { API_URL, Client } from './client'\nexport { SmartClient } from './smart-client'\nexport { AbstractTokenPersistenceStrategy, LocalStorageTokenPersistenceStrategy } from './token-persistence'\nexport { definitions }\n"
   },
   {
-    "__docId__": 98,
+    "__docId__": 120,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2122,7 +2562,7 @@
     "content": "import { Client } from './client'\nimport { AuthentFactory } from './handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './token-persistence'\n\n/**\n * @access protected\n * @extends {Client}\n */\nexport class SmartClient extends Client {\n  /**\n   * Create a new ZetaPush smart client\n   */\n  constructor({\n    apiUrl, authenticationDeploymentId, businessId, enableHttps, resource = null,\n    TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy\n  }) {\n    const handshakeStrategy = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId: authenticationDeploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     *\n     */\n    super({ apiUrl , businessId, enableHttps, handshakeStrategy, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('SmartClient::onFailedHandshake', error)\n    }\n    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new TokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
   },
   {
-    "__docId__": 99,
+    "__docId__": 121,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2141,7 +2581,7 @@
     ]
   },
   {
-    "__docId__": 100,
+    "__docId__": 122,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -2171,7 +2611,7 @@
     "generator": false
   },
   {
-    "__docId__": 101,
+    "__docId__": 123,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2191,7 +2631,7 @@
     }
   },
   {
-    "__docId__": 102,
+    "__docId__": 124,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2213,7 +2653,7 @@
     "generator": false
   },
   {
-    "__docId__": 103,
+    "__docId__": 125,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2226,7 +2666,7 @@
     "content": "/**\n * @type {string}\n */\nconst ZETAPUSH_TOKEN_KEY = 'zetapush.token'\n\n/**\n * Provide abstraction for token persistence\n * @access protected\n */\nexport class AbstractTokenPersistenceStrategy {\n  /**\n   *\n   */\n  constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.key = key\n  }\n  /**\n   * @abstract\n   * @return {string} The stored token\n   */\n  get() {}\n  /**\n   * @abstract\n   */\n  set({ token }) {}\n}\n\n/**\n * @access protected\n * @extends {AbstractTokenPersistenceStrategy}\n */\nexport class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersistenceStrategy {\n  /**\n   * @override\n   * @return {string} The stored token\n   */\n  get() {\n    return localStorage.getItem(this.key)\n  }\n  /**\n   * @override\n   */\n  set({ token }) {\n    localStorage.setItem(this.key, token)\n  }\n}\n"
   },
   {
-    "__docId__": 104,
+    "__docId__": 126,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2249,7 +2689,7 @@
     }
   },
   {
-    "__docId__": 105,
+    "__docId__": 127,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2265,7 +2705,7 @@
     "interface": false
   },
   {
-    "__docId__": 106,
+    "__docId__": 128,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -2289,7 +2729,7 @@
     "generator": false
   },
   {
-    "__docId__": 107,
+    "__docId__": 129,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2309,7 +2749,7 @@
     }
   },
   {
-    "__docId__": 108,
+    "__docId__": 130,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2332,7 +2772,7 @@
     "generator": false
   },
   {
-    "__docId__": 109,
+    "__docId__": 131,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2358,7 +2798,7 @@
     "generator": false
   },
   {
-    "__docId__": 110,
+    "__docId__": 132,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2377,7 +2817,7 @@
     ]
   },
   {
-    "__docId__": 111,
+    "__docId__": 133,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2400,7 +2840,7 @@
     "generator": false
   },
   {
-    "__docId__": 112,
+    "__docId__": 134,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2426,7 +2866,7 @@
     "generator": false
   },
   {
-    "__docId__": 113,
+    "__docId__": 135,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2439,7 +2879,7 @@
     "content": "/**\n * Match unsecure pattern web\n * @type {RegExp}\n */\nconst UNSECURE_PATTERN = /^http:\\/\\/|^\\/\\//\n\n/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @param {boolean} enableHttps\n * @return {string}\n */\nexport const getSecureUrl = (url, enableHttps) => {\n  return enableHttps ? url.replace(UNSECURE_PATTERN, 'https://') : url\n}\n\n/**\n * @access private\n * @return {Promise}\n */\nexport const getServers = ({ apiUrl, businessId, enableHttps }) => {\n  const secureApiUrl = getSecureUrl(apiUrl, enableHttps)\n  const url = `${secureApiUrl}${businessId}`\n  return fetch(url)\n    .then((response) => {\n      return response.json()\n    })\n    .then(({ servers }) => {\n      // TODO: Replace by a server side implementation when available\n      return servers.map((server) => {\n        return getSecureUrl(server, enableHttps)\n      })\n    })\n}\n\n/**\n * @access private\n * @extends {Error}\n */\nexport class NotYetImplementedError extends Error {\n  /**\n   * @param {string} message\n   */\n  constructor(message = '') {\n    super(message)\n    this.name = 'NotImplementedError'\n  }\n\n}\n"
   },
   {
-    "__docId__": 114,
+    "__docId__": 136,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2462,7 +2902,7 @@
     }
   },
   {
-    "__docId__": 115,
+    "__docId__": 137,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2502,7 +2942,7 @@
     }
   },
   {
-    "__docId__": 116,
+    "__docId__": 138,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2552,7 +2992,7 @@
     }
   },
   {
-    "__docId__": 117,
+    "__docId__": 139,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2580,7 +3020,7 @@
     }
   },
   {
-    "__docId__": 118,
+    "__docId__": 140,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2599,7 +3039,7 @@
     ]
   },
   {
-    "__docId__": 119,
+    "__docId__": 141,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -2624,7 +3064,7 @@
     "generator": false
   },
   {
-    "__docId__": 120,
+    "__docId__": 142,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2642,7 +3082,7 @@
     }
   },
   {
-    "__docId__": 122,
+    "__docId__": 144,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2655,7 +3095,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 123,
+    "__docId__": 145,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2668,7 +3108,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 124,
+    "__docId__": 146,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2681,7 +3121,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 125,
+    "__docId__": 147,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2694,7 +3134,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 126,
+    "__docId__": 148,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2707,7 +3147,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 127,
+    "__docId__": 149,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2720,7 +3160,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 128,
+    "__docId__": 150,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2733,7 +3173,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 129,
+    "__docId__": 151,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2746,7 +3186,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 130,
+    "__docId__": 152,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2759,7 +3199,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 131,
+    "__docId__": 153,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2772,7 +3212,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 132,
+    "__docId__": 154,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2785,7 +3225,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 133,
+    "__docId__": 155,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2798,7 +3238,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 134,
+    "__docId__": 156,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2811,7 +3251,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 135,
+    "__docId__": 157,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2824,7 +3264,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 136,
+    "__docId__": 158,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2837,7 +3277,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 137,
+    "__docId__": 159,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2850,7 +3290,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 138,
+    "__docId__": 160,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2863,7 +3303,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 139,
+    "__docId__": 161,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2876,7 +3316,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 140,
+    "__docId__": 162,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2889,7 +3329,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 141,
+    "__docId__": 163,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2902,7 +3342,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 142,
+    "__docId__": 164,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2915,7 +3355,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 143,
+    "__docId__": 165,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2928,7 +3368,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 144,
+    "__docId__": 166,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2941,7 +3381,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 145,
+    "__docId__": 167,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2954,7 +3394,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 146,
+    "__docId__": 168,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2967,7 +3407,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 147,
+    "__docId__": 169,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2980,7 +3420,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 148,
+    "__docId__": 170,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2993,7 +3433,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 149,
+    "__docId__": 171,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3006,7 +3446,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 150,
+    "__docId__": 172,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3019,7 +3459,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 151,
+    "__docId__": 173,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3032,7 +3472,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 152,
+    "__docId__": 174,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3045,7 +3485,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 153,
+    "__docId__": 175,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3058,7 +3498,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 154,
+    "__docId__": 176,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3071,7 +3511,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 155,
+    "__docId__": 177,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3084,7 +3524,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 156,
+    "__docId__": 178,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3097,7 +3537,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 157,
+    "__docId__": 179,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3110,7 +3550,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 158,
+    "__docId__": 180,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3123,7 +3563,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 159,
+    "__docId__": 181,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3136,7 +3576,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 160,
+    "__docId__": 182,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3149,7 +3589,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 161,
+    "__docId__": 183,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3162,7 +3602,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 162,
+    "__docId__": 184,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3175,7 +3615,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 163,
+    "__docId__": 185,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3188,7 +3628,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 164,
+    "__docId__": 186,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3201,7 +3641,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 165,
+    "__docId__": 187,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3214,7 +3654,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 166,
+    "__docId__": 188,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3227,7 +3667,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 167,
+    "__docId__": 189,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3240,7 +3680,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 168,
+    "__docId__": 190,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3253,7 +3693,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 170,
+    "__docId__": 192,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3266,7 +3706,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 171,
+    "__docId__": 193,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3279,7 +3719,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 172,
+    "__docId__": 194,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3292,7 +3732,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 173,
+    "__docId__": 195,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3305,7 +3745,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 174,
+    "__docId__": 196,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3318,7 +3758,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 175,
+    "__docId__": 197,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3331,7 +3771,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 176,
+    "__docId__": 198,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3344,7 +3784,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 177,
+    "__docId__": 199,
     "kind": "external",
     "static": true,
     "variation": null,

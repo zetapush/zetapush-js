@@ -6,6 +6,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "zetapush-js/src/definitions.js~aggregpublisherdefinition",
+    "variable/index.html#static-variable-AggregPublisherDefinition",
+    "<span>AggregPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
     "zetapush-js/src/handshake.js~authentfactory",
     "class/src/handshake.js~AuthentFactory.html",
     "<span>AuthentFactory</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
@@ -24,15 +30,105 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "zetapush-js/src/definitions.js~cronpublisherdefinition",
+    "variable/index.html#static-variable-CronPublisherDefinition",
+    "<span>CronPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
     "zetapush-js/src/handshake.js~defaultzetapushhandshakemanager",
     "class/src/handshake.js~DefaultZetapushHandshakeManager.html",
     "<span>DefaultZetapushHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
     "class"
   ],
   [
+    "zetapush-js/src/definitions.js~delegatingpublisherdefinition",
+    "variable/index.html#static-variable-DelegatingPublisherDefinition",
+    "<span>DelegatingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
     "zetapush-js/src/definitions.js~echopublisherdefinition",
     "variable/index.html#static-variable-EchoPublisherDefinition",
     "<span>EchoPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~gameenginepublisherdefinition",
+    "variable/index.html#static-variable-GameEnginePublisherDefinition",
+    "<span>GameEnginePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~gamepublisherdefinition",
+    "variable/index.html#static-variable-GamePublisherDefinition",
+    "<span>GamePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~gdapublisherdefinition",
+    "variable/index.html#static-variable-GdaPublisherDefinition",
+    "<span>GdaPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~groupmanagementpublisherdefinition",
+    "variable/index.html#static-variable-GroupManagementPublisherDefinition",
+    "<span>GroupManagementPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~httpclientpublisherdefinition",
+    "variable/index.html#static-variable-HttpclientPublisherDefinition",
+    "<span>HttpclientPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~macropublisherdefinition",
+    "variable/index.html#static-variable-MacroPublisherDefinition",
+    "<span>MacroPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~messagingpublisherdefinition",
+    "variable/index.html#static-variable-MessagingPublisherDefinition",
+    "<span>MessagingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~queuepublisherdefinition",
+    "variable/index.html#static-variable-QueuePublisherDefinition",
+    "<span>QueuePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~remotingpublisherdefinition",
+    "variable/index.html#static-variable-RemotingPublisherDefinition",
+    "<span>RemotingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~searchpublisherdefinition",
+    "variable/index.html#static-variable-SearchPublisherDefinition",
+    "<span>SearchPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~sendmailpublisherdefinition",
+    "variable/index.html#static-variable-SendmailPublisherDefinition",
+    "<span>SendmailPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~simplepublisherdefinition",
+    "variable/index.html#static-variable-SimplePublisherDefinition",
+    "<span>SimplePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~sms_ovhpublisherdefinition",
+    "variable/index.html#static-variable-Sms_ovhPublisherDefinition",
+    "<span>Sms_ovhPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
     "variable"
   ],
   [
@@ -42,10 +138,46 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "zetapush-js/src/definitions.js~templatepublisherdefinition",
+    "variable/index.html#static-variable-TemplatePublisherDefinition",
+    "<span>TemplatePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
     "zetapush-js/src/handshake.js~tokenhandshakemanager",
     "class/src/handshake.js~TokenHandshakeManager.html",
     "<span>TokenHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
     "class"
+  ],
+  [
+    "zetapush-js/src/definitions.js~userdirpublisherdefinition",
+    "variable/index.html#static-variable-UserdirPublisherDefinition",
+    "<span>UserdirPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~weakpublisherdefinition",
+    "variable/index.html#static-variable-WeakPublisherDefinition",
+    "<span>WeakPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~zpfs_hdfspublisherdefinition",
+    "variable/index.html#static-variable-Zpfs_hdfsPublisherDefinition",
+    "<span>Zpfs_hdfsPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~zpfs_s3publisherdefinition",
+    "variable/index.html#static-variable-Zpfs_s3PublisherDefinition",
+    "<span>Zpfs_s3PublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions.js~zpfs_s3compatpublisherdefinition",
+    "variable/index.html#static-variable-Zpfs_s3compatPublisherDefinition",
+    "<span>Zpfs_s3compatPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "variable"
   ],
   [
     "builtinexternal/ecmascriptexternal.js~array",
