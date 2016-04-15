@@ -10,7 +10,26 @@
     businessId: BUSINESS_ID,
     authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
   })
-
+  // Get Todo item DOM
+  const getTodoItemDom = ({ guid, data }, wrapper = true) => {
+    const { completed, text } = data
+    const checkbox = dom('input', { 'class': 'toggle', 'type': 'checkbox', 'data-guid': guid, 'data-text': text })
+    if (completed) {
+      checkbox.setAttribute('checked', completed)
+    }
+    const content = dom('div', { 'class': 'view' },
+      checkbox,
+      dom('label', {}, text),
+      dom('button', { 'class': 'destroy', 'data-guid': guid })
+    )
+    const form = dom('form', { 'autocomplete': 'off', 'data-guid': guid, 'data-text': text },
+      dom('input', { 'class': 'edit', 'value': text, 'autofocus': 'on', 'type': 'text' })
+    )
+    const fragment = document.createDocumentFragment()
+    fragment.appendChild(content)
+    fragment.appendChild(form)
+    return wrapper ? dom('li', { 'class': completed ? 'completed' : '', 'data-guid': guid }, fragment) : fragment
+  }
   // Declare a service listner mapping stack methods
   const serviceListener = {
     // Triggered when api return list of stack elements
@@ -59,26 +78,6 @@
         item.classList.remove('editing')
       })
     }
-  }
-  // Get Todo item DOM
-  const getTodoItemDom = ({ guid, data }, wrapper = true) => {
-    const { completed, text } = data
-    const checkbox = dom('input', { 'class': 'toggle', 'type': 'checkbox', 'data-guid': guid, 'data-text': text })
-    if (completed) {
-      checkbox.setAttribute('checked', completed)
-    }
-    const content = dom('div', { 'class': 'view' },
-      checkbox,
-      dom('label', {}, text),
-      dom('button', { 'class': 'destroy', 'data-guid': guid })
-    )
-    const form = dom('form', { 'autocomplete': 'off', 'data-guid': guid, 'data-text': text },
-      dom('input', { 'class': 'edit', 'value': text, 'autofocus': 'on', 'type': 'text' })
-    )
-    const fragment = document.createDocumentFragment()
-    fragment.appendChild(content)
-    fragment.appendChild(form)
-    return wrapper ? dom('li', { 'class': completed ? 'completed' : '', 'data-guid': guid }, fragment) : fragment
   }
   // Create a service publish to interact with remote API
   const servicePublisher = client.createServicePublisher({

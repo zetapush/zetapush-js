@@ -22,7 +22,7 @@
     var type = parameters.type
     var selector = parameters.selector || null
     var handler = parameters.handler
-    node.addEventListener(type, function(event) {
+    node.addEventListener(type, function (event) {
       var target = event.target
       var current = (selector === null) ? node : getCurrentTarget({
         node: node,
