@@ -129,8 +129,8 @@ export class ClientHelper {
         if (!this.wasConnected && this.connected) {
           this.cometd.batch(this, () => {
             // Unqueue subscriptions
-            this.subscribeQueue.forEach(({ prefix, serviceListener, subscriptions }) => {
-              this.subscribe(prefix, serviceListener, subscriptions)
+            this.subscribeQueue.forEach(({ prefix, listener, subscriptions }) => {
+              this.subscribe(prefix, listener, subscriptions)
             })
             this.subscribeQueue = []
           })
@@ -290,21 +290,21 @@ export class ClientHelper {
     return this.resource
   }
   /**
-   * Subribe all methods defined in the serviceListener for the given prefixed channel
+   * Subribe all methods defined in the listener for the given prefixed channel
    * @param {string} prefix - Channel prefix
-   * @param {Object} serviceListener
+   * @param {Object} listener
    * @param {Object} subscriptions
    * @return {Object} subscriptions
    */
-  subscribe(prefix, serviceListener, subscriptions = {}) {
+  subscribe(prefix, listener, subscriptions = {}) {
     if (this.cometd.isDisconnected()) {
-      this.subscribeQueue.push({ prefix, serviceListener, subscriptions })
+      this.subscribeQueue.push({ prefix, listener, subscriptions })
     }
     else {
-      for (const method in serviceListener) {
-        if (serviceListener.hasOwnProperty(method)) {
+      for (const method in listener) {
+        if (listener.hasOwnProperty(method)) {
           const channel = `${prefix}/${method}`
-          subscriptions[method] = this.cometd.subscribe(channel, serviceListener[method])
+          subscriptions[method] = this.cometd.subscribe(channel, listener[method])
         }
       }
     }
@@ -313,13 +313,13 @@ export class ClientHelper {
   /**
    * Get a publisher
    * @param {string} prefix - Channel prefix
-   * @param {Object} publisherDefinition
+   * @param {Object} definition
    * @return {Object} servicePublisher
    */
-  createServicePublisher(prefix, publisherDefinition) {
+  createServicePublisher(prefix, definition) {
     const servicePublisher = {}
-    for (const method in publisherDefinition) {
-      if (publisherDefinition.hasOwnProperty(method)) {
+    for (const method in definition) {
+      if (definition.hasOwnProperty(method)) {
         const channel = `${prefix}/${method}`
         servicePublisher[method] = (parameters = {}) => {
           this.cometd.publish(channel, parameters)

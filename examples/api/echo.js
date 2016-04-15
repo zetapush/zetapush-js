@@ -10,17 +10,15 @@
     authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
   })
 
-  const serviceListener = SmartClient.getServiceListener({
-    methods: ['error', ...Object.getOwnPropertyNames(EchoPublisherDefinition)],
-    handler: ({ channel, data, method }) => {
-      console.debug(`Echo::${method}`, { channel, data })
-      document.querySelector(`form[name="${method}"] [name="output"]`).value = JSON.stringify(data)
-    }
-  })
-
   client.subscribe({
     deploymentId: DEPLOYMENT_ID,
-    serviceListener: serviceListener
+    listener: SmartClient.  getGenericServiceListener({
+      methods: ['error', ...Object.getOwnPropertyNames(EchoPublisherDefinition)],
+      handler: ({ channel, data, method }) => {
+        console.debug(`Echo::${method}`, { channel, data })
+        document.querySelector(`form[name="${method}"] [name="output"]`).value = JSON.stringify(data)
+      }
+    })
   })
 
   client.addConnectionStatusListener({
@@ -33,7 +31,7 @@
 
   const servicePublisher = client.createServicePublisher({
     deploymentId: DEPLOYMENT_ID,
-    publisherDefinition: EchoPublisherDefinition
+    definition: EchoPublisherDefinition
   })
 
   client.connect()
@@ -52,4 +50,5 @@
       }
     }})
   })
+
 }

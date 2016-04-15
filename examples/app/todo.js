@@ -10,8 +10,8 @@
     authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
   })
 
-  // Declare a service listner mapping stack methods
-  var serviceListener = {
+  // Declare a service listener mapping stack methods
+  var stackServiceListener = {
     // Triggered when api return list of stack elements
     list: function list(message) {
       var content = message.data.result.content
@@ -85,19 +85,19 @@
     return wrapper ? dom('li', { 'class': completed ? 'completed' : '', 'data-guid': guid }, fragment) : fragment
   }
   // Create a service publish to interact with remote API
-  var servicePublisher = client.createServicePublisher({
+  var stackServicePublisher = client.createServicePublisher({
     deploymentId: DEPLOYMENT_ID,
-    publisherDefinition: ZetaPush.definitions.StackPublisherDefinition
+    definition: ZetaPush.definitions.StackPublisherDefinition
   })
   // Subscribe listener methods for a given deploymentId
   client.subscribe({
     deploymentId: DEPLOYMENT_ID,
-    serviceListener: serviceListener
+    listener: stackServiceListener
   })
   // Add listener to life cycle connection events
   client.addConnectionStatusListener({
     onConnectionEstablished() {
-      servicePublisher.list({
+      stackServicePublisher.list({
         stack: 'todo-list'
       })
     }
@@ -111,7 +111,7 @@
 
     on({ node: main, type: 'submit', selector: '.header form', handler: function (event) {
       event.preventDefault()
-      servicePublisher.push({
+      stackServicePublisher.push({
         stack: 'todo-list',
         data: {
           text: todo.value,
@@ -121,7 +121,7 @@
     }})
     on({ node: main, type: 'change', selector: '.toggle', handler: function (event) {
       var target = event.target
-      servicePublisher.update({
+      stackServicePublisher.update({
         stack: 'todo-list',
         guid: target.dataset.guid,
         data: {
@@ -132,13 +132,13 @@
     }})
     on({ node: main, type: 'click', selector: '.destroy', handler: function (event) {
       var target = event.target
-      servicePublisher.remove({
+      stackServicePublisher.remove({
         stack: 'todo-list',
         guids: [target.dataset.guid]
       })
     }})
     on({ node: main, type: 'click', selector: '.clear-all', handler: function (event) {
-      servicePublisher.purge({
+      stackServicePublisher.purge({
         stack: 'todo-list'
       })
     }})
@@ -152,7 +152,7 @@
       event.preventDefault()
       var target = event.target
       var input = target.querySelector('input')
-      servicePublisher.update({
+      stackServicePublisher.update({
         stack: 'todo-list',
         guid: target.dataset.guid,
         data: {

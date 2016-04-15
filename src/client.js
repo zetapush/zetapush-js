@@ -42,7 +42,7 @@ export class Client {
      * @access private
      * @type {ClientHelper}
      */
-    this.client = new ClientHelper({
+    this.helper = new ClientHelper({
       apiUrl,
       businessId,
       enableHttps,
@@ -54,51 +54,51 @@ export class Client {
    * Connect client to ZetaPush
    */
   connect() {
-    this.client.connect()
+    this.helper.connect()
   }
   /**
    * Disonnect client from ZetaPush
    */
   disconnect() {
-    this.client.disconnect()
+    this.helper.disconnect()
   }
   /**
    * Create a service publisher based on publisher definition for the given deployment id
    * @return {Object}
    */
-  createServicePublisher({ deploymentId, publisherDefinition }) {
-    return this.client.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, publisherDefinition)
+  createServicePublisher({ deploymentId, definition }) {
+    return this.helper.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, definition)
   }
   /**
    * Get the client business id
    * @return {string}
    */
   getBusinessId() {
-    return this.client.getBusinessId()
+    return this.helper.getBusinessId()
   }
   /**
    * Get the client resource
    * @return {string}
    */
   getResource() {
-    return this.client.getResource()
+    return this.helper.getResource()
   }
   /**
    * Get the client user id
    * @return {string}
    */
   getUserId() {
-    return this.client.getUserId()
+    return this.helper.getUserId()
   }
   /**
    * Get the client session id
    * @return {string}
    */
   getSessionId() {
-    return this.client.getSessionId()
+    return this.helper.getSessionId()
   }
   /**
-   * Subscribe all methods described in the serviceListener for the given deploymentId
+   * Subscribe all methods described in the listener for the given deploymentId
    * @return {Object} subscription
    * @example
    * const stackServiceListener = {
@@ -108,34 +108,34 @@ export class Client {
    * }
    * client.subscribe({
    *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',
-   *   serviceListener
+   *   listener: stackServiceListener
    * })
    */
-  subscribe({ deploymentId, serviceListener }) {
-    return this.client.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, serviceListener)
+  subscribe({ deploymentId, listener }) {
+    return this.helper.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, listener)
   }
   /**
    * Create a publish/subscribe
    * @return {Object}
    */
-  createPublisherSubscriber({ deploymentId, serviceListener, publisherDefinition }) {
+  createPublisherSubscriber({ deploymentId, listener, definition }) {
     return {
-      subscription: this.subscribe({ deploymentId, serviceListener }),
-      publisher: this.createServicePublisher({ deploymentId, publisherDefinition })
+      subscription: this.subscribe({ deploymentId, listener }),
+      publisher: this.createServicePublisher({ deploymentId, definition })
     }
   }
   /**
    * Set new client resource value
    */
   setResource(resource) {
-    this.client.setResource(resource)
+    this.helper.setResource(resource)
   }
   /**
    * Add a connection listener to handle life cycle connection events
    * @param {ConnectionStatusListener} listener
    */
   addConnectionStatusListener(listener) {
-    return this.client.addConnectionStatusListener(listener)
+    return this.helper.addConnectionStatusListener(listener)
   }
   /**
    * Force disconnect/connect with new handshake factory
@@ -144,7 +144,7 @@ export class Client {
   handshake(handshakeStrategy) {
     this.disconnect()
     if (handshakeStrategy) {
-      this.client.setHandshakeStrategy(handshakeStrategy)
+      this.helper.setHandshakeStrategy(handshakeStrategy)
     }
     this.connect()
   }
@@ -154,7 +154,7 @@ export class Client {
    * @return {Object} listener
    * @example
    * const getStackServiceListener = () => {
-   *   return Client.getServiceListener({
+   *   return Client.getGenericServiceListener({
    *     methods: ['getListeners', 'list', 'purge', 'push', 'remove', 'setListeners', 'update', 'error'],
    *     handler: ({ channel, data }) => {
    *       console.debug(`Stack::${method}`, { channel, data })
@@ -163,7 +163,7 @@ export class Client {
    *   })
    * }
    */
-  static getServiceListener({ methods = [], handler = () => {} }) {
+  static getGenericServiceListener({ methods = [], handler = () => {} }) {
     return methods.reduce((listener, method) => {
       listener[method] = ({ channel, data }) => handler({ channel, data, method })
       return listener
