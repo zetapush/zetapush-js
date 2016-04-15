@@ -149,7 +149,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client.js~Client.html#static-method-getServiceListener">getServiceListener</a></span></span><span data-ice="signature">(objectPattern: {&quot;methods&quot;: <span>*</span>, &quot;handler&quot;: <span>*</span>}): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+           <span data-ice="name"><span><a href="class/src/client.js~Client.html#static-method-getGenericServiceListener">getGenericServiceListener</a></span></span><span data-ice="signature">(objectPattern: {&quot;methods&quot;: <span>*</span>, &quot;handler&quot;: <span>*</span>}): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
         </p>
       </div>
       <div>
@@ -527,13 +527,13 @@
 <div data-ice="staticMethodDetails"><h2 data-ice="title">Static Public Methods</h2>
 
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="static-method-getServiceListener">
+  <h3 data-ice="anchor" id="static-method-getGenericServiceListener">
     <span class="access" data-ice="access">public</span>
     <span data-ice="static">static</span>
     
     
     
-    <span data-ice="name">getServiceListener</span><span data-ice="signature">(objectPattern: {&quot;methods&quot;: <span>*</span>, &quot;handler&quot;: <span>*</span>}): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+    <span data-ice="name">getGenericServiceListener</span><span data-ice="signature">(objectPattern: {&quot;methods&quot;: <span>*</span>, &quot;handler&quot;: <span>*</span>}): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
     <span class="right-info">
       
       
@@ -593,7 +593,7 @@
   <div class="example-doc" data-ice="exampleDoc">
       
       <pre class="prettyprint source-code"><code data-ice="exampleCode">const getStackServiceListener = () =&gt; {
-  return Client.getServiceListener({
+  return Client.getGenericServiceListener({
     methods: [&apos;getListeners&apos;, &apos;list&apos;, &apos;purge&apos;, &apos;push&apos;, &apos;remove&apos;, &apos;setListeners&apos;, &apos;update&apos;, &apos;error&apos;],
     handler: ({ channel, data }) =&gt; {
       console.debug(`Stack::${method}`, { channel, data })

@@ -223,7 +223,7 @@ export class Client {
    * @return {Object} listener
    * @example
    * const getStackServiceListener = () =&gt; {
-   *   return Client.getServiceListener({
+   *   return Client.getGenericServiceListener({
    *     methods: [&apos;getListeners&apos;, &apos;list&apos;, &apos;purge&apos;, &apos;push&apos;, &apos;remove&apos;, &apos;setListeners&apos;, &apos;update&apos;, &apos;error&apos;],
    *     handler: ({ channel, data }) =&gt; {
    *       console.debug(`Stack::${method}`, { channel, data })
@@ -232,7 +232,7 @@ export class Client {
    *   })
    * }
    */
-  static getServiceListener({ methods = [], handler = () =&gt; {} }) {
+  static getGenericServiceListener({ methods = [], handler = () =&gt; {} }) {
     return methods.reduce((listener, method) =&gt; {
       listener[method] = ({ channel, data }) =&gt; handler({ channel, data, method })
       return listener

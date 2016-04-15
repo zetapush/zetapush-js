@@ -600,9 +600,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/client.js~client.getservicelistener",
-    "class/src/client.js~Client.html#static-method-getServiceListener",
-    "src/client.js~Client.getServiceListener",
+    "src/client.js~client.getgenericservicelistener",
+    "class/src/client.js~Client.html#static-method-getGenericServiceListener",
+    "src/client.js~Client.getGenericServiceListener",
     "method"
   ],
   [
