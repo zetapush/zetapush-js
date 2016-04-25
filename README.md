@@ -27,18 +27,16 @@ import { Client } from 'zetapush-js'
 From CDN
 
 ```html
-<script src="https://static.zpush.io/js/2.0.0-alpha.1/zetapush.min.js"></script>
+<script src="https://static.zpush.io/js/2.0.0-alpha.2/zetapush.min.js"></script>
 ```
 
 ## Usage
 
 ```javascript
-const { Client, AuthentFactory } = ZetaPush
-
-const client = new Client({
+const client = new ZetaPush.Client({
   businessId: '<YOUR-BUSINESS-ID>',
   handshakeStrategy() {
-    return AuthentFactory.createWeakHandshake({
+    return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null,
       deploymentId: '<YOUR-DEPLOYMENT-ID>'
     })
