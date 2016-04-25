@@ -33,12 +33,15 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~Client.html">Client</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-API_URL">API_URL</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AggregPublisherDefinition">AggregPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~CredentialsHandshakeManager.html">CredentialsHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">definitions</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AggregPublisherDefinition">AggregPublisherDefinition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-CronPublisherDefinition">CronPublisherDefinition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DelegatingPublisherDefinition">DelegatingPublisherDefinition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EchoPublisherDefinition">EchoPublisherDefinition</a></span></span></li>
@@ -72,32 +75,6 @@
   <tbody>
   
   <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="variable/index.html#static-variable-API_URL">API_URL</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Default ZetaPush API URL</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
       
@@ -727,47 +704,6 @@
 <div data-ice="details"><h2 data-ice="title">Static Public </h2>
 
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="static-variable-API_URL">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">API_URL</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/client.js.html#lineNumber9">source</a></span></span>
-    </span>
-  </h3>
-
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {API_URL} from &apos;<span><a href="file/src/client.js.html#lineNumber9">zetapush-js/src/client.js</a></span>&apos;</code></pre></div>
-  
-  
-  <div data-ice="description"><p>Default ZetaPush API URL</p>
-</div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="static-variable-AggregPublisherDefinition">
     <span class="access" data-ice="access">public</span>
     
@@ -778,11 +714,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber17">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber17">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {AggregPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber17">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {AggregPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber17">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for item aggregation</p>
@@ -821,11 +757,11 @@ This service does not allow you to read the data. To achieve that kind of behavi
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber653">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber653">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {CronPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber653">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {CronPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber653">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for the Scheduler</p>
@@ -865,11 +801,11 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber1031">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber1031">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {DelegatingPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber1031">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {DelegatingPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber1031">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>End-user API for the delegating authentication</p>
@@ -907,11 +843,11 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber99">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber99">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {EchoPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber99">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {EchoPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber99">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Echo service</p>
@@ -949,11 +885,11 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber119">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber119">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {GameEnginePublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber119">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {GameEnginePublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber119">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Game Engine API</p>
@@ -991,11 +927,11 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber165">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber165">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {GamePublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber165">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {GamePublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber165">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for games</p>
@@ -1033,11 +969,11 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber196">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber196">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {GdaPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber196">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {GdaPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber196">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>GDA User API</p>
@@ -1077,11 +1013,11 @@ Users can put, get, list their data.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber342">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber342">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {GroupManagementPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber342">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {GroupManagementPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber342">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for groups and rights.</p>
@@ -1121,11 +1057,11 @@ The triplet (deploymentId, owner, group) is actually needed to fully qualify a g
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber463">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber463">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {HttpclientPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber463">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {HttpclientPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber463">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for http requests</p>
@@ -1162,11 +1098,11 @@ The triplet (deploymentId, owner, group) is actually needed to fully qualify a g
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber495">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber495">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {MacroPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber495">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {MacroPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber495">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for macro execution</p>
@@ -1207,11 +1143,11 @@ Note that some particular errors will always behave as if hardFail were true, be
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber548">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber548">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {MessagingPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber548">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {MessagingPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber548">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Messaging service</p>
@@ -1249,11 +1185,11 @@ Note that some particular errors will always behave as if hardFail were true, be
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber572">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber572">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {QueuePublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber572">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {QueuePublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber572">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Producer / consumer real-time API</p>
@@ -1294,11 +1230,11 @@ Tasks are global to the service (i.e. NOT per user).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber288">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber288">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {RemotingPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber288">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {RemotingPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber288">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for remote control</p>
@@ -1335,11 +1271,11 @@ Tasks are global to the service (i.e. NOT per user).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber692">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber692">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {SearchPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber692">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {SearchPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber692">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>ElasticSearch Service</p>
@@ -1377,11 +1313,11 @@ Tasks are global to the service (i.e. NOT per user).</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber529">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber529">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {SendmailPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber529">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {SendmailPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber529">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Mail service user API</p>
@@ -1420,11 +1356,11 @@ Users call the API here to actually send emails.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber1053">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber1053">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {SimplePublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber1053">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {SimplePublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber1053">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>End-user API for the simple local authentication</p>
@@ -1462,11 +1398,11 @@ Users call the API here to actually send emails.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber631">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber631">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Sms_ovhPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber631">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Sms_ovhPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber631">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>SMS service</p>
@@ -1504,11 +1440,11 @@ Users call the API here to actually send emails.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber41">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber41">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {StackPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber41">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {StackPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber41">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Data stack user API</p>
@@ -1547,11 +1483,11 @@ Stack names are arbitrary and do not need to be explicitly initalized.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber730">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber730">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {TemplatePublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber730">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {TemplatePublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber730">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for templates</p>
@@ -1589,11 +1525,11 @@ Stack names are arbitrary and do not need to be explicitly initalized.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber1010">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber1010">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {UserdirPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber1010">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {UserdirPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber1010">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for user information</p>
@@ -1630,11 +1566,11 @@ Stack names are arbitrary and do not need to be explicitly initalized.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber1109">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber1109">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {WeakPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber1109">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {WeakPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber1109">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for weak devices control</p>
@@ -1672,11 +1608,11 @@ Stack names are arbitrary and do not need to be explicitly initalized.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber840">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber840">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Zpfs_hdfsPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber840">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Zpfs_hdfsPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber840">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for file management</p>
@@ -1717,11 +1653,11 @@ Uploading a file is a 3-step process : request an upload URL, upload via HTTP, n
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber753">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber753">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Zpfs_s3PublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber753">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Zpfs_s3PublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber753">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for file management</p>
@@ -1762,11 +1698,11 @@ Uploading a file is a 3-step process : request an upload URL, upload via HTTP, n
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/definitions.js.html#lineNumber927">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber927">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Zpfs_s3compatPublisherDefinition} from &apos;<span><a href="file/src/definitions.js.html#lineNumber927">zetapush-js/src/definitions.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Zpfs_s3compatPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber927">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>User API for file management</p>

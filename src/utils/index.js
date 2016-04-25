@@ -5,6 +5,12 @@
 const UNSECURE_PATTERN = /^http:\/\/|^\/\//
 
 /**
+* Default ZetaPush API URL
+* @access private
+*/
+export const API_URL = 'https://api.zpush.io/'
+
+/**
  * @access private
  * @param {Array<Object>} list
  * @return {Object}
@@ -17,19 +23,20 @@ export const shuffle = (list) => {
 /**
  * @access private
  * @param {string} url
- * @param {boolean} enableHttps
+ * @param {boolean} forceHttps
  * @return {string}
  */
-export const getSecureUrl = (url, enableHttps) => {
-  return enableHttps ? url.replace(UNSECURE_PATTERN, 'https://') : url
+export const getSecureUrl = (url, forceHttps) => {
+  return forceHttps ? url.replace(UNSECURE_PATTERN, 'https://') : url
 }
 
 /**
  * @access private
+ * @param {{apiUrl: string, businessId: string, forceHttps: boolean}} parameters
  * @return {Promise}
  */
-export const getServers = ({ apiUrl, businessId, enableHttps }) => {
-  const secureApiUrl = getSecureUrl(apiUrl, enableHttps)
+export const getServers = ({ apiUrl, businessId, forceHttps }) => {
+  const secureApiUrl = getSecureUrl(apiUrl, forceHttps)
   const url = `${secureApiUrl}${businessId}`
   return fetch(url)
     .then((response) => {
@@ -38,7 +45,7 @@ export const getServers = ({ apiUrl, businessId, enableHttps }) => {
     .then(({ servers }) => {
       // TODO: Replace by a server side implementation when available
       return servers.map((server) => {
-        return getSecureUrl(server, enableHttps)
+        return getSecureUrl(server, forceHttps)
       })
     })
 }

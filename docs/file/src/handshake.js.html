@@ -38,7 +38,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-API_URL">API_URL</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AggregPublisherDefinition">AggregPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">Definitions</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AggregPublisherDefinition">AggregPublisherDefinition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-CronPublisherDefinition">CronPublisherDefinition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DelegatingPublisherDefinition">DelegatingPublisherDefinition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EchoPublisherDefinition">EchoPublisherDefinition</a></span></span></li>
@@ -81,7 +83,7 @@ const DeployableNames = {
  */
 export class AbstractHandshakeManager {
   /**
-   *
+   * @param {{authType: string, businessId: string, deploymentId: string}} parameters
    */
   constructor({ authType, businessId, deploymentId }) {
     this.authType = authType
@@ -123,7 +125,7 @@ export class AbstractHandshakeManager {
  */
 export class TokenHandshakeManager extends AbstractHandshakeManager {
   /**
-   *
+   * @param {{authType: string, deploymentId: string, token: string}} parameters
    */
   constructor({ authType, deploymentId, token }) {
     super({ deploymentId, authType })
@@ -148,7 +150,7 @@ export class TokenHandshakeManager extends AbstractHandshakeManager {
 export class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {
 
   /**
-   *
+   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
    */
   constructor({ authType, deploymentId, login, password }) {
     super({ authType, deploymentId })
@@ -174,6 +176,7 @@ export class DefaultZetapushHandshakeManager extends AbstractHandshakeManager {
  */
 export class AuthentFactory {
   /**
+   * @param {{deploymentId: string, login: string, password: string}} parameters
    * @return {DefaultZetapushHandshakeManager}
    */
   static createSimpleHandshake({ deploymentId, login, password }) {
@@ -185,6 +188,7 @@ export class AuthentFactory {
     })
   }
   /**
+   * @param {{deploymentId: string, token: string}} parameters
    * @return {TokenHandshakeManager}
    */
   static createWeakHandshake({ deploymentId, token }) {
@@ -196,6 +200,7 @@ export class AuthentFactory {
     })
   }
   /**
+   * @param {{deploymentId: string, token: string}} parameters
    * @return {TokenHandshakeManager}
    */
   static createDelegatingHandshake({ deploymentId, token }) {
@@ -207,6 +212,7 @@ export class AuthentFactory {
     })
   }
   /**
+   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
    * @return {TokenHandshakeManager|DefaultZetapushHandshakeManager}
    */
   static createHandshake({ authType, deploymentId, login, password }) {

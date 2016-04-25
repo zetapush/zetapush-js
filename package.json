@@ -23,6 +23,7 @@
     "doc": "esdoc -c esdoc.json",
     "postinstall": "bower install",
     "prebuild": "npm run doc",
+    "prebuild:dev": "npm run doc",
     "build": "gulp build --optimize",
     "build:dev": "gulp build",
     "predeploy": "npm run doc",

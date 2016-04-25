@@ -1,20 +1,20 @@
 window.esdocSearchIndex = [
   [
-    "zetapush-js/src/client.js~api_url",
-    "variable/index.html#static-variable-API_URL",
-    "<span>API_URL</span> <span class=\"search-result-import-path\">zetapush-js/src/client.js</span>",
-    "variable"
+    "zetapush-js/src/authentication/handshake.js~abstracthandshakemanager",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html",
+    "<span>AbstractHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/authentication/handshake.js</span>",
+    "class"
   ],
   [
-    "zetapush-js/src/definitions.js~aggregpublisherdefinition",
+    "zetapush-js/src/definitions/index.js~aggregpublisherdefinition",
     "variable/index.html#static-variable-AggregPublisherDefinition",
-    "<span>AggregPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>AggregPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/handshake.js~authentfactory",
-    "class/src/handshake.js~AuthentFactory.html",
-    "<span>AuthentFactory</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
+    "zetapush-js/src/authentication/handshake.js~authentfactory",
+    "class/src/authentication/handshake.js~AuthentFactory.html",
+    "<span>AuthentFactory</span> <span class=\"search-result-import-path\">zetapush-js/src/authentication/handshake.js</span>",
     "class"
   ],
   [
@@ -24,159 +24,165 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "zetapush-js/src/connection-status.js~connectionstatuslistener",
-    "class/src/connection-status.js~ConnectionStatusListener.html",
-    "<span>ConnectionStatusListener</span> <span class=\"search-result-import-path\">zetapush-js/src/connection-status.js</span>",
+    "zetapush-js/src/connection/connection-status.js~connectionstatuslistener",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html",
+    "<span>ConnectionStatusListener</span> <span class=\"search-result-import-path\">zetapush-js/src/connection/connection-status.js</span>",
     "class"
   ],
   [
-    "zetapush-js/src/definitions.js~cronpublisherdefinition",
+    "zetapush-js/src/authentication/handshake.js~credentialshandshakemanager",
+    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html",
+    "<span>CredentialsHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/authentication/handshake.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~cronpublisherdefinition",
     "variable/index.html#static-variable-CronPublisherDefinition",
-    "<span>CronPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>CronPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/handshake.js~defaultzetapushhandshakemanager",
-    "class/src/handshake.js~DefaultZetapushHandshakeManager.html",
-    "<span>DefaultZetapushHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/src/definitions.js~delegatingpublisherdefinition",
+    "zetapush-js/src/definitions/index.js~delegatingpublisherdefinition",
     "variable/index.html#static-variable-DelegatingPublisherDefinition",
-    "<span>DelegatingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>DelegatingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~echopublisherdefinition",
+    "zetapush-js/src/definitions/index.js~echopublisherdefinition",
     "variable/index.html#static-variable-EchoPublisherDefinition",
-    "<span>EchoPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>EchoPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~gameenginepublisherdefinition",
+    "zetapush-js/src/definitions/index.js~gameenginepublisherdefinition",
     "variable/index.html#static-variable-GameEnginePublisherDefinition",
-    "<span>GameEnginePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>GameEnginePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~gamepublisherdefinition",
+    "zetapush-js/src/definitions/index.js~gamepublisherdefinition",
     "variable/index.html#static-variable-GamePublisherDefinition",
-    "<span>GamePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>GamePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~gdapublisherdefinition",
+    "zetapush-js/src/definitions/index.js~gdapublisherdefinition",
     "variable/index.html#static-variable-GdaPublisherDefinition",
-    "<span>GdaPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>GdaPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~groupmanagementpublisherdefinition",
+    "zetapush-js/src/definitions/index.js~groupmanagementpublisherdefinition",
     "variable/index.html#static-variable-GroupManagementPublisherDefinition",
-    "<span>GroupManagementPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>GroupManagementPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~httpclientpublisherdefinition",
+    "zetapush-js/src/definitions/index.js~httpclientpublisherdefinition",
     "variable/index.html#static-variable-HttpclientPublisherDefinition",
-    "<span>HttpclientPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>HttpclientPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~macropublisherdefinition",
+    "zetapush-js/src/definitions/index.js~macropublisherdefinition",
     "variable/index.html#static-variable-MacroPublisherDefinition",
-    "<span>MacroPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>MacroPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~messagingpublisherdefinition",
+    "zetapush-js/src/definitions/index.js~messagingpublisherdefinition",
     "variable/index.html#static-variable-MessagingPublisherDefinition",
-    "<span>MessagingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>MessagingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~queuepublisherdefinition",
+    "zetapush-js/src/definitions/index.js~queuepublisherdefinition",
     "variable/index.html#static-variable-QueuePublisherDefinition",
-    "<span>QueuePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>QueuePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~remotingpublisherdefinition",
+    "zetapush-js/src/definitions/index.js~remotingpublisherdefinition",
     "variable/index.html#static-variable-RemotingPublisherDefinition",
-    "<span>RemotingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>RemotingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~searchpublisherdefinition",
+    "zetapush-js/src/definitions/index.js~searchpublisherdefinition",
     "variable/index.html#static-variable-SearchPublisherDefinition",
-    "<span>SearchPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>SearchPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~sendmailpublisherdefinition",
+    "zetapush-js/src/definitions/index.js~sendmailpublisherdefinition",
     "variable/index.html#static-variable-SendmailPublisherDefinition",
-    "<span>SendmailPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>SendmailPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~simplepublisherdefinition",
+    "zetapush-js/src/definitions/index.js~simplepublisherdefinition",
     "variable/index.html#static-variable-SimplePublisherDefinition",
-    "<span>SimplePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>SimplePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~sms_ovhpublisherdefinition",
-    "variable/index.html#static-variable-Sms_ovhPublisherDefinition",
-    "<span>Sms_ovhPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
-    "variable"
-  ],
-  [
-    "zetapush-js/src/definitions.js~stackpublisherdefinition",
-    "variable/index.html#static-variable-StackPublisherDefinition",
-    "<span>StackPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
-    "variable"
-  ],
-  [
-    "zetapush-js/src/definitions.js~templatepublisherdefinition",
-    "variable/index.html#static-variable-TemplatePublisherDefinition",
-    "<span>TemplatePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
-    "variable"
-  ],
-  [
-    "zetapush-js/src/handshake.js~tokenhandshakemanager",
-    "class/src/handshake.js~TokenHandshakeManager.html",
-    "<span>TokenHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
+    "zetapush-js/src/smart-client.js~smartclient",
+    "class/src/smart-client.js~SmartClient.html",
+    "<span>SmartClient</span> <span class=\"search-result-import-path\">zetapush-js/src/smart-client.js</span>",
     "class"
   ],
   [
-    "zetapush-js/src/definitions.js~userdirpublisherdefinition",
+    "zetapush-js/src/definitions/index.js~sms_ovhpublisherdefinition",
+    "variable/index.html#static-variable-Sms_ovhPublisherDefinition",
+    "<span>Sms_ovhPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~stackpublisherdefinition",
+    "variable/index.html#static-variable-StackPublisherDefinition",
+    "<span>StackPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~templatepublisherdefinition",
+    "variable/index.html#static-variable-TemplatePublisherDefinition",
+    "<span>TemplatePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/authentication/handshake.js~tokenhandshakemanager",
+    "class/src/authentication/handshake.js~TokenHandshakeManager.html",
+    "<span>TokenHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/authentication/handshake.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~userdirpublisherdefinition",
     "variable/index.html#static-variable-UserdirPublisherDefinition",
-    "<span>UserdirPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>UserdirPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~weakpublisherdefinition",
+    "zetapush-js/src/definitions/index.js~weakpublisherdefinition",
     "variable/index.html#static-variable-WeakPublisherDefinition",
-    "<span>WeakPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>WeakPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~zpfs_hdfspublisherdefinition",
+    "zetapush-js/src/definitions/index.js~zpfs_hdfspublisherdefinition",
     "variable/index.html#static-variable-Zpfs_hdfsPublisherDefinition",
-    "<span>Zpfs_hdfsPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>Zpfs_hdfsPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~zpfs_s3publisherdefinition",
+    "zetapush-js/src/definitions/index.js~zpfs_s3publisherdefinition",
     "variable/index.html#static-variable-Zpfs_s3PublisherDefinition",
-    "<span>Zpfs_s3PublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>Zpfs_s3PublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/src/definitions.js~zpfs_s3compatpublisherdefinition",
+    "zetapush-js/src/definitions/index.js~zpfs_s3compatpublisherdefinition",
     "variable/index.html#static-variable-Zpfs_s3compatPublisherDefinition",
-    "<span>Zpfs_s3compatPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
+    "<span>Zpfs_s3compatPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "variable"
   ],
   [
@@ -510,6 +516,114 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/authentication/handshake.js",
+    "file/src/authentication/handshake.js.html",
+    "src/authentication/handshake.js",
+    "file"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#authtype",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-member-authType",
+    "src/authentication/handshake.js~AbstractHandshakeManager#authType",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#authversion",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-get-authVersion",
+    "src/authentication/handshake.js~AbstractHandshakeManager#authVersion",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#businessid",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-member-businessId",
+    "src/authentication/handshake.js~AbstractHandshakeManager#businessId",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#constructor",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-constructor-constructor",
+    "src/authentication/handshake.js~AbstractHandshakeManager#constructor",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#deploymentid",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-member-deploymentId",
+    "src/authentication/handshake.js~AbstractHandshakeManager#deploymentId",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#gethandshakefields",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-method-getHandshakeFields",
+    "src/authentication/handshake.js~AbstractHandshakeManager#getHandshakeFields",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~authentfactory.createdelegatinghandshake",
+    "class/src/authentication/handshake.js~AuthentFactory.html#static-method-createDelegatingHandshake",
+    "src/authentication/handshake.js~AuthentFactory.createDelegatingHandshake",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~authentfactory.createhandshake",
+    "class/src/authentication/handshake.js~AuthentFactory.html#static-method-createHandshake",
+    "src/authentication/handshake.js~AuthentFactory.createHandshake",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~authentfactory.createsimplehandshake",
+    "class/src/authentication/handshake.js~AuthentFactory.html#static-method-createSimpleHandshake",
+    "src/authentication/handshake.js~AuthentFactory.createSimpleHandshake",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~authentfactory.createweakhandshake",
+    "class/src/authentication/handshake.js~AuthentFactory.html#static-method-createWeakHandshake",
+    "src/authentication/handshake.js~AuthentFactory.createWeakHandshake",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~credentialshandshakemanager#authdata",
+    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html#instance-get-authData",
+    "src/authentication/handshake.js~CredentialsHandshakeManager#authData",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~credentialshandshakemanager#constructor",
+    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html#instance-constructor-constructor",
+    "src/authentication/handshake.js~CredentialsHandshakeManager#constructor",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~credentialshandshakemanager#login",
+    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html#instance-member-login",
+    "src/authentication/handshake.js~CredentialsHandshakeManager#login",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~credentialshandshakemanager#password",
+    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html#instance-member-password",
+    "src/authentication/handshake.js~CredentialsHandshakeManager#password",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~tokenhandshakemanager#authdata",
+    "class/src/authentication/handshake.js~TokenHandshakeManager.html#instance-get-authData",
+    "src/authentication/handshake.js~TokenHandshakeManager#authData",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~tokenhandshakemanager#constructor",
+    "class/src/authentication/handshake.js~TokenHandshakeManager.html#instance-constructor-constructor",
+    "src/authentication/handshake.js~TokenHandshakeManager#constructor",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~tokenhandshakemanager#token",
+    "class/src/authentication/handshake.js~TokenHandshakeManager.html#instance-member-token",
+    "src/authentication/handshake.js~TokenHandshakeManager#token",
+    "member"
+  ],
+  [
     "src/client-helper.js",
     "file/src/client-helper.js.html",
     "src/client-helper.js",
@@ -600,136 +714,64 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/client.js~client.getgenericservicelistener",
-    "class/src/client.js~Client.html#static-method-getGenericServiceListener",
-    "src/client.js~Client.getGenericServiceListener",
-    "method"
+    "src/client.js~clientconfig",
+    "typedef/index.html#static-typedef-ClientConfig",
+    "src/client.js~ClientConfig",
+    "typedef"
   ],
   [
-    "src/cometd.js",
-    "file/src/cometd.js.html",
-    "src/cometd.js",
+    "src/connection/cometd.js",
+    "file/src/connection/cometd.js.html",
+    "src/connection/cometd.js",
     "file"
   ],
   [
-    "src/connection-status.js",
-    "file/src/connection-status.js.html",
-    "src/connection-status.js",
+    "src/connection/connection-status.js",
+    "file/src/connection/connection-status.js.html",
+    "src/connection/connection-status.js",
     "file"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onconnectionbroken",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionBroken",
-    "src/connection-status.js~ConnectionStatusListener#onConnectionBroken",
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionbroken",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionBroken",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionBroken",
     "method"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onconnectionclosed",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionClosed",
-    "src/connection-status.js~ConnectionStatusListener#onConnectionClosed",
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionclosed",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionClosed",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionClosed",
     "method"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onconnectionestablished",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionEstablished",
-    "src/connection-status.js~ConnectionStatusListener#onConnectionEstablished",
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionestablished",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionEstablished",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionEstablished",
     "method"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onfailedhandshake",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onFailedHandshake",
-    "src/connection-status.js~ConnectionStatusListener#onFailedHandshake",
+    "src/connection/connection-status.js~connectionstatuslistener#onfailedhandshake",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onFailedHandshake",
+    "src/connection/connection-status.js~ConnectionStatusListener#onFailedHandshake",
     "method"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onmessagelost",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onMessageLost",
-    "src/connection-status.js~ConnectionStatusListener#onMessageLost",
+    "src/connection/connection-status.js~connectionstatuslistener#onmessagelost",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onMessageLost",
+    "src/connection/connection-status.js~ConnectionStatusListener#onMessageLost",
     "method"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onsuccessfulhandshake",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onSuccessfulHandshake",
-    "src/connection-status.js~ConnectionStatusListener#onSuccessfulHandshake",
+    "src/connection/connection-status.js~connectionstatuslistener#onsuccessfulhandshake",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onSuccessfulHandshake",
+    "src/connection/connection-status.js~ConnectionStatusListener#onSuccessfulHandshake",
     "method"
   ],
   [
-    "src/definitions.js",
-    "file/src/definitions.js.html",
-    "src/definitions.js",
+    "src/definitions/index.js",
+    "file/src/definitions/index.js.html",
+    "src/definitions/index.js",
     "file"
-  ],
-  [
-    "src/handshake.js",
-    "file/src/handshake.js.html",
-    "src/handshake.js",
-    "file"
-  ],
-  [
-    "src/handshake.js~authentfactory.createdelegatinghandshake",
-    "class/src/handshake.js~AuthentFactory.html#static-method-createDelegatingHandshake",
-    "src/handshake.js~AuthentFactory.createDelegatingHandshake",
-    "method"
-  ],
-  [
-    "src/handshake.js~authentfactory.createhandshake",
-    "class/src/handshake.js~AuthentFactory.html#static-method-createHandshake",
-    "src/handshake.js~AuthentFactory.createHandshake",
-    "method"
-  ],
-  [
-    "src/handshake.js~authentfactory.createsimplehandshake",
-    "class/src/handshake.js~AuthentFactory.html#static-method-createSimpleHandshake",
-    "src/handshake.js~AuthentFactory.createSimpleHandshake",
-    "method"
-  ],
-  [
-    "src/handshake.js~authentfactory.createweakhandshake",
-    "class/src/handshake.js~AuthentFactory.html#static-method-createWeakHandshake",
-    "src/handshake.js~AuthentFactory.createWeakHandshake",
-    "method"
-  ],
-  [
-    "src/handshake.js~defaultzetapushhandshakemanager#authdata",
-    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-get-authData",
-    "src/handshake.js~DefaultZetapushHandshakeManager#authData",
-    "member"
-  ],
-  [
-    "src/handshake.js~defaultzetapushhandshakemanager#constructor",
-    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-constructor-constructor",
-    "src/handshake.js~DefaultZetapushHandshakeManager#constructor",
-    "method"
-  ],
-  [
-    "src/handshake.js~defaultzetapushhandshakemanager#login",
-    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-member-login",
-    "src/handshake.js~DefaultZetapushHandshakeManager#login",
-    "member"
-  ],
-  [
-    "src/handshake.js~defaultzetapushhandshakemanager#password",
-    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-member-password",
-    "src/handshake.js~DefaultZetapushHandshakeManager#password",
-    "member"
-  ],
-  [
-    "src/handshake.js~tokenhandshakemanager#authdata",
-    "class/src/handshake.js~TokenHandshakeManager.html#instance-get-authData",
-    "src/handshake.js~TokenHandshakeManager#authData",
-    "member"
-  ],
-  [
-    "src/handshake.js~tokenhandshakemanager#constructor",
-    "class/src/handshake.js~TokenHandshakeManager.html#instance-constructor-constructor",
-    "src/handshake.js~TokenHandshakeManager#constructor",
-    "method"
-  ],
-  [
-    "src/handshake.js~tokenhandshakemanager#token",
-    "class/src/handshake.js~TokenHandshakeManager.html#instance-member-token",
-    "src/handshake.js~TokenHandshakeManager#token",
-    "member"
   ],
   [
     "src/index.js",
@@ -744,15 +786,33 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/token-persistence.js",
-    "file/src/token-persistence.js.html",
-    "src/token-persistence.js",
+    "src/smart-client.js~smartclient#constructor",
+    "class/src/smart-client.js~SmartClient.html#instance-constructor-constructor",
+    "src/smart-client.js~SmartClient#constructor",
+    "method"
+  ],
+  [
+    "src/smart-client.js~smartclient#gettoken",
+    "class/src/smart-client.js~SmartClient.html#instance-method-getToken",
+    "src/smart-client.js~SmartClient#getToken",
+    "method"
+  ],
+  [
+    "src/smart-client.js~smartclientconfig",
+    "typedef/index.html#static-typedef-SmartClientConfig",
+    "src/smart-client.js~SmartClientConfig",
+    "typedef"
+  ],
+  [
+    "src/utils/index.js",
+    "file/src/utils/index.js.html",
+    "src/utils/index.js",
     "file"
   ],
   [
-    "src/utils.js",
-    "file/src/utils.js.html",
-    "src/utils.js",
+    "src/utils/token-persistence.js",
+    "file/src/utils/token-persistence.js.html",
+    "src/utils/token-persistence.js",
     "file"
   ]
 ]

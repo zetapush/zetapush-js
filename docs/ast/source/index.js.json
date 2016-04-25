@@ -42,11 +42,11 @@
       ],
       "source": {
         "type": "Literal",
-        "value": "./definitions",
-        "raw": "'./definitions'",
+        "value": "./definitions/index",
+        "raw": "'./definitions/index'",
         "range": [
           29,
-          44
+          50
         ],
         "loc": {
           "start": {
@@ -55,13 +55,13 @@
           },
           "end": {
             "line": 1,
-            "column": 44
+            "column": 50
           }
         }
       },
       "range": [
         0,
-        46
+        52
       ],
       "loc": {
         "start": {
@@ -84,8 +84,8 @@
             "type": "Identifier",
             "name": "AuthentFactory",
             "range": [
-              55,
-              69
+              61,
+              75
             ],
             "loc": {
               "start": {
@@ -102,8 +102,8 @@
             "type": "Identifier",
             "name": "AuthentFactory",
             "range": [
-              55,
-              69
+              61,
+              75
             ],
             "loc": {
               "start": {
@@ -117,8 +117,8 @@
             }
           },
           "range": [
-            55,
-            69
+            61,
+            75
           ],
           "loc": {
             "start": {
@@ -134,11 +134,11 @@
       ],
       "source": {
         "type": "Literal",
-        "value": "./handshake",
-        "raw": "'./handshake'",
+        "value": "./authentication/handshake",
+        "raw": "'./authentication/handshake'",
         "range": [
-          77,
-          90
+          83,
+          111
         ],
         "loc": {
           "start": {
@@ -147,13 +147,13 @@
           },
           "end": {
             "line": 3,
-            "column": 44
+            "column": 59
           }
         }
       },
       "range": [
-        46,
-        91
+        52,
+        112
       ],
       "loc": {
         "start": {
@@ -174,10 +174,10 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "API_URL",
+            "name": "ConnectionStatusListener",
             "range": [
-              100,
-              107
+              121,
+              145
             ],
             "loc": {
               "start": {
@@ -186,16 +186,16 @@
               },
               "end": {
                 "line": 4,
-                "column": 16
+                "column": 33
               }
             }
           },
           "local": {
             "type": "Identifier",
-            "name": "API_URL",
+            "name": "ConnectionStatusListener",
             "range": [
-              100,
-              107
+              121,
+              145
             ],
             "loc": {
               "start": {
@@ -204,13 +204,13 @@
               },
               "end": {
                 "line": 4,
-                "column": 16
+                "column": 33
               }
             }
           },
           "range": [
-            100,
-            107
+            121,
+            145
           ],
           "loc": {
             "start": {
@@ -219,86 +219,33 @@
             },
             "end": {
               "line": 4,
-              "column": 16
-            }
-          }
-        },
-        {
-          "type": "ExportSpecifier",
-          "exported": {
-            "type": "Identifier",
-            "name": "Client",
-            "range": [
-              109,
-              115
-            ],
-            "loc": {
-              "start": {
-                "line": 4,
-                "column": 18
-              },
-              "end": {
-                "line": 4,
-                "column": 24
-              }
-            }
-          },
-          "local": {
-            "type": "Identifier",
-            "name": "Client",
-            "range": [
-              109,
-              115
-            ],
-            "loc": {
-              "start": {
-                "line": 4,
-                "column": 18
-              },
-              "end": {
-                "line": 4,
-                "column": 24
-              }
-            }
-          },
-          "range": [
-            109,
-            115
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 18
-            },
-            "end": {
-              "line": 4,
-              "column": 24
+              "column": 33
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "./client",
-        "raw": "'./client'",
+        "value": "./connection/connection-status",
+        "raw": "'./connection/connection-status'",
         "range": [
-          123,
-          133
+          153,
+          185
         ],
         "loc": {
           "start": {
             "line": 4,
-            "column": 32
+            "column": 41
           },
           "end": {
             "line": 4,
-            "column": 42
+            "column": 73
           }
         }
       },
       "range": [
-        91,
-        134
+        112,
+        186
       ],
       "loc": {
         "start": {
@@ -319,10 +266,10 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "SmartClient",
+            "name": "Client",
             "range": [
-              143,
-              154
+              195,
+              201
             ],
             "loc": {
               "start": {
@@ -331,16 +278,16 @@
               },
               "end": {
                 "line": 5,
-                "column": 20
+                "column": 15
               }
             }
           },
           "local": {
             "type": "Identifier",
-            "name": "SmartClient",
+            "name": "Client",
             "range": [
-              143,
-              154
+              195,
+              201
             ],
             "loc": {
               "start": {
@@ -349,13 +296,13 @@
               },
               "end": {
                 "line": 5,
-                "column": 20
+                "column": 15
               }
             }
           },
           "range": [
-            143,
-            154
+            195,
+            201
           ],
           "loc": {
             "start": {
@@ -364,33 +311,33 @@
             },
             "end": {
               "line": 5,
-              "column": 20
+              "column": 15
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "./smart-client",
-        "raw": "'./smart-client'",
+        "value": "./client",
+        "raw": "'./client'",
         "range": [
-          162,
-          178
+          209,
+          219
         ],
         "loc": {
           "start": {
             "line": 5,
-            "column": 28
+            "column": 23
           },
           "end": {
             "line": 5,
-            "column": 44
+            "column": 33
           }
         }
       },
       "range": [
-        134,
-        179
+        186,
+        220
       ],
       "loc": {
         "start": {
@@ -411,10 +358,10 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "AbstractTokenPersistenceStrategy",
+            "name": "SmartClient",
             "range": [
-              188,
-              220
+              229,
+              240
             ],
             "loc": {
               "start": {
@@ -423,16 +370,16 @@
               },
               "end": {
                 "line": 6,
-                "column": 41
+                "column": 20
               }
             }
           },
           "local": {
             "type": "Identifier",
-            "name": "AbstractTokenPersistenceStrategy",
+            "name": "SmartClient",
             "range": [
-              188,
-              220
+              229,
+              240
             ],
             "loc": {
               "start": {
@@ -441,13 +388,13 @@
               },
               "end": {
                 "line": 6,
-                "column": 41
+                "column": 20
               }
             }
           },
           "range": [
-            188,
-            220
+            229,
+            240
           ],
           "loc": {
             "start": {
@@ -456,86 +403,33 @@
             },
             "end": {
               "line": 6,
-              "column": 41
-            }
-          }
-        },
-        {
-          "type": "ExportSpecifier",
-          "exported": {
-            "type": "Identifier",
-            "name": "LocalStorageTokenPersistenceStrategy",
-            "range": [
-              222,
-              258
-            ],
-            "loc": {
-              "start": {
-                "line": 6,
-                "column": 43
-              },
-              "end": {
-                "line": 6,
-                "column": 79
-              }
-            }
-          },
-          "local": {
-            "type": "Identifier",
-            "name": "LocalStorageTokenPersistenceStrategy",
-            "range": [
-              222,
-              258
-            ],
-            "loc": {
-              "start": {
-                "line": 6,
-                "column": 43
-              },
-              "end": {
-                "line": 6,
-                "column": 79
-              }
-            }
-          },
-          "range": [
-            222,
-            258
-          ],
-          "loc": {
-            "start": {
-              "line": 6,
-              "column": 43
-            },
-            "end": {
-              "line": 6,
-              "column": 79
+              "column": 20
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "./token-persistence",
-        "raw": "'./token-persistence'",
+        "value": "./smart-client",
+        "raw": "'./smart-client'",
         "range": [
-          266,
-          287
+          248,
+          264
         ],
         "loc": {
           "start": {
             "line": 6,
-            "column": 87
+            "column": 28
           },
           "end": {
             "line": 6,
-            "column": 108
+            "column": 44
           }
         }
       },
       "range": [
-        179,
-        288
+        220,
+        265
       ],
       "loc": {
         "start": {
@@ -558,8 +452,8 @@
             "type": "Identifier",
             "name": "definitions",
             "range": [
-              297,
-              308
+              274,
+              285
             ],
             "loc": {
               "start": {
@@ -576,8 +470,8 @@
             "type": "Identifier",
             "name": "definitions",
             "range": [
-              297,
-              308
+              274,
+              285
             ],
             "loc": {
               "start": {
@@ -591,8 +485,8 @@
             }
           },
           "range": [
-            297,
-            308
+            274,
+            285
           ],
           "loc": {
             "start": {
@@ -608,8 +502,8 @@
       ],
       "source": null,
       "range": [
-        288,
-        311
+        265,
+        288
       ],
       "loc": {
         "start": {
@@ -626,7 +520,7 @@
   "sourceType": "module",
   "range": [
     0,
-    311
+    288
   ],
   "loc": {
     "start": {

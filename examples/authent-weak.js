@@ -1,41 +1,26 @@
-{
-  const { AuthentFactory, Client } = ZetaPush
+const client = new ZetaPush.Client({
+  businessId: '5mln3Zxw',
+  handshakeStrategy() {
+    return ZetaPush.AuthentFactory.createWeakHandshake({
+      token: null,
+      deploymentId: 'VMuM'
+    })
+  }
+})
 
-  const BUSINESS_ID = '5mln3Zxw'
-  const AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
+client.addConnectionStatusListener({
+  onSuccessfulHandshake(authentication) {
+    console.debug('AuthentWeak::onSuccessfulHandshake', authentication)
+  },
+  onFailedHandshake(error) {
+    console.debug('AuthentWeak::onFailedHandshake', error)
+  },
+  onConnectionEstablished() {
+    console.debug('AuthentWeak::onConnectionEstablished')
+  },
+  onConnectionClosed() {
+    console.debug('AuthentWeak::onConnectionClosed')
+  }
+})
 
-  const client = new Client({
-    apiUrl: 'http://vm-zbo:8080/zbo/pub/business/',
-    businessId: BUSINESS_ID,
-    handshakeStrategy() {
-      return AuthentFactory.createWeakHandshake({
-        token: null,
-        deploymentId: AUTHENTICATION_DEPLOYMENT_ID
-      })
-    }
-  })
-
-  client.addConnectionStatusListener({
-    onSuccessfulHandshake(authentication) {
-      console.debug('AuthentWeak::onSuccessfulHandshake', authentication)
-    },
-
-    onFailedHandshake(error) {
-      console.debug('AuthentWeak::onFailedHandshake', error)
-    },
-
-    onConnectionEstablished() {
-      console.debug('AuthentWeak::onConnectionEstablished')
-    },
-
-    onConnectionBroken() {
-      console.debug('AuthentWeak::onConnectionBroken')
-    },
-
-    onConnectionClosed() {
-      console.debug('AuthentWeak::onConnectionClosed')
-    }
-  })
-
-  client.connect()
-}
+client.connect()

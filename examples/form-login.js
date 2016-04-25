@@ -1,21 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const { AuthentFactory, Client } = ZetaPush
-
-  const BUSINESS_ID = '5mln3Zxw'
-  const AUTHENTICATION_DEPLOYMENT_ID = 'LkvA'
-
   const aside = document.querySelector('aside')
   const form = document.querySelector('form')
   const login = document.querySelector('input[name="login"]')
   const password = document.querySelector('input[name="password"]')
 
-  const client = new Client({
-    businessId: BUSINESS_ID,
+  const client = new ZetaPush.Client({
+    businessId: '5mln3Zxw',
     handshakeStrategy() {
-      return AuthentFactory.createSimpleHandshake({
+      return ZetaPush.AuthentFactory.createSimpleHandshake({
         login: login.value,
         password: password.value,
-        deploymentId: AUTHENTICATION_DEPLOYMENT_ID
+        deploymentId: 'LkvA'
       })
     }
   })
@@ -42,6 +37,4 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault()
     client.connect()
   })
-
-  window.client = client
 })

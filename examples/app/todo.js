@@ -1,13 +1,11 @@
 ;(function () {
-  var BUSINESS_ID = '5mln3Zxw'
-  var DEPLOYMENT_ID = '5CO-'
-  var AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
+  var STACK_DEPLOYMENT_ID = '5CO-'
 
   // Create a Zetapush SmartClient
   var client = new ZetaPush.SmartClient({
-    businessId: BUSINESS_ID,
+    businessId: '5mln3Zxw',
     enableHttps: true,
-    authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
+    authenticationDeploymentId: 'VMuM'
   })
 
   // Declare a service listener mapping stack methods
@@ -86,12 +84,12 @@
   }
   // Create a service publish to interact with remote API
   var stackServicePublisher = client.createServicePublisher({
-    deploymentId: DEPLOYMENT_ID,
+    deploymentId: STACK_DEPLOYMENT_ID,
     definition: ZetaPush.definitions.StackPublisherDefinition
   })
   // Subscribe listener methods for a given deploymentId
   client.subscribe({
-    deploymentId: DEPLOYMENT_ID,
+    deploymentId: STACK_DEPLOYMENT_ID,
     listener: stackServiceListener
   })
   // Add listener to life cycle connection events

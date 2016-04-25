@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/authentication/handshake.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/zetapush/zetapush-js" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~CredentialsHandshakeManager.html">CredentialsHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">definitions</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AggregPublisherDefinition">AggregPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-CronPublisherDefinition">CronPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DelegatingPublisherDefinition">DelegatingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EchoPublisherDefinition">EchoPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GameEnginePublisherDefinition">GameEnginePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GamePublisherDefinition">GamePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GdaPublisherDefinition">GdaPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GroupManagementPublisherDefinition">GroupManagementPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-HttpclientPublisherDefinition">HttpclientPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MacroPublisherDefinition">MacroPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MessagingPublisherDefinition">MessagingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-QueuePublisherDefinition">QueuePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RemotingPublisherDefinition">RemotingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SearchPublisherDefinition">SearchPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SendmailPublisherDefinition">SendmailPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SimplePublisherDefinition">SimplePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Sms_ovhPublisherDefinition">Sms_ovhPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-StackPublisherDefinition">StackPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TemplatePublisherDefinition">TemplatePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-UserdirPublisherDefinition">UserdirPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-WeakPublisherDefinition">WeakPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Zpfs_hdfsPublisherDefinition">Zpfs_hdfsPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Zpfs_s3PublisherDefinition">Zpfs_s3PublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Zpfs_s3compatPublisherDefinition">Zpfs_s3compatPublisherDefinition</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/authentication/handshake.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * ZetaPush deployables names
+ */
+const DeployableNames = {
+  AUTH_SIMPLE: &apos;simple&apos;,
+  AUTH_WEAK: &apos;weak&apos;,
+  AUTH_DELEGATING: &apos;delegating&apos;
+}
+
+/**
+ * @access public
+ */
+export class AbstractHandshakeManager {
+  /**
+   * @param {{authType: string, businessId: string, deploymentId: string}} parameters
+   */
+  constructor({ authType, businessId, deploymentId }) {
+    this.authType = authType
+    this.businessId = businessId
+    this.deploymentId = deploymentId
+  }
+  /**
+   * @param {ClientHelper} client
+   * @return {Object}
+   */
+  getHandshakeFields(client) {
+    const authentication = {
+      data: this.authData,
+      type: `${client.getBusinessId()}.${this.deploymentId}.${this.authType}`,
+      version: this.authVersion
+    }
+    if (client.getResource()) {
+      authentication.resource = client.getResource()
+    }
+    return {
+      ext: {
+        authentication
+      }
+    }
+  }
+  /**
+   * Get auth version
+   * @return {string}
+   */
+  get authVersion() {
+    return &apos;none&apos;
+  }
+
+}
+
+/**
+ * @access public
+ * @extends {AbstractHandshakeManager}
+ */
+export class TokenHandshakeManager extends AbstractHandshakeManager {
+  /**
+   * @param {{authType: string, deploymentId: string, token: string}} parameters
+   */
+  constructor({ authType, deploymentId, token }) {
+    super({ deploymentId, authType })
+    this.token = token
+  }
+  /**
+   * @return {token: string}
+   */
+  get authData() {
+    const { token } = this
+    return {
+      token
+    }
+  }
+
+}
+
+/**
+ * @access public
+ * @extends {AbstractHandshakeManager}
+ */
+export class CredentialsHandshakeManager extends AbstractHandshakeManager {
+
+  /**
+   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
+   */
+  constructor({ authType, deploymentId, login, password }) {
+    super({ authType, deploymentId })
+    this.login = login
+    this.password = password
+  }
+  /**
+   * Get auth data
+   * @return {login: string, password: string}
+   */
+  get authData() {
+    const { login, password } = this
+    return {
+      login, password
+    }
+  }
+
+}
+
+/**
+ * Factory to create handshake
+ * @access public
+ */
+export class AuthentFactory {
+  /**
+   * @param {{deploymentId: string, login: string, password: string}} parameters
+   * @return {CredentialsHandshakeManager}
+   */
+  static createSimpleHandshake({ deploymentId, login, password }) {
+    return AuthentFactory.createHandshake({
+      authType: DeployableNames.AUTH_SIMPLE,
+      deploymentId,
+      login,
+      password
+    })
+  }
+  /**
+   * @param {{deploymentId: string, token: string}} parameters
+   * @return {TokenHandshakeManager}
+   */
+  static createWeakHandshake({ deploymentId, token }) {
+    return AuthentFactory.createHandshake({
+      authType: DeployableNames.AUTH_WEAK,
+      deploymentId,
+      login: token,
+      password: null
+    })
+  }
+  /**
+   * @param {{deploymentId: string, token: string}} parameters
+   * @return {TokenHandshakeManager}
+   */
+  static createDelegatingHandshake({ deploymentId, token }) {
+    return AuthentFactory.createHandshake({
+      authType: DeployableNames.AUTH_DELEGATING,
+      deploymentId,
+      login: token,
+      password: null
+    })
+  }
+  /**
+   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
+   * @return {TokenHandshakeManager|CredentialsHandshakeManager}
+   */
+  static createHandshake({ authType, deploymentId, login, password }) {
+    if (null === password) {
+      return new TokenHandshakeManager({ authType, deploymentId, token: login })
+    }
+    return new CredentialsHandshakeManager({ authType, deploymentId, login, password  })
+  }
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

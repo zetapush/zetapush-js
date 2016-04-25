@@ -9,7 +9,7 @@ const ZETAPUSH_TOKEN_KEY = 'zetapush.token'
  */
 export class AbstractTokenPersistenceStrategy {
   /**
-   *
+   * @param {{key: string}} parameters
    */
   constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {
     /**
@@ -25,6 +25,7 @@ export class AbstractTokenPersistenceStrategy {
   get() {}
   /**
    * @abstract
+   * @param {{token: string}} parameters
    */
   set({ token }) {}
 }
@@ -43,6 +44,7 @@ export class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersisten
   }
   /**
    * @override
+   * @param {{token: string}} parameters
    */
   set({ token }) {
     localStorage.setItem(this.key, token)

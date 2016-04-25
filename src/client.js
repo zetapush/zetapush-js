@@ -1,33 +1,40 @@
+import { API_URL } from './utils/index'
 import { ClientHelper } from './client-helper'
-
-import { NotYetImplementedError } from './utils'
+import { NotYetImplementedError } from './utils/index'
 
 /**
- * Default ZetaPush API URL
- * @access public
+ * Client config object.
+ * @typedef {Object} ClientConfig
+ * @property {string} apiUrl - Api Url
+ * @property {string} businessId - Business id
+ * @property {boolean} forceHttps - Force end to end HTTPS connection
+ * @property {function():AbstractHandshakeManager} handshakeStrategy - Handshake strategy
+ * @property {string} resource - Client resource id
  */
-export const API_URL = 'https://api.zpush.io/'
 
 /**
  * ZetaPush Client to connect
  * @access public
  * @example
- * const client = new Client({
+ * // Securized client with token based connection
+ * const client = new ZetaPush.Client({
  *   businessId: '<YOUR-BUSINESS-ID>',
- *   handshakeStrategy() {
- *     return AuthentFactory.createWeakHandshake({
+ *   forceHttps: true,
+ *   handshakeStrategy: function() {
+ *     return ZetaPush.AuthentFactory.createWeakHandshake({
  *       token: null,
  *       deploymentId: '<YOUR-DEPLOYMENT-ID>'
   *    })
  *   }
  * })
  * @example
- * const client = new Client({
+ * // Client with credentials based connection
+ * const client = new ZetaPush.Client({
  *   businessId: '<YOUR-BUSINESS-ID>',
- *   enableHttps: true,
- *   handshakeStrategy() {
- *     return AuthentFactory.createWeakHandshake({
- *       token: null,
+ *   handshakeStrategy: function() {
+ *     return ZetaPush.AuthentFactory.createSimpleHandshake({
+ *       login: '<USER-LOGIN>',
+ *       password: '<USER-PASSWORD>',
  *       deploymentId: '<YOUR-DEPLOYMENT-ID>'
   *    })
  *   }
@@ -35,9 +42,10 @@ export const API_URL = 'https://api.zpush.io/'
  */
 export class Client {
   /**
+   * @param {ClientConfig} config
    * Create a new ZetaPush client
    */
-  constructor({ apiUrl = API_URL, businessId, enableHttps = false, handshakeStrategy, resource = null }) {
+  constructor({ apiUrl = API_URL, businessId, forceHttps = false, handshakeStrategy, resource = null }) {
     /**
      * @access private
      * @type {ClientHelper}
@@ -45,7 +53,7 @@ export class Client {
     this.helper = new ClientHelper({
       apiUrl,
       businessId,
-      enableHttps,
+      forceHttps,
       handshakeStrategy,
       resource
     })
@@ -64,6 +72,7 @@ export class Client {
   }
   /**
    * Create a service publisher based on publisher definition for the given deployment id
+   * @param {{deploymentId: string, definition: Object}} parameters
    * @return {Object}
    */
   createServicePublisher({ deploymentId, definition }) {
@@ -99,6 +108,7 @@ export class Client {
   }
   /**
    * Subscribe all methods described in the listener for the given deploymentId
+   * @param {{deploymentId: string, listener: Object}} parameters
    * @return {Object} subscription
    * @example
    * const stackServiceListener = {
@@ -116,6 +126,7 @@ export class Client {
   }
   /**
    * Create a publish/subscribe
+   * @param {{deploymentId: string, listener: Object, definition: Object}} parameters
    * @return {Object}
    */
   createPublisherSubscriber({ deploymentId, listener, definition }) {
@@ -126,6 +137,7 @@ export class Client {
   }
   /**
    * Set new client resource value
+   * @param {string} resource
    */
   setResource(resource) {
     this.helper.setResource(resource)
@@ -151,6 +163,8 @@ export class Client {
 
   /**
    * Get a service lister from methods list with a default handler
+   * @access private
+   * @param {{methods: Array<function>, handler: function}} params
    * @return {Object} listener
    * @example
    * const getStackServiceListener = () => {

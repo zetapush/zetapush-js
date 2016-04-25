@@ -1,7 +1,7 @@
 import { CometD, WebSocketTransport } from 'zetapush-cometd'
-import { FetchLongPollingTransport } from './cometd'
-import { getServers, shuffle } from './utils'
-import { ConnectionStatusListener } from './connection-status'
+import { FetchLongPollingTransport } from './connection/cometd'
+import { ConnectionStatusListener } from './connection/connection-status'
+import { getServers, shuffle } from './utils/index'
 
 /**
  * CometD Messages enumeration
@@ -28,7 +28,7 @@ export class ClientHelper {
   /**
    * Create a new ZetaPush client helper
    */
-  constructor({ apiUrl, businessId, enableHttps = false, handshakeStrategy, resource }) {
+  constructor({ apiUrl, businessId, forceHttps = false, handshakeStrategy, resource }) {
     /**
      * @access private
      * @type {string}
@@ -48,7 +48,7 @@ export class ClientHelper {
      * @access private
      * @type {Promise}
      */
-    this.servers = getServers({ apiUrl, businessId, enableHttps })
+    this.servers = getServers({ apiUrl, businessId, forceHttps })
     /**
      * @access private
      * @type {Array<Object>}

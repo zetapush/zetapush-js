@@ -33,12 +33,15 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~Client.html">Client</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~DefaultZetapushHandshakeManager.html">DefaultZetapushHandshakeManager</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-API_URL">API_URL</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AggregPublisherDefinition">AggregPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~CredentialsHandshakeManager.html">CredentialsHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">definitions</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AggregPublisherDefinition">AggregPublisherDefinition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-CronPublisherDefinition">CronPublisherDefinition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DelegatingPublisherDefinition">DelegatingPublisherDefinition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EchoPublisherDefinition">EchoPublisherDefinition</a></span></span></li>
@@ -68,21 +71,36 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/smart-client.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Client } from &apos;./client&apos;
-import { AuthentFactory } from &apos;./handshake&apos;
-import { LocalStorageTokenPersistenceStrategy } from &apos;./token-persistence&apos;
+import { AuthentFactory } from &apos;./authentication/handshake&apos;
+import { LocalStorageTokenPersistenceStrategy } from &apos;./utils/token-persistence&apos;
 
 /**
- * @access protected
+ * SmartClient config object.
+ * @typedef {Object} SmartClientConfig
+ * @property {string} apiUrl - Api Url
+ * @property {string} authenticationDeploymentId - Authentication deployment id
+ * @property {string} businessId - Business id
+ * @property {boolean} forceHttps - Force end to end HTTPS connection
+ * @property {string} resource - Client resource id
+ * @property {AbstractTokenPersistenceStrategy} TokenPersistenceStrategy - Token storage strategy
+ */
+
+/**
+ * @access public
  * @extends {Client}
  */
 export class SmartClient extends Client {
   /**
    * Create a new ZetaPush smart client
+   * @param {SmartClientConfig} config
+   * @example
+   * // Smart client
+   * const client = new ZetaPush.SmartClient({
+   *   businessId: &apos;&lt;YOUR-BUSINESS-ID-ID&gt;&apos;,
+   *   authenticationDeploymentId: &apos;&lt;YOUR-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;
+   * })
    */
-  constructor({
-    apiUrl, authenticationDeploymentId, businessId, enableHttps, resource = null,
-    TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy
-  }) {
+  constructor({ apiUrl, authenticationDeploymentId, businessId, forceHttps, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {
     const handshakeStrategy = () =&gt; {
       const token = this.getToken()
       const handshake = AuthentFactory.createWeakHandshake({
@@ -94,7 +112,7 @@ export class SmartClient extends Client {
     /**
      *
      */
-    super({ apiUrl , businessId, enableHttps, handshakeStrategy, resource })
+    super({ apiUrl , businessId, forceHttps, handshakeStrategy, resource })
     const onSuccessfulHandshake = ({ publicToken, userId, token }) =&gt; {
       console.debug(&apos;SmartClient::onSuccessfulHandshake&apos;, { publicToken, userId, token })
 

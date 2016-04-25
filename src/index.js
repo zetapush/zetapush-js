@@ -1,7 +1,7 @@
-import * as definitions from './definitions'
+import * as definitions from './definitions/index'
 
-export { AuthentFactory } from './handshake'
-export { API_URL, Client } from './client'
+export { AuthentFactory } from './authentication/handshake'
+export { ConnectionStatusListener } from './connection/connection-status'
+export { Client } from './client'
 export { SmartClient } from './smart-client'
-export { AbstractTokenPersistenceStrategy, LocalStorageTokenPersistenceStrategy } from './token-persistence'
 export { definitions }

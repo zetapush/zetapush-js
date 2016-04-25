@@ -1,19 +1,34 @@
 import { Client } from './client'
-import { AuthentFactory } from './handshake'
-import { LocalStorageTokenPersistenceStrategy } from './token-persistence'
+import { AuthentFactory } from './authentication/handshake'
+import { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'
 
 /**
- * @access protected
+ * SmartClient config object.
+ * @typedef {Object} SmartClientConfig
+ * @property {string} apiUrl - Api Url
+ * @property {string} authenticationDeploymentId - Authentication deployment id
+ * @property {string} businessId - Business id
+ * @property {boolean} forceHttps - Force end to end HTTPS connection
+ * @property {string} resource - Client resource id
+ * @property {AbstractTokenPersistenceStrategy} TokenPersistenceStrategy - Token storage strategy
+ */
+
+/**
+ * @access public
  * @extends {Client}
  */
 export class SmartClient extends Client {
   /**
    * Create a new ZetaPush smart client
+   * @param {SmartClientConfig} config
+   * @example
+   * // Smart client
+   * const client = new ZetaPush.SmartClient({
+   *   businessId: '<YOUR-BUSINESS-ID-ID>',
+   *   authenticationDeploymentId: '<YOUR-AUTHENTICATION-DEPLOYMENT-ID>'
+   * })
    */
-  constructor({
-    apiUrl, authenticationDeploymentId, businessId, enableHttps, resource = null,
-    TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy
-  }) {
+  constructor({ apiUrl, authenticationDeploymentId, businessId, forceHttps, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {
     const handshakeStrategy = () => {
       const token = this.getToken()
       const handshake = AuthentFactory.createWeakHandshake({
@@ -25,7 +40,7 @@ export class SmartClient extends Client {
     /**
      *
      */
-    super({ apiUrl , businessId, enableHttps, handshakeStrategy, resource })
+    super({ apiUrl , businessId, forceHttps, handshakeStrategy, resource })
     const onSuccessfulHandshake = ({ publicToken, userId, token }) => {
       console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })
 
