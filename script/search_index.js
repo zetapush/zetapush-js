@@ -1,14 +1,20 @@
 window.esdocSearchIndex = [
   [
-    "zetapush-js/src/client.js~api_url",
-    "variable/index.html#static-variable-API_URL",
-    "<span>API_URL</span> <span class=\"search-result-import-path\">zetapush-js/src/client.js</span>",
-    "variable"
+    "zetapush-js/src/authentication/handshake.js~abstracthandshakemanager",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html",
+    "<span>AbstractHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/authentication/handshake.js</span>",
+    "class"
   ],
   [
-    "zetapush-js/src/handshake.js~authentfactory",
-    "class/src/handshake.js~AuthentFactory.html",
-    "<span>AuthentFactory</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
+    "zetapush-js/src/definitions/index.js~aggregpublisherdefinition",
+    "class/src/definitions/index.js~AggregPublisherDefinition.html",
+    "<span>AggregPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/authentication/handshake.js~authentfactory",
+    "class/src/authentication/handshake.js~AuthentFactory.html",
+    "<span>AuthentFactory</span> <span class=\"search-result-import-path\">zetapush-js/src/authentication/handshake.js</span>",
     "class"
   ],
   [
@@ -18,33 +24,165 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "zetapush-js/src/connection-status.js~connectionstatuslistener",
-    "class/src/connection-status.js~ConnectionStatusListener.html",
-    "<span>ConnectionStatusListener</span> <span class=\"search-result-import-path\">zetapush-js/src/connection-status.js</span>",
+    "zetapush-js/src/connection/connection-status.js~connectionstatuslistener",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html",
+    "<span>ConnectionStatusListener</span> <span class=\"search-result-import-path\">zetapush-js/src/connection/connection-status.js</span>",
     "class"
   ],
   [
-    "zetapush-js/src/handshake.js~defaultzetapushhandshakemanager",
-    "class/src/handshake.js~DefaultZetapushHandshakeManager.html",
-    "<span>DefaultZetapushHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
+    "zetapush-js/src/authentication/handshake.js~credentialshandshakemanager",
+    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html",
+    "<span>CredentialsHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/authentication/handshake.js</span>",
     "class"
   ],
   [
-    "zetapush-js/src/definitions.js~echopublisherdefinition",
-    "variable/index.html#static-variable-EchoPublisherDefinition",
-    "<span>EchoPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
-    "variable"
+    "zetapush-js/src/definitions/index.js~cronpublisherdefinition",
+    "class/src/definitions/index.js~CronPublisherDefinition.html",
+    "<span>CronPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
   ],
   [
-    "zetapush-js/src/definitions.js~stackpublisherdefinition",
-    "variable/index.html#static-variable-StackPublisherDefinition",
-    "<span>StackPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions.js</span>",
-    "variable"
+    "zetapush-js/src/definitions/index.js~delegatingpublisherdefinition",
+    "class/src/definitions/index.js~DelegatingPublisherDefinition.html",
+    "<span>DelegatingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
   ],
   [
-    "zetapush-js/src/handshake.js~tokenhandshakemanager",
-    "class/src/handshake.js~TokenHandshakeManager.html",
-    "<span>TokenHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/handshake.js</span>",
+    "zetapush-js/src/definitions/index.js~echopublisherdefinition",
+    "class/src/definitions/index.js~EchoPublisherDefinition.html",
+    "<span>EchoPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~gameenginepublisherdefinition",
+    "class/src/definitions/index.js~GameEnginePublisherDefinition.html",
+    "<span>GameEnginePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~gamepublisherdefinition",
+    "class/src/definitions/index.js~GamePublisherDefinition.html",
+    "<span>GamePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~gdapublisherdefinition",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html",
+    "<span>GdaPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~groupmanagementpublisherdefinition",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html",
+    "<span>GroupManagementPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~httpclientpublisherdefinition",
+    "class/src/definitions/index.js~HttpclientPublisherDefinition.html",
+    "<span>HttpclientPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~macropublisherdefinition",
+    "class/src/definitions/index.js~MacroPublisherDefinition.html",
+    "<span>MacroPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~messagingpublisherdefinition",
+    "class/src/definitions/index.js~MessagingPublisherDefinition.html",
+    "<span>MessagingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~queuepublisherdefinition",
+    "class/src/definitions/index.js~QueuePublisherDefinition.html",
+    "<span>QueuePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~remotingpublisherdefinition",
+    "class/src/definitions/index.js~RemotingPublisherDefinition.html",
+    "<span>RemotingPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~searchpublisherdefinition",
+    "class/src/definitions/index.js~SearchPublisherDefinition.html",
+    "<span>SearchPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~sendmailpublisherdefinition",
+    "class/src/definitions/index.js~SendmailPublisherDefinition.html",
+    "<span>SendmailPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~simplepublisherdefinition",
+    "class/src/definitions/index.js~SimplePublisherDefinition.html",
+    "<span>SimplePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/smart-client.js~smartclient",
+    "class/src/smart-client.js~SmartClient.html",
+    "<span>SmartClient</span> <span class=\"search-result-import-path\">zetapush-js/src/smart-client.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~sms_ovhpublisherdefinition",
+    "class/src/definitions/index.js~Sms_ovhPublisherDefinition.html",
+    "<span>Sms_ovhPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~stackpublisherdefinition",
+    "class/src/definitions/index.js~StackPublisherDefinition.html",
+    "<span>StackPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~templatepublisherdefinition",
+    "class/src/definitions/index.js~TemplatePublisherDefinition.html",
+    "<span>TemplatePublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/authentication/handshake.js~tokenhandshakemanager",
+    "class/src/authentication/handshake.js~TokenHandshakeManager.html",
+    "<span>TokenHandshakeManager</span> <span class=\"search-result-import-path\">zetapush-js/src/authentication/handshake.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~userdirpublisherdefinition",
+    "class/src/definitions/index.js~UserdirPublisherDefinition.html",
+    "<span>UserdirPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~weakpublisherdefinition",
+    "class/src/definitions/index.js~WeakPublisherDefinition.html",
+    "<span>WeakPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~zpfs_hdfspublisherdefinition",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html",
+    "<span>Zpfs_hdfsPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~zpfs_s3publisherdefinition",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html",
+    "<span>Zpfs_s3PublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/definitions/index.js~zpfs_s3compatpublisherdefinition",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html",
+    "<span>Zpfs_s3compatPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
     "class"
   ],
   [
@@ -378,6 +516,114 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/authentication/handshake.js",
+    "file/src/authentication/handshake.js.html",
+    "src/authentication/handshake.js",
+    "file"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#authtype",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-member-authType",
+    "src/authentication/handshake.js~AbstractHandshakeManager#authType",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#authversion",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-get-authVersion",
+    "src/authentication/handshake.js~AbstractHandshakeManager#authVersion",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#businessid",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-member-businessId",
+    "src/authentication/handshake.js~AbstractHandshakeManager#businessId",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#constructor",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-constructor-constructor",
+    "src/authentication/handshake.js~AbstractHandshakeManager#constructor",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#deploymentid",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-member-deploymentId",
+    "src/authentication/handshake.js~AbstractHandshakeManager#deploymentId",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~abstracthandshakemanager#gethandshakefields",
+    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-method-getHandshakeFields",
+    "src/authentication/handshake.js~AbstractHandshakeManager#getHandshakeFields",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~authentfactory.createdelegatinghandshake",
+    "class/src/authentication/handshake.js~AuthentFactory.html#static-method-createDelegatingHandshake",
+    "src/authentication/handshake.js~AuthentFactory.createDelegatingHandshake",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~authentfactory.createhandshake",
+    "class/src/authentication/handshake.js~AuthentFactory.html#static-method-createHandshake",
+    "src/authentication/handshake.js~AuthentFactory.createHandshake",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~authentfactory.createsimplehandshake",
+    "class/src/authentication/handshake.js~AuthentFactory.html#static-method-createSimpleHandshake",
+    "src/authentication/handshake.js~AuthentFactory.createSimpleHandshake",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~authentfactory.createweakhandshake",
+    "class/src/authentication/handshake.js~AuthentFactory.html#static-method-createWeakHandshake",
+    "src/authentication/handshake.js~AuthentFactory.createWeakHandshake",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~credentialshandshakemanager#authdata",
+    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html#instance-get-authData",
+    "src/authentication/handshake.js~CredentialsHandshakeManager#authData",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~credentialshandshakemanager#constructor",
+    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html#instance-constructor-constructor",
+    "src/authentication/handshake.js~CredentialsHandshakeManager#constructor",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~credentialshandshakemanager#login",
+    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html#instance-member-login",
+    "src/authentication/handshake.js~CredentialsHandshakeManager#login",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~credentialshandshakemanager#password",
+    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html#instance-member-password",
+    "src/authentication/handshake.js~CredentialsHandshakeManager#password",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~tokenhandshakemanager#authdata",
+    "class/src/authentication/handshake.js~TokenHandshakeManager.html#instance-get-authData",
+    "src/authentication/handshake.js~TokenHandshakeManager#authData",
+    "member"
+  ],
+  [
+    "src/authentication/handshake.js~tokenhandshakemanager#constructor",
+    "class/src/authentication/handshake.js~TokenHandshakeManager.html#instance-constructor-constructor",
+    "src/authentication/handshake.js~TokenHandshakeManager#constructor",
+    "method"
+  ],
+  [
+    "src/authentication/handshake.js~tokenhandshakemanager#token",
+    "class/src/authentication/handshake.js~TokenHandshakeManager.html#instance-member-token",
+    "src/authentication/handshake.js~TokenHandshakeManager#token",
+    "member"
+  ],
+  [
     "src/client-helper.js",
     "file/src/client-helper.js.html",
     "src/client-helper.js",
@@ -408,15 +654,27 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/client.js~client#createpublishersubscriber",
-    "class/src/client.js~Client.html#instance-method-createPublisherSubscriber",
-    "src/client.js~Client#createPublisherSubscriber",
+    "src/client.js~client#createmacropublisher",
+    "class/src/client.js~Client.html#instance-method-createMacroPublisher",
+    "src/client.js~Client#createMacroPublisher",
+    "method"
+  ],
+  [
+    "src/client.js~client#createmacropublishersubscriber",
+    "class/src/client.js~Client.html#instance-method-createMacroPublisherSubscriber",
+    "src/client.js~Client#createMacroPublisherSubscriber",
     "method"
   ],
   [
     "src/client.js~client#createservicepublisher",
     "class/src/client.js~Client.html#instance-method-createServicePublisher",
     "src/client.js~Client#createServicePublisher",
+    "method"
+  ],
+  [
+    "src/client.js~client#createservicepublishersubscriber",
+    "class/src/client.js~Client.html#instance-method-createServicePublisherSubscriber",
+    "src/client.js~Client#createServicePublisherSubscriber",
     "method"
   ],
   [
@@ -468,136 +726,832 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/client.js~client.getservicelistener",
-    "class/src/client.js~Client.html#static-method-getServiceListener",
-    "src/client.js~Client.getServiceListener",
-    "method"
+    "src/client.js~clientconfig",
+    "typedef/index.html#static-typedef-ClientConfig",
+    "src/client.js~ClientConfig",
+    "typedef"
   ],
   [
-    "src/cometd.js",
-    "file/src/cometd.js.html",
-    "src/cometd.js",
+    "src/connection/cometd.js",
+    "file/src/connection/cometd.js.html",
+    "src/connection/cometd.js",
     "file"
   ],
   [
-    "src/connection-status.js",
-    "file/src/connection-status.js.html",
-    "src/connection-status.js",
+    "src/connection/connection-status.js",
+    "file/src/connection/connection-status.js.html",
+    "src/connection/connection-status.js",
     "file"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onconnectionbroken",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionBroken",
-    "src/connection-status.js~ConnectionStatusListener#onConnectionBroken",
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionbroken",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionBroken",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionBroken",
     "method"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onconnectionclosed",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionClosed",
-    "src/connection-status.js~ConnectionStatusListener#onConnectionClosed",
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionclosed",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionClosed",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionClosed",
     "method"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onconnectionestablished",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionEstablished",
-    "src/connection-status.js~ConnectionStatusListener#onConnectionEstablished",
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionestablished",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionEstablished",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionEstablished",
     "method"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onfailedhandshake",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onFailedHandshake",
-    "src/connection-status.js~ConnectionStatusListener#onFailedHandshake",
+    "src/connection/connection-status.js~connectionstatuslistener#onfailedhandshake",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onFailedHandshake",
+    "src/connection/connection-status.js~ConnectionStatusListener#onFailedHandshake",
     "method"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onmessagelost",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onMessageLost",
-    "src/connection-status.js~ConnectionStatusListener#onMessageLost",
+    "src/connection/connection-status.js~connectionstatuslistener#onmessagelost",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onMessageLost",
+    "src/connection/connection-status.js~ConnectionStatusListener#onMessageLost",
     "method"
   ],
   [
-    "src/connection-status.js~connectionstatuslistener#onsuccessfulhandshake",
-    "class/src/connection-status.js~ConnectionStatusListener.html#instance-method-onSuccessfulHandshake",
-    "src/connection-status.js~ConnectionStatusListener#onSuccessfulHandshake",
+    "src/connection/connection-status.js~connectionstatuslistener#onsuccessfulhandshake",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onSuccessfulHandshake",
+    "src/connection/connection-status.js~ConnectionStatusListener#onSuccessfulHandshake",
     "method"
   ],
   [
-    "src/definitions.js",
-    "file/src/definitions.js.html",
-    "src/definitions.js",
+    "src/definitions/index.js",
+    "file/src/definitions/index.js.html",
+    "src/definitions/index.js",
     "file"
   ],
   [
-    "src/handshake.js",
-    "file/src/handshake.js.html",
-    "src/handshake.js",
-    "file"
-  ],
-  [
-    "src/handshake.js~authentfactory.createdelegatinghandshake",
-    "class/src/handshake.js~AuthentFactory.html#static-method-createDelegatingHandshake",
-    "src/handshake.js~AuthentFactory.createDelegatingHandshake",
+    "src/definitions/index.js~aggregpublisherdefinition#push",
+    "class/src/definitions/index.js~AggregPublisherDefinition.html#instance-method-push",
+    "src/definitions/index.js~AggregPublisherDefinition#push",
     "method"
   ],
   [
-    "src/handshake.js~authentfactory.createhandshake",
-    "class/src/handshake.js~AuthentFactory.html#static-method-createHandshake",
-    "src/handshake.js~AuthentFactory.createHandshake",
+    "src/definitions/index.js~cronpublisherdefinition#list",
+    "class/src/definitions/index.js~CronPublisherDefinition.html#instance-method-list",
+    "src/definitions/index.js~CronPublisherDefinition#list",
     "method"
   ],
   [
-    "src/handshake.js~authentfactory.createsimplehandshake",
-    "class/src/handshake.js~AuthentFactory.html#static-method-createSimpleHandshake",
-    "src/handshake.js~AuthentFactory.createSimpleHandshake",
+    "src/definitions/index.js~cronpublisherdefinition#schedule",
+    "class/src/definitions/index.js~CronPublisherDefinition.html#instance-method-schedule",
+    "src/definitions/index.js~CronPublisherDefinition#schedule",
     "method"
   ],
   [
-    "src/handshake.js~authentfactory.createweakhandshake",
-    "class/src/handshake.js~AuthentFactory.html#static-method-createWeakHandshake",
-    "src/handshake.js~AuthentFactory.createWeakHandshake",
+    "src/definitions/index.js~cronpublisherdefinition#unschedule",
+    "class/src/definitions/index.js~CronPublisherDefinition.html#instance-method-unschedule",
+    "src/definitions/index.js~CronPublisherDefinition#unschedule",
     "method"
   ],
   [
-    "src/handshake.js~defaultzetapushhandshakemanager#authdata",
-    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-get-authData",
-    "src/handshake.js~DefaultZetapushHandshakeManager#authData",
-    "member"
-  ],
-  [
-    "src/handshake.js~defaultzetapushhandshakemanager#constructor",
-    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-constructor-constructor",
-    "src/handshake.js~DefaultZetapushHandshakeManager#constructor",
+    "src/definitions/index.js~delegatingpublisherdefinition#userinfo",
+    "class/src/definitions/index.js~DelegatingPublisherDefinition.html#instance-method-userInfo",
+    "src/definitions/index.js~DelegatingPublisherDefinition#userInfo",
     "method"
   ],
   [
-    "src/handshake.js~defaultzetapushhandshakemanager#login",
-    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-member-login",
-    "src/handshake.js~DefaultZetapushHandshakeManager#login",
-    "member"
-  ],
-  [
-    "src/handshake.js~defaultzetapushhandshakemanager#password",
-    "class/src/handshake.js~DefaultZetapushHandshakeManager.html#instance-member-password",
-    "src/handshake.js~DefaultZetapushHandshakeManager#password",
-    "member"
-  ],
-  [
-    "src/handshake.js~tokenhandshakemanager#authdata",
-    "class/src/handshake.js~TokenHandshakeManager.html#instance-get-authData",
-    "src/handshake.js~TokenHandshakeManager#authData",
-    "member"
-  ],
-  [
-    "src/handshake.js~tokenhandshakemanager#constructor",
-    "class/src/handshake.js~TokenHandshakeManager.html#instance-constructor-constructor",
-    "src/handshake.js~TokenHandshakeManager#constructor",
+    "src/definitions/index.js~echopublisherdefinition#echo",
+    "class/src/definitions/index.js~EchoPublisherDefinition.html#instance-method-echo",
+    "src/definitions/index.js~EchoPublisherDefinition#echo",
     "method"
   ],
   [
-    "src/handshake.js~tokenhandshakemanager#token",
-    "class/src/handshake.js~TokenHandshakeManager.html#instance-member-token",
-    "src/handshake.js~TokenHandshakeManager#token",
-    "member"
+    "src/definitions/index.js~gameenginepublisherdefinition#join_result",
+    "class/src/definitions/index.js~GameEnginePublisherDefinition.html#instance-method-join_result",
+    "src/definitions/index.js~GameEnginePublisherDefinition#join_result",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gameenginepublisherdefinition#organize_result",
+    "class/src/definitions/index.js~GameEnginePublisherDefinition.html#instance-method-organize_result",
+    "src/definitions/index.js~GameEnginePublisherDefinition#organize_result",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gameenginepublisherdefinition#register",
+    "class/src/definitions/index.js~GameEnginePublisherDefinition.html#instance-method-register",
+    "src/definitions/index.js~GameEnginePublisherDefinition#register",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gameenginepublisherdefinition#start_result",
+    "class/src/definitions/index.js~GameEnginePublisherDefinition.html#instance-method-start_result",
+    "src/definitions/index.js~GameEnginePublisherDefinition#start_result",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gameenginepublisherdefinition#state",
+    "class/src/definitions/index.js~GameEnginePublisherDefinition.html#instance-method-state",
+    "src/definitions/index.js~GameEnginePublisherDefinition#state",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gameenginepublisherdefinition#unjoin_result",
+    "class/src/definitions/index.js~GameEnginePublisherDefinition.html#instance-method-unjoin_result",
+    "src/definitions/index.js~GameEnginePublisherDefinition#unjoin_result",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gamepublisherdefinition#available",
+    "class/src/definitions/index.js~GamePublisherDefinition.html#instance-method-available",
+    "src/definitions/index.js~GamePublisherDefinition#available",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gamepublisherdefinition#join",
+    "class/src/definitions/index.js~GamePublisherDefinition.html#instance-method-join",
+    "src/definitions/index.js~GamePublisherDefinition#join",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gamepublisherdefinition#organize",
+    "class/src/definitions/index.js~GamePublisherDefinition.html#instance-method-organize",
+    "src/definitions/index.js~GamePublisherDefinition#organize",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gamepublisherdefinition#play",
+    "class/src/definitions/index.js~GamePublisherDefinition.html#instance-method-play",
+    "src/definitions/index.js~GamePublisherDefinition#play",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gamepublisherdefinition#start",
+    "class/src/definitions/index.js~GamePublisherDefinition.html#instance-method-start",
+    "src/definitions/index.js~GamePublisherDefinition#start",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gamepublisherdefinition#unjoin",
+    "class/src/definitions/index.js~GamePublisherDefinition.html#instance-method-unjoin",
+    "src/definitions/index.js~GamePublisherDefinition#unjoin",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#get",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-get",
+    "src/definitions/index.js~GdaPublisherDefinition#get",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#getcells",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-getCells",
+    "src/definitions/index.js~GdaPublisherDefinition#getCells",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#inc",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-inc",
+    "src/definitions/index.js~GdaPublisherDefinition#inc",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#list",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-list",
+    "src/definitions/index.js~GdaPublisherDefinition#list",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#put",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-put",
+    "src/definitions/index.js~GdaPublisherDefinition#put",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#puts",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-puts",
+    "src/definitions/index.js~GdaPublisherDefinition#puts",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#range",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-range",
+    "src/definitions/index.js~GdaPublisherDefinition#range",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#reduce",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-reduce",
+    "src/definitions/index.js~GdaPublisherDefinition#reduce",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#removecell",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-removeCell",
+    "src/definitions/index.js~GdaPublisherDefinition#removeCell",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#removecolumn",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-removeColumn",
+    "src/definitions/index.js~GdaPublisherDefinition#removeColumn",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#removerange",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-removeRange",
+    "src/definitions/index.js~GdaPublisherDefinition#removeRange",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~gdapublisherdefinition#removerow",
+    "class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-removeRow",
+    "src/definitions/index.js~GdaPublisherDefinition#removeRow",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#addme",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-addMe",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#addMe",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#adduser",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-addUser",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#addUser",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#addusers",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-addUsers",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#addUsers",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#allgroups",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-allGroups",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#allGroups",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#creategroup",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-createGroup",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#createGroup",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#delgroup",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-delGroup",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#delGroup",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#deluser",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-delUser",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#delUser",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#delusers",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-delUsers",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#delUsers",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#exists",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-exists",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#exists",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#grant",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-grant",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#grant",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#groupusers",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-groupUsers",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#groupUsers",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#groups",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-groups",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#groups",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#listgrants",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-listGrants",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#listGrants",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#listpresences",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-listPresences",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#listPresences",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#memberof",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-memberOf",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#memberOf",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#mgrant",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-mgrant",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#mgrant",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#mrevoke",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-mrevoke",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#mrevoke",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#mygroups",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-myGroups",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#myGroups",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~groupmanagementpublisherdefinition#revoke",
+    "class/src/definitions/index.js~GroupManagementPublisherDefinition.html#instance-method-revoke",
+    "src/definitions/index.js~GroupManagementPublisherDefinition#revoke",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~httpclientpublisherdefinition#call",
+    "class/src/definitions/index.js~HttpclientPublisherDefinition.html#instance-method-call",
+    "src/definitions/index.js~HttpclientPublisherDefinition#call",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~httpclientpublisherdefinition#request",
+    "class/src/definitions/index.js~HttpclientPublisherDefinition.html#instance-method-request",
+    "src/definitions/index.js~HttpclientPublisherDefinition#request",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~macropublisherdefinition#call",
+    "class/src/definitions/index.js~MacroPublisherDefinition.html#instance-method-call",
+    "src/definitions/index.js~MacroPublisherDefinition#call",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~macropublisherdefinition#func",
+    "class/src/definitions/index.js~MacroPublisherDefinition.html#instance-method-func",
+    "src/definitions/index.js~MacroPublisherDefinition#func",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~macropublisherdefinition#sudo",
+    "class/src/definitions/index.js~MacroPublisherDefinition.html#instance-method-sudo",
+    "src/definitions/index.js~MacroPublisherDefinition#sudo",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~messagingpublisherdefinition#send",
+    "class/src/definitions/index.js~MessagingPublisherDefinition.html#instance-method-send",
+    "src/definitions/index.js~MessagingPublisherDefinition#send",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~queuepublisherdefinition#call",
+    "class/src/definitions/index.js~QueuePublisherDefinition.html#instance-method-call",
+    "src/definitions/index.js~QueuePublisherDefinition#call",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~queuepublisherdefinition#done",
+    "class/src/definitions/index.js~QueuePublisherDefinition.html#instance-method-done",
+    "src/definitions/index.js~QueuePublisherDefinition#done",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~queuepublisherdefinition#register",
+    "class/src/definitions/index.js~QueuePublisherDefinition.html#instance-method-register",
+    "src/definitions/index.js~QueuePublisherDefinition#register",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~queuepublisherdefinition#submit",
+    "class/src/definitions/index.js~QueuePublisherDefinition.html#instance-method-submit",
+    "src/definitions/index.js~QueuePublisherDefinition#submit",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~queuepublisherdefinition#unregister",
+    "class/src/definitions/index.js~QueuePublisherDefinition.html#instance-method-unregister",
+    "src/definitions/index.js~QueuePublisherDefinition#unregister",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~remotingpublisherdefinition#addlistener",
+    "class/src/definitions/index.js~RemotingPublisherDefinition.html#instance-method-addListener",
+    "src/definitions/index.js~RemotingPublisherDefinition#addListener",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~remotingpublisherdefinition#capabilities",
+    "class/src/definitions/index.js~RemotingPublisherDefinition.html#instance-method-capabilities",
+    "src/definitions/index.js~RemotingPublisherDefinition#capabilities",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~remotingpublisherdefinition#execute",
+    "class/src/definitions/index.js~RemotingPublisherDefinition.html#instance-method-execute",
+    "src/definitions/index.js~RemotingPublisherDefinition#execute",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~remotingpublisherdefinition#getcapabilities",
+    "class/src/definitions/index.js~RemotingPublisherDefinition.html#instance-method-getCapabilities",
+    "src/definitions/index.js~RemotingPublisherDefinition#getCapabilities",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~remotingpublisherdefinition#notify",
+    "class/src/definitions/index.js~RemotingPublisherDefinition.html#instance-method-notify",
+    "src/definitions/index.js~RemotingPublisherDefinition#notify",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~remotingpublisherdefinition#ping",
+    "class/src/definitions/index.js~RemotingPublisherDefinition.html#instance-method-ping",
+    "src/definitions/index.js~RemotingPublisherDefinition#ping",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~remotingpublisherdefinition#pong",
+    "class/src/definitions/index.js~RemotingPublisherDefinition.html#instance-method-pong",
+    "src/definitions/index.js~RemotingPublisherDefinition#pong",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~remotingpublisherdefinition#removelistener",
+    "class/src/definitions/index.js~RemotingPublisherDefinition.html#instance-method-removeListener",
+    "src/definitions/index.js~RemotingPublisherDefinition#removeListener",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~searchpublisherdefinition#delete",
+    "class/src/definitions/index.js~SearchPublisherDefinition.html#instance-method-delete",
+    "src/definitions/index.js~SearchPublisherDefinition#delete",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~searchpublisherdefinition#get",
+    "class/src/definitions/index.js~SearchPublisherDefinition.html#instance-method-get",
+    "src/definitions/index.js~SearchPublisherDefinition#get",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~searchpublisherdefinition#index",
+    "class/src/definitions/index.js~SearchPublisherDefinition.html#instance-method-index",
+    "src/definitions/index.js~SearchPublisherDefinition#index",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~searchpublisherdefinition#search",
+    "class/src/definitions/index.js~SearchPublisherDefinition.html#instance-method-search",
+    "src/definitions/index.js~SearchPublisherDefinition#search",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~sendmailpublisherdefinition#send",
+    "class/src/definitions/index.js~SendmailPublisherDefinition.html#instance-method-send",
+    "src/definitions/index.js~SendmailPublisherDefinition#send",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~simplepublisherdefinition#changepassword",
+    "class/src/definitions/index.js~SimplePublisherDefinition.html#instance-method-changePassword",
+    "src/definitions/index.js~SimplePublisherDefinition#changePassword",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~simplepublisherdefinition#checkuser",
+    "class/src/definitions/index.js~SimplePublisherDefinition.html#instance-method-checkUser",
+    "src/definitions/index.js~SimplePublisherDefinition#checkUser",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~simplepublisherdefinition#createuser",
+    "class/src/definitions/index.js~SimplePublisherDefinition.html#instance-method-createUser",
+    "src/definitions/index.js~SimplePublisherDefinition#createUser",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~simplepublisherdefinition#deleteuser",
+    "class/src/definitions/index.js~SimplePublisherDefinition.html#instance-method-deleteUser",
+    "src/definitions/index.js~SimplePublisherDefinition#deleteUser",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~simplepublisherdefinition#requestreset",
+    "class/src/definitions/index.js~SimplePublisherDefinition.html#instance-method-requestReset",
+    "src/definitions/index.js~SimplePublisherDefinition#requestReset",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~simplepublisherdefinition#updateuser",
+    "class/src/definitions/index.js~SimplePublisherDefinition.html#instance-method-updateUser",
+    "src/definitions/index.js~SimplePublisherDefinition#updateUser",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~sms_ovhpublisherdefinition#send",
+    "class/src/definitions/index.js~Sms_ovhPublisherDefinition.html#instance-method-send",
+    "src/definitions/index.js~Sms_ovhPublisherDefinition#send",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~stackpublisherdefinition#getlisteners",
+    "class/src/definitions/index.js~StackPublisherDefinition.html#instance-method-getListeners",
+    "src/definitions/index.js~StackPublisherDefinition#getListeners",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~stackpublisherdefinition#list",
+    "class/src/definitions/index.js~StackPublisherDefinition.html#instance-method-list",
+    "src/definitions/index.js~StackPublisherDefinition#list",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~stackpublisherdefinition#purge",
+    "class/src/definitions/index.js~StackPublisherDefinition.html#instance-method-purge",
+    "src/definitions/index.js~StackPublisherDefinition#purge",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~stackpublisherdefinition#push",
+    "class/src/definitions/index.js~StackPublisherDefinition.html#instance-method-push",
+    "src/definitions/index.js~StackPublisherDefinition#push",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~stackpublisherdefinition#remove",
+    "class/src/definitions/index.js~StackPublisherDefinition.html#instance-method-remove",
+    "src/definitions/index.js~StackPublisherDefinition#remove",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~stackpublisherdefinition#setlisteners",
+    "class/src/definitions/index.js~StackPublisherDefinition.html#instance-method-setListeners",
+    "src/definitions/index.js~StackPublisherDefinition#setListeners",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~stackpublisherdefinition#update",
+    "class/src/definitions/index.js~StackPublisherDefinition.html#instance-method-update",
+    "src/definitions/index.js~StackPublisherDefinition#update",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~templatepublisherdefinition#evaluate",
+    "class/src/definitions/index.js~TemplatePublisherDefinition.html#instance-method-evaluate",
+    "src/definitions/index.js~TemplatePublisherDefinition#evaluate",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~userdirpublisherdefinition#search",
+    "class/src/definitions/index.js~UserdirPublisherDefinition.html#instance-method-search",
+    "src/definitions/index.js~UserdirPublisherDefinition#search",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~userdirpublisherdefinition#userinfo",
+    "class/src/definitions/index.js~UserdirPublisherDefinition.html#instance-method-userInfo",
+    "src/definitions/index.js~UserdirPublisherDefinition#userInfo",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~weakpublisherdefinition#control",
+    "class/src/definitions/index.js~WeakPublisherDefinition.html#instance-method-control",
+    "src/definitions/index.js~WeakPublisherDefinition#control",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~weakpublisherdefinition#release",
+    "class/src/definitions/index.js~WeakPublisherDefinition.html#instance-method-release",
+    "src/definitions/index.js~WeakPublisherDefinition#release",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#cp",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-cp",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#cp",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#du",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-du",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#du",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#freeuploadurl",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-freeUploadUrl",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#freeUploadUrl",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#link",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-link",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#link",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#ls",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-ls",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#ls",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#mkdir",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-mkdir",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#mkdir",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#mv",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-mv",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#mv",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#newfile",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-newFile",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#newFile",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#newuploadurl",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-newUploadUrl",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#newUploadUrl",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#rm",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-rm",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#rm",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#stat",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-stat",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#stat",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_hdfspublisherdefinition#updatemeta",
+    "class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html#instance-method-updateMeta",
+    "src/definitions/index.js~Zpfs_hdfsPublisherDefinition#updateMeta",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#cp",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-cp",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#cp",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#du",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-du",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#du",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#freeuploadurl",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-freeUploadUrl",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#freeUploadUrl",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#link",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-link",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#link",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#ls",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-ls",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#ls",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#mkdir",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-mkdir",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#mkdir",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#mv",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-mv",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#mv",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#newfile",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-newFile",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#newFile",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#newuploadurl",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-newUploadUrl",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#newUploadUrl",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#rm",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-rm",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#rm",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#stat",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-stat",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#stat",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3publisherdefinition#updatemeta",
+    "class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html#instance-method-updateMeta",
+    "src/definitions/index.js~Zpfs_s3PublisherDefinition#updateMeta",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#cp",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-cp",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#cp",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#du",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-du",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#du",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#freeuploadurl",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-freeUploadUrl",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#freeUploadUrl",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#link",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-link",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#link",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#ls",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-ls",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#ls",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#mkdir",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-mkdir",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#mkdir",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#mv",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-mv",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#mv",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#newfile",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-newFile",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#newFile",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#newuploadurl",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-newUploadUrl",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#newUploadUrl",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#rm",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-rm",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#rm",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#stat",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-stat",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#stat",
+    "method"
+  ],
+  [
+    "src/definitions/index.js~zpfs_s3compatpublisherdefinition#updatemeta",
+    "class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html#instance-method-updateMeta",
+    "src/definitions/index.js~Zpfs_s3compatPublisherDefinition#updateMeta",
+    "method"
   ],
   [
     "src/index.js",
@@ -612,15 +1566,33 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/token-persistence.js",
-    "file/src/token-persistence.js.html",
-    "src/token-persistence.js",
+    "src/smart-client.js~smartclient#constructor",
+    "class/src/smart-client.js~SmartClient.html#instance-constructor-constructor",
+    "src/smart-client.js~SmartClient#constructor",
+    "method"
+  ],
+  [
+    "src/smart-client.js~smartclient#gettoken",
+    "class/src/smart-client.js~SmartClient.html#instance-method-getToken",
+    "src/smart-client.js~SmartClient#getToken",
+    "method"
+  ],
+  [
+    "src/smart-client.js~smartclientconfig",
+    "typedef/index.html#static-typedef-SmartClientConfig",
+    "src/smart-client.js~SmartClientConfig",
+    "typedef"
+  ],
+  [
+    "src/utils/index.js",
+    "file/src/utils/index.js.html",
+    "src/utils/index.js",
     "file"
   ],
   [
-    "src/utils.js",
-    "file/src/utils.js.html",
-    "src/utils.js",
+    "src/utils/token-persistence.js",
+    "file/src/utils/token-persistence.js.html",
+    "src/utils/token-persistence.js",
     "file"
   ]
 ]

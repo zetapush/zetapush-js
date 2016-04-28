@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">GdaPublisherDefinition | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/zetapush/zetapush-js" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~CredentialsHandshakeManager.html">CredentialsHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">definitions</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~AggregPublisherDefinition.html">AggregPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~CronPublisherDefinition.html">CronPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~DelegatingPublisherDefinition.html">DelegatingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~EchoPublisherDefinition.html">EchoPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~GameEnginePublisherDefinition.html">GameEnginePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~GamePublisherDefinition.html">GamePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html">GdaPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~GroupManagementPublisherDefinition.html">GroupManagementPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~HttpclientPublisherDefinition.html">HttpclientPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~MacroPublisherDefinition.html">MacroPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~MessagingPublisherDefinition.html">MessagingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~QueuePublisherDefinition.html">QueuePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~RemotingPublisherDefinition.html">RemotingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~SearchPublisherDefinition.html">SearchPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~SendmailPublisherDefinition.html">SendmailPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~SimplePublisherDefinition.html">SimplePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~Sms_ovhPublisherDefinition.html">Sms_ovhPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~StackPublisherDefinition.html">StackPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~TemplatePublisherDefinition.html">TemplatePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~UserdirPublisherDefinition.html">UserdirPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~WeakPublisherDefinition.html">WeakPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~Zpfs_hdfsPublisherDefinition.html">Zpfs_hdfsPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~Zpfs_s3PublisherDefinition.html">Zpfs_s3PublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/definitions/index.js~Zpfs_s3compatPublisherDefinition.html">Zpfs_s3compatPublisherDefinition</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="header-notice">
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {GdaPublisherDefinition} from &apos;<span><a href="file/src/definitions/index.js.html#lineNumber246">zetapush-js/src/definitions/index.js</a></span>&apos;</code></pre></div>
+  <span data-ice="access">public</span>
+  <span data-ice="kind">class</span>
+  
+  
+  
+  <span data-ice="source">| <span><a href="file/src/definitions/index.js.html#lineNumber246">source</a></span></span>
+</div>
+
+<div class="self-detail detail">
+  <h1 data-ice="name">GdaPublisherDefinition</h1>
+
+  
+
+  
+  
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span>src/definitions/index.js~AbstractPublisherDefinition</span> &#x2192; GdaPublisherDefinition</div></div>
+  
+  
+  
+  
+  
+  
+
+  
+  
+  <div class="description" data-ice="description"><p>GDA User API</p>
+<p>User API for Generic Data Access.
+Data is stored on a per-user basis.
+Users can put, get, list their data.</p>
+</div>
+
+  
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+<div data-ice="methodSummary"><h2>Method Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-get">get</a></span></span><span data-ice="signature">(objectPattern: {&quot;key&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Asks for a data row</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-getCells">getCells</a></span></span><span data-ice="signature">(objectPattern: {&quot;column&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Asks for a data cell</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-inc">inc</a></span></span><span data-ice="signature">(objectPattern: {&quot;table&quot;: <span>*</span>, &quot;data&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;column&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Increments an integer value</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-list">list</a></span></span><span data-ice="signature">(objectPattern: {&quot;columns&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;page&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Asks for a list of rows</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-put">put</a></span></span><span data-ice="signature">(objectPattern: {&quot;column&quot;: <span>*</span>, &quot;data&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Puts some data into a cell</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-puts">puts</a></span></span><span data-ice="signature">(objectPattern: {&quot;owner&quot;: <span>*</span>, &quot;rows&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Puts several rows</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-range">range</a></span></span><span data-ice="signature">(objectPattern: {&quot;columns&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;page&quot;: <span>*</span>, &quot;start&quot;: <span>*</span>, &quot;stop&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Asks for a range of rows</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-reduce">reduce</a></span></span><span data-ice="signature">(parameters: <span>*</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Reduces a range of rows</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-removeCell">removeCell</a></span></span><span data-ice="signature">(objectPattern: {&quot;column&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Removes one cell inside a column of a row</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-removeColumn">removeColumn</a></span></span><span data-ice="signature">(objectPattern: {&quot;column&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Removes one full column of a row</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-removeRange">removeRange</a></span></span><span data-ice="signature">(objectPattern: {&quot;columns&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;start&quot;: <span>*</span>, &quot;stop&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Removes a range of rows</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/definitions/index.js~GdaPublisherDefinition.html#instance-method-removeRow">removeRow</a></span></span><span data-ice="signature">(objectPattern: {&quot;key&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Removes one full row</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+
+
+
+
+
+
+<div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-get">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">get</span><span data-ice="signature">(objectPattern: {&quot;key&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber252">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Asks for a data row</p>
+<p>Returns a full data row.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;key&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;key&quot;:null,&quot;owner&quot;:null,&quot;table&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getCells">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getCells</span><span data-ice="signature">(objectPattern: {&quot;column&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber260">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Asks for a data cell</p>
+<p>Returns a precise list of cells from a column in a data row.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;column&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;column&quot;:null,&quot;key&quot;:null,&quot;key2&quot;:null,&quot;owner&quot;:null,&quot;table&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-inc">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">inc</span><span data-ice="signature">(objectPattern: {&quot;table&quot;: <span>*</span>, &quot;data&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;column&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber269">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Increments an integer value</p>
+<p>Increments a cell 64-bit signed integer value and returns the result in the data field.
+The increment is atomic : if you concurrently increment 10 times a value by 1, the final result will be the initial value plus 10. The actual individual resulting values seen by the 10 concurrent callers may vary discontinuously, with duplicates : at least one of them will see the final (+10) result.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;table&quot;: <span>*</span>, &quot;data&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;column&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;table&quot;:null,&quot;data&quot;:null,&quot;key&quot;:null,&quot;key2&quot;:null,&quot;owner&quot;:null,&quot;column&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-list">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">list</span><span data-ice="signature">(objectPattern: {&quot;columns&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;page&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber277">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Asks for a list of rows</p>
+<p>Returns a paginated list of rows from the given table.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;columns&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;page&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;columns&quot;:null,&quot;owner&quot;:null,&quot;page&quot;:null,&quot;table&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-put">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">put</span><span data-ice="signature">(objectPattern: {&quot;column&quot;: <span>*</span>, &quot;data&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber285">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Puts some data into a cell</p>
+<p>Creates or replaces the contents of a particular cell.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;column&quot;: <span>*</span>, &quot;data&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;column&quot;:null,&quot;data&quot;:null,&quot;key&quot;:null,&quot;key2&quot;:null,&quot;owner&quot;:null,&quot;table&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-puts">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">puts</span><span data-ice="signature">(objectPattern: {&quot;owner&quot;: <span>*</span>, &quot;rows&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber294">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Puts several rows</p>
+<p>Creates or replaces the (maybe partial) contents of a collection of rows.
+This method only creates or replaces cells for non-null input values.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;owner&quot;: <span>*</span>, &quot;rows&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;owner&quot;:null,&quot;rows&quot;:null,&quot;table&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-range">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">range</span><span data-ice="signature">(objectPattern: {&quot;columns&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;page&quot;: <span>*</span>, &quot;start&quot;: <span>*</span>, &quot;stop&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber304">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Asks for a range of rows</p>
+<p>Returns a paginated range of rows from the given table.
+A range consists of consecutive rows from the start key (inclusive) to the stop key (exclusive).
+You can specify partial keys for the start and stop fields.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;columns&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;page&quot;: <span>*</span>, &quot;start&quot;: <span>*</span>, &quot;stop&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;columns&quot;:null,&quot;owner&quot;:null,&quot;page&quot;:null,&quot;start&quot;:null,&quot;stop&quot;:null,&quot;table&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-reduce">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">reduce</span><span data-ice="signature">(parameters: <span>*</span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber314">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Reduces a range of rows</p>
+<p>Returns a computed single reduced result from a range of rows from the given table.
+A range consists of consecutive rows from the start key (inclusive) to the stop key (exclusive).
+You can specify partial keys for the start and stop fields.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">parameters</td>
+      <td data-ice="type"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-removeCell">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">removeCell</span><span data-ice="signature">(objectPattern: {&quot;column&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber322">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Removes one cell inside a column of a row</p>
+<p>Removes only one cell of the given column of the given row from the given table.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;column&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;key2&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;column&quot;:null,&quot;key&quot;:null,&quot;key2&quot;:null,&quot;owner&quot;:null,&quot;table&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-removeColumn">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">removeColumn</span><span data-ice="signature">(objectPattern: {&quot;column&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber330">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Removes one full column of a row</p>
+<p>Removes all cells of the given column of the given row from the given table.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;column&quot;: <span>*</span>, &quot;key&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;column&quot;:null,&quot;key&quot;:null,&quot;owner&quot;:null,&quot;table&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-removeRange">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">removeRange</span><span data-ice="signature">(objectPattern: {&quot;columns&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;start&quot;: <span>*</span>, &quot;stop&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber338">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Removes a range of rows</p>
+<p>Removes the specified columns of the given range of rows from the given table.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;columns&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;start&quot;: <span>*</span>, &quot;stop&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;columns&quot;:null,&quot;owner&quot;:null,&quot;start&quot;:null,&quot;stop&quot;:null,&quot;table&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-removeRow">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">removeRow</span><span data-ice="signature">(objectPattern: {&quot;key&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/definitions/index.js.html#lineNumber346">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Removes one full row</p>
+<p>Removes all columns of the given row from the given table.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;key&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>, &quot;table&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;key&quot;:null,&quot;owner&quot;:null,&quot;table&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
