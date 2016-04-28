@@ -1,3 +1,11 @@
+# 2.0.0-alpha.3 (2016-04-28)
+
+### Features
+
+* **core:** Add createMacroPublisherSubscriber() API
+* **core:** Rename createServicePublisherSubscriber() API
+* **examples:** Add new examples
+
 # 2.0.0-alpha.2 (2016-04-25)
 
 ### Features
