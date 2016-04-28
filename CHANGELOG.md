@@ -1,3 +1,9 @@
+# 2.0.0-alpha.4 (2016-04-28)
+
+### Fixes
+
+* **npm:** Clean npm files
+
 # 2.0.0-alpha.3 (2016-04-28)
 
 ### Features
