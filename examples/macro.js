@@ -1,0 +1,32 @@
+const client = new ZetaPush.SmartClient({
+  businessId: '5mln3Zxw',
+  authenticationDeploymentId: 'VMuM'
+})
+
+const { publisher } = client.createPublisherSubscriber({
+  deploymentId: 'api',
+  listener: {
+    error(message) {
+      console.error('macro error', message.data)
+    },
+    completed(message) {
+      console.log('macro completed', message.data.result)
+    }
+  },
+  definition: ZetaPush.definitions.MacroPublisherDefinition
+})
+
+client.addConnectionStatusListener({
+  onConnectionEstablished() {
+    console.debug('onConnectionEstablished')
+
+    publisher.call({
+      name: 'hello',
+      parameters: {
+        value: 'World'
+      }
+    })
+  }
+})
+
+client.connect()

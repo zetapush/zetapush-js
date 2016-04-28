@@ -16,20 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   client.addConnectionStatusListener({
-    onSuccessfulHandshake(authentication) {
-      console.debug('onSuccessfulHandshake', authentication)
+    onConnectionEstablished() {
+      console.debug('onConnectionEstablished')
       aside.className = 'success'
-      aside.textContent = 'SuccessfulHandshake'
+      aside.textContent = 'ConnectionEstablished'
     },
-
     onFailedHandshake(error) {
       console.debug('onFailedHandshake', error)
       aside.className = 'error'
       aside.textContent = error
-    },
-
-    onConnectionEstablished() {
-      console.debug('onConnectionEstablished')
     }
   })
 

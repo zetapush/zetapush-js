@@ -22,8 +22,8 @@
   })
 
   client.addConnectionStatusListener({
-    onSuccessfulHandshake(authentication) {
-      console.debug('App::onSuccessfulHandshake', authentication)
+    onConnectionEstablished() {
+      console.debug('App::onConnectionEstablished')
 
       document.querySelector('i').textContent = `User Id: ${authentication.userId}`
     }

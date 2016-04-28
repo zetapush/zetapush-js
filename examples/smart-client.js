@@ -4,9 +4,6 @@ const client = new ZetaPush.SmartClient({
 })
 
 client.addConnectionStatusListener({
-  onSuccessfulHandshake(authentication) {
-    console.debug('onSuccessfulHandshake', authentication)
-  },
   onConnectionEstablished() {
     console.debug('onConnectionEstablished')
   }
