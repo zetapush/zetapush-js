@@ -8,15 +8,29 @@ const DeployableNames = {
 }
 
 /**
+ * Provide abstraction over CometD handshake data structure
  * @access public
  */
 export class AbstractHandshakeManager {
   /**
+   * Create a new handshake manager
    * @param {{authType: string, businessId: string, deploymentId: string}} parameters
    */
   constructor({ authType, businessId, deploymentId }) {
+    /**
+     * @access protected
+     * @type {string}
+     */
     this.authType = authType
+    /**
+     * @access protected
+     * @type {string}
+     */
     this.businessId = businessId
+    /**
+     * @access protected
+     * @type {string}
+     */
     this.deploymentId = deploymentId
   }
   /**
@@ -49,6 +63,7 @@ export class AbstractHandshakeManager {
 }
 
 /**
+ * Provide abstraction over CometD token base handshake data structure
  * @access public
  * @extends {AbstractHandshakeManager}
  */
@@ -58,6 +73,10 @@ export class TokenHandshakeManager extends AbstractHandshakeManager {
    */
   constructor({ authType, deploymentId, token }) {
     super({ deploymentId, authType })
+    /**
+     * @access private
+     * @type {string}
+     */
     this.token = token
   }
   /**
@@ -73,6 +92,7 @@ export class TokenHandshakeManager extends AbstractHandshakeManager {
 }
 
 /**
+ * Provide abstraction over CometD credentials based handshake data structure
  * @access public
  * @extends {AbstractHandshakeManager}
  */
@@ -83,7 +103,15 @@ export class CredentialsHandshakeManager extends AbstractHandshakeManager {
    */
   constructor({ authType, deploymentId, login, password }) {
     super({ authType, deploymentId })
+    /**
+     * @access private
+     * @type {string}
+     */
     this.login = login
+    /**
+     * @access private
+     * @type {string}
+     */
     this.password = password
   }
   /**
