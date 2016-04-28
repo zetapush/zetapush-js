@@ -3,7 +3,7 @@ const client = new ZetaPush.SmartClient({
   authenticationDeploymentId: 'VMuM'
 })
 
-const { publisher } = client.createPublisherSubscriber({
+const { publisher } = client.createServicePublisherSubscriber({
   deploymentId: 'api',
   listener: {
     error(message) {

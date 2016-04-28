@@ -311,22 +311,35 @@ export class ClientHelper {
     return subscriptions
   }
   /**
-   * Get a publisher
+   * Get a publisher for a macro definition
    * @param {string} prefix - Channel prefix
-   * @param {Object} definition
-   * @return {Object} servicePublisher
+   * @param {class} definition
+   * @return {AbstractPublisherDefinition} servicePublisher
+   */
+  createMacroPublisher(prefix, definition) {
+    const $publish = (name, parameters) => {
+      const channel = `${prefix}/call`
+      this.publish(channel, {
+        name,
+        parameters,
+        hardFail: true,
+        debug: 1
+      })
+    }
+    return new definition({ $publish })
+  }
+  /**
+   * Get a publisher for a service definition
+   * @param {string} prefix - Channel prefix
+   * @param {class} definition
+   * @return {AbstractPublisherDefinition} servicePublisher
    */
   createServicePublisher(prefix, definition) {
-    const servicePublisher = {}
-    for (const method in definition) {
-      if (definition.hasOwnProperty(method)) {
-        const channel = `${prefix}/${method}`
-        servicePublisher[method] = (parameters = {}) => {
-          this.cometd.publish(channel, parameters)
-        }
-      }
+    const $publish = (method, parameters) => {
+      const channel = `${prefix}/${method}`
+      this.publish(channel, parameters)
     }
-    return servicePublisher
+    return new definition({ $publish })
   }
   /**
    * Unsubcribe all subscriptions defined in given subscriptions object
@@ -347,5 +360,12 @@ export class ClientHelper {
     const connectionListener = Object.assign(new ConnectionStatusListener(), listener)
     this.connectionListeners.push(connectionListener)
   }
-
+  /**
+   * Wrap CometdD publish method
+   * @param {String} channel
+   * @param {Object} parameters
+   */
+  publish(channel, parameters = {}) {
+    this.cometd.publish(channel, parameters)
+  }
 }

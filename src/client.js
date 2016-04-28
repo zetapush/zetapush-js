@@ -71,8 +71,16 @@ export class Client {
     this.helper.disconnect()
   }
   /**
+   * Create a macro publisher based on publisher definition for the given deployment id
+   * @param {{deploymentId: string, definition: class}} parameters
+   * @return {Object}
+   */
+  createMacroPublisher({ deploymentId, definition }) {
+    return this.helper.createMacroPublisher(`/service/${this.getBusinessId()}/${deploymentId}`, definition)
+  }
+  /**
    * Create a service publisher based on publisher definition for the given deployment id
-   * @param {{deploymentId: string, definition: Object}} parameters
+   * @param {{deploymentId: string, definition: class}} parameters
    * @return {Object}
    */
   createServicePublisher({ deploymentId, definition }) {
@@ -125,11 +133,22 @@ export class Client {
     return this.helper.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, listener)
   }
   /**
-   * Create a publish/subscribe
-   * @param {{deploymentId: string, listener: Object, definition: Object}} parameters
+   * Create a publish/subscribe for a macro definition
+   * @param {{deploymentId: string, listener: Object, definition: class}} parameters
    * @return {Object}
    */
-  createPublisherSubscriber({ deploymentId, listener, definition }) {
+  createMacroPublisherSubscriber({ deploymentId, listener, definition }) {
+    return {
+      subscription: this.subscribe({ deploymentId, listener }),
+      publisher: this.createMacroPublisher({ deploymentId, definition })
+    }
+  }
+  /**
+   * Create a publish/subscribe for a service definition
+   * @param {{deploymentId: string, listener: Object, definition: class}} parameters
+   * @return {Object}
+   */
+  createServicePublisherSubscriber({ deploymentId, listener, definition }) {
     return {
       subscription: this.subscribe({ deploymentId, listener }),
       publisher: this.createServicePublisher({ deploymentId, definition })
