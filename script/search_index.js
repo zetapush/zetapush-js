@@ -522,21 +522,9 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/authentication/handshake.js~abstracthandshakemanager#authtype",
-    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-member-authType",
-    "src/authentication/handshake.js~AbstractHandshakeManager#authType",
-    "member"
-  ],
-  [
     "src/authentication/handshake.js~abstracthandshakemanager#authversion",
     "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-get-authVersion",
     "src/authentication/handshake.js~AbstractHandshakeManager#authVersion",
-    "member"
-  ],
-  [
-    "src/authentication/handshake.js~abstracthandshakemanager#businessid",
-    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-member-businessId",
-    "src/authentication/handshake.js~AbstractHandshakeManager#businessId",
     "member"
   ],
   [
@@ -544,12 +532,6 @@ window.esdocSearchIndex = [
     "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-constructor-constructor",
     "src/authentication/handshake.js~AbstractHandshakeManager#constructor",
     "method"
-  ],
-  [
-    "src/authentication/handshake.js~abstracthandshakemanager#deploymentid",
-    "class/src/authentication/handshake.js~AbstractHandshakeManager.html#instance-member-deploymentId",
-    "src/authentication/handshake.js~AbstractHandshakeManager#deploymentId",
-    "member"
   ],
   [
     "src/authentication/handshake.js~abstracthandshakemanager#gethandshakefields",
@@ -594,18 +576,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/authentication/handshake.js~credentialshandshakemanager#login",
-    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html#instance-member-login",
-    "src/authentication/handshake.js~CredentialsHandshakeManager#login",
-    "member"
-  ],
-  [
-    "src/authentication/handshake.js~credentialshandshakemanager#password",
-    "class/src/authentication/handshake.js~CredentialsHandshakeManager.html#instance-member-password",
-    "src/authentication/handshake.js~CredentialsHandshakeManager#password",
-    "member"
-  ],
-  [
     "src/authentication/handshake.js~tokenhandshakemanager#authdata",
     "class/src/authentication/handshake.js~TokenHandshakeManager.html#instance-get-authData",
     "src/authentication/handshake.js~TokenHandshakeManager#authData",
@@ -616,12 +586,6 @@ window.esdocSearchIndex = [
     "class/src/authentication/handshake.js~TokenHandshakeManager.html#instance-constructor-constructor",
     "src/authentication/handshake.js~TokenHandshakeManager#constructor",
     "method"
-  ],
-  [
-    "src/authentication/handshake.js~tokenhandshakemanager#token",
-    "class/src/authentication/handshake.js~TokenHandshakeManager.html#instance-member-token",
-    "src/authentication/handshake.js~TokenHandshakeManager#token",
-    "member"
   ],
   [
     "src/client-helper.js",

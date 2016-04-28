@@ -10,7 +10,7 @@
     "access": null,
     "description": null,
     "lineNumber": 4,
-    "content": "/**\n * ZetaPush deployables names\n */\nconst DeployableNames = {\n  AUTH_SIMPLE: 'simple',\n  AUTH_WEAK: 'weak',\n  AUTH_DELEGATING: 'delegating'\n}\n\n/**\n * @access public\n */\nexport class AbstractHandshakeManager {\n  /**\n   * @param {{authType: string, businessId: string, deploymentId: string}} parameters\n   */\n  constructor({ authType, businessId, deploymentId }) {\n    this.authType = authType\n    this.businessId = businessId\n    this.deploymentId = deploymentId\n  }\n  /**\n   * @param {ClientHelper} client\n   * @return {Object}\n   */\n  getHandshakeFields(client) {\n    const authentication = {\n      data: this.authData,\n      type: `${client.getBusinessId()}.${this.deploymentId}.${this.authType}`,\n      version: this.authVersion\n    }\n    if (client.getResource()) {\n      authentication.resource = client.getResource()\n    }\n    return {\n      ext: {\n        authentication\n      }\n    }\n  }\n  /**\n   * Get auth version\n   * @return {string}\n   */\n  get authVersion() {\n    return 'none'\n  }\n\n}\n\n/**\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class TokenHandshakeManager extends AbstractHandshakeManager {\n  /**\n   * @param {{authType: string, deploymentId: string, token: string}} parameters\n   */\n  constructor({ authType, deploymentId, token }) {\n    super({ deploymentId, authType })\n    this.token = token\n  }\n  /**\n   * @return {token: string}\n   */\n  get authData() {\n    const { token } = this\n    return {\n      token\n    }\n  }\n\n}\n\n/**\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class CredentialsHandshakeManager extends AbstractHandshakeManager {\n\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   */\n  constructor({ authType, deploymentId, login, password }) {\n    super({ authType, deploymentId })\n    this.login = login\n    this.password = password\n  }\n  /**\n   * Get auth data\n   * @return {login: string, password: string}\n   */\n  get authData() {\n    const { login, password } = this\n    return {\n      login, password\n    }\n  }\n\n}\n\n/**\n * Factory to create handshake\n * @access public\n */\nexport class AuthentFactory {\n  /**\n   * @param {{deploymentId: string, login: string, password: string}} parameters\n   * @return {CredentialsHandshakeManager}\n   */\n  static createSimpleHandshake({ deploymentId, login, password }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_SIMPLE,\n      deploymentId,\n      login,\n      password\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshakeManager}\n   */\n  static createWeakHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_WEAK,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshakeManager}\n   */\n  static createDelegatingHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_DELEGATING,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   * @return {TokenHandshakeManager|CredentialsHandshakeManager}\n   */\n  static createHandshake({ authType, deploymentId, login, password }) {\n    if (null === password) {\n      return new TokenHandshakeManager({ authType, deploymentId, token: login })\n    }\n    return new CredentialsHandshakeManager({ authType, deploymentId, login, password  })\n  }\n\n}\n"
+    "content": "/**\n * ZetaPush deployables names\n */\nconst DeployableNames = {\n  AUTH_SIMPLE: 'simple',\n  AUTH_WEAK: 'weak',\n  AUTH_DELEGATING: 'delegating'\n}\n\n/**\n * Provide abstraction over CometD handshake data structure\n * @access public\n */\nexport class AbstractHandshakeManager {\n  /**\n   * Create a new handshake manager\n   * @param {{authType: string, businessId: string, deploymentId: string}} parameters\n   */\n  constructor({ authType, businessId, deploymentId }) {\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.authType = authType\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.businessId = businessId\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.deploymentId = deploymentId\n  }\n  /**\n   * @param {ClientHelper} client\n   * @return {Object}\n   */\n  getHandshakeFields(client) {\n    const authentication = {\n      data: this.authData,\n      type: `${client.getBusinessId()}.${this.deploymentId}.${this.authType}`,\n      version: this.authVersion\n    }\n    if (client.getResource()) {\n      authentication.resource = client.getResource()\n    }\n    return {\n      ext: {\n        authentication\n      }\n    }\n  }\n  /**\n   * Get auth version\n   * @return {string}\n   */\n  get authVersion() {\n    return 'none'\n  }\n\n}\n\n/**\n * Provide abstraction over CometD token base handshake data structure\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class TokenHandshakeManager extends AbstractHandshakeManager {\n  /**\n   * @param {{authType: string, deploymentId: string, token: string}} parameters\n   */\n  constructor({ authType, deploymentId, token }) {\n    super({ deploymentId, authType })\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.token = token\n  }\n  /**\n   * @return {token: string}\n   */\n  get authData() {\n    const { token } = this\n    return {\n      token\n    }\n  }\n\n}\n\n/**\n * Provide abstraction over CometD credentials based handshake data structure\n * @access public\n * @extends {AbstractHandshakeManager}\n */\nexport class CredentialsHandshakeManager extends AbstractHandshakeManager {\n\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   */\n  constructor({ authType, deploymentId, login, password }) {\n    super({ authType, deploymentId })\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.login = login\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.password = password\n  }\n  /**\n   * Get auth data\n   * @return {login: string, password: string}\n   */\n  get authData() {\n    const { login, password } = this\n    return {\n      login, password\n    }\n  }\n\n}\n\n/**\n * Factory to create handshake\n * @access public\n */\nexport class AuthentFactory {\n  /**\n   * @param {{deploymentId: string, login: string, password: string}} parameters\n   * @return {CredentialsHandshakeManager}\n   */\n  static createSimpleHandshake({ deploymentId, login, password }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_SIMPLE,\n      deploymentId,\n      login,\n      password\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshakeManager}\n   */\n  static createWeakHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_WEAK,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshakeManager}\n   */\n  static createDelegatingHandshake({ deploymentId, token }) {\n    return AuthentFactory.createHandshake({\n      authType: DeployableNames.AUTH_DELEGATING,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   * @return {TokenHandshakeManager|CredentialsHandshakeManager}\n   */\n  static createHandshake({ authType, deploymentId, login, password }) {\n    if (null === password) {\n      return new TokenHandshakeManager({ authType, deploymentId, token: login })\n    }\n    return new CredentialsHandshakeManager({ authType, deploymentId, login, password  })\n  }\n\n}\n"
   },
   {
     "__docId__": 1,
@@ -44,8 +44,8 @@
     "export": true,
     "importPath": "zetapush-js/src/authentication/handshake.js",
     "importStyle": "{AbstractHandshakeManager}",
-    "description": "",
-    "lineNumber": 13,
+    "description": "Provide abstraction over CometD handshake data structure",
+    "lineNumber": 14,
     "interface": false
   },
   {
@@ -57,8 +57,8 @@
     "memberof": "src/authentication/handshake.js~AbstractHandshakeManager",
     "longname": "src/authentication/handshake.js~AbstractHandshakeManager#constructor",
     "access": null,
-    "description": "",
-    "lineNumber": 17,
+    "description": "Create a new handshake manager",
+    "lineNumber": 19,
     "params": [
       {
         "nullable": null,
@@ -81,14 +81,16 @@
     "name": "authType",
     "memberof": "src/authentication/handshake.js~AbstractHandshakeManager",
     "longname": "src/authentication/handshake.js~AbstractHandshakeManager#authType",
-    "access": null,
-    "description": null,
-    "lineNumber": 18,
-    "undocument": true,
+    "access": "protected",
+    "description": "",
+    "lineNumber": 24,
     "type": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
+        "string"
+      ],
+      "spread": false,
+      "description": null
     }
   },
   {
@@ -99,14 +101,16 @@
     "name": "businessId",
     "memberof": "src/authentication/handshake.js~AbstractHandshakeManager",
     "longname": "src/authentication/handshake.js~AbstractHandshakeManager#businessId",
-    "access": null,
-    "description": null,
-    "lineNumber": 19,
-    "undocument": true,
+    "access": "protected",
+    "description": "",
+    "lineNumber": 29,
     "type": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
+        "string"
+      ],
+      "spread": false,
+      "description": null
     }
   },
   {
@@ -117,14 +121,16 @@
     "name": "deploymentId",
     "memberof": "src/authentication/handshake.js~AbstractHandshakeManager",
     "longname": "src/authentication/handshake.js~AbstractHandshakeManager#deploymentId",
-    "access": null,
-    "description": null,
-    "lineNumber": 20,
-    "undocument": true,
+    "access": "protected",
+    "description": "",
+    "lineNumber": 34,
     "type": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
+        "string"
+      ],
+      "spread": false,
+      "description": null
     }
   },
   {
@@ -137,7 +143,7 @@
     "longname": "src/authentication/handshake.js~AbstractHandshakeManager#getHandshakeFields",
     "access": null,
     "description": "",
-    "lineNumber": 26,
+    "lineNumber": 40,
     "params": [
       {
         "nullable": null,
@@ -170,7 +176,7 @@
     "longname": "src/authentication/handshake.js~AbstractHandshakeManager#authVersion",
     "access": null,
     "description": "Get auth version",
-    "lineNumber": 45,
+    "lineNumber": 59,
     "return": {
       "nullable": null,
       "types": [
@@ -198,8 +204,8 @@
     "export": true,
     "importPath": "zetapush-js/src/authentication/handshake.js",
     "importStyle": "{TokenHandshakeManager}",
-    "description": "",
-    "lineNumber": 55,
+    "description": "Provide abstraction over CometD token base handshake data structure",
+    "lineNumber": 70,
     "interface": false,
     "extends": [
       "AbstractHandshakeManager"
@@ -215,7 +221,7 @@
     "longname": "src/authentication/handshake.js~TokenHandshakeManager#constructor",
     "access": null,
     "description": "",
-    "lineNumber": 59,
+    "lineNumber": 74,
     "params": [
       {
         "nullable": null,
@@ -238,14 +244,16 @@
     "name": "token",
     "memberof": "src/authentication/handshake.js~TokenHandshakeManager",
     "longname": "src/authentication/handshake.js~TokenHandshakeManager#token",
-    "access": null,
-    "description": null,
-    "lineNumber": 61,
-    "undocument": true,
+    "access": "private",
+    "description": "",
+    "lineNumber": 80,
     "type": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
+        "string"
+      ],
+      "spread": false,
+      "description": null
     }
   },
   {
@@ -258,7 +266,7 @@
     "longname": "src/authentication/handshake.js~TokenHandshakeManager#authData",
     "access": null,
     "description": "",
-    "lineNumber": 66,
+    "lineNumber": 85,
     "return": {
       "nullable": null,
       "types": [
@@ -286,8 +294,8 @@
     "export": true,
     "importPath": "zetapush-js/src/authentication/handshake.js",
     "importStyle": "{CredentialsHandshakeManager}",
-    "description": "",
-    "lineNumber": 79,
+    "description": "Provide abstraction over CometD credentials based handshake data structure",
+    "lineNumber": 99,
     "interface": false,
     "extends": [
       "AbstractHandshakeManager"
@@ -303,7 +311,7 @@
     "longname": "src/authentication/handshake.js~CredentialsHandshakeManager#constructor",
     "access": null,
     "description": "",
-    "lineNumber": 84,
+    "lineNumber": 104,
     "params": [
       {
         "nullable": null,
@@ -326,14 +334,16 @@
     "name": "login",
     "memberof": "src/authentication/handshake.js~CredentialsHandshakeManager",
     "longname": "src/authentication/handshake.js~CredentialsHandshakeManager#login",
-    "access": null,
-    "description": null,
-    "lineNumber": 86,
-    "undocument": true,
+    "access": "private",
+    "description": "",
+    "lineNumber": 110,
     "type": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
+        "string"
+      ],
+      "spread": false,
+      "description": null
     }
   },
   {
@@ -344,14 +354,16 @@
     "name": "password",
     "memberof": "src/authentication/handshake.js~CredentialsHandshakeManager",
     "longname": "src/authentication/handshake.js~CredentialsHandshakeManager#password",
-    "access": null,
-    "description": null,
-    "lineNumber": 87,
-    "undocument": true,
+    "access": "private",
+    "description": "",
+    "lineNumber": 115,
     "type": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
+        "string"
+      ],
+      "spread": false,
+      "description": null
     }
   },
   {
@@ -364,7 +376,7 @@
     "longname": "src/authentication/handshake.js~CredentialsHandshakeManager#authData",
     "access": null,
     "description": "Get auth data",
-    "lineNumber": 93,
+    "lineNumber": 121,
     "return": {
       "nullable": null,
       "types": [
@@ -393,7 +405,7 @@
     "importPath": "zetapush-js/src/authentication/handshake.js",
     "importStyle": "{AuthentFactory}",
     "description": "Factory to create handshake",
-    "lineNumber": 106,
+    "lineNumber": 134,
     "interface": false
   },
   {
@@ -406,7 +418,7 @@
     "longname": "src/authentication/handshake.js~AuthentFactory.createSimpleHandshake",
     "access": null,
     "description": "",
-    "lineNumber": 111,
+    "lineNumber": 139,
     "params": [
       {
         "nullable": null,
@@ -439,7 +451,7 @@
     "longname": "src/authentication/handshake.js~AuthentFactory.createWeakHandshake",
     "access": null,
     "description": "",
-    "lineNumber": 123,
+    "lineNumber": 151,
     "params": [
       {
         "nullable": null,
@@ -472,7 +484,7 @@
     "longname": "src/authentication/handshake.js~AuthentFactory.createDelegatingHandshake",
     "access": null,
     "description": "",
-    "lineNumber": 135,
+    "lineNumber": 163,
     "params": [
       {
         "nullable": null,
@@ -505,7 +517,7 @@
     "longname": "src/authentication/handshake.js~AuthentFactory.createHandshake",
     "access": null,
     "description": "",
-    "lineNumber": 147,
+    "lineNumber": 175,
     "params": [
       {
         "nullable": null,
