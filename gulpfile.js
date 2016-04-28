@@ -18,7 +18,7 @@ const request = require('request')
 const pkg = require('./package')
 const { optimize = false } = minimist(process.argv)
 
-const REMOTE_DEFINITIONS_URL = 'http://pinte-silver-2/sdks/generated/2.3.15/js/zp_services.js'
+const REMOTE_DEFINITIONS_URL = 'http://pinte-silver-2/sdks/generated/2.4.0/js/zp_services.js'
 
 const paths = {
   input: './src/index.js',
@@ -79,7 +79,7 @@ const getSourceStream = () => {
 
 gulp.task('remote', (done) => {
   return request(REMOTE_DEFINITIONS_URL)
-    .pipe(fs.createWriteStream('./src/Definitions/index.js'))
+    .pipe(fs.createWriteStream('./src/definitions/index.js'))
 })
 
 gulp.task('bundle', () => {

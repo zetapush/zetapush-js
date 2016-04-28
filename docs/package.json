@@ -1,6 +1,6 @@
 {
   "name": "zetapush-js",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0-alpha.4",
   "description": "JavaScript SDK for ZetaPush",
   "main": "dist/zetapush.js",
   "homepage": "http://zetapush.com",
@@ -21,7 +21,6 @@
   },
   "scripts": {
     "doc": "esdoc -c esdoc.json",
-    "postinstall": "bower install",
     "prebuild": "npm run doc",
     "prebuild:dev": "npm run doc",
     "build": "gulp build --optimize",
