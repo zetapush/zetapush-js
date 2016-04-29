@@ -2,6 +2,6 @@
 
 npm run build
 
-scp -r ./dist/** root@51.255.201.174:/var/www/demo_zetapush/sdk-js-2.0.0-alpha.3/dist/
-scp -r ./docs/** root@51.255.201.174:/var/www/demo_zetapush/sdk-js-2.0.0-alpha.3/docs/
-scp -r ./examples/** root@51.255.201.174:/var/www/demo_zetapush/sdk-js-2.0.0-alpha.3/examples/
+scp -r ./dist/** root@51.255.201.174:/var/www/demo_zetapush/sdk-js-2.0.0-alpha.5/dist/
+scp -r ./docs/** root@51.255.201.174:/var/www/demo_zetapush/sdk-js-2.0.0-alpha.5/docs/
+scp -r ./examples/** root@51.255.201.174:/var/www/demo_zetapush/sdk-js-2.0.0-alpha.5/examples/

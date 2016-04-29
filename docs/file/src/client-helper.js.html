@@ -192,8 +192,8 @@ export class ClientHelper {
       // ConnectionListener
       if (this.cometd.isDisconnected()) {
         this.connected = false
-        // Notify connection is closed
-        this.connectionClosed()
+        // Notify connection will close
+        this.connectionWillClose()
       }
       else {
         this.wasConnected = this.connected
@@ -213,6 +213,15 @@ export class ClientHelper {
           // Notify connection is broken
           this.connectionBroken()
         }
+      }
+    })
+
+    this.cometd.addListener(&apos;/meta/disconnect&apos;, ({ channel, successful }) =&gt; {
+      console.debug(&apos;ClientHelper::/meta/disconnect&apos;, { channel, successful })
+      if (this.cometd.isDisconnected()) {
+        this.connected = false
+        // Notify connection is closed
+        this.connectionClosed()
       }
     })
   }
@@ -255,6 +264,14 @@ export class ClientHelper {
   messageLost(channel, data) {
     this.connectionListeners.forEach((listener) =&gt; {
       listener.onMessageLost(channel, data)
+    })
+  }
+  /**
+   * Notify listeners when connection will close
+   */
+  connectionWillClose() {
+    this.connectionListeners.forEach((listener) =&gt; {
+      listener.onConnectionWillClose()
     })
   }
   /**

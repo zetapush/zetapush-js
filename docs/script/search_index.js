@@ -726,6 +726,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionwillclose",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionWillClose",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionWillClose",
+    "method"
+  ],
+  [
     "src/connection/connection-status.js~connectionstatuslistener#onfailedhandshake",
     "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onFailedHandshake",
     "src/connection/connection-status.js~ConnectionStatusListener#onFailedHandshake",

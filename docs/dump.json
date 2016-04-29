@@ -552,7 +552,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './connection/cometd'\nimport { ConnectionStatusListener } from './connection/connection-status'\nimport { getServers, shuffle } from './utils/index'\n\n/**\n * CometD Messages enumeration\n */\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\n/**\n * CometD Transports enumeration\n */\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\n/**\n * Provide utilities and abstraction on CometD Transport layer\n * @access private\n */\nexport class ClientHelper {\n  /**\n   * Create a new ZetaPush client helper\n   */\n  constructor({ apiUrl, businessId, forceHttps = false, handshakeStrategy, resource }) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.businessId = businessId\n    /**\n     * @access private\n     * @type {function():AbstractHandshakeManager}\n     */\n    this.handshakeStrategy = handshakeStrategy\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.resource = resource\n    /**\n     * @access private\n     * @type {Promise}\n     */\n    this.servers = getServers({ apiUrl, businessId, forceHttps })\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.connectionListeners = []\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.connected = false\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.wasConnected = false\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.serverUrl = null\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.subscribeQueue = []\n    /**\n     * @access private\n     * @type {CometD}\n     */\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.updateServerUrl()\n      }\n    }\n    this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      if (successful) {\n        const { authentication = null } = ext\n        this.initialized(authentication)\n      }\n      else {\n        // this.handshakeFailure(error)\n      }\n    })\n\n    this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      // AuthNegotiation\n      if (!successful) {\n        if ('undefined' === typeof advice) {\n          return\n        }\n        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n          this.authenticationFailed(error)\n        }\n        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n          this.negotiate(ext)\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n      console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n      // ConnectionListener\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection is closed\n        this.connectionClosed()\n      }\n      else {\n        this.wasConnected = this.connected\n        this.connected = successful\n        if (!this.wasConnected && this.connected) {\n          this.cometd.batch(this, () => {\n            // Unqueue subscriptions\n            this.subscribeQueue.forEach(({ prefix, listener, subscriptions }) => {\n              this.subscribe(prefix, listener, subscriptions)\n            })\n            this.subscribeQueue = []\n          })\n          // Notify connection is established\n          this.connectionEstablished()\n        }\n        else if (this.wasConnected && !this.connected) {\n          // Notify connection is broken\n          this.connectionBroken()\n        }\n      }\n    })\n  }\n  /**\n   * Connect client using CometD Transport\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   * Notify listeners when connection is broken\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   * Notify listeners when a message is lost\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   * Notify listeners when connection is closed\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   * Notify listeners when handshake step succeed\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   * Manage handshake failure case\n   */\n  handshakeFailure() {\n\n  }\n  /**\n  * Remove current server url from the server list and shuffle for another one\n  */\n  updateServerUrl() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   * Negociate authentication\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   * Disconnect CometD client\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   * Get CometD handshake parameters\n   * @return {Object}\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeStrategy()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   * Set a new handshake factory methods\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  setHandshakeStrategy(handshakeStrategy) {\n    this.handshakeStrategy = handshakeStrategy\n  }\n  /**\n   * Get business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.businessId\n  }\n  /**\n   * Get session id\n   * @return {string}\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   * Get resource\n   * @return {string}\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   * Subribe all methods defined in the listener for the given prefixed channel\n   * @param {string} prefix - Channel prefix\n   * @param {Object} listener\n   * @param {Object} subscriptions\n   * @return {Object} subscriptions\n   */\n  subscribe(prefix, listener, subscriptions = {}) {\n    if (this.cometd.isDisconnected()) {\n      this.subscribeQueue.push({ prefix, listener, subscriptions })\n    }\n    else {\n      for (const method in listener) {\n        if (listener.hasOwnProperty(method)) {\n          const channel = `${prefix}/${method}`\n          subscriptions[method] = this.cometd.subscribe(channel, listener[method])\n        }\n      }\n    }\n    return subscriptions\n  }\n  /**\n   * Get a publisher for a macro definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createMacroPublisher(prefix, definition) {\n    const $publish = (name, parameters) => {\n      const channel = `${prefix}/call`\n      this.publish(channel, {\n        name,\n        parameters,\n        hardFail: true,\n        debug: 1\n      })\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Get a publisher for a service definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createServicePublisher(prefix, definition) {\n    const $publish = (method, parameters) => {\n      const channel = `${prefix}/${method}`\n      this.publish(channel, parameters)\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Unsubcribe all subscriptions defined in given subscriptions object\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscriptions[method])\n      }\n    }\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    this.connectionListeners.push(connectionListener)\n  }\n  /**\n   * Wrap CometdD publish method\n   * @param {String} channel\n   * @param {Object} parameters\n   */\n  publish(channel, parameters = {}) {\n    this.cometd.publish(channel, parameters)\n  }\n}\n"
+    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './connection/cometd'\nimport { ConnectionStatusListener } from './connection/connection-status'\nimport { getServers, shuffle } from './utils/index'\n\n/**\n * CometD Messages enumeration\n */\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\n/**\n * CometD Transports enumeration\n */\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\n/**\n * Provide utilities and abstraction on CometD Transport layer\n * @access private\n */\nexport class ClientHelper {\n  /**\n   * Create a new ZetaPush client helper\n   */\n  constructor({ apiUrl, businessId, forceHttps = false, handshakeStrategy, resource }) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.businessId = businessId\n    /**\n     * @access private\n     * @type {function():AbstractHandshakeManager}\n     */\n    this.handshakeStrategy = handshakeStrategy\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.resource = resource\n    /**\n     * @access private\n     * @type {Promise}\n     */\n    this.servers = getServers({ apiUrl, businessId, forceHttps })\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.connectionListeners = []\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.connected = false\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.wasConnected = false\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.serverUrl = null\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.subscribeQueue = []\n    /**\n     * @access private\n     * @type {CometD}\n     */\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.updateServerUrl()\n      }\n    }\n    this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      if (successful) {\n        const { authentication = null } = ext\n        this.initialized(authentication)\n      }\n      else {\n        // this.handshakeFailure(error)\n      }\n    })\n\n    this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      // AuthNegotiation\n      if (!successful) {\n        if ('undefined' === typeof advice) {\n          return\n        }\n        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n          this.authenticationFailed(error)\n        }\n        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n          this.negotiate(ext)\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n      console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n      // ConnectionListener\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection will close\n        this.connectionWillClose()\n      }\n      else {\n        this.wasConnected = this.connected\n        this.connected = successful\n        if (!this.wasConnected && this.connected) {\n          this.cometd.batch(this, () => {\n            // Unqueue subscriptions\n            this.subscribeQueue.forEach(({ prefix, listener, subscriptions }) => {\n              this.subscribe(prefix, listener, subscriptions)\n            })\n            this.subscribeQueue = []\n          })\n          // Notify connection is established\n          this.connectionEstablished()\n        }\n        else if (this.wasConnected && !this.connected) {\n          // Notify connection is broken\n          this.connectionBroken()\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/disconnect', ({ channel, successful }) => {\n      console.debug('ClientHelper::/meta/disconnect', { channel, successful })\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection is closed\n        this.connectionClosed()\n      }\n    })\n  }\n  /**\n   * Connect client using CometD Transport\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   * Notify listeners when connection is broken\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   * Notify listeners when a message is lost\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   * Notify listeners when connection will close\n   */\n  connectionWillClose() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionWillClose()\n    })\n  }\n  /**\n   * Notify listeners when connection is closed\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   * Notify listeners when handshake step succeed\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   * Manage handshake failure case\n   */\n  handshakeFailure() {\n\n  }\n  /**\n  * Remove current server url from the server list and shuffle for another one\n  */\n  updateServerUrl() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   * Negociate authentication\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   * Disconnect CometD client\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   * Get CometD handshake parameters\n   * @return {Object}\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeStrategy()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   * Set a new handshake factory methods\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  setHandshakeStrategy(handshakeStrategy) {\n    this.handshakeStrategy = handshakeStrategy\n  }\n  /**\n   * Get business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.businessId\n  }\n  /**\n   * Get session id\n   * @return {string}\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   * Get resource\n   * @return {string}\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   * Subribe all methods defined in the listener for the given prefixed channel\n   * @param {string} prefix - Channel prefix\n   * @param {Object} listener\n   * @param {Object} subscriptions\n   * @return {Object} subscriptions\n   */\n  subscribe(prefix, listener, subscriptions = {}) {\n    if (this.cometd.isDisconnected()) {\n      this.subscribeQueue.push({ prefix, listener, subscriptions })\n    }\n    else {\n      for (const method in listener) {\n        if (listener.hasOwnProperty(method)) {\n          const channel = `${prefix}/${method}`\n          subscriptions[method] = this.cometd.subscribe(channel, listener[method])\n        }\n      }\n    }\n    return subscriptions\n  }\n  /**\n   * Get a publisher for a macro definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createMacroPublisher(prefix, definition) {\n    const $publish = (name, parameters) => {\n      const channel = `${prefix}/call`\n      this.publish(channel, {\n        name,\n        parameters,\n        hardFail: true,\n        debug: 1\n      })\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Get a publisher for a service definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createServicePublisher(prefix, definition) {\n    const $publish = (method, parameters) => {\n      const channel = `${prefix}/${method}`\n      this.publish(channel, parameters)\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Unsubcribe all subscriptions defined in given subscriptions object\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscriptions[method])\n      }\n    }\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    this.connectionListeners.push(connectionListener)\n  }\n  /**\n   * Wrap CometdD publish method\n   * @param {String} channel\n   * @param {Object} parameters\n   */\n  publish(channel, parameters = {}) {\n    this.cometd.publish(channel, parameters)\n  }\n}\n"
   },
   {
     "__docId__": 24,
@@ -913,6 +913,24 @@
   },
   {
     "__docId__": 42,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "connected",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connected",
+    "access": null,
+    "description": null,
+    "lineNumber": 150,
+    "undocument": true,
+    "type": {
+      "types": [
+        "boolean"
+      ]
+    }
+  },
+  {
+    "__docId__": 43,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -921,12 +939,12 @@
     "longname": "src/client-helper.js~ClientHelper#connect",
     "access": null,
     "description": "Connect client using CometD Transport",
-    "lineNumber": 150,
+    "lineNumber": 159,
     "params": [],
     "generator": false
   },
   {
-    "__docId__": 43,
+    "__docId__": 44,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -935,7 +953,7 @@
     "longname": "src/client-helper.js~ClientHelper#serverUrl",
     "access": null,
     "description": null,
-    "lineNumber": 152,
+    "lineNumber": 161,
     "undocument": true,
     "type": {
       "types": [
@@ -944,7 +962,7 @@
     }
   },
   {
-    "__docId__": 44,
+    "__docId__": 45,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -953,21 +971,7 @@
     "longname": "src/client-helper.js~ClientHelper#connectionEstablished",
     "access": null,
     "description": "Notify listeners when connection is established",
-    "lineNumber": 167,
-    "params": [],
-    "generator": false
-  },
-  {
-    "__docId__": 45,
-    "kind": "method",
-    "static": false,
-    "variation": null,
-    "name": "connectionBroken",
-    "memberof": "src/client-helper.js~ClientHelper",
-    "longname": "src/client-helper.js~ClientHelper#connectionBroken",
-    "access": null,
-    "description": "Notify listeners when connection is broken",
-    "lineNumber": 175,
+    "lineNumber": 176,
     "params": [],
     "generator": false
   },
@@ -976,12 +980,26 @@
     "kind": "method",
     "static": false,
     "variation": null,
+    "name": "connectionBroken",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connectionBroken",
+    "access": null,
+    "description": "Notify listeners when connection is broken",
+    "lineNumber": 184,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 47,
+    "kind": "method",
+    "static": false,
+    "variation": null,
     "name": "messageLost",
     "memberof": "src/client-helper.js~ClientHelper",
     "longname": "src/client-helper.js~ClientHelper#messageLost",
     "access": null,
     "description": "Notify listeners when a message is lost",
-    "lineNumber": 183,
+    "lineNumber": 192,
     "params": [
       {
         "name": "channel",
@@ -999,7 +1017,21 @@
     "generator": false
   },
   {
-    "__docId__": 47,
+    "__docId__": 48,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "connectionWillClose",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#connectionWillClose",
+    "access": null,
+    "description": "Notify listeners when connection will close",
+    "lineNumber": 200,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 49,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1008,12 +1040,12 @@
     "longname": "src/client-helper.js~ClientHelper#connectionClosed",
     "access": null,
     "description": "Notify listeners when connection is closed",
-    "lineNumber": 191,
+    "lineNumber": 208,
     "params": [],
     "generator": false
   },
   {
-    "__docId__": 48,
+    "__docId__": 50,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1022,7 +1054,7 @@
     "longname": "src/client-helper.js~ClientHelper#initialized",
     "access": null,
     "description": "Notify listeners when connection is established",
-    "lineNumber": 199,
+    "lineNumber": 216,
     "params": [
       {
         "name": "authentication",
@@ -1034,7 +1066,7 @@
     "generator": false
   },
   {
-    "__docId__": 49,
+    "__docId__": 51,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1043,7 +1075,7 @@
     "longname": "src/client-helper.js~ClientHelper#userId",
     "access": null,
     "description": null,
-    "lineNumber": 201,
+    "lineNumber": 218,
     "undocument": true,
     "type": {
       "types": [
@@ -1052,7 +1084,7 @@
     }
   },
   {
-    "__docId__": 50,
+    "__docId__": 52,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1061,7 +1093,7 @@
     "longname": "src/client-helper.js~ClientHelper#authenticationFailed",
     "access": null,
     "description": "Notify listeners when handshake step succeed",
-    "lineNumber": 210,
+    "lineNumber": 227,
     "params": [
       {
         "name": "error",
@@ -1073,7 +1105,7 @@
     "generator": false
   },
   {
-    "__docId__": 51,
+    "__docId__": 53,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1082,12 +1114,12 @@
     "longname": "src/client-helper.js~ClientHelper#handshakeFailure",
     "access": null,
     "description": "Manage handshake failure case",
-    "lineNumber": 218,
+    "lineNumber": 235,
     "params": [],
     "generator": false
   },
   {
-    "__docId__": 52,
+    "__docId__": 54,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1096,12 +1128,12 @@
     "longname": "src/client-helper.js~ClientHelper#updateServerUrl",
     "access": null,
     "description": "Remove current server url from the server list and shuffle for another one",
-    "lineNumber": 224,
+    "lineNumber": 241,
     "params": [],
     "generator": false
   },
   {
-    "__docId__": 53,
+    "__docId__": 55,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1110,7 +1142,7 @@
     "longname": "src/client-helper.js~ClientHelper#serverUrl",
     "access": null,
     "description": null,
-    "lineNumber": 234,
+    "lineNumber": 251,
     "undocument": true,
     "type": {
       "types": [
@@ -1119,7 +1151,7 @@
     }
   },
   {
-    "__docId__": 54,
+    "__docId__": 56,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1128,7 +1160,7 @@
     "longname": "src/client-helper.js~ClientHelper#negotiate",
     "access": null,
     "description": "Negociate authentication",
-    "lineNumber": 247,
+    "lineNumber": 264,
     "params": [
       {
         "name": "ext",
@@ -1140,7 +1172,7 @@
     "generator": false
   },
   {
-    "__docId__": 55,
+    "__docId__": 57,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1149,12 +1181,12 @@
     "longname": "src/client-helper.js~ClientHelper#disconnect",
     "access": null,
     "description": "Disconnect CometD client",
-    "lineNumber": 253,
+    "lineNumber": 270,
     "params": [],
     "generator": false
   },
   {
-    "__docId__": 56,
+    "__docId__": 58,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1163,7 +1195,7 @@
     "longname": "src/client-helper.js~ClientHelper#getHandshakeFields",
     "access": null,
     "description": "Get CometD handshake parameters",
-    "lineNumber": 260,
+    "lineNumber": 277,
     "params": [],
     "return": {
       "nullable": null,
@@ -1176,7 +1208,7 @@
     "generator": false
   },
   {
-    "__docId__": 57,
+    "__docId__": 59,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1185,7 +1217,7 @@
     "longname": "src/client-helper.js~ClientHelper#setHandshakeStrategy",
     "access": null,
     "description": "Set a new handshake factory methods",
-    "lineNumber": 268,
+    "lineNumber": 285,
     "params": [
       {
         "nullable": null,
@@ -1201,7 +1233,7 @@
     "generator": false
   },
   {
-    "__docId__": 58,
+    "__docId__": 60,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1210,7 +1242,7 @@
     "longname": "src/client-helper.js~ClientHelper#handshakeStrategy",
     "access": null,
     "description": null,
-    "lineNumber": 269,
+    "lineNumber": 286,
     "undocument": true,
     "type": {
       "types": [
@@ -1219,7 +1251,7 @@
     }
   },
   {
-    "__docId__": 59,
+    "__docId__": 61,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1228,51 +1260,7 @@
     "longname": "src/client-helper.js~ClientHelper#getBusinessId",
     "access": null,
     "description": "Get business id",
-    "lineNumber": 275,
-    "params": [],
-    "return": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": ""
-    },
-    "generator": false
-  },
-  {
-    "__docId__": 60,
-    "kind": "method",
-    "static": false,
-    "variation": null,
-    "name": "getSessionId",
-    "memberof": "src/client-helper.js~ClientHelper",
-    "longname": "src/client-helper.js~ClientHelper#getSessionId",
-    "access": null,
-    "description": "Get session id",
-    "lineNumber": 282,
-    "params": [],
-    "return": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": ""
-    },
-    "generator": false
-  },
-  {
-    "__docId__": 61,
-    "kind": "method",
-    "static": false,
-    "variation": null,
-    "name": "getResource",
-    "memberof": "src/client-helper.js~ClientHelper",
-    "longname": "src/client-helper.js~ClientHelper#getResource",
-    "access": null,
-    "description": "Get resource",
-    "lineNumber": 289,
+    "lineNumber": 292,
     "params": [],
     "return": {
       "nullable": null,
@@ -1289,12 +1277,56 @@
     "kind": "method",
     "static": false,
     "variation": null,
+    "name": "getSessionId",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#getSessionId",
+    "access": null,
+    "description": "Get session id",
+    "lineNumber": 299,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 63,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getResource",
+    "memberof": "src/client-helper.js~ClientHelper",
+    "longname": "src/client-helper.js~ClientHelper#getResource",
+    "access": null,
+    "description": "Get resource",
+    "lineNumber": 306,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 64,
+    "kind": "method",
+    "static": false,
+    "variation": null,
     "name": "subscribe",
     "memberof": "src/client-helper.js~ClientHelper",
     "longname": "src/client-helper.js~ClientHelper#subscribe",
     "access": null,
     "description": "Subribe all methods defined in the listener for the given prefixed channel",
-    "lineNumber": 299,
+    "lineNumber": 316,
     "params": [
       {
         "nullable": null,
@@ -1338,7 +1370,7 @@
     "generator": false
   },
   {
-    "__docId__": 63,
+    "__docId__": 65,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1347,7 +1379,7 @@
     "longname": "src/client-helper.js~ClientHelper#createMacroPublisher",
     "access": null,
     "description": "Get a publisher for a macro definition",
-    "lineNumber": 319,
+    "lineNumber": 336,
     "params": [
       {
         "nullable": null,
@@ -1381,7 +1413,7 @@
     "generator": false
   },
   {
-    "__docId__": 64,
+    "__docId__": 66,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1390,7 +1422,7 @@
     "longname": "src/client-helper.js~ClientHelper#createServicePublisher",
     "access": null,
     "description": "Get a publisher for a service definition",
-    "lineNumber": 337,
+    "lineNumber": 354,
     "params": [
       {
         "nullable": null,
@@ -1424,7 +1456,7 @@
     "generator": false
   },
   {
-    "__docId__": 65,
+    "__docId__": 67,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1433,7 +1465,7 @@
     "longname": "src/client-helper.js~ClientHelper#unsubscribe",
     "access": null,
     "description": "Unsubcribe all subscriptions defined in given subscriptions object",
-    "lineNumber": 348,
+    "lineNumber": 365,
     "params": [
       {
         "nullable": null,
@@ -1449,7 +1481,7 @@
     "generator": false
   },
   {
-    "__docId__": 66,
+    "__docId__": 68,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1458,7 +1490,7 @@
     "longname": "src/client-helper.js~ClientHelper#addConnectionStatusListener",
     "access": null,
     "description": "Add a connection listener to handle life cycle connection events",
-    "lineNumber": 359,
+    "lineNumber": 376,
     "params": [
       {
         "nullable": null,
@@ -1474,7 +1506,7 @@
     "generator": false
   },
   {
-    "__docId__": 67,
+    "__docId__": 69,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1483,7 +1515,7 @@
     "longname": "src/client-helper.js~ClientHelper#publish",
     "access": null,
     "description": "Wrap CometdD publish method",
-    "lineNumber": 368,
+    "lineNumber": 385,
     "params": [
       {
         "nullable": null,
@@ -1509,7 +1541,7 @@
     "generator": false
   },
   {
-    "__docId__": 68,
+    "__docId__": 70,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1522,7 +1554,7 @@
     "content": "import { API_URL } from './utils/index'\nimport { ClientHelper } from './client-helper'\nimport { NotYetImplementedError } from './utils/index'\n\n/**\n * Client config object.\n * @typedef {Object} ClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} businessId - Business id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {function():AbstractHandshakeManager} handshakeStrategy - Handshake strategy\n * @property {string} resource - Client resource id\n */\n\n/**\n * ZetaPush Client to connect\n * @access public\n * @example\n * // Securized client with token based connection\n * const client = new ZetaPush.Client({\n *   businessId: '<YOUR-BUSINESS-ID>',\n *   forceHttps: true,\n *   handshakeStrategy: function() {\n *     return ZetaPush.AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n * @example\n * // Client with credentials based connection\n * const client = new ZetaPush.Client({\n *   businessId: '<YOUR-BUSINESS-ID>',\n *   handshakeStrategy: function() {\n *     return ZetaPush.AuthentFactory.createSimpleHandshake({\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>',\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   * @param {ClientConfig} config\n   * Create a new ZetaPush client\n   */\n  constructor({ apiUrl = API_URL, businessId, forceHttps = false, handshakeStrategy, resource = null }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.helper = new ClientHelper({\n      apiUrl,\n      businessId,\n      forceHttps,\n      handshakeStrategy,\n      resource\n    })\n  }\n  /**\n   * Connect client to ZetaPush\n   */\n  connect() {\n    this.helper.connect()\n  }\n  /**\n   * Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.helper.disconnect()\n  }\n  /**\n   * Create a macro publisher based on publisher definition for the given deployment id\n   * @param {{deploymentId: string, definition: class}} parameters\n   * @return {Object}\n   */\n  createMacroPublisher({ deploymentId, definition }) {\n    return this.helper.createMacroPublisher(`/service/${this.getBusinessId()}/${deploymentId}`, definition)\n  }\n  /**\n   * Create a service publisher based on publisher definition for the given deployment id\n   * @param {{deploymentId: string, definition: class}} parameters\n   * @return {Object}\n   */\n  createServicePublisher({ deploymentId, definition }) {\n    return this.helper.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, definition)\n  }\n  /**\n   * Get the client business id\n   * @return {string}\n   */\n  getBusinessId() {\n    return this.helper.getBusinessId()\n  }\n  /**\n   * Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.helper.getResource()\n  }\n  /**\n   * Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.helper.getUserId()\n  }\n  /**\n   * Get the client session id\n   * @return {string}\n   */\n  getSessionId() {\n    return this.helper.getSessionId()\n  }\n  /**\n   * Subscribe all methods described in the listener for the given deploymentId\n   * @param {{deploymentId: string, listener: Object}} parameters\n   * @return {Object} subscription\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribe({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   listener: stackServiceListener\n   * })\n   */\n  subscribe({ deploymentId, listener }) {\n    return this.helper.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, listener)\n  }\n  /**\n   * Create a publish/subscribe for a macro definition\n   * @param {{deploymentId: string, listener: Object, definition: class}} parameters\n   * @return {Object}\n   */\n  createMacroPublisherSubscriber({ deploymentId, listener, definition }) {\n    return {\n      subscription: this.subscribe({ deploymentId, listener }),\n      publisher: this.createMacroPublisher({ deploymentId, definition })\n    }\n  }\n  /**\n   * Create a publish/subscribe for a service definition\n   * @param {{deploymentId: string, listener: Object, definition: class}} parameters\n   * @return {Object}\n   */\n  createServicePublisherSubscriber({ deploymentId, listener, definition }) {\n    return {\n      subscription: this.subscribe({ deploymentId, listener }),\n      publisher: this.createServicePublisher({ deploymentId, definition })\n    }\n  }\n  /**\n   * Set new client resource value\n   * @param {string} resource\n   */\n  setResource(resource) {\n    this.helper.setResource(resource)\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   */\n  addConnectionStatusListener(listener) {\n    return this.helper.addConnectionStatusListener(listener)\n  }\n  /**\n   * Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  handshake(handshakeStrategy) {\n    this.disconnect()\n    if (handshakeStrategy) {\n      this.helper.setHandshakeStrategy(handshakeStrategy)\n    }\n    this.connect()\n  }\n\n  /**\n   * Get a service lister from methods list with a default handler\n   * @access private\n   * @param {{methods: Array<function>, handler: function}} params\n   * @return {Object} listener\n   * @example\n   * const getStackServiceListener = () => {\n   *   return Client.getGenericServiceListener({\n   *     methods: ['getListeners', 'list', 'purge', 'push', 'remove', 'setListeners', 'update', 'error'],\n   *     handler: ({ channel, data }) => {\n   *       console.debug(`Stack::${method}`, { channel, data })\n   *       document.querySelector(`form[name=\"${method}\"] [name=\"output\"]`).value = JSON.stringify(data)\n   *     }\n   *   })\n   * }\n   */\n  static getGenericServiceListener({ methods = [], handler = () => {} }) {\n    return methods.reduce((listener, method) => {\n      listener[method] = ({ channel, data }) => handler({ channel, data, method })\n      return listener\n    }, {})\n  }\n\n}\n"
   },
   {
-    "__docId__": 69,
+    "__docId__": 71,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -1592,7 +1624,7 @@
     }
   },
   {
-    "__docId__": 70,
+    "__docId__": 72,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1612,7 +1644,7 @@
     "interface": false
   },
   {
-    "__docId__": 71,
+    "__docId__": 73,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1637,7 +1669,7 @@
     "generator": false
   },
   {
-    "__docId__": 72,
+    "__docId__": 74,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1657,7 +1689,7 @@
     }
   },
   {
-    "__docId__": 73,
+    "__docId__": 75,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1671,7 +1703,7 @@
     "generator": false
   },
   {
-    "__docId__": 74,
+    "__docId__": 76,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1685,7 +1717,7 @@
     "generator": false
   },
   {
-    "__docId__": 75,
+    "__docId__": 77,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1718,7 +1750,7 @@
     "generator": false
   },
   {
-    "__docId__": 76,
+    "__docId__": 78,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1751,7 +1783,7 @@
     "generator": false
   },
   {
-    "__docId__": 77,
+    "__docId__": 79,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1773,7 +1805,7 @@
     "generator": false
   },
   {
-    "__docId__": 78,
+    "__docId__": 80,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1795,7 +1827,7 @@
     "generator": false
   },
   {
-    "__docId__": 79,
+    "__docId__": 81,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1817,7 +1849,7 @@
     "generator": false
   },
   {
-    "__docId__": 80,
+    "__docId__": 82,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1839,7 +1871,7 @@
     "generator": false
   },
   {
-    "__docId__": 81,
+    "__docId__": 83,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1875,7 +1907,7 @@
     "generator": false
   },
   {
-    "__docId__": 82,
+    "__docId__": 84,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1908,7 +1940,7 @@
     "generator": false
   },
   {
-    "__docId__": 83,
+    "__docId__": 85,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1941,7 +1973,7 @@
     "generator": false
   },
   {
-    "__docId__": 84,
+    "__docId__": 86,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1966,7 +1998,7 @@
     "generator": false
   },
   {
-    "__docId__": 85,
+    "__docId__": 87,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1996,7 +2028,7 @@
     "generator": false
   },
   {
-    "__docId__": 86,
+    "__docId__": 88,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2021,7 +2053,7 @@
     "generator": false
   },
   {
-    "__docId__": 87,
+    "__docId__": 89,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -2057,7 +2089,7 @@
     "generator": false
   },
   {
-    "__docId__": 88,
+    "__docId__": 90,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2070,7 +2102,7 @@
     "content": "import { Transport, LongPollingTransport } from 'zetapush-cometd'\n\n/**\n * Implements LongPollingTransport using borwser fetch() API\n * @access private\n * @return {FetchLongPollingTransport}\n */\nexport function FetchLongPollingTransport() {\n  const _super = new LongPollingTransport()\n  const that = Transport.derive(_super)\n\n  /**\n   * Implements transport via fetch() API\n   * @param {Object} packet\n   */\n  that.xhrSend = function (packet) {\n    fetch(packet.url, {\n      method: 'post',\n      body: packet.body,\n      headers: Object.assign(packet.headers, {\n        'Content-Type': 'application/json;charset=UTF-8'\n      })\n    })\n    .then((response) => {\n      return response.json()\n    })\n    .then(packet.onSuccess)\n    .catch(packet.onError)\n  }\n\n  return that\n}\n"
   },
   {
-    "__docId__": 89,
+    "__docId__": 91,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2095,7 +2127,7 @@
     "generator": false
   },
   {
-    "__docId__": 90,
+    "__docId__": 92,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2105,10 +2137,10 @@
     "access": null,
     "description": null,
     "lineNumber": 5,
-    "content": "/**\n * Define life cycle connection methods \n * @access public\n */\nexport class ConnectionStatusListener {\n  /**\n   * Callback fired when connection is broken\n   */\n  onConnectionBroken() {}\n  /**\n   * Callback fired when connection is closed\n   */\n  onConnectionClosed() {}\n  /**\n   * Callback fired when is established\n   */\n  onConnectionEstablished() {}\n  /**\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} error\n   */\n  onFailedHandshake(error) {}\n  /**\n   * Callback fired when a message is lost\n   */\n  onMessageLost() {}\n  /**\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   */\n  onSuccessfulHandshake(authentication) {}\n}\n"
+    "content": "/**\n * Define life cycle connection methods\n * @access public\n */\nexport class ConnectionStatusListener {\n  /**\n   * Callback fired when connection is broken\n   */\n  onConnectionBroken() {}\n  /**\n   * Callback fired when connection is closed\n   */\n  onConnectionClosed() {}\n  /**\n   * Callback fired when connection is established\n   */\n  onConnectionEstablished() {}\n  /**\n  * Callback fired when connection will close\n  */\n  onConnectionWillClose() {}\n  /**\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} error\n   */\n  onFailedHandshake(error) {}\n  /**\n   * Callback fired when a message is lost\n   */\n  onMessageLost() {}\n  /**\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   */\n  onSuccessfulHandshake(authentication) {}\n}\n"
   },
   {
-    "__docId__": 91,
+    "__docId__": 93,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2119,12 +2151,12 @@
     "export": true,
     "importPath": "zetapush-js/src/connection/connection-status.js",
     "importStyle": "{ConnectionStatusListener}",
-    "description": "Define life cycle connection methods ",
+    "description": "Define life cycle connection methods",
     "lineNumber": 5,
     "interface": false
   },
   {
-    "__docId__": 92,
+    "__docId__": 94,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2138,7 +2170,7 @@
     "generator": false
   },
   {
-    "__docId__": 93,
+    "__docId__": 95,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2152,7 +2184,7 @@
     "generator": false
   },
   {
-    "__docId__": 94,
+    "__docId__": 96,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2160,13 +2192,27 @@
     "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
     "longname": "src/connection/connection-status.js~ConnectionStatusListener#onConnectionEstablished",
     "access": null,
-    "description": "Callback fired when is established",
+    "description": "Callback fired when connection is established",
     "lineNumber": 17,
     "params": [],
     "generator": false
   },
   {
-    "__docId__": 95,
+    "__docId__": 97,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "onConnectionWillClose",
+    "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
+    "longname": "src/connection/connection-status.js~ConnectionStatusListener#onConnectionWillClose",
+    "access": null,
+    "description": "Callback fired when connection will close",
+    "lineNumber": 21,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 98,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2175,7 +2221,7 @@
     "longname": "src/connection/connection-status.js~ConnectionStatusListener#onFailedHandshake",
     "access": null,
     "description": "Callback fired when an error occurs in handshake step",
-    "lineNumber": 22,
+    "lineNumber": 26,
     "params": [
       {
         "nullable": null,
@@ -2191,7 +2237,7 @@
     "generator": false
   },
   {
-    "__docId__": 96,
+    "__docId__": 99,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2200,12 +2246,12 @@
     "longname": "src/connection/connection-status.js~ConnectionStatusListener#onMessageLost",
     "access": null,
     "description": "Callback fired when a message is lost",
-    "lineNumber": 26,
+    "lineNumber": 30,
     "params": [],
     "generator": false
   },
   {
-    "__docId__": 97,
+    "__docId__": 100,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2214,7 +2260,7 @@
     "longname": "src/connection/connection-status.js~ConnectionStatusListener#onSuccessfulHandshake",
     "access": null,
     "description": "Callback fired when handshake step succeed",
-    "lineNumber": 31,
+    "lineNumber": 35,
     "params": [
       {
         "nullable": null,
@@ -2230,7 +2276,7 @@
     "generator": false
   },
   {
-    "__docId__": 98,
+    "__docId__": 101,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2243,7 +2289,7 @@
     "content": "/**\n * @access protected\n */\nexport class AbstractPublisherDefinition {\n\tconstructor({ $publish }) {\n\t\tthis.$publish = $publish\n\t}\n}\n/**\n * Data aggregation\n * \n * Provides data aggregation over time and across different items\n *  User devices push items data on developer-defined categories\n *  This service automatically aggregates the data\n * Raw data is not available for reading, only the generated aggregation result\n * \n * */\n/**\n * User API for item aggregation\n * \n * Users can push data and be notified of aggregated data.\n * This service does not allow you to read the data. To achieve that kind of behavior, you could configure a callback to store the data.\n * @access public\n * */\nexport class AggregPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Pushes some data\n\t * \n\t * Pushes the given data.\n\t * All the items are processed according to the defined rules.\n\t * At least one push for a given item is needed during a time period to trigger processing and calling of the corresponding callback verb/macro.\n\t * */\n\tpush({items,owner}) { this.$publish('push', {items,owner})}\n}\n/**\n * Data stacks\n * \n * Stacks are a per-user named persistent queue of data\n *  An administrator creates a stack service\n *  End-users can push data on an arbitrary number of their own arbitrary named stacks\n * */\n/**\n * Data stack user API\n * \n * Data is stored on a per user basis. However, notifications can be sent to a configurable set of listeners.\n * Stack names are arbitrary and do not need to be explicitly initialized.\n * @access public\n * */\nexport class StackPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Lists the listeners\n\t * \n\t * Returns the whole list of listeners for the given stack.\n\t * */\n\tgetListeners({owner,stack}) { this.$publish('getListeners', {owner,stack})}\n\t/**\n\t * Lists content\n\t * \n\t * Returns a paginated list of contents for the given stack.\n\t * Content is sorted according to the statically configured order.\n\t * */\n\tlist({owner,page,stack}) { this.$publish('list', {owner,page,stack})}\n\t/**\n\t * Empties a stack\n\t * \n\t * Removes all items from the given stack.\n\t * */\n\tpurge({owner,stack}) { this.$publish('purge', {owner,stack})}\n\t/**\n\t * Pushes an item\n\t * \n\t * Pushes an item onto the given stack.\n\t * The stack does not need to be created.\n\t * */\n\tpush({stack,data,owner}) { this.$publish('push', {stack,data,owner})}\n\t/**\n\t * Removes items\n\t * \n\t * Removes the item with the given guid from the given stack.\n\t * */\n\tremove({guids,owner,stack}) { this.$publish('remove', {guids,owner,stack})}\n\t/**\n\t * Sets the listeners\n\t * \n\t * Sets the listeners for the given stack.\n\t * */\n\tsetListeners({listeners,owner,stack}) { this.$publish('setListeners', {listeners,owner,stack})}\n\t/**\n\t * Updates an item\n\t * \n\t * Updates an existing item of the given stack.\n\t * The item MUST exist prior to the call.\n\t * */\n\tupdate({guid,stack,data,owner}) { this.$publish('update', {guid,stack,data,owner})}\n}\n/**\n * Echo\n * \n * Echo\n * */\n/**\n * Echo service\n * \n * Simple echo service, for development purposes.\n * @access public\n * */\nexport class EchoPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Echoes an object\n\t * \n\t * Echoes an object: the server will echo that object on channel 'echo' for the current user.\n\t * */\n\techo({}) { this.$publish('echo', {})}\n}\n/**\n * Game engine\n * \n * Abstract Game Engine\n *  Concrete game engines are remote cometd clients or internal macros\n * */\n/**\n * Game Engine API\n * \n * The Game Engine API is for game engine clients, not end-users.\n * @access public\n * */\nexport class GameEnginePublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Notify the result for a join request\n\t * \n\t * A Game Engine notifies the STR of the result of a join request that it received on join_callback\n\t * */\n\tjoin_result({callerId,error,msgId,payload}) { this.$publish('join_result', {callerId,error,msgId,payload})}\n\t/**\n\t * Notify the result for an organization request\n\t * \n\t * A Game Engine notifies the STR of the result of an organization request that it received on organize_callback\n\t * */\n\torganize_result({callerId,error,msgId,payload}) { this.$publish('organize_result', {callerId,error,msgId,payload})}\n\t/**\n\t * Registers a game engine\n\t * \n\t * A client registers itself to the STR as a Game Engine.\n\t * The STR may, from now on, dispatch game of the given game type to said client.\n\t * Unregistration is done automatically on logoff.\n\t * */\n\tregister({gameInfo,location,maxGames}) { this.$publish('register', {gameInfo,location,maxGames})}\n\t/**\n\t * Notify the result for a start request\n\t * \n\t * A Game Engine notifies the STR of the result of a start request that it received on start_callback\n\t * */\n\tstart_result({gameId}) { this.$publish('start_result', {gameId})}\n\t/**\n\t * Notify a game event\n\t * \n\t * A Game Engine notifies the STR of some arbitrary game event.\n\t * */\n\tstate({data,gameId,status}) { this.$publish('state', {data,gameId,status})}\n\t/**\n\t * Notify the result for an unjoin request\n\t * \n\t * A Game Engine notifies the STR of the result of an unjoin request that it received on unjoin_callback\n\t * */\n\tunjoin_result({callerId,error,msgId,payload}) { this.$publish('unjoin_result', {callerId,error,msgId,payload})}\n}\n/**\n * User API for games\n * \n * Users can list, start, join games, and play.\n * @access public\n * */\nexport class GamePublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Lists game types\n\t * \n\t * Returns the list of game types supported by the server and the currently registered game engines.\n\t * */\n\tavailable({}) { this.$publish('available', {})}\n\t/**A user joins a game*/\n\tjoin({gameId,role,userId,userName}) { this.$publish('join', {gameId,role,userId,userName})}\n\t/**Organizes a game*/\n\torganize({type,owner,options}) { this.$publish('organize', {type,owner,options})}\n\t/**Gives some command to the game engine*/\n\tplay({data,gameId,userId}) { this.$publish('play', {data,gameId,userId})}\n\t/**Starts a game*/\n\tstart({gameId}) { this.$publish('start', {gameId})}\n\t/**A user cancels joining a game*/\n\tunjoin({gameId,role,userId,userName}) { this.$publish('unjoin', {gameId,role,userId,userName})}\n}\n/**\n * Generic Data Access\n * \n * Generic Data Access Service : NoSQL storage\n * */\n/**\n * GDA User API\n * \n * User API for Generic Data Access.\n * Data is stored on a per-user basis.\n * Users can put, get, list their data.\n * @access public\n * */\nexport class GdaPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Asks for a data row\n\t * \n\t * Returns a full data row.\n\t * */\n\tget({key,owner,table}) { this.$publish('get', {key,owner,table})}\n\t/**\n\t * Asks for a data cell\n\t * \n\t * Returns a precise list of cells from a column in a data row.\n\t * */\n\tgetCells({column,key,key2,owner,table}) { this.$publish('getCells', {column,key,key2,owner,table})}\n\t/**\n\t * Increments an integer value\n\t * \n\t * Increments a cell 64-bit signed integer value and returns the result in the data field.\n\t * The increment is atomic : if you concurrently increment 10 times a value by 1, the final result will be the initial value plus 10. The actual individual resulting values seen by the 10 concurrent callers may vary discontinuously, with duplicates : at least one of them will see the final (+10) result.\n\t * */\n\tinc({table,data,key,key2,owner,column}) { this.$publish('inc', {table,data,key,key2,owner,column})}\n\t/**\n\t * Asks for a list of rows\n\t * \n\t * Returns a paginated list of rows from the given table.\n\t * */\n\tlist({columns,owner,page,table}) { this.$publish('list', {columns,owner,page,table})}\n\t/**\n\t * Puts some data into a cell\n\t * \n\t * Creates or replaces the contents of a particular cell.\n\t * */\n\tput({column,data,key,key2,owner,table}) { this.$publish('put', {column,data,key,key2,owner,table})}\n\t/**\n\t * Puts several rows\n\t * \n\t * Creates or replaces the (maybe partial) contents of a collection of rows.\n\t * This method only creates or replaces cells for non-null input values.\n\t * */\n\tputs({owner,rows,table}) { this.$publish('puts', {owner,rows,table})}\n\t/**\n\t * Asks for a range of rows\n\t * \n\t * Returns a paginated range of rows from the given table.\n\t * A range consists of consecutive rows from the start key (inclusive) to the stop key (exclusive).\n\t * You can specify partial keys for the start and stop fields.\n\t * */\n\trange({columns,owner,page,start,stop,table}) { this.$publish('range', {columns,owner,page,start,stop,table})}\n\t/**\n\t * Reduces a range of rows\n\t * \n\t * Returns a computed single reduced result from a range of rows from the given table.\n\t * A range consists of consecutive rows from the start key (inclusive) to the stop key (exclusive).\n\t * You can specify partial keys for the start and stop fields.\n\t * */\n\treduce({}) { this.$publish('reduce', {})}\n\t/**\n\t * Removes one cell inside a column of a row\n\t * \n\t * Removes only one cell of the given column of the given row from the given table.\n\t * */\n\tremoveCell({column,key,key2,owner,table}) { this.$publish('removeCell', {column,key,key2,owner,table})}\n\t/**\n\t * Removes one full column of a row\n\t * \n\t * Removes all cells of the given column of the given row from the given table.\n\t * */\n\tremoveColumn({column,key,owner,table}) { this.$publish('removeColumn', {column,key,owner,table})}\n\t/**\n\t * Removes a range of rows\n\t * \n\t * Removes the specified columns of the given range of rows from the given table.\n\t * */\n\tremoveRange({columns,owner,start,stop,table}) { this.$publish('removeRange', {columns,owner,start,stop,table})}\n\t/**\n\t * Removes one full row\n\t * \n\t * Removes all columns of the given row from the given table.\n\t * */\n\tremoveRow({key,owner,table}) { this.$publish('removeRow', {key,owner,table})}\n}\n/**\n * Groups Management\n * \n * Groups management for users, grants on resources, remote commands on devices\n *  This is where you can configure rights for any resource\n * \n * */\n/**\n * User API for remote control\n * \n * @access public\n * */\nexport class RemotingPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Adds a listener\n\t * \n\t * A user requests notifications from a device owned by anyone who granted him the right authorizations.\n\t * Whenever the device calls 'notify', notifications will be sent to the caller of this verb.\n\t * */\n\taddListener({cmd,data,from,fromResource,owner,resource}) { this.$publish('addListener', {cmd,data,from,fromResource,owner,resource})}\n\t/**Response to 'getCapabilities'*/\n\tcapabilities({answeringResource,askingResource,capabilities}) { this.$publish('capabilities', {answeringResource,askingResource,capabilities})}\n\t/**\n\t * Executes a command\n\t * \n\t * A user executes a command on a device owned by anyone who granted him the right authorizations.\n\t * The command is issued on channel 'command'\n\t * */\n\texecute({resource,cmd,data,owner}) { this.$publish('execute', {resource,cmd,data,owner})}\n\t/**\n\t * Requests capabilities\n\t * \n\t * A user requests all his devices for the whole list of their capabilities.\n\t * Devices are expected to answer on channel 'capabilities'\n\t * */\n\tgetCapabilities({}) { this.$publish('getCapabilities', {})}\n\t/**\n\t * Notifies of some event\n\t * \n\t * A device notifies the registered users/devices on this channel.\n\t * The server forwards the notification to said users.\n\t * */\n\tnotify({cmd,data,from,fromResource,owner,resource}) { this.$publish('notify', {cmd,data,from,fromResource,owner,resource})}\n\t/**\n\t * Pings devices\n\t * \n\t * A user requests all devices (of all owners) on which he has authorizations to respond on channel 'pong'\n\t * */\n\tping({action}) { this.$publish('ping', {action})}\n\t/**Response to ping*/\n\tpong({action,available,owner,resource,uid,user}) { this.$publish('pong', {action,available,owner,resource,uid,user})}\n\t/**\n\t * Removes a listener\n\t * \n\t * A user stops requesting notifications from a device owned by anyone who granted him the right authorizations\n\t * */\n\tremoveListener({cmd,data,from,fromResource,owner,resource}) { this.$publish('removeListener', {cmd,data,from,fromResource,owner,resource})}\n}\n/**\n * User API for groups and rights.\n * \n * Groups are stored per user.\n * This means that two users can own a group with the same identifier. A couple (owner, group) is needed to uniquely identify a group inside a group management service.\n * The triplet (deploymentId, owner, group) is actually needed to fully qualify a group outside of the scope of this service.\n * @access public\n * */\nexport class GroupManagementPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Adds me to a group\n\t * \n\t * Adds me (the caller) to a group.\n\t * This verb exists so that group owners may grant the right to join their groups without granting the right to add other users to those groups.\n\t * The 'user' field is implicitly set to the current user's key.\n\t * */\n\taddMe({group,owner}) { this.$publish('addMe', {group,owner})}\n\t/**\n\t * Adds a user to a group\n\t * \n\t * Adds the given user to the given group.\n\t * Addition may fail if the given group does not already exist.\n\t * */\n\taddUser({user,group,owner}) { this.$publish('addUser', {user,group,owner})}\n\t/**Adds users to a group*/\n\taddUsers({users,group,owner}) { this.$publish('addUsers', {users,group,owner})}\n\t/**\n\t * Lists my owned groups, with details\n\t * \n\t * Returns the whole list of groups owned by the current user, with their members\n\t * */\n\tallGroups({owner}) { this.$publish('allGroups', {owner})}\n\t/**\n\t * Creates a group\n\t * \n\t * Creates a group owned by the current user.\n\t * Group creation may fail if the group already exists.\n\t * */\n\tcreateGroup({group,groupName,owner}) { this.$publish('createGroup', {group,groupName,owner})}\n\t/**\n\t * Removes a group\n\t * \n\t * Removes the given group owned by the current user or the given owner.\n\t * Also removes all grants to that group.\n\t * */\n\tdelGroup({group,owner}) { this.$publish('delGroup', {group,owner})}\n\t/**Removes a user from a group*/\n\tdelUser({group,owner,user}) { this.$publish('delUser', {group,owner,user})}\n\t/**Removes users from a group*/\n\tdelUsers({group,groupName,owner,users}) { this.$publish('delUsers', {group,groupName,owner,users})}\n\t/**\n\t * Tests for a group's existence\n\t * \n\t * Returns whether a group exists or not.\n\t * */\n\texists({group,owner}) { this.$publish('exists', {group,owner})}\n\t/**\n\t * Grants a right to a group\n\t * \n\t * The granting API does not do any check when storing permissions.\n\t * In particular when granting rights on a verb and resource of another API, the existence of said verb and resource is not checked.\n\t * */\n\tgrant({action,group,owner,resource}) { this.$publish('grant', {action,group,owner,resource})}\n\t/**\n\t * Lists the group users\n\t * \n\t * Returns the whole list of users configured inside the given group.\n\t * */\n\tgroupUsers({group,owner}) { this.$publish('groupUsers', {group,owner})}\n\t/**\n\t * Lists my owned groups\n\t * \n\t * Returns the whole list of groups owned by the current user\n\t * */\n\tgroups({owner}) { this.$publish('groups', {owner})}\n\t/**\n\t * Lists rights for a group\n\t * \n\t * This API lists explicitly configured rights.\n\t * Effective rights include configured rights, implicit rights and inherited rights.\n\t * */\n\tlistGrants({group,owner}) { this.$publish('listGrants', {group,owner})}\n\t/**\n\t * Lists presences for a group\n\t * \n\t * Returns the list of members of the given groups, along with their actual and current presence on the zetapush server.\n\t * The current implementation does not include information about the particular devices users are connected with.\n\t * If a user is connected twice with two different devices, two identical entries will be returned.\n\t * */\n\tlistPresences({group,owner}) { this.$publish('listPresences', {group,owner})}\n\t/**\n\t * Tests membership\n\t * \n\t * Tests whether I (the caller) am a member of the given group.\n\t * This verb exists so that users can determine if they are part of a group without being granted particular rights.\n\t * The 'user' field is implicitly set to the current user's key.\n\t * */\n\tmemberOf({hardFail,group,owner}) { this.$publish('memberOf', {hardFail,group,owner})}\n\t/**\n\t * Grants rights to a group\n\t * \n\t * Grant several rights at once.\n\t * */\n\tmgrant({actions,group,owner,resource}) { this.$publish('mgrant', {actions,group,owner,resource})}\n\t/**Revokes rights for a group*/\n\tmrevoke({actions,group,owner,resource}) { this.$publish('mrevoke', {actions,group,owner,resource})}\n\t/**\n\t * Lists the groups I am part of\n\t * \n\t * Returns the whole list of groups the current user is part of.\n\t * Groups may be owned by anyone, including the current user.\n\t * */\n\tmyGroups({owner}) { this.$publish('myGroups', {owner})}\n\t/**Revokes a right for a group*/\n\trevoke({action,group,owner,resource}) { this.$publish('revoke', {action,group,owner,resource})}\n}\n/**\n * HTTP client\n * \n * Web-service client\n *  An admin records URL templates that can be called by users\n *  Calls are not configurable by end-users\n *  However an admin may leverage the macro service to achieve URL, headers and body configurability\n * */\n/**\n * User API for http requests\n * \n * @access public\n * */\nexport class HttpclientPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Makes a predefined request\n\t * \n\t * Lookups a predefined request by name, and executes it.\n\t * */\n\tcall({name,requestId}) { this.$publish('call', {name,requestId})}\n\t/**\n\t * Makes a parameterized request\n\t * \n\t * Executes an HTTP request with the given url, method, headers and body.\n\t * */\n\trequest({}) { this.$publish('request', {})}\n}\n/**\n * Macros\n * \n * Macro-command service\n *  An admin defines macro-commands that can sequentially call any number of other api verbs, loop on collections of data, make decisions, etc\n * \n * \n *  End-users play them, with contextual parameters\n * */\n/**\n * User API for macro execution\n * \n * Simple errors are reported as usual.\n * However, the macro execution verbs treat most errors in a particular way : instead of reporting errors on the usual 'error' channel, errors are put in the returned 'MacroCompletion' result.\n * This behavior can be tuned on a per-call basis with the hardFail parameter.\n * Note that some particular errors will always behave as if hardFail were true, because they are related to programming errors, or prevent processing from ending gracefully : STACK_OVERFLOW, NO_SUCH_FUNCTION, RAM_EXCEEDED, CYCLES_EXCEEDED, TIME_EXCEEDED, QUOTA_EXCEEDED, RATE_EXCEEDED, BAD_COMPARATOR_VALUE\n * @access public\n * */\nexport class MacroPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Plays a previously recorded macro\n\t * \n\t * DO NOT use this verb from inside an enclosing macro when you need the result in order to proceed with the enclosing macro.\n\t * You can override the default notification channel when defining the macro.\n\t * */\n\tcall({debug,hardFail,name,parameters}) { this.$publish('call', {debug,hardFail,name,parameters})}\n\t/**\n\t * Plays a previously recorded macro and returns the result.\n\t * \n\t * Use this verb when you want to synchronously call a macro from inside another macro.\n\t * */\n\tfunc({}) { this.$publish('func', {})}\n\t/**\n\t * Similar to func, with the ability to impersonate any user at will.\n\t * \n\t * Use this verb when you do not want to use or cannot use the standard rights system and wish to bypass it completely.\n\t * Use this verb sparingly, as it can give the caller any right on any resource.\n\t * */\n\tsudo({}) { this.$publish('sudo', {})}\n}\n/**\n * Mail sender\n * \n * Sends email through SMTP\n * */\n/**\n * Mail service user API\n * \n * This service is statically configured with an outgoing SMTP server.\n * Users call the API here to actually send emails.\n * @access public\n * */\nexport class SendmailPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Sends an email\n\t * \n\t * Sends an email with the given body to the intended recipients.\n\t * */\n\tsend({}) { this.$publish('send', {})}\n}\n/**\n * Messaging service\n * \n * Messaging service\n * */\n/**\n * Messaging service\n * \n * Simple and flexible user-to-user or user-to-group messaging service.\n * @access public\n * */\nexport class MessagingPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Sends a message to a target\n\t * \n\t * Sends the given message to the specified target on the given (optional) channel.\n\t * The administratively given default channel name is used when none is provided in the message itself.\n\t * */\n\tsend({target,channel,data}) { this.$publish('send', {target,channel,data})}\n}\n/**\n * Producer consumer\n * \n * Producer consumer service\n *  Users can submit tasks and other users consume them\n * */\n/**\n * Producer / consumer real-time API\n * \n * Task producers submits their tasks.\n * The server dispatches the tasks.\n * Consumers process them and report completion back to the server.\n * Tasks are global to the service (i.e. NOT per user).\n * @access public\n * */\nexport class QueuePublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Submits a task\n\t * \n\t * Producer API.\n\t * A task producer submits the given task to the server.\n\t * The server will find a tasker with processing capacity and dispatch the task.\n\t * The task result will be returned to the caller.\n\t * When called from inside a macro, the comsumer generated result is available for further use.\n\t * */\n\tcall({description,originBusinessId,originDeploymentId,data,owner}) { this.$publish('call', {description,originBusinessId,originDeploymentId,data,owner})}\n\t/**\n\t * Notifies completion of a task\n\t * \n\t * Consumer API.\n\t * The tasker notifies completion of the given task to the server.\n\t * The tasker can optionally include a result or an error code.\n\t * */\n\tdone({result,success,taskId}) { this.$publish('done', {result,success,taskId})}\n\t/**\n\t * Registers a consumer\n\t * \n\t * Consumer API.\n\t * Registers the current user resource as an available task consumer.\n\t * Tasks will be then dispatched to that consumer.\n\t * */\n\tregister({capacity}) { this.$publish('register', {capacity})}\n\t/**\n\t * Submits a task\n\t * \n\t * Producer API.\n\t * A task producer submits the given task to the server.\n\t * The server will find a tasker with processing capacity and dispatch the task.\n\t * The task result will be ignored : the producer will not receive any notification of any kind, even in case of errors (including capacity exceeded errors).\n\t * This verb will return immediately : you can use this API to asynchronously submit a task.\n\t * */\n\tsubmit({description,originBusinessId,originDeploymentId,data,owner}) { this.$publish('submit', {description,originBusinessId,originDeploymentId,data,owner})}\n\t/**\n\t * Unregisters a consumer\n\t * \n\t * Consumer API.\n\t * Unregisters the current user resource as an available task consumer.\n\t * All non finished tasks are returned to the server.\n\t * */\n\tunregister({}) { this.$publish('unregister', {})}\n}\n/**\n * SMS via OVH\n * \n * SMS sender, to send text messages to mobile phones\n * This SMS sending service uses the OVH API\n * \n * */\n/**\n * SMS service\n * \n * User API for SMS.\n * @access public\n * */\nexport class Sms_ovhPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Sends an SMS\n\t * \n\t * Sends the given message to the given recipients.\n\t * */\n\tsend({}) { this.$publish('send', {})}\n}\n/**\n * Scheduler\n * \n * Scheduler service\n *  End-users can schedule one-time or repetitive tasks using a classical cron syntax (with the year field) or a timestamp (milliseconds from the epoch)\n * */\n/**\n * User API for the Scheduler\n * \n * User endpoints for scheduling : users can schedule, list and delete tasks.\n * Tasks are stored on a per-user basis: a task will run with the priviledges of the user who stored it.\n * Tasks are run on the server and thus can call api verbs marked as server-only.\n * @access public\n * */\nexport class CronPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * List the configured tasks\n\t * \n\t * Returns a paginated list of the asking user's tasks.\n\t * */\n\tlist({owner,page,start,stop}) { this.$publish('list', {owner,page,start,stop})}\n\t/**\n\t * Schedules a task\n\t * \n\t * Schedules a task for later execution.\n\t * If a task already exists with the same cronName, this new task completely replaces it.\n\t * A task can be scheduled with a cron-like syntax for repetitive or one-shot execution.\n\t * Wildcards are not allowed for minutes and hours.\n\t * When scheduling for one-shot execution, the time must be at least two minutes into the future.\n\t * */\n\tschedule({}) { this.$publish('schedule', {})}\n\t/**\n\t * Removes a scheduled task\n\t * \n\t * Removes a previously scheduled task.\n\t * Does absolutely nothing if asked to remove a non-existent task.\n\t * */\n\tunschedule({cronName,owner}) { this.$publish('unschedule', {cronName,owner})}\n}\n/**\n * Search engine\n * \n * ElasticSearch engine, to index and search data\n *  An admin creates indices\n *  Users index and search documents\n * \n * */\n/**\n * ElasticSearch Service\n * \n * This API is a very thin wrapper around ElasticSearch's API.\n * @access public\n * */\nexport class SearchPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Deletes data\n\t * \n\t * Deletes a document from the elasticsearch engine by id.\n\t * */\n\tdelete({id,index,type}) { this.$publish('delete', {id,index,type})}\n\t/**\n\t * Gets data\n\t * \n\t * Retrieves a document from the elasticsearch engine by id.\n\t * */\n\tget({id,index,type}) { this.$publish('get', {id,index,type})}\n\t/**\n\t * Indexes data\n\t * \n\t * Inserts or updates a document into the elasticsearch engine.\n\t * */\n\tindex({data,id,index,type}) { this.$publish('index', {data,id,index,type})}\n\t/**Searches for data*/\n\tsearch({indices,page,query,sort}) { this.$publish('search', {indices,page,query,sort})}\n}\n/**\n * Template engine\n * \n * Template engine to produce documents from parameterized templates\n * <br>An admin creates templates\n * <br> Users produce documents\n * <br>The implementation uses the <a href='http://freemarker\n * org/'>freemarker</a> engine\n * \n * */\n/**\n * User API for templates\n * \n * Users use this API to evaluate pre-configured templates.\n * @access public\n * */\nexport class TemplatePublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Evaluates a template\n\t * \n\t * Evaluates the given template and returns the result as a string.\n\t * Templates are parsed the first time they are evaluated. Evaluation may fail early due to a parsing error.\n\t * */\n\tevaluate({data,languageTag,name,requestId}) { this.$publish('evaluate', {data,languageTag,name,requestId})}\n}\n/**\n * Upload: S3\n * \n * Upload service with S3 storage\n * */\n/**\n * User API for file management\n * \n * User API for virtual file management and http file upload\n * This API contains all the verbs needed to browse, upload and remove files.\n * Files are stored on a per-user basis: each user has his or her own whole virtual filesystem.\n * Uploading a file is a 3-step process : request an upload URL, upload via HTTP, notify this service of completion.\n * @access public\n * */\nexport class Zpfs_s3PublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Copies a file\n\t * \n\t * Copies a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tcp({oldPath,owner,path}) { this.$publish('cp', {oldPath,owner,path})}\n\t/**\n\t * Returns disk usage\n\t * \n\t * Returns an recursively aggregated number of used bytes, starting at the given path.\n\t * */\n\tdu({owner,path}) { this.$publish('du', {owner,path})}\n\t/**Requests an upload URL without constraints.*/\n\tfreeUploadUrl({}) { this.$publish('freeUploadUrl', {})}\n\t/**\n\t * Links a file\n\t * \n\t * Links a file or folder to another location.\n\t * May fail if the target location is not empty.\n\t * */\n\tlink({oldPath,owner,path}) { this.$publish('link', {oldPath,owner,path})}\n\t/**\n\t * Lists a folder content\n\t * \n\t * Returns a paginated list of the folder's content.\n\t * */\n\tls({folder,owner,page}) { this.$publish('ls', {folder,owner,page})}\n\t/**\n\t * Creates a folder\n\t * \n\t * Creates a new folder.\n\t * May fail if the target location is not empty.\n\t * */\n\tmkdir({folder,owner,parents}) { this.$publish('mkdir', {folder,owner,parents})}\n\t/**\n\t * Moves a file\n\t * \n\t * Moves a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tmv({oldPath,owner,path}) { this.$publish('mv', {oldPath,owner,path})}\n\t/**\n\t * Notifies of upload completion\n\t * \n\t * The client application calls this verb to notify that it's done uploading to the cloud.\n\t * Calling that verb MAY trigger additional events such as thumbnail/metadata creation.\n\t * */\n\tnewFile({guid,metadata,owner,tags}) { this.$publish('newFile', {guid,metadata,owner,tags})}\n\t/**\n\t * Requests an upload URL\n\t * \n\t * Requests an HTTP upload URL.\n\t * The URL contains temporary credentials (typically valid for a few minutes) and is meant for immediate use.\n\t * */\n\tnewUploadUrl({contentType,owner,path}) { this.$publish('newUploadUrl', {contentType,owner,path})}\n\t/**\n\t * Removes a file\n\t * \n\t * Removes a file or folder (recursively).\n\t * */\n\trm({owner,path}) { this.$publish('rm', {owner,path})}\n\t/**\n\t * Returns information about a file\n\t * \n\t * Returns information about a single file.\n\t * The entry field will be null if the path does not exist\n\t * */\n\tstat({owner,path}) { this.$publish('stat', {owner,path})}\n\t/**Updates a file's metadata*/\n\tupdateMeta({metadata,metadataFiles,owner,path}) { this.$publish('updateMeta', {metadata,metadataFiles,owner,path})}\n}\n/**\n * Upload: local\n * \n * Upload service with local HDFS storage\n * */\n/**\n * User API for file management\n * \n * User API for virtual file management and http file upload\n * This API contains all the verbs needed to browse, upload and remove files.\n * Files are stored on a per-user basis: each user has his or her own whole virtual filesystem.\n * Uploading a file is a 3-step process : request an upload URL, upload via HTTP, notify this service of completion.\n * @access public\n * */\nexport class Zpfs_hdfsPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Copies a file\n\t * \n\t * Copies a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tcp({oldPath,owner,path}) { this.$publish('cp', {oldPath,owner,path})}\n\t/**\n\t * Returns disk usage\n\t * \n\t * Returns an recursively aggregated number of used bytes, starting at the given path.\n\t * */\n\tdu({owner,path}) { this.$publish('du', {owner,path})}\n\t/**Requests an upload URL without constraints.*/\n\tfreeUploadUrl({}) { this.$publish('freeUploadUrl', {})}\n\t/**\n\t * Links a file\n\t * \n\t * Links a file or folder to another location.\n\t * May fail if the target location is not empty.\n\t * */\n\tlink({oldPath,owner,path}) { this.$publish('link', {oldPath,owner,path})}\n\t/**\n\t * Lists a folder content\n\t * \n\t * Returns a paginated list of the folder's content.\n\t * */\n\tls({folder,owner,page}) { this.$publish('ls', {folder,owner,page})}\n\t/**\n\t * Creates a folder\n\t * \n\t * Creates a new folder.\n\t * May fail if the target location is not empty.\n\t * */\n\tmkdir({folder,owner,parents}) { this.$publish('mkdir', {folder,owner,parents})}\n\t/**\n\t * Moves a file\n\t * \n\t * Moves a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tmv({oldPath,owner,path}) { this.$publish('mv', {oldPath,owner,path})}\n\t/**\n\t * Notifies of upload completion\n\t * \n\t * The client application calls this verb to notify that it's done uploading to the cloud.\n\t * Calling that verb MAY trigger additional events such as thumbnail/metadata creation.\n\t * */\n\tnewFile({guid,metadata,owner,tags}) { this.$publish('newFile', {guid,metadata,owner,tags})}\n\t/**\n\t * Requests an upload URL\n\t * \n\t * Requests an HTTP upload URL.\n\t * The URL contains temporary credentials (typically valid for a few minutes) and is meant for immediate use.\n\t * */\n\tnewUploadUrl({contentType,owner,path}) { this.$publish('newUploadUrl', {contentType,owner,path})}\n\t/**\n\t * Removes a file\n\t * \n\t * Removes a file or folder (recursively).\n\t * */\n\trm({owner,path}) { this.$publish('rm', {owner,path})}\n\t/**\n\t * Returns information about a file\n\t * \n\t * Returns information about a single file.\n\t * The entry field will be null if the path does not exist\n\t * */\n\tstat({owner,path}) { this.$publish('stat', {owner,path})}\n\t/**Updates a file's metadata*/\n\tupdateMeta({metadata,metadataFiles,owner,path}) { this.$publish('updateMeta', {metadata,metadataFiles,owner,path})}\n}\n/**\n * Upload: pseudo-S3\n * \n * Upload service with pseudo-S3compatible storage\n * */\n/**\n * User API for file management\n * \n * User API for virtual file management and http file upload\n * This API contains all the verbs needed to browse, upload and remove files.\n * Files are stored on a per-user basis: each user has his or her own whole virtual filesystem.\n * Uploading a file is a 3-step process : request an upload URL, upload via HTTP, notify this service of completion.\n * @access public\n * */\nexport class Zpfs_s3compatPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Copies a file\n\t * \n\t * Copies a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tcp({oldPath,owner,path}) { this.$publish('cp', {oldPath,owner,path})}\n\t/**\n\t * Returns disk usage\n\t * \n\t * Returns an recursively aggregated number of used bytes, starting at the given path.\n\t * */\n\tdu({owner,path}) { this.$publish('du', {owner,path})}\n\t/**Requests an upload URL without constraints.*/\n\tfreeUploadUrl({}) { this.$publish('freeUploadUrl', {})}\n\t/**\n\t * Links a file\n\t * \n\t * Links a file or folder to another location.\n\t * May fail if the target location is not empty.\n\t * */\n\tlink({oldPath,owner,path}) { this.$publish('link', {oldPath,owner,path})}\n\t/**\n\t * Lists a folder content\n\t * \n\t * Returns a paginated list of the folder's content.\n\t * */\n\tls({folder,owner,page}) { this.$publish('ls', {folder,owner,page})}\n\t/**\n\t * Creates a folder\n\t * \n\t * Creates a new folder.\n\t * May fail if the target location is not empty.\n\t * */\n\tmkdir({folder,owner,parents}) { this.$publish('mkdir', {folder,owner,parents})}\n\t/**\n\t * Moves a file\n\t * \n\t * Moves a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tmv({oldPath,owner,path}) { this.$publish('mv', {oldPath,owner,path})}\n\t/**\n\t * Notifies of upload completion\n\t * \n\t * The client application calls this verb to notify that it's done uploading to the cloud.\n\t * Calling that verb MAY trigger additional events such as thumbnail/metadata creation.\n\t * */\n\tnewFile({guid,metadata,owner,tags}) { this.$publish('newFile', {guid,metadata,owner,tags})}\n\t/**\n\t * Requests an upload URL\n\t * \n\t * Requests an HTTP upload URL.\n\t * The URL contains temporary credentials (typically valid for a few minutes) and is meant for immediate use.\n\t * */\n\tnewUploadUrl({contentType,owner,path}) { this.$publish('newUploadUrl', {contentType,owner,path})}\n\t/**\n\t * Removes a file\n\t * \n\t * Removes a file or folder (recursively).\n\t * */\n\trm({owner,path}) { this.$publish('rm', {owner,path})}\n\t/**\n\t * Returns information about a file\n\t * \n\t * Returns information about a single file.\n\t * The entry field will be null if the path does not exist\n\t * */\n\tstat({owner,path}) { this.$publish('stat', {owner,path})}\n\t/**Updates a file's metadata*/\n\tupdateMeta({metadata,metadataFiles,owner,path}) { this.$publish('updateMeta', {metadata,metadataFiles,owner,path})}\n}\n/**\n * User directory service\n * \n * User directory service\n * */\n/**\n * User API for user information\n * \n * @access public\n * */\nexport class UserdirPublisherDefinition extends AbstractPublisherDefinition {\n\t/**Searches for users matching the request*/\n\tsearch({page,query,requestId}) { this.$publish('search', {page,query,requestId})}\n\t/**Requests public data for the specified users*/\n\tuserInfo({userKeys}) { this.$publish('userInfo', {userKeys})}\n}\n/**\n * Delegating authentication\n * \n * This authentication delegates authentication to an external auth provider\n * <br>When a zetapush client handshakes with a delegated authentication, the 'token' field given by the client is sent to the configured remote server as part of the URL\n * <br>The response must be in JSON format\n *  Each key of the response will be considered a user information field name\n * \n * */\n/**\n * End-user API for the delegating authentication\n * \n * Provisionning verbs.\n * @access public\n * */\nexport class DelegatingPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Get user info\n\t * \n\t * Retrieves cached user info or (if missing) eagerly creates a zetapush key for the user.\n\t * The returned field 'zetapushKey' is a unique and permanent ID identifying a user in a sandbox.\n\t * */\n\tuserInfo({}) { this.$publish('userInfo', {})}\n}\n/**\n * Local authentication\n * \n * Zetapush local authentication\n *  The configurer can choose the primary key and mandatory user fields for account creation\n *  The field 'zetapushKey' is generated by the server and MUST not be used : it contains the unique key of the user inside a sandbox (it can be obtained from inside a macro with the <b>__userKey</b> pseudo-constant)\n * */\n/**\n * End-user API for the simple local authentication\n * \n * These API verbs allow end-users to manage their account.\n * @access public\n * */\nexport class SimplePublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Changes a password\n\t * \n\t * Changes a user password for this authentication realm.\n\t * The user can be either implicit (the current user) or deduced from the token.\n\t * The change is effective immediately. However, already logged in users might stay connected.\n\t * */\n\tchangePassword({}) { this.$publish('changePassword', {})}\n\t/**\n\t * Checks some account's existence\n\t * \n\t * Checks whether the given user already exists in this 'simple' authentication realm.\n\t * */\n\tcheckUser({}) { this.$publish('checkUser', {})}\n\t/**\n\t * Creates a user\n\t * \n\t * Creates a new user in this 'simple' authentication realm.\n\t * */\n\tcreateUser({}) { this.$publish('createUser', {})}\n\t/**\n\t * Deletes a user\n\t * \n\t * Deletes an existing user in this 'simple' authentication realm.\n\t * */\n\tdeleteUser({}) { this.$publish('deleteUser', {})}\n\t/**\n\t * Requests a password reset\n\t * \n\t * Requests a password reset for the given unique key.\n\t * The key must exist and must be given, as it cannot obviously be deduced from the currently logged in user.\n\t * The returned token needs to be sent to the intended recipient only. The typical use case is to define a macro that requests a reset, generates a email template and emails the user. The macro can then be safely called by a weakly authenticated user.\n\t * Requesting a reset does not invalidate the password.\n\t * Requesting a reset again invalidates previous reset requests (only the last token is usable)\n\t * */\n\trequestReset({}) { this.$publish('requestReset', {})}\n\t/**\n\t * Updates a user\n\t * \n\t * Updates an existing user in this 'simple' authentication realm.\n\t * */\n\tupdateUser({}) { this.$publish('updateUser', {})}\n}\n/**\n * Weak authentication\n * \n * The weak authentication allows for anonymous authentication of devices\n *  Such devices can display a qrcode to allow regular users to take control of them\n * */\n/**\n * User API for weak devices control\n * \n * User API for control and release of weakly authenticated user sessions.\n * @access public\n * */\nexport class WeakPublisherDefinition extends AbstractPublisherDefinition {\n\t/**\n\t * Controls a session\n\t * \n\t * Takes control of a weak user session, identified by the given public token.\n\t * The public token has been previously made available by the controlled device, for example by displaying a QRCode.\n\t * Upon control notification, the client SDK of the controlled session is expected to re-handshake.\n\t * */\n\tcontrol({fullRights,publicToken}) { this.$publish('control', {fullRights,publicToken})}\n\t/**\n\t * Releases a session\n\t * \n\t * Releases control of a weak user session, identified by the given public token.\n\t * The weak user session must have been previously controlled by a call to 'control'.\n\t * */\n\trelease({fullRights,publicToken}) { this.$publish('release', {fullRights,publicToken})}\n}\n"
   },
   {
-    "__docId__": 99,
+    "__docId__": 102,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2259,7 +2305,7 @@
     "interface": false
   },
   {
-    "__docId__": 100,
+    "__docId__": 103,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -2285,7 +2331,7 @@
     "generator": false
   },
   {
-    "__docId__": 101,
+    "__docId__": 104,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2303,7 +2349,7 @@
     }
   },
   {
-    "__docId__": 102,
+    "__docId__": 105,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2322,7 +2368,7 @@
     ]
   },
   {
-    "__docId__": 103,
+    "__docId__": 106,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2348,7 +2394,7 @@
     "generator": false
   },
   {
-    "__docId__": 104,
+    "__docId__": 107,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2367,7 +2413,7 @@
     ]
   },
   {
-    "__docId__": 105,
+    "__docId__": 108,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2393,7 +2439,7 @@
     "generator": false
   },
   {
-    "__docId__": 106,
+    "__docId__": 109,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2420,7 +2466,7 @@
     "generator": false
   },
   {
-    "__docId__": 107,
+    "__docId__": 110,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2446,7 +2492,7 @@
     "generator": false
   },
   {
-    "__docId__": 108,
+    "__docId__": 111,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2473,7 +2519,7 @@
     "generator": false
   },
   {
-    "__docId__": 109,
+    "__docId__": 112,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2500,7 +2546,7 @@
     "generator": false
   },
   {
-    "__docId__": 110,
+    "__docId__": 113,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2527,7 +2573,7 @@
     "generator": false
   },
   {
-    "__docId__": 111,
+    "__docId__": 114,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2555,7 +2601,7 @@
     "generator": false
   },
   {
-    "__docId__": 112,
+    "__docId__": 115,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2574,7 +2620,7 @@
     ]
   },
   {
-    "__docId__": 113,
+    "__docId__": 116,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2597,7 +2643,7 @@
     "generator": false
   },
   {
-    "__docId__": 114,
+    "__docId__": 117,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2616,7 +2662,7 @@
     ]
   },
   {
-    "__docId__": 115,
+    "__docId__": 118,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2644,7 +2690,7 @@
     "generator": false
   },
   {
-    "__docId__": 116,
+    "__docId__": 119,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2672,7 +2718,7 @@
     "generator": false
   },
   {
-    "__docId__": 117,
+    "__docId__": 120,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2699,7 +2745,7 @@
     "generator": false
   },
   {
-    "__docId__": 118,
+    "__docId__": 121,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2724,7 +2770,7 @@
     "generator": false
   },
   {
-    "__docId__": 119,
+    "__docId__": 122,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2751,7 +2797,7 @@
     "generator": false
   },
   {
-    "__docId__": 120,
+    "__docId__": 123,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2779,7 +2825,7 @@
     "generator": false
   },
   {
-    "__docId__": 121,
+    "__docId__": 124,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2798,7 +2844,7 @@
     ]
   },
   {
-    "__docId__": 122,
+    "__docId__": 125,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2821,7 +2867,7 @@
     "generator": false
   },
   {
-    "__docId__": 123,
+    "__docId__": 126,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2849,7 +2895,7 @@
     "generator": false
   },
   {
-    "__docId__": 124,
+    "__docId__": 127,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2876,7 +2922,7 @@
     "generator": false
   },
   {
-    "__docId__": 125,
+    "__docId__": 128,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2903,7 +2949,7 @@
     "generator": false
   },
   {
-    "__docId__": 126,
+    "__docId__": 129,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2928,7 +2974,7 @@
     "generator": false
   },
   {
-    "__docId__": 127,
+    "__docId__": 130,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2956,7 +3002,7 @@
     "generator": false
   },
   {
-    "__docId__": 128,
+    "__docId__": 131,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2975,7 +3021,7 @@
     ]
   },
   {
-    "__docId__": 129,
+    "__docId__": 132,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3002,7 +3048,7 @@
     "generator": false
   },
   {
-    "__docId__": 130,
+    "__docId__": 133,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3031,7 +3077,7 @@
     "generator": false
   },
   {
-    "__docId__": 131,
+    "__docId__": 134,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3061,7 +3107,7 @@
     "generator": false
   },
   {
-    "__docId__": 132,
+    "__docId__": 135,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3089,7 +3135,7 @@
     "generator": false
   },
   {
-    "__docId__": 133,
+    "__docId__": 136,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3119,7 +3165,7 @@
     "generator": false
   },
   {
-    "__docId__": 134,
+    "__docId__": 137,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3146,7 +3192,7 @@
     "generator": false
   },
   {
-    "__docId__": 135,
+    "__docId__": 138,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3176,7 +3222,7 @@
     "generator": false
   },
   {
-    "__docId__": 136,
+    "__docId__": 139,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3199,7 +3245,7 @@
     "generator": false
   },
   {
-    "__docId__": 137,
+    "__docId__": 140,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3228,7 +3274,7 @@
     "generator": false
   },
   {
-    "__docId__": 138,
+    "__docId__": 141,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3256,7 +3302,7 @@
     "generator": false
   },
   {
-    "__docId__": 139,
+    "__docId__": 142,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3285,7 +3331,7 @@
     "generator": false
   },
   {
-    "__docId__": 140,
+    "__docId__": 143,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3312,7 +3358,7 @@
     "generator": false
   },
   {
-    "__docId__": 141,
+    "__docId__": 144,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -3331,7 +3377,7 @@
     ]
   },
   {
-    "__docId__": 142,
+    "__docId__": 145,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3361,7 +3407,7 @@
     "generator": false
   },
   {
-    "__docId__": 143,
+    "__docId__": 146,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3388,7 +3434,7 @@
     "generator": false
   },
   {
-    "__docId__": 144,
+    "__docId__": 147,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3416,7 +3462,7 @@
     "generator": false
   },
   {
-    "__docId__": 145,
+    "__docId__": 148,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3439,7 +3485,7 @@
     "generator": false
   },
   {
-    "__docId__": 146,
+    "__docId__": 149,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3469,7 +3515,7 @@
     "generator": false
   },
   {
-    "__docId__": 147,
+    "__docId__": 150,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3494,7 +3540,7 @@
     "generator": false
   },
   {
-    "__docId__": 148,
+    "__docId__": 151,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3524,7 +3570,7 @@
     "generator": false
   },
   {
-    "__docId__": 149,
+    "__docId__": 152,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3554,7 +3600,7 @@
     "generator": false
   },
   {
-    "__docId__": 150,
+    "__docId__": 153,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -3573,7 +3619,7 @@
     ]
   },
   {
-    "__docId__": 151,
+    "__docId__": 154,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3599,7 +3645,7 @@
     "generator": false
   },
   {
-    "__docId__": 152,
+    "__docId__": 155,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3626,7 +3672,7 @@
     "generator": false
   },
   {
-    "__docId__": 153,
+    "__docId__": 156,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3653,7 +3699,7 @@
     "generator": false
   },
   {
-    "__docId__": 154,
+    "__docId__": 157,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3678,7 +3724,7 @@
     "generator": false
   },
   {
-    "__docId__": 155,
+    "__docId__": 158,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3705,7 +3751,7 @@
     "generator": false
   },
   {
-    "__docId__": 156,
+    "__docId__": 159,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3731,7 +3777,7 @@
     "generator": false
   },
   {
-    "__docId__": 157,
+    "__docId__": 160,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3758,7 +3804,7 @@
     "generator": false
   },
   {
-    "__docId__": 158,
+    "__docId__": 161,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3786,7 +3832,7 @@
     "generator": false
   },
   {
-    "__docId__": 159,
+    "__docId__": 162,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3812,7 +3858,7 @@
     "generator": false
   },
   {
-    "__docId__": 160,
+    "__docId__": 163,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3840,7 +3886,7 @@
     "generator": false
   },
   {
-    "__docId__": 161,
+    "__docId__": 164,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3866,7 +3912,7 @@
     "generator": false
   },
   {
-    "__docId__": 162,
+    "__docId__": 165,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3891,7 +3937,7 @@
     "generator": false
   },
   {
-    "__docId__": 163,
+    "__docId__": 166,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3917,7 +3963,7 @@
     "generator": false
   },
   {
-    "__docId__": 164,
+    "__docId__": 167,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3943,7 +3989,7 @@
     "generator": false
   },
   {
-    "__docId__": 165,
+    "__docId__": 168,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3970,7 +4016,7 @@
     "generator": false
   },
   {
-    "__docId__": 166,
+    "__docId__": 169,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -3998,7 +4044,7 @@
     "generator": false
   },
   {
-    "__docId__": 167,
+    "__docId__": 170,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4026,7 +4072,7 @@
     "generator": false
   },
   {
-    "__docId__": 168,
+    "__docId__": 171,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4051,7 +4097,7 @@
     "generator": false
   },
   {
-    "__docId__": 169,
+    "__docId__": 172,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4079,7 +4125,7 @@
     "generator": false
   },
   {
-    "__docId__": 170,
+    "__docId__": 173,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4098,7 +4144,7 @@
     ]
   },
   {
-    "__docId__": 171,
+    "__docId__": 174,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4124,7 +4170,7 @@
     "generator": false
   },
   {
-    "__docId__": 172,
+    "__docId__": 175,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4147,7 +4193,7 @@
     "generator": false
   },
   {
-    "__docId__": 173,
+    "__docId__": 176,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4166,7 +4212,7 @@
     ]
   },
   {
-    "__docId__": 174,
+    "__docId__": 177,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4194,7 +4240,7 @@
     "generator": false
   },
   {
-    "__docId__": 175,
+    "__docId__": 178,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4217,7 +4263,7 @@
     "generator": false
   },
   {
-    "__docId__": 176,
+    "__docId__": 179,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4240,7 +4286,7 @@
     "generator": false
   },
   {
-    "__docId__": 177,
+    "__docId__": 180,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4259,7 +4305,7 @@
     ]
   },
   {
-    "__docId__": 178,
+    "__docId__": 181,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4282,7 +4328,7 @@
     "generator": false
   },
   {
-    "__docId__": 179,
+    "__docId__": 182,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4301,7 +4347,7 @@
     ]
   },
   {
-    "__docId__": 180,
+    "__docId__": 183,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4328,7 +4374,7 @@
     "generator": false
   },
   {
-    "__docId__": 181,
+    "__docId__": 184,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4347,7 +4393,7 @@
     ]
   },
   {
-    "__docId__": 182,
+    "__docId__": 185,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4376,7 +4422,7 @@
     "generator": false
   },
   {
-    "__docId__": 183,
+    "__docId__": 186,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4403,7 +4449,7 @@
     "generator": false
   },
   {
-    "__docId__": 184,
+    "__docId__": 187,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4428,7 +4474,7 @@
     "generator": false
   },
   {
-    "__docId__": 185,
+    "__docId__": 188,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4457,7 +4503,7 @@
     "generator": false
   },
   {
-    "__docId__": 186,
+    "__docId__": 189,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4480,7 +4526,7 @@
     "generator": false
   },
   {
-    "__docId__": 187,
+    "__docId__": 190,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4499,7 +4545,7 @@
     ]
   },
   {
-    "__docId__": 188,
+    "__docId__": 191,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4522,7 +4568,7 @@
     "generator": false
   },
   {
-    "__docId__": 189,
+    "__docId__": 192,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4541,7 +4587,7 @@
     ]
   },
   {
-    "__docId__": 190,
+    "__docId__": 193,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4569,7 +4615,7 @@
     "generator": false
   },
   {
-    "__docId__": 191,
+    "__docId__": 194,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4592,7 +4638,7 @@
     "generator": false
   },
   {
-    "__docId__": 192,
+    "__docId__": 195,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4618,7 +4664,7 @@
     "generator": false
   },
   {
-    "__docId__": 193,
+    "__docId__": 196,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4637,7 +4683,7 @@
     ]
   },
   {
-    "__docId__": 194,
+    "__docId__": 197,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4664,7 +4710,7 @@
     "generator": false
   },
   {
-    "__docId__": 195,
+    "__docId__": 198,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4691,7 +4737,7 @@
     "generator": false
   },
   {
-    "__docId__": 196,
+    "__docId__": 199,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4719,7 +4765,7 @@
     "generator": false
   },
   {
-    "__docId__": 197,
+    "__docId__": 200,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4747,7 +4793,7 @@
     "generator": false
   },
   {
-    "__docId__": 198,
+    "__docId__": 201,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4766,7 +4812,7 @@
     ]
   },
   {
-    "__docId__": 199,
+    "__docId__": 202,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4794,7 +4840,7 @@
     "generator": false
   },
   {
-    "__docId__": 200,
+    "__docId__": 203,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -4813,7 +4859,7 @@
     ]
   },
   {
-    "__docId__": 201,
+    "__docId__": 204,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4840,7 +4886,7 @@
     "generator": false
   },
   {
-    "__docId__": 202,
+    "__docId__": 205,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4866,7 +4912,7 @@
     "generator": false
   },
   {
-    "__docId__": 203,
+    "__docId__": 206,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4889,7 +4935,7 @@
     "generator": false
   },
   {
-    "__docId__": 204,
+    "__docId__": 207,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4916,7 +4962,7 @@
     "generator": false
   },
   {
-    "__docId__": 205,
+    "__docId__": 208,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4943,7 +4989,7 @@
     "generator": false
   },
   {
-    "__docId__": 206,
+    "__docId__": 209,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4970,7 +5016,7 @@
     "generator": false
   },
   {
-    "__docId__": 207,
+    "__docId__": 210,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -4997,7 +5043,7 @@
     "generator": false
   },
   {
-    "__docId__": 208,
+    "__docId__": 211,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5025,7 +5071,7 @@
     "generator": false
   },
   {
-    "__docId__": 209,
+    "__docId__": 212,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5052,7 +5098,7 @@
     "generator": false
   },
   {
-    "__docId__": 210,
+    "__docId__": 213,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5078,7 +5124,7 @@
     "generator": false
   },
   {
-    "__docId__": 211,
+    "__docId__": 214,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5104,7 +5150,7 @@
     "generator": false
   },
   {
-    "__docId__": 212,
+    "__docId__": 215,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5132,7 +5178,7 @@
     "generator": false
   },
   {
-    "__docId__": 213,
+    "__docId__": 216,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -5151,7 +5197,7 @@
     ]
   },
   {
-    "__docId__": 214,
+    "__docId__": 217,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5178,7 +5224,7 @@
     "generator": false
   },
   {
-    "__docId__": 215,
+    "__docId__": 218,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5204,7 +5250,7 @@
     "generator": false
   },
   {
-    "__docId__": 216,
+    "__docId__": 219,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5227,7 +5273,7 @@
     "generator": false
   },
   {
-    "__docId__": 217,
+    "__docId__": 220,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5254,7 +5300,7 @@
     "generator": false
   },
   {
-    "__docId__": 218,
+    "__docId__": 221,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5281,7 +5327,7 @@
     "generator": false
   },
   {
-    "__docId__": 219,
+    "__docId__": 222,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5308,7 +5354,7 @@
     "generator": false
   },
   {
-    "__docId__": 220,
+    "__docId__": 223,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5335,7 +5381,7 @@
     "generator": false
   },
   {
-    "__docId__": 221,
+    "__docId__": 224,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5363,7 +5409,7 @@
     "generator": false
   },
   {
-    "__docId__": 222,
+    "__docId__": 225,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5390,7 +5436,7 @@
     "generator": false
   },
   {
-    "__docId__": 223,
+    "__docId__": 226,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5416,7 +5462,7 @@
     "generator": false
   },
   {
-    "__docId__": 224,
+    "__docId__": 227,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5442,7 +5488,7 @@
     "generator": false
   },
   {
-    "__docId__": 225,
+    "__docId__": 228,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5470,7 +5516,7 @@
     "generator": false
   },
   {
-    "__docId__": 226,
+    "__docId__": 229,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -5489,7 +5535,7 @@
     ]
   },
   {
-    "__docId__": 227,
+    "__docId__": 230,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5516,7 +5562,7 @@
     "generator": false
   },
   {
-    "__docId__": 228,
+    "__docId__": 231,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5542,7 +5588,7 @@
     "generator": false
   },
   {
-    "__docId__": 229,
+    "__docId__": 232,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5565,7 +5611,7 @@
     "generator": false
   },
   {
-    "__docId__": 230,
+    "__docId__": 233,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5592,7 +5638,7 @@
     "generator": false
   },
   {
-    "__docId__": 231,
+    "__docId__": 234,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5619,7 +5665,7 @@
     "generator": false
   },
   {
-    "__docId__": 232,
+    "__docId__": 235,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5646,7 +5692,7 @@
     "generator": false
   },
   {
-    "__docId__": 233,
+    "__docId__": 236,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5673,7 +5719,7 @@
     "generator": false
   },
   {
-    "__docId__": 234,
+    "__docId__": 237,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5701,7 +5747,7 @@
     "generator": false
   },
   {
-    "__docId__": 235,
+    "__docId__": 238,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5728,7 +5774,7 @@
     "generator": false
   },
   {
-    "__docId__": 236,
+    "__docId__": 239,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5754,7 +5800,7 @@
     "generator": false
   },
   {
-    "__docId__": 237,
+    "__docId__": 240,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5780,7 +5826,7 @@
     "generator": false
   },
   {
-    "__docId__": 238,
+    "__docId__": 241,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5808,7 +5854,7 @@
     "generator": false
   },
   {
-    "__docId__": 239,
+    "__docId__": 242,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -5827,7 +5873,7 @@
     ]
   },
   {
-    "__docId__": 240,
+    "__docId__": 243,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5854,7 +5900,7 @@
     "generator": false
   },
   {
-    "__docId__": 241,
+    "__docId__": 244,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5879,7 +5925,7 @@
     "generator": false
   },
   {
-    "__docId__": 242,
+    "__docId__": 245,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -5898,7 +5944,7 @@
     ]
   },
   {
-    "__docId__": 243,
+    "__docId__": 246,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5921,7 +5967,7 @@
     "generator": false
   },
   {
-    "__docId__": 244,
+    "__docId__": 247,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -5940,7 +5986,7 @@
     ]
   },
   {
-    "__docId__": 245,
+    "__docId__": 248,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5963,7 +6009,7 @@
     "generator": false
   },
   {
-    "__docId__": 246,
+    "__docId__": 249,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -5986,7 +6032,7 @@
     "generator": false
   },
   {
-    "__docId__": 247,
+    "__docId__": 250,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6009,7 +6055,7 @@
     "generator": false
   },
   {
-    "__docId__": 248,
+    "__docId__": 251,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6032,7 +6078,7 @@
     "generator": false
   },
   {
-    "__docId__": 249,
+    "__docId__": 252,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6055,7 +6101,7 @@
     "generator": false
   },
   {
-    "__docId__": 250,
+    "__docId__": 253,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6078,7 +6124,7 @@
     "generator": false
   },
   {
-    "__docId__": 251,
+    "__docId__": 254,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -6097,7 +6143,7 @@
     ]
   },
   {
-    "__docId__": 252,
+    "__docId__": 255,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6123,7 +6169,7 @@
     "generator": false
   },
   {
-    "__docId__": 253,
+    "__docId__": 256,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6149,7 +6195,7 @@
     "generator": false
   },
   {
-    "__docId__": 254,
+    "__docId__": 257,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -6162,7 +6208,7 @@
     "content": "import * as definitions from './definitions/index'\n\nexport { AuthentFactory } from './authentication/handshake'\nexport { ConnectionStatusListener } from './connection/connection-status'\nexport { Client } from './client'\nexport { SmartClient } from './smart-client'\nexport { definitions }\n"
   },
   {
-    "__docId__": 255,
+    "__docId__": 258,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -6175,7 +6221,7 @@
     "content": "import { Client } from './client'\nimport { AuthentFactory } from './authentication/handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'\n\n/**\n * SmartClient config object.\n * @typedef {Object} SmartClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} authenticationDeploymentId - Authentication deployment id\n * @property {string} businessId - Business id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n * @property {AbstractTokenPersistenceStrategy} TokenPersistenceStrategy - Token storage strategy\n */\n\n/**\n * @access public\n * @extends {Client}\n */\nexport class SmartClient extends Client {\n  /**\n   * Create a new ZetaPush smart client\n   * @param {SmartClientConfig} config\n   * @example\n   * // Smart client\n   * const client = new ZetaPush.SmartClient({\n   *   businessId: '<YOUR-BUSINESS-ID-ID>',\n   *   authenticationDeploymentId: '<YOUR-AUTHENTICATION-DEPLOYMENT-ID>'\n   * })\n   */\n  constructor({ apiUrl, authenticationDeploymentId, businessId, forceHttps, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {\n    const handshakeStrategy = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId: authenticationDeploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     *\n     */\n    super({ apiUrl , businessId, forceHttps, handshakeStrategy, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('SmartClient::onFailedHandshake', error)\n    }\n    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new TokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
   },
   {
-    "__docId__": 256,
+    "__docId__": 259,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -6255,7 +6301,7 @@
     }
   },
   {
-    "__docId__": 257,
+    "__docId__": 260,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -6274,7 +6320,7 @@
     ]
   },
   {
-    "__docId__": 258,
+    "__docId__": 261,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -6302,7 +6348,7 @@
     "generator": false
   },
   {
-    "__docId__": 259,
+    "__docId__": 262,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -6322,7 +6368,7 @@
     }
   },
   {
-    "__docId__": 260,
+    "__docId__": 263,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6344,7 +6390,7 @@
     "generator": false
   },
   {
-    "__docId__": 261,
+    "__docId__": 264,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -6357,7 +6403,7 @@
     "content": "/**\n * Match unsecure pattern web\n * @type {RegExp}\n */\nconst UNSECURE_PATTERN = /^http:\\/\\/|^\\/\\//\n\n/**\n* Default ZetaPush API URL\n* @access private\n*/\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @param {boolean} forceHttps\n * @return {string}\n */\nexport const getSecureUrl = (url, forceHttps) => {\n  return forceHttps ? url.replace(UNSECURE_PATTERN, 'https://') : url\n}\n\n/**\n * @access private\n * @param {{apiUrl: string, businessId: string, forceHttps: boolean}} parameters\n * @return {Promise}\n */\nexport const getServers = ({ apiUrl, businessId, forceHttps }) => {\n  const secureApiUrl = getSecureUrl(apiUrl, forceHttps)\n  const url = `${secureApiUrl}${businessId}`\n  return fetch(url)\n    .then((response) => {\n      return response.json()\n    })\n    .then(({ servers }) => {\n      // TODO: Replace by a server side implementation when available\n      return servers.map((server) => {\n        return getSecureUrl(server, forceHttps)\n      })\n    })\n}\n\n/**\n * @access private\n * @extends {Error}\n */\nexport class NotYetImplementedError extends Error {\n  /**\n   * @param {string} message\n   */\n  constructor(message = '') {\n    super(message)\n    this.name = 'NotImplementedError'\n  }\n\n}\n"
   },
   {
-    "__docId__": 262,
+    "__docId__": 265,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6380,7 +6426,7 @@
     }
   },
   {
-    "__docId__": 263,
+    "__docId__": 266,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6400,7 +6446,7 @@
     }
   },
   {
-    "__docId__": 264,
+    "__docId__": 267,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6440,7 +6486,7 @@
     }
   },
   {
-    "__docId__": 265,
+    "__docId__": 268,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6490,7 +6536,7 @@
     }
   },
   {
-    "__docId__": 266,
+    "__docId__": 269,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6530,7 +6576,7 @@
     }
   },
   {
-    "__docId__": 267,
+    "__docId__": 270,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -6549,7 +6595,7 @@
     ]
   },
   {
-    "__docId__": 268,
+    "__docId__": 271,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -6574,7 +6620,7 @@
     "generator": false
   },
   {
-    "__docId__": 269,
+    "__docId__": 272,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -6592,7 +6638,7 @@
     }
   },
   {
-    "__docId__": 270,
+    "__docId__": 273,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -6605,7 +6651,7 @@
     "content": "/**\n * @type {string}\n */\nconst ZETAPUSH_TOKEN_KEY = 'zetapush.token'\n\n/**\n * Provide abstraction for token persistence\n * @access protected\n */\nexport class AbstractTokenPersistenceStrategy {\n  /**\n   * @param {{key: string}} parameters\n   */\n  constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.key = key\n  }\n  /**\n   * @abstract\n   * @return {string} The stored token\n   */\n  get() {}\n  /**\n   * @abstract\n   * @param {{token: string}} parameters\n   */\n  set({ token }) {}\n}\n\n/**\n * @access protected\n * @extends {AbstractTokenPersistenceStrategy}\n */\nexport class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersistenceStrategy {\n  /**\n   * @override\n   * @return {string} The stored token\n   */\n  get() {\n    return localStorage.getItem(this.key)\n  }\n  /**\n   * @override\n   * @param {{token: string}} parameters\n   */\n  set({ token }) {\n    localStorage.setItem(this.key, token)\n  }\n}\n"
   },
   {
-    "__docId__": 271,
+    "__docId__": 274,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6628,7 +6674,7 @@
     }
   },
   {
-    "__docId__": 272,
+    "__docId__": 275,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -6644,7 +6690,7 @@
     "interface": false
   },
   {
-    "__docId__": 273,
+    "__docId__": 276,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -6669,7 +6715,7 @@
     "generator": false
   },
   {
-    "__docId__": 274,
+    "__docId__": 277,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -6689,7 +6735,7 @@
     }
   },
   {
-    "__docId__": 275,
+    "__docId__": 278,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6712,7 +6758,7 @@
     "generator": false
   },
   {
-    "__docId__": 276,
+    "__docId__": 279,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6738,7 +6784,7 @@
     "generator": false
   },
   {
-    "__docId__": 277,
+    "__docId__": 280,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -6757,7 +6803,7 @@
     ]
   },
   {
-    "__docId__": 278,
+    "__docId__": 281,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6780,7 +6826,7 @@
     "generator": false
   },
   {
-    "__docId__": 279,
+    "__docId__": 282,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6806,7 +6852,7 @@
     "generator": false
   },
   {
-    "__docId__": 281,
+    "__docId__": 284,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6819,7 +6865,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 282,
+    "__docId__": 285,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6832,7 +6878,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 283,
+    "__docId__": 286,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6845,7 +6891,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 284,
+    "__docId__": 287,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6858,7 +6904,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 285,
+    "__docId__": 288,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6871,7 +6917,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 286,
+    "__docId__": 289,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6884,7 +6930,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 287,
+    "__docId__": 290,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6897,7 +6943,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 288,
+    "__docId__": 291,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6910,7 +6956,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 289,
+    "__docId__": 292,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6923,7 +6969,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 290,
+    "__docId__": 293,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6936,7 +6982,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 291,
+    "__docId__": 294,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6949,7 +6995,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 292,
+    "__docId__": 295,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6962,7 +7008,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 293,
+    "__docId__": 296,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6975,7 +7021,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 294,
+    "__docId__": 297,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6988,7 +7034,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 295,
+    "__docId__": 298,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7001,7 +7047,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 296,
+    "__docId__": 299,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7014,7 +7060,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 297,
+    "__docId__": 300,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7027,7 +7073,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 298,
+    "__docId__": 301,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7040,7 +7086,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 299,
+    "__docId__": 302,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7053,7 +7099,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 300,
+    "__docId__": 303,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7066,7 +7112,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 301,
+    "__docId__": 304,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7079,7 +7125,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 302,
+    "__docId__": 305,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7092,7 +7138,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 303,
+    "__docId__": 306,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7105,7 +7151,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 304,
+    "__docId__": 307,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7118,7 +7164,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 305,
+    "__docId__": 308,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7131,7 +7177,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 306,
+    "__docId__": 309,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7144,7 +7190,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 307,
+    "__docId__": 310,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7157,7 +7203,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 308,
+    "__docId__": 311,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7170,7 +7216,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 309,
+    "__docId__": 312,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7183,7 +7229,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 310,
+    "__docId__": 313,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7196,7 +7242,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 311,
+    "__docId__": 314,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7209,7 +7255,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 312,
+    "__docId__": 315,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7222,7 +7268,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 313,
+    "__docId__": 316,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7235,7 +7281,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 314,
+    "__docId__": 317,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7248,7 +7294,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 315,
+    "__docId__": 318,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7261,7 +7307,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 316,
+    "__docId__": 319,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7274,7 +7320,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 317,
+    "__docId__": 320,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7287,7 +7333,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 318,
+    "__docId__": 321,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7300,7 +7346,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 319,
+    "__docId__": 322,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7313,7 +7359,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 320,
+    "__docId__": 323,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7326,7 +7372,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 321,
+    "__docId__": 324,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7339,7 +7385,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 322,
+    "__docId__": 325,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7352,7 +7398,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 323,
+    "__docId__": 326,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7365,7 +7411,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 324,
+    "__docId__": 327,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7378,7 +7424,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 325,
+    "__docId__": 328,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7391,7 +7437,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 326,
+    "__docId__": 329,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7404,7 +7450,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 327,
+    "__docId__": 330,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7417,7 +7463,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 329,
+    "__docId__": 332,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7430,7 +7476,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 330,
+    "__docId__": 333,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7443,7 +7489,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 331,
+    "__docId__": 334,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7456,7 +7502,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 332,
+    "__docId__": 335,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7469,7 +7515,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 333,
+    "__docId__": 336,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7482,7 +7528,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 334,
+    "__docId__": 337,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7495,7 +7541,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 335,
+    "__docId__": 338,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7508,7 +7554,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 336,
+    "__docId__": 339,
     "kind": "external",
     "static": true,
     "variation": null,
