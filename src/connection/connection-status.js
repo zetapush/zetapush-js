@@ -1,5 +1,5 @@
 /**
- * Define life cycle connection methods 
+ * Define life cycle connection methods
  * @access public
  */
 export class ConnectionStatusListener {
@@ -12,9 +12,13 @@ export class ConnectionStatusListener {
    */
   onConnectionClosed() {}
   /**
-   * Callback fired when is established
+   * Callback fired when connection is established
    */
   onConnectionEstablished() {}
+  /**
+  * Callback fired when connection will close
+  */
+  onConnectionWillClose() {}
   /**
    * Callback fired when an error occurs in handshake step
    * @param {Object} error
