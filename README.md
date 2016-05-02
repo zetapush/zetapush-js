@@ -35,7 +35,7 @@ From CDN
 
 ```javascript
 const client = new ZetaPush.Client({
-  businessId: '<YOUR-BUSINESS-ID>',
+  sandboxId: '<YOUR-SANDBOX-ID>',
   handshakeStrategy() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null,
