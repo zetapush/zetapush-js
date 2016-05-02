@@ -162,6 +162,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "zetapush-js/src/index.js~version",
+    "variable/index.html#static-variable-VERSION",
+    "<span>VERSION</span> <span class=\"search-result-import-path\">zetapush-js/src/index.js</span>",
+    "variable"
+  ],
+  [
     "zetapush-js/src/definitions/index.js~weakpublisherdefinition",
     "class/src/definitions/index.js~WeakPublisherDefinition.html",
     "<span>WeakPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
@@ -648,15 +654,15 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/client.js~client#getbusinessid",
-    "class/src/client.js~Client.html#instance-method-getBusinessId",
-    "src/client.js~Client#getBusinessId",
-    "method"
-  ],
-  [
     "src/client.js~client#getresource",
     "class/src/client.js~Client.html#instance-method-getResource",
     "src/client.js~Client#getResource",
+    "method"
+  ],
+  [
+    "src/client.js~client#getsandboxid",
+    "class/src/client.js~Client.html#instance-method-getSandboxId",
+    "src/client.js~Client#getSandboxId",
     "method"
   ],
   [
@@ -675,6 +681,12 @@ window.esdocSearchIndex = [
     "src/client.js~client#handshake",
     "class/src/client.js~Client.html#instance-method-handshake",
     "src/client.js~Client#handshake",
+    "method"
+  ],
+  [
+    "src/client.js~client#removeconnectionstatuslistener",
+    "class/src/client.js~Client.html#instance-method-removeConnectionStatusListener",
+    "src/client.js~Client#removeConnectionStatusListener",
     "method"
   ],
   [
@@ -723,6 +735,12 @@ window.esdocSearchIndex = [
     "src/connection/connection-status.js~connectionstatuslistener#onconnectionestablished",
     "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionEstablished",
     "src/connection/connection-status.js~ConnectionStatusListener#onConnectionEstablished",
+    "method"
+  ],
+  [
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionwillclose",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionWillClose",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionWillClose",
     "method"
   ],
   [

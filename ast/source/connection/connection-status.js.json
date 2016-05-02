@@ -9,8 +9,8 @@
           "type": "Identifier",
           "name": "ConnectionStatusListener",
           "range": [
-            80,
-            104
+            79,
+            103
           ],
           "loc": {
             "start": {
@@ -33,8 +33,8 @@
                 "type": "Identifier",
                 "name": "onConnectionBroken",
                 "range": [
-                  167,
-                  185
+                  166,
+                  184
                 ],
                 "loc": {
                   "start": {
@@ -55,8 +55,8 @@
                   "type": "BlockStatement",
                   "body": [],
                   "range": [
-                    188,
-                    190
+                    187,
+                    189
                   ],
                   "loc": {
                     "start": {
@@ -72,8 +72,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  185,
-                  190
+                  184,
+                  189
                 ],
                 "loc": {
                   "start": {
@@ -89,8 +89,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                167,
-                190
+                166,
+                189
               ],
               "loc": {
                 "start": {
@@ -107,8 +107,8 @@
                   "type": "Block",
                   "value": "*\n   * Callback fired when connection is broken\n   ",
                   "range": [
-                    109,
-                    164
+                    108,
+                    163
                   ],
                   "loc": {
                     "start": {
@@ -127,8 +127,8 @@
                   "type": "Block",
                   "value": "*\n   * Callback fired when connection is closed\n   ",
                   "range": [
-                    193,
-                    248
+                    192,
+                    247
                   ],
                   "loc": {
                     "start": {
@@ -150,8 +150,8 @@
                 "type": "Identifier",
                 "name": "onConnectionClosed",
                 "range": [
-                  251,
-                  269
+                  250,
+                  268
                 ],
                 "loc": {
                   "start": {
@@ -172,8 +172,8 @@
                   "type": "BlockStatement",
                   "body": [],
                   "range": [
-                    272,
-                    274
+                    271,
+                    273
                   ],
                   "loc": {
                     "start": {
@@ -189,8 +189,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  269,
-                  274
+                  268,
+                  273
                 ],
                 "loc": {
                   "start": {
@@ -206,8 +206,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                251,
-                274
+                250,
+                273
               ],
               "loc": {
                 "start": {
@@ -224,8 +224,8 @@
                   "type": "Block",
                   "value": "*\n   * Callback fired when connection is closed\n   ",
                   "range": [
-                    193,
-                    248
+                    192,
+                    247
                   ],
                   "loc": {
                     "start": {
@@ -242,10 +242,10 @@
               "trailingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n   * Callback fired when is established\n   ",
+                  "value": "*\n   * Callback fired when connection is established\n   ",
                   "range": [
-                    277,
-                    326
+                    276,
+                    336
                   ],
                   "loc": {
                     "start": {
@@ -267,8 +267,8 @@
                 "type": "Identifier",
                 "name": "onConnectionEstablished",
                 "range": [
-                  329,
-                  352
+                  339,
+                  362
                 ],
                 "loc": {
                   "start": {
@@ -289,8 +289,8 @@
                   "type": "BlockStatement",
                   "body": [],
                   "range": [
-                    355,
-                    357
+                    365,
+                    367
                   ],
                   "loc": {
                     "start": {
@@ -306,8 +306,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  352,
-                  357
+                  362,
+                  367
                 ],
                 "loc": {
                   "start": {
@@ -323,8 +323,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                329,
-                357
+                339,
+                367
               ],
               "loc": {
                 "start": {
@@ -339,10 +339,10 @@
               "leadingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n   * Callback fired when is established\n   ",
+                  "value": "*\n   * Callback fired when connection is established\n   ",
                   "range": [
-                    277,
-                    326
+                    276,
+                    336
                   ],
                   "loc": {
                     "start": {
@@ -359,10 +359,10 @@
               "trailingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} error\n   ",
+                  "value": "*\n  * Callback fired when connection will close\n  ",
                   "range": [
-                    360,
-                    455
+                    370,
+                    424
                   ],
                   "loc": {
                     "start": {
@@ -370,7 +370,124 @@
                       "column": 2
                     },
                     "end": {
+                      "line": 20,
+                      "column": 4
+                    }
+                  }
+                }
+              ],
+              "static": false
+            },
+            {
+              "type": "MethodDefinition",
+              "key": {
+                "type": "Identifier",
+                "name": "onConnectionWillClose",
+                "range": [
+                  427,
+                  448
+                ],
+                "loc": {
+                  "start": {
+                    "line": 21,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 21,
+                    "column": 23
+                  }
+                }
+              },
+              "value": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [],
+                  "range": [
+                    451,
+                    453
+                  ],
+                  "loc": {
+                    "start": {
                       "line": 21,
+                      "column": 26
+                    },
+                    "end": {
+                      "line": 21,
+                      "column": 28
+                    }
+                  }
+                },
+                "generator": false,
+                "expression": false,
+                "range": [
+                  448,
+                  453
+                ],
+                "loc": {
+                  "start": {
+                    "line": 21,
+                    "column": 23
+                  },
+                  "end": {
+                    "line": 21,
+                    "column": 28
+                  }
+                }
+              },
+              "kind": "method",
+              "computed": false,
+              "range": [
+                427,
+                453
+              ],
+              "loc": {
+                "start": {
+                  "line": 21,
+                  "column": 2
+                },
+                "end": {
+                  "line": 21,
+                  "column": 28
+                }
+              },
+              "leadingComments": [
+                {
+                  "type": "Block",
+                  "value": "*\n  * Callback fired when connection will close\n  ",
+                  "range": [
+                    370,
+                    424
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 18,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 20,
+                      "column": 4
+                    }
+                  }
+                }
+              ],
+              "trailingComments": [
+                {
+                  "type": "Block",
+                  "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} error\n   ",
+                  "range": [
+                    456,
+                    551
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 22,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 25,
                       "column": 5
                     }
                   }
@@ -384,16 +501,16 @@
                 "type": "Identifier",
                 "name": "onFailedHandshake",
                 "range": [
-                  458,
-                  475
+                  554,
+                  571
                 ],
                 "loc": {
                   "start": {
-                    "line": 22,
+                    "line": 26,
                     "column": 2
                   },
                   "end": {
-                    "line": 22,
+                    "line": 26,
                     "column": 19
                   }
                 }
@@ -406,16 +523,16 @@
                     "type": "Identifier",
                     "name": "error",
                     "range": [
-                      476,
-                      481
+                      572,
+                      577
                     ],
                     "loc": {
                       "start": {
-                        "line": 22,
+                        "line": 26,
                         "column": 20
                       },
                       "end": {
-                        "line": 22,
+                        "line": 26,
                         "column": 25
                       }
                     }
@@ -425,16 +542,16 @@
                   "type": "BlockStatement",
                   "body": [],
                   "range": [
-                    483,
-                    485
+                    579,
+                    581
                   ],
                   "loc": {
                     "start": {
-                      "line": 22,
+                      "line": 26,
                       "column": 27
                     },
                     "end": {
-                      "line": 22,
+                      "line": 26,
                       "column": 29
                     }
                   }
@@ -442,16 +559,16 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  475,
-                  485
+                  571,
+                  581
                 ],
                 "loc": {
                   "start": {
-                    "line": 22,
+                    "line": 26,
                     "column": 19
                   },
                   "end": {
-                    "line": 22,
+                    "line": 26,
                     "column": 29
                   }
                 }
@@ -459,16 +576,16 @@
               "kind": "method",
               "computed": false,
               "range": [
-                458,
-                485
+                554,
+                581
               ],
               "loc": {
                 "start": {
-                  "line": 22,
+                  "line": 26,
                   "column": 2
                 },
                 "end": {
-                  "line": 22,
+                  "line": 26,
                   "column": 29
                 }
               },
@@ -477,16 +594,16 @@
                   "type": "Block",
                   "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} error\n   ",
                   "range": [
-                    360,
-                    455
+                    456,
+                    551
                   ],
                   "loc": {
                     "start": {
-                      "line": 18,
+                      "line": 22,
                       "column": 2
                     },
                     "end": {
-                      "line": 21,
+                      "line": 25,
                       "column": 5
                     }
                   }
@@ -497,16 +614,16 @@
                   "type": "Block",
                   "value": "*\n   * Callback fired when a message is lost\n   ",
                   "range": [
-                    488,
-                    540
+                    584,
+                    636
                   ],
                   "loc": {
                     "start": {
-                      "line": 23,
+                      "line": 27,
                       "column": 2
                     },
                     "end": {
-                      "line": 25,
+                      "line": 29,
                       "column": 5
                     }
                   }
@@ -520,16 +637,16 @@
                 "type": "Identifier",
                 "name": "onMessageLost",
                 "range": [
-                  543,
-                  556
+                  639,
+                  652
                 ],
                 "loc": {
                   "start": {
-                    "line": 26,
+                    "line": 30,
                     "column": 2
                   },
                   "end": {
-                    "line": 26,
+                    "line": 30,
                     "column": 15
                   }
                 }
@@ -542,16 +659,16 @@
                   "type": "BlockStatement",
                   "body": [],
                   "range": [
-                    559,
-                    561
+                    655,
+                    657
                   ],
                   "loc": {
                     "start": {
-                      "line": 26,
+                      "line": 30,
                       "column": 18
                     },
                     "end": {
-                      "line": 26,
+                      "line": 30,
                       "column": 20
                     }
                   }
@@ -559,16 +676,16 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  556,
-                  561
+                  652,
+                  657
                 ],
                 "loc": {
                   "start": {
-                    "line": 26,
+                    "line": 30,
                     "column": 15
                   },
                   "end": {
-                    "line": 26,
+                    "line": 30,
                     "column": 20
                   }
                 }
@@ -576,16 +693,16 @@
               "kind": "method",
               "computed": false,
               "range": [
-                543,
-                561
+                639,
+                657
               ],
               "loc": {
                 "start": {
-                  "line": 26,
+                  "line": 30,
                   "column": 2
                 },
                 "end": {
-                  "line": 26,
+                  "line": 30,
                   "column": 20
                 }
               },
@@ -594,16 +711,16 @@
                   "type": "Block",
                   "value": "*\n   * Callback fired when a message is lost\n   ",
                   "range": [
-                    488,
-                    540
+                    584,
+                    636
                   ],
                   "loc": {
                     "start": {
-                      "line": 23,
+                      "line": 27,
                       "column": 2
                     },
                     "end": {
-                      "line": 25,
+                      "line": 29,
                       "column": 5
                     }
                   }
@@ -614,16 +731,16 @@
                   "type": "Block",
                   "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
                   "range": [
-                    564,
-                    657
+                    660,
+                    753
                   ],
                   "loc": {
                     "start": {
-                      "line": 27,
+                      "line": 31,
                       "column": 2
                     },
                     "end": {
-                      "line": 30,
+                      "line": 34,
                       "column": 5
                     }
                   }
@@ -637,16 +754,16 @@
                 "type": "Identifier",
                 "name": "onSuccessfulHandshake",
                 "range": [
-                  660,
-                  681
+                  756,
+                  777
                 ],
                 "loc": {
                   "start": {
-                    "line": 31,
+                    "line": 35,
                     "column": 2
                   },
                   "end": {
-                    "line": 31,
+                    "line": 35,
                     "column": 23
                   }
                 }
@@ -659,16 +776,16 @@
                     "type": "Identifier",
                     "name": "authentication",
                     "range": [
-                      682,
-                      696
+                      778,
+                      792
                     ],
                     "loc": {
                       "start": {
-                        "line": 31,
+                        "line": 35,
                         "column": 24
                       },
                       "end": {
-                        "line": 31,
+                        "line": 35,
                         "column": 38
                       }
                     }
@@ -678,16 +795,16 @@
                   "type": "BlockStatement",
                   "body": [],
                   "range": [
-                    698,
-                    700
+                    794,
+                    796
                   ],
                   "loc": {
                     "start": {
-                      "line": 31,
+                      "line": 35,
                       "column": 40
                     },
                     "end": {
-                      "line": 31,
+                      "line": 35,
                       "column": 42
                     }
                   }
@@ -695,16 +812,16 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  681,
-                  700
+                  777,
+                  796
                 ],
                 "loc": {
                   "start": {
-                    "line": 31,
+                    "line": 35,
                     "column": 23
                   },
                   "end": {
-                    "line": 31,
+                    "line": 35,
                     "column": 42
                   }
                 }
@@ -712,16 +829,16 @@
               "kind": "method",
               "computed": false,
               "range": [
-                660,
-                700
+                756,
+                796
               ],
               "loc": {
                 "start": {
-                  "line": 31,
+                  "line": 35,
                   "column": 2
                 },
                 "end": {
-                  "line": 31,
+                  "line": 35,
                   "column": 42
                 }
               },
@@ -730,16 +847,16 @@
                   "type": "Block",
                   "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
                   "range": [
-                    564,
-                    657
+                    660,
+                    753
                   ],
                   "loc": {
                     "start": {
-                      "line": 27,
+                      "line": 31,
                       "column": 2
                     },
                     "end": {
-                      "line": 30,
+                      "line": 34,
                       "column": 5
                     }
                   }
@@ -749,8 +866,8 @@
             }
           ],
           "range": [
-            105,
-            702
+            104,
+            798
           ],
           "loc": {
             "start": {
@@ -758,14 +875,14 @@
               "column": 38
             },
             "end": {
-              "line": 32,
+              "line": 36,
               "column": 1
             }
           }
         },
         "range": [
-          74,
-          702
+          73,
+          798
         ],
         "loc": {
           "start": {
@@ -773,17 +890,17 @@
             "column": 7
           },
           "end": {
-            "line": 32,
+            "line": 36,
             "column": 1
           }
         },
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Define life cycle connection methods \n * @access public\n ",
+            "value": "*\n * Define life cycle connection methods\n * @access public\n ",
             "range": [
               0,
-              66
+              65
             ],
             "loc": {
               "start": {
@@ -802,8 +919,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        67,
-        702
+        66,
+        798
       ],
       "loc": {
         "start": {
@@ -811,17 +928,17 @@
           "column": 0
         },
         "end": {
-          "line": 32,
+          "line": 36,
           "column": 1
         }
       },
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Define life cycle connection methods \n * @access public\n ",
+          "value": "*\n * Define life cycle connection methods\n * @access public\n ",
           "range": [
             0,
-            66
+            65
           ],
           "loc": {
             "start": {
@@ -839,8 +956,8 @@
   ],
   "sourceType": "module",
   "range": [
-    67,
-    702
+    66,
+    798
   ],
   "loc": {
     "start": {
@@ -848,17 +965,17 @@
       "column": 0
     },
     "end": {
-      "line": 32,
+      "line": 36,
       "column": 1
     }
   },
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Define life cycle connection methods \n * @access public\n ",
+      "value": "*\n * Define life cycle connection methods\n * @access public\n ",
       "range": [
         0,
-        66
+        65
       ],
       "loc": {
         "start": {
@@ -875,8 +992,8 @@
       "type": "Block",
       "value": "*\n   * Callback fired when connection is broken\n   ",
       "range": [
-        109,
-        164
+        108,
+        163
       ],
       "loc": {
         "start": {
@@ -893,8 +1010,8 @@
       "type": "Block",
       "value": "*\n   * Callback fired when connection is closed\n   ",
       "range": [
-        193,
-        248
+        192,
+        247
       ],
       "loc": {
         "start": {
@@ -909,10 +1026,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n   * Callback fired when is established\n   ",
+      "value": "*\n   * Callback fired when connection is established\n   ",
       "range": [
-        277,
-        326
+        276,
+        336
       ],
       "loc": {
         "start": {
@@ -927,10 +1044,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} error\n   ",
+      "value": "*\n  * Callback fired when connection will close\n  ",
       "range": [
-        360,
-        455
+        370,
+        424
       ],
       "loc": {
         "start": {
@@ -938,21 +1055,21 @@
           "column": 2
         },
         "end": {
-          "line": 21,
-          "column": 5
+          "line": 20,
+          "column": 4
         }
       }
     },
     {
       "type": "Block",
-      "value": "*\n   * Callback fired when a message is lost\n   ",
+      "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} error\n   ",
       "range": [
-        488,
-        540
+        456,
+        551
       ],
       "loc": {
         "start": {
-          "line": 23,
+          "line": 22,
           "column": 2
         },
         "end": {
@@ -963,10 +1080,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
+      "value": "*\n   * Callback fired when a message is lost\n   ",
       "range": [
-        564,
-        657
+        584,
+        636
       ],
       "loc": {
         "start": {
@@ -974,7 +1091,25 @@
           "column": 2
         },
         "end": {
-          "line": 30,
+          "line": 29,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
+      "range": [
+        660,
+        753
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 2
+        },
+        "end": {
+          "line": 34,
           "column": 5
         }
       }

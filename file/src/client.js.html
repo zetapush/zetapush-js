@@ -34,6 +34,7 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~Client.html">Client</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VERSION">VERSION</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></li>
@@ -78,7 +79,7 @@ import { NotYetImplementedError } from &apos;./utils/index&apos;
  * Client config object.
  * @typedef {Object} ClientConfig
  * @property {string} apiUrl - Api Url
- * @property {string} businessId - Business id
+ * @property {string} sandboxId - Sandbox id
  * @property {boolean} forceHttps - Force end to end HTTPS connection
  * @property {function():AbstractHandshakeManager} handshakeStrategy - Handshake strategy
  * @property {string} resource - Client resource id
@@ -90,7 +91,7 @@ import { NotYetImplementedError } from &apos;./utils/index&apos;
  * @example
  * // Securized client with token based connection
  * const client = new ZetaPush.Client({
- *   businessId: &apos;&lt;YOUR-BUSINESS-ID&gt;&apos;,
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
  *   forceHttps: true,
  *   handshakeStrategy: function() {
  *     return ZetaPush.AuthentFactory.createWeakHandshake({
@@ -102,7 +103,7 @@ import { NotYetImplementedError } from &apos;./utils/index&apos;
  * @example
  * // Client with credentials based connection
  * const client = new ZetaPush.Client({
- *   businessId: &apos;&lt;YOUR-BUSINESS-ID&gt;&apos;,
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
  *   handshakeStrategy: function() {
  *     return ZetaPush.AuthentFactory.createSimpleHandshake({
  *       login: &apos;&lt;USER-LOGIN&gt;&apos;,
@@ -117,14 +118,14 @@ export class Client {
    * @param {ClientConfig} config
    * Create a new ZetaPush client
    */
-  constructor({ apiUrl = API_URL, businessId, forceHttps = false, handshakeStrategy, resource = null }) {
+  constructor({ apiUrl = API_URL, sandboxId, forceHttps = false, handshakeStrategy, resource = null }) {
     /**
      * @access private
      * @type {ClientHelper}
      */
     this.helper = new ClientHelper({
       apiUrl,
-      businessId,
+      sandboxId,
       forceHttps,
       handshakeStrategy,
       resource
@@ -148,7 +149,7 @@ export class Client {
    * @return {Object}
    */
   createMacroPublisher({ deploymentId, definition }) {
-    return this.helper.createMacroPublisher(`/service/${this.getBusinessId()}/${deploymentId}`, definition)
+    return this.helper.createMacroPublisher(`/service/${this.getSandboxId()}/${deploymentId}`, definition)
   }
   /**
    * Create a service publisher based on publisher definition for the given deployment id
@@ -156,14 +157,14 @@ export class Client {
    * @return {Object}
    */
   createServicePublisher({ deploymentId, definition }) {
-    return this.helper.createServicePublisher(`/service/${this.getBusinessId()}/${deploymentId}`, definition)
+    return this.helper.createServicePublisher(`/service/${this.getSandboxId()}/${deploymentId}`, definition)
   }
   /**
-   * Get the client business id
+   * Get the client sandbox id
    * @return {string}
    */
-  getBusinessId() {
-    return this.helper.getBusinessId()
+  getSandboxId() {
+    return this.helper.getSandboxId()
   }
   /**
    * Get the client resource
@@ -202,7 +203,7 @@ export class Client {
    * })
    */
   subscribe({ deploymentId, listener }) {
-    return this.helper.subscribe(`/service/${this.getBusinessId()}/${deploymentId}`, listener)
+    return this.helper.subscribe(`/service/${this.getSandboxId()}/${deploymentId}`, listener)
   }
   /**
    * Create a publish/subscribe for a macro definition
@@ -236,9 +237,17 @@ export class Client {
   /**
    * Add a connection listener to handle life cycle connection events
    * @param {ConnectionStatusListener} listener
+   * @return {number} handler
    */
   addConnectionStatusListener(listener) {
     return this.helper.addConnectionStatusListener(listener)
+  }
+  /**
+   * Remove a connection status listener
+   * @param {number} handler
+   */
+  removeConnectionStatusListener(handler) {
+    return this.helper.removeConnectionStatusListener(handler)
   }
   /**
    * Force disconnect/connect with new handshake factory
@@ -281,7 +290,7 @@ export class Client {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.6)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>
