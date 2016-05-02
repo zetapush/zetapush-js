@@ -191,7 +191,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-addConnectionStatusListener">addConnectionStatusListener</a></span></span><span data-ice="signature">(listener: <span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span>): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-addConnectionStatusListener">addConnectionStatusListener</a></span></span><span data-ice="signature">(listener: <span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
         </p>
       </div>
       <div>
@@ -373,13 +373,13 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-getBusinessId">getBusinessId</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-getResource">getResource</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Get the client business id</p>
+        <div data-ice="description"><p>Get the client resource</p>
 </div>
       </div>
     </td>
@@ -399,13 +399,13 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-getResource">getResource</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-getSandboxId">getSandboxId</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Get the client resource</p>
+        <div data-ice="description"><p>Get the client sandbox id</p>
 </div>
       </div>
     </td>
@@ -484,6 +484,32 @@
         
         
         <div data-ice="description"><p>Force disconnect/connect with new handshake factory</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-removeConnectionStatusListener">removeConnectionStatusListener</a></span></span><span data-ice="signature">(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Remove a connection status listener</p>
 </div>
       </div>
     </td>
@@ -609,7 +635,7 @@
       
       <pre class="prettyprint source-code"><code data-ice="exampleCode">// Smart client
 const client = new ZetaPush.SmartClient({
-  businessId: &apos;&lt;YOUR-BUSINESS-ID-ID&gt;&apos;,
+  sandboxId: &apos;&lt;YOUR-SANDBOX-ID-ID&gt;&apos;,
   authenticationDeploymentId: &apos;&lt;YOUR-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;
 })</code></pre>
     </div>

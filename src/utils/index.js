@@ -32,12 +32,12 @@ export const getSecureUrl = (url, forceHttps) => {
 
 /**
  * @access private
- * @param {{apiUrl: string, businessId: string, forceHttps: boolean}} parameters
+ * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean}} parameters
  * @return {Promise}
  */
-export const getServers = ({ apiUrl, businessId, forceHttps }) => {
+export const getServers = ({ apiUrl, sandboxId, forceHttps }) => {
   const secureApiUrl = getSecureUrl(apiUrl, forceHttps)
-  const url = `${secureApiUrl}${businessId}`
+  const url = `${secureApiUrl}${sandboxId}`
   return fetch(url)
     .then((response) => {
       return response.json()

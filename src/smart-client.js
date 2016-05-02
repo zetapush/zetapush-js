@@ -7,7 +7,7 @@ import { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'
  * @typedef {Object} SmartClientConfig
  * @property {string} apiUrl - Api Url
  * @property {string} authenticationDeploymentId - Authentication deployment id
- * @property {string} businessId - Business id
+ * @property {string} sandboxId - Sandbox id
  * @property {boolean} forceHttps - Force end to end HTTPS connection
  * @property {string} resource - Client resource id
  * @property {AbstractTokenPersistenceStrategy} TokenPersistenceStrategy - Token storage strategy
@@ -24,11 +24,11 @@ export class SmartClient extends Client {
    * @example
    * // Smart client
    * const client = new ZetaPush.SmartClient({
-   *   businessId: '<YOUR-BUSINESS-ID-ID>',
+   *   sandboxId: '<YOUR-SANDBOX-ID-ID>',
    *   authenticationDeploymentId: '<YOUR-AUTHENTICATION-DEPLOYMENT-ID>'
    * })
    */
-  constructor({ apiUrl, authenticationDeploymentId, businessId, forceHttps, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {
+  constructor({ apiUrl, authenticationDeploymentId, sandboxId, forceHttps, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {
     const handshakeStrategy = () => {
       const token = this.getToken()
       const handshake = AuthentFactory.createWeakHandshake({
@@ -40,7 +40,7 @@ export class SmartClient extends Client {
     /**
      *
      */
-    super({ apiUrl , businessId, forceHttps, handshakeStrategy, resource })
+    super({ apiUrl , sandboxId, forceHttps, handshakeStrategy, resource })
     const onSuccessfulHandshake = ({ publicToken, userId, token }) => {
       console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })
 

@@ -1,5 +1,5 @@
 const client = new ZetaPush.SmartClient({
-  businessId: '5mln3Zxw',
+  sandboxId: '5mln3Zxw',
   authenticationDeploymentId: 'VMuM'
 })
 

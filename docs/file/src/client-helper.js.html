@@ -100,12 +100,12 @@ export class ClientHelper {
   /**
    * Create a new ZetaPush client helper
    */
-  constructor({ apiUrl, businessId, forceHttps = false, handshakeStrategy, resource }) {
+  constructor({ apiUrl, sandboxId, forceHttps = false, handshakeStrategy, resource }) {
     /**
      * @access private
      * @type {string}
      */
-    this.businessId = businessId
+    this.sandboxId = sandboxId
     /**
      * @access private
      * @type {function():AbstractHandshakeManager}
@@ -120,7 +120,7 @@ export class ClientHelper {
      * @access private
      * @type {Promise}
      */
-    this.servers = getServers({ apiUrl, businessId, forceHttps })
+    this.servers = getServers({ apiUrl, sandboxId, forceHttps })
     /**
      * @access private
      * @type {Array&lt;Object&gt;}
@@ -358,11 +358,11 @@ export class ClientHelper {
     this.handshakeStrategy = handshakeStrategy
   }
   /**
-   * Get business id
+   * Get sandbox id
    * @return {string}
    */
-  getBusinessId() {
-    return this.businessId
+  getSandboxId() {
+    return this.sandboxId
   }
   /**
    * Get session id
@@ -444,10 +444,18 @@ export class ClientHelper {
   /**
    * Add a connection listener to handle life cycle connection events
    * @param {ConnectionStatusListener} listener
+   * @return {number} handler
    */
   addConnectionStatusListener(listener) {
     const connectionListener = Object.assign(new ConnectionStatusListener(), listener)
-    this.connectionListeners.push(connectionListener)
+    return this.connectionListeners.push(connectionListener)
+  }
+  /**
+   * Remove a connection status listener
+   * @param {number} handler
+   */
+  removeConnectionStatusListener(handler) {
+    return this.connectionListeners.splice(handler - 1 , 1)
   }
   /**
    * Wrap CometdD publish method

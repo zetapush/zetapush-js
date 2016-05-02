@@ -1,12 +1,12 @@
 {
   const { SmartClient, definitions: { EchoPublisherDefinition } } = ZetaPush
 
-  const BUSINESS_ID = '5mln3Zxw'
+  const SANDBOX_ID = '5mln3Zxw'
   const DEPLOYMENT_ID = 'vS7y'
   const AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
 
   const client = new SmartClient({
-    businessId: BUSINESS_ID,
+    sandboxId: SANDBOX_ID,
     authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
   })
 

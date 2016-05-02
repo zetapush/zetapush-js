@@ -108,7 +108,7 @@
       
       <pre class="prettyprint source-code"><code data-ice="exampleCode">// Securized client with token based connection
 const client = new ZetaPush.Client({
-  businessId: &apos;&lt;YOUR-BUSINESS-ID&gt;&apos;,
+  sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
   forceHttps: true,
   handshakeStrategy: function() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
@@ -122,7 +122,7 @@ const client = new ZetaPush.Client({
       
       <pre class="prettyprint source-code"><code data-ice="exampleCode">// Client with credentials based connection
 const client = new ZetaPush.Client({
-  businessId: &apos;&lt;YOUR-BUSINESS-ID&gt;&apos;,
+  sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
   handshakeStrategy: function() {
     return ZetaPush.AuthentFactory.createSimpleHandshake({
       login: &apos;&lt;USER-LOGIN&gt;&apos;,
@@ -189,7 +189,7 @@ const client = new ZetaPush.Client({
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-addConnectionStatusListener">addConnectionStatusListener</a></span></span><span data-ice="signature">(listener: <span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span>): <span>*</span></span>
+           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-addConnectionStatusListener">addConnectionStatusListener</a></span></span><span data-ice="signature">(listener: <span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
         </p>
       </div>
       <div>
@@ -371,13 +371,13 @@ const client = new ZetaPush.Client({
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-getBusinessId">getBusinessId</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-getResource">getResource</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Get the client business id</p>
+        <div data-ice="description"><p>Get the client resource</p>
 </div>
       </div>
     </td>
@@ -397,13 +397,13 @@ const client = new ZetaPush.Client({
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-getResource">getResource</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-getSandboxId">getSandboxId</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Get the client resource</p>
+        <div data-ice="description"><p>Get the client sandbox id</p>
 </div>
       </div>
     </td>
@@ -482,6 +482,32 @@ const client = new ZetaPush.Client({
         
         
         <div data-ice="description"><p>Force disconnect/connect with new handshake factory</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/client.js~Client.html#instance-method-removeConnectionStatusListener">removeConnectionStatusListener</a></span></span><span data-ice="signature">(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Remove a connection status listener</p>
 </div>
       </div>
     </td>
@@ -620,11 +646,11 @@ const client = new ZetaPush.Client({
     
     
     
-    <span data-ice="name">addConnectionStatusListener</span><span data-ice="signature">(listener: <span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span>): <span>*</span></span>
+    <span data-ice="name">addConnectionStatusListener</span><span data-ice="signature">(listener: <span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client.js.html#lineNumber168">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client.js.html#lineNumber169">source</a></span></span>
     </span>
   </h3>
 
@@ -659,8 +685,9 @@ const client = new ZetaPush.Client({
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span>*</span></td>
-        
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>handler</p>
+</td>
       </tr>
     </table>
     <div data-ice="returnProperties">
@@ -1031,24 +1058,24 @@ const client = new ZetaPush.Client({
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-getBusinessId">
+  <h3 data-ice="anchor" id="instance-method-getResource">
     <span class="access" data-ice="access">public</span>
     
     
     
     
-    <span data-ice="name">getBusinessId</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span data-ice="name">getResource</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client.js.html#lineNumber93">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client.js.html#lineNumber100">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Get the client business id</p>
+  <div data-ice="description"><p>Get the client resource</p>
 </div>
 
   
@@ -1082,24 +1109,24 @@ const client = new ZetaPush.Client({
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-getResource">
+  <h3 data-ice="anchor" id="instance-method-getSandboxId">
     <span class="access" data-ice="access">public</span>
     
     
     
     
-    <span data-ice="name">getResource</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span data-ice="name">getSandboxId</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client.js.html#lineNumber100">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client.js.html#lineNumber93">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Get the client resource</p>
+  <div data-ice="description"><p>Get the client sandbox id</p>
 </div>
 
   
@@ -1245,7 +1272,7 @@ const client = new ZetaPush.Client({
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/client.js.html#lineNumber175">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/client.js.html#lineNumber183">source</a></span></span>
     </span>
   </h3>
 
@@ -1277,6 +1304,73 @@ const client = new ZetaPush.Client({
 </div>
 
   
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-removeConnectionStatusListener">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">removeConnectionStatusListener</span><span data-ice="signature">(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/client.js.html#lineNumber176">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Remove a connection status listener</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">handler</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span>*</span></td>
+        
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 

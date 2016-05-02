@@ -648,15 +648,15 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/client.js~client#getbusinessid",
-    "class/src/client.js~Client.html#instance-method-getBusinessId",
-    "src/client.js~Client#getBusinessId",
-    "method"
-  ],
-  [
     "src/client.js~client#getresource",
     "class/src/client.js~Client.html#instance-method-getResource",
     "src/client.js~Client#getResource",
+    "method"
+  ],
+  [
+    "src/client.js~client#getsandboxid",
+    "class/src/client.js~Client.html#instance-method-getSandboxId",
+    "src/client.js~Client#getSandboxId",
     "method"
   ],
   [
@@ -675,6 +675,12 @@ window.esdocSearchIndex = [
     "src/client.js~client#handshake",
     "class/src/client.js~Client.html#instance-method-handshake",
     "src/client.js~Client#handshake",
+    "method"
+  ],
+  [
+    "src/client.js~client#removeconnectionstatuslistener",
+    "class/src/client.js~Client.html#instance-method-removeConnectionStatusListener",
+    "src/client.js~Client#removeConnectionStatusListener",
     "method"
   ],
   [

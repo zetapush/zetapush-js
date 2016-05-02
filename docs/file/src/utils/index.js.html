@@ -104,12 +104,12 @@ export const getSecureUrl = (url, forceHttps) =&gt; {
 
 /**
  * @access private
- * @param {{apiUrl: string, businessId: string, forceHttps: boolean}} parameters
+ * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean}} parameters
  * @return {Promise}
  */
-export const getServers = ({ apiUrl, businessId, forceHttps }) =&gt; {
+export const getServers = ({ apiUrl, sandboxId, forceHttps }) =&gt; {
   const secureApiUrl = getSecureUrl(apiUrl, forceHttps)
-  const url = `${secureApiUrl}${businessId}`
+  const url = `${secureApiUrl}${sandboxId}`
   return fetch(url)
     .then((response) =&gt; {
       return response.json()

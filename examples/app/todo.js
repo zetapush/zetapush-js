@@ -3,7 +3,7 @@
 
   // Create a Zetapush SmartClient
   var client = new ZetaPush.SmartClient({
-    businessId: '5mln3Zxw',
+    sandboxId: '5mln3Zxw',
     enableHttps: true,
     authenticationDeploymentId: 'VMuM'
   })
