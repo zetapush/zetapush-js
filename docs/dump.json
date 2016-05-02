@@ -6276,10 +6276,33 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import * as definitions from './definitions/index'\n\nexport { AuthentFactory } from './authentication/handshake'\nexport { ConnectionStatusListener } from './connection/connection-status'\nexport { Client } from './client'\nexport { SmartClient } from './smart-client'\nexport { definitions }\n"
+    "content": "import * as definitions from './definitions/index'\n\nexport { AuthentFactory } from './authentication/handshake'\nexport { ConnectionStatusListener } from './connection/connection-status'\nexport { Client } from './client'\nexport { SmartClient } from './smart-client'\nexport { definitions }\n\n/**\n * SDK Version\n * @type {string}\n */\nexport const VERSION = process.env.ZETAPUSH_VERSION\n"
   },
   {
     "__docId__": 260,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "VERSION",
+    "memberof": "src/index.js",
+    "longname": "src/index.js~VERSION",
+    "access": null,
+    "export": true,
+    "importPath": "zetapush-js/src/index.js",
+    "importStyle": "{VERSION}",
+    "description": "SDK Version",
+    "lineNumber": 13,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 261,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -6292,7 +6315,7 @@
     "content": "import { Client } from './client'\nimport { AuthentFactory } from './authentication/handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'\n\n/**\n * SmartClient config object.\n * @typedef {Object} SmartClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} authenticationDeploymentId - Authentication deployment id\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n * @property {AbstractTokenPersistenceStrategy} TokenPersistenceStrategy - Token storage strategy\n */\n\n/**\n * @access public\n * @extends {Client}\n */\nexport class SmartClient extends Client {\n  /**\n   * Create a new ZetaPush smart client\n   * @param {SmartClientConfig} config\n   * @example\n   * // Smart client\n   * const client = new ZetaPush.SmartClient({\n   *   sandboxId: '<YOUR-SANDBOX-ID-ID>',\n   *   authenticationDeploymentId: '<YOUR-AUTHENTICATION-DEPLOYMENT-ID>'\n   * })\n   */\n  constructor({ apiUrl, authenticationDeploymentId, sandboxId, forceHttps, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {\n    const handshakeStrategy = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId: authenticationDeploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     *\n     */\n    super({ apiUrl , sandboxId, forceHttps, handshakeStrategy, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('SmartClient::onFailedHandshake', error)\n    }\n    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new TokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
   },
   {
-    "__docId__": 261,
+    "__docId__": 262,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -6372,7 +6395,7 @@
     }
   },
   {
-    "__docId__": 262,
+    "__docId__": 263,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -6391,7 +6414,7 @@
     ]
   },
   {
-    "__docId__": 263,
+    "__docId__": 264,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -6419,7 +6442,7 @@
     "generator": false
   },
   {
-    "__docId__": 264,
+    "__docId__": 265,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -6439,7 +6462,7 @@
     }
   },
   {
-    "__docId__": 265,
+    "__docId__": 266,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6461,7 +6484,7 @@
     "generator": false
   },
   {
-    "__docId__": 266,
+    "__docId__": 267,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -6474,7 +6497,7 @@
     "content": "/**\n * Match unsecure pattern web\n * @type {RegExp}\n */\nconst UNSECURE_PATTERN = /^http:\\/\\/|^\\/\\//\n\n/**\n* Default ZetaPush API URL\n* @access private\n*/\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @param {boolean} forceHttps\n * @return {string}\n */\nexport const getSecureUrl = (url, forceHttps) => {\n  return forceHttps ? url.replace(UNSECURE_PATTERN, 'https://') : url\n}\n\n/**\n * @access private\n * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean}} parameters\n * @return {Promise}\n */\nexport const getServers = ({ apiUrl, sandboxId, forceHttps }) => {\n  const secureApiUrl = getSecureUrl(apiUrl, forceHttps)\n  const url = `${secureApiUrl}${sandboxId}`\n  return fetch(url)\n    .then((response) => {\n      return response.json()\n    })\n    .then(({ servers }) => {\n      // TODO: Replace by a server side implementation when available\n      return servers.map((server) => {\n        return getSecureUrl(server, forceHttps)\n      })\n    })\n}\n\n/**\n * @access private\n * @extends {Error}\n */\nexport class NotYetImplementedError extends Error {\n  /**\n   * @param {string} message\n   */\n  constructor(message = '') {\n    super(message)\n    this.name = 'NotImplementedError'\n  }\n\n}\n"
   },
   {
-    "__docId__": 267,
+    "__docId__": 268,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6497,7 +6520,7 @@
     }
   },
   {
-    "__docId__": 268,
+    "__docId__": 269,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6517,7 +6540,7 @@
     }
   },
   {
-    "__docId__": 269,
+    "__docId__": 270,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6557,7 +6580,7 @@
     }
   },
   {
-    "__docId__": 270,
+    "__docId__": 271,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6607,7 +6630,7 @@
     }
   },
   {
-    "__docId__": 271,
+    "__docId__": 272,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6647,7 +6670,7 @@
     }
   },
   {
-    "__docId__": 272,
+    "__docId__": 273,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -6666,7 +6689,7 @@
     ]
   },
   {
-    "__docId__": 273,
+    "__docId__": 274,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -6691,7 +6714,7 @@
     "generator": false
   },
   {
-    "__docId__": 274,
+    "__docId__": 275,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -6709,7 +6732,7 @@
     }
   },
   {
-    "__docId__": 275,
+    "__docId__": 276,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -6722,7 +6745,7 @@
     "content": "/**\n * @type {string}\n */\nconst ZETAPUSH_TOKEN_KEY = 'zetapush.token'\n\n/**\n * Provide abstraction for token persistence\n * @access protected\n */\nexport class AbstractTokenPersistenceStrategy {\n  /**\n   * @param {{key: string}} parameters\n   */\n  constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.key = key\n  }\n  /**\n   * @abstract\n   * @return {string} The stored token\n   */\n  get() {}\n  /**\n   * @abstract\n   * @param {{token: string}} parameters\n   */\n  set({ token }) {}\n}\n\n/**\n * @access protected\n * @extends {AbstractTokenPersistenceStrategy}\n */\nexport class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersistenceStrategy {\n  /**\n   * @override\n   * @return {string} The stored token\n   */\n  get() {\n    return localStorage.getItem(this.key)\n  }\n  /**\n   * @override\n   * @param {{token: string}} parameters\n   */\n  set({ token }) {\n    localStorage.setItem(this.key, token)\n  }\n}\n"
   },
   {
-    "__docId__": 276,
+    "__docId__": 277,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -6745,7 +6768,7 @@
     }
   },
   {
-    "__docId__": 277,
+    "__docId__": 278,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -6761,7 +6784,7 @@
     "interface": false
   },
   {
-    "__docId__": 278,
+    "__docId__": 279,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -6786,7 +6809,7 @@
     "generator": false
   },
   {
-    "__docId__": 279,
+    "__docId__": 280,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -6806,7 +6829,7 @@
     }
   },
   {
-    "__docId__": 280,
+    "__docId__": 281,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6829,7 +6852,7 @@
     "generator": false
   },
   {
-    "__docId__": 281,
+    "__docId__": 282,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6855,7 +6878,7 @@
     "generator": false
   },
   {
-    "__docId__": 282,
+    "__docId__": 283,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -6874,7 +6897,7 @@
     ]
   },
   {
-    "__docId__": 283,
+    "__docId__": 284,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6897,7 +6920,7 @@
     "generator": false
   },
   {
-    "__docId__": 284,
+    "__docId__": 285,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -6923,7 +6946,7 @@
     "generator": false
   },
   {
-    "__docId__": 286,
+    "__docId__": 287,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6936,7 +6959,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 287,
+    "__docId__": 288,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6949,7 +6972,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 288,
+    "__docId__": 289,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6962,7 +6985,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 289,
+    "__docId__": 290,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6975,7 +6998,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 290,
+    "__docId__": 291,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -6988,7 +7011,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 291,
+    "__docId__": 292,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7001,7 +7024,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 292,
+    "__docId__": 293,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7014,7 +7037,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 293,
+    "__docId__": 294,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7027,7 +7050,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 294,
+    "__docId__": 295,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7040,7 +7063,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 295,
+    "__docId__": 296,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7053,7 +7076,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 296,
+    "__docId__": 297,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7066,7 +7089,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 297,
+    "__docId__": 298,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7079,7 +7102,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 298,
+    "__docId__": 299,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7092,7 +7115,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 299,
+    "__docId__": 300,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7105,7 +7128,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 300,
+    "__docId__": 301,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7118,7 +7141,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 301,
+    "__docId__": 302,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7131,7 +7154,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 302,
+    "__docId__": 303,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7144,7 +7167,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 303,
+    "__docId__": 304,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7157,7 +7180,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 304,
+    "__docId__": 305,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7170,7 +7193,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 305,
+    "__docId__": 306,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7183,7 +7206,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 306,
+    "__docId__": 307,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7196,7 +7219,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 307,
+    "__docId__": 308,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7209,7 +7232,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 308,
+    "__docId__": 309,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7222,7 +7245,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 309,
+    "__docId__": 310,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7235,7 +7258,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 310,
+    "__docId__": 311,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7248,7 +7271,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 311,
+    "__docId__": 312,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7261,7 +7284,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 312,
+    "__docId__": 313,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7274,7 +7297,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 313,
+    "__docId__": 314,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7287,7 +7310,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 314,
+    "__docId__": 315,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7300,7 +7323,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 315,
+    "__docId__": 316,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7313,7 +7336,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 316,
+    "__docId__": 317,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7326,7 +7349,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 317,
+    "__docId__": 318,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7339,7 +7362,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 318,
+    "__docId__": 319,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7352,7 +7375,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 319,
+    "__docId__": 320,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7365,7 +7388,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 320,
+    "__docId__": 321,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7378,7 +7401,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 321,
+    "__docId__": 322,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7391,7 +7414,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 322,
+    "__docId__": 323,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7404,7 +7427,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 323,
+    "__docId__": 324,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7417,7 +7440,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 324,
+    "__docId__": 325,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7430,7 +7453,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 325,
+    "__docId__": 326,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7443,7 +7466,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 326,
+    "__docId__": 327,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7456,7 +7479,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 327,
+    "__docId__": 328,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7469,7 +7492,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 328,
+    "__docId__": 329,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7482,7 +7505,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 329,
+    "__docId__": 330,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7495,7 +7518,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 330,
+    "__docId__": 331,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7508,7 +7531,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 331,
+    "__docId__": 332,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7521,7 +7544,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 332,
+    "__docId__": 333,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7534,7 +7557,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 334,
+    "__docId__": 335,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7547,7 +7570,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 335,
+    "__docId__": 336,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7560,7 +7583,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 336,
+    "__docId__": 337,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7573,7 +7596,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 337,
+    "__docId__": 338,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7586,7 +7609,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 338,
+    "__docId__": 339,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7599,7 +7622,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 339,
+    "__docId__": 340,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7612,7 +7635,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 340,
+    "__docId__": 341,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7625,7 +7648,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 341,
+    "__docId__": 342,
     "kind": "external",
     "static": true,
     "variation": null,

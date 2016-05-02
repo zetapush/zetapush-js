@@ -503,7 +503,7 @@
       "source": null,
       "range": [
         265,
-        288
+        330
       ],
       "loc": {
         "start": {
@@ -511,16 +511,221 @@
           "column": 0
         },
         "end": {
-          "line": 8,
+          "line": 13,
           "column": 0
         }
       }
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "VERSION",
+              "range": [
+                343,
+                350
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 13
+                },
+                "end": {
+                  "line": 13,
+                  "column": 20
+                }
+              }
+            },
+            "init": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "process",
+                  "range": [
+                    353,
+                    360
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 23
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 30
+                    }
+                  }
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "env",
+                  "range": [
+                    361,
+                    364
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 31
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 34
+                    }
+                  }
+                },
+                "range": [
+                  353,
+                  364
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 23
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 34
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "ZETAPUSH_VERSION",
+                "range": [
+                  365,
+                  381
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 35
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 51
+                  }
+                }
+              },
+              "range": [
+                353,
+                381
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 23
+                },
+                "end": {
+                  "line": 13,
+                  "column": 51
+                }
+              }
+            },
+            "range": [
+              343,
+              381
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 13
+              },
+              "end": {
+                "line": 13,
+                "column": 51
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          337,
+          382
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 7
+          },
+          "end": {
+            "line": 14,
+            "column": 0
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * SDK Version\n * @type {string}\n ",
+            "range": [
+              289,
+              329
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 0
+              },
+              "end": {
+                "line": 12,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        330,
+        382
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 0
+        },
+        "end": {
+          "line": 14,
+          "column": 0
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * SDK Version\n * @type {string}\n ",
+          "range": [
+            289,
+            329
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 0
+            },
+            "end": {
+              "line": 12,
+              "column": 3
+            }
+          }
+        }
+      ]
     }
   ],
   "sourceType": "module",
   "range": [
     0,
-    288
+    382
   ],
   "loc": {
     "start": {
@@ -528,9 +733,28 @@
       "column": 0
     },
     "end": {
-      "line": 8,
+      "line": 14,
       "column": 0
     }
   },
-  "comments": []
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * SDK Version\n * @type {string}\n ",
+      "range": [
+        289,
+        329
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 3
+        }
+      }
+    }
+  ]
 }

@@ -162,6 +162,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "zetapush-js/src/index.js~version",
+    "variable/index.html#static-variable-VERSION",
+    "<span>VERSION</span> <span class=\"search-result-import-path\">zetapush-js/src/index.js</span>",
+    "variable"
+  ],
+  [
     "zetapush-js/src/definitions/index.js~weakpublisherdefinition",
     "class/src/definitions/index.js~WeakPublisherDefinition.html",
     "<span>WeakPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
