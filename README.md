@@ -1,4 +1,5 @@
-[![Document](http://zetapush.github.io/zetapush-js/badge.svg?t=0)](http://zetapush.github.io/zetapush-js/)
+[![NPM version][npm-version-image]][npm-url]
+[![Document][doc-version-image]][doc-url]
 
 # ZetaPush JavaScript SDK
 
@@ -43,3 +44,9 @@ const client = new ZetaPush.Client({
   }
 })
 ```
+
+[npm-version-image]: http://img.shields.io/npm/v/zetapush-js.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/zetapush-js
+
+[doc-version-image]: http://zetapush.github.io/zetapush-js/badge.svg?t=0
+[doc-url]: http://zetapush.github.io/zetapush-js/
