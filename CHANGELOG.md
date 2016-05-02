@@ -1,3 +1,10 @@
+# 2.0.0-alpha.6 (2016-05-02)
+
+### Changes
+
+* **core:** Add new VERSION parameter
+* **core:** Add new API removeConnectionStatusListener
+
 # 2.0.0-alpha.5 (2016-04-29)
 
 ### Changes
