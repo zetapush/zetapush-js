@@ -70,7 +70,8 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><p><a href="http://zetapush.github.io/zetapush-js/"><img src="http://zetapush.github.io/zetapush-js/badge.svg?t=0" alt="Document"></a></p>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><p><a href="https://npmjs.org/package/zetapush-js"><img src="http://img.shields.io/npm/v/zetapush-js.svg?style=flat-square" alt="NPM version"></a>
+<a href="http://zetapush.github.io/zetapush-js/"><img src="http://zetapush.github.io/zetapush-js/badge.svg?t=0" alt="Document"></a></p>
 <h1 id="zetapush-javascript-sdk">ZetaPush JavaScript SDK</h1>
 <h2 id="install">Install</h2>
 <p>From bower</p>
@@ -88,7 +89,7 @@
 </code></pre>
 <h2 id="usage">Usage</h2>
 <pre><code class="lang-javascript"><code class="source-code prettyprint">const client = new ZetaPush.Client({
-  businessId: &apos;&lt;YOUR-BUSINESS-ID&gt;&apos;,
+  sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
   handshakeStrategy() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null,

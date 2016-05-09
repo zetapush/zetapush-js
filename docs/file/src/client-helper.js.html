@@ -380,7 +380,7 @@ export class ClientHelper {
     return this.resource
   }
   /**
-   * Subribe all methods defined in the listener for the given prefixed channel
+   * Subsribe all methods defined in the listener for the given prefixed channel
    * @param {string} prefix - Channel prefix
    * @param {Object} listener
    * @param {Object} subscriptions
@@ -399,6 +399,18 @@ export class ClientHelper {
       }
     }
     return subscriptions
+  }
+  /**
+   * Remove all subscriptions
+   * @param {Object} subscriptions
+   */
+  unsubscribe(subscriptions = {}) {
+    for (const method in subscriptions) {
+      if (subscriptions.hasOwnProperty(method)) {
+        const subscription = subscriptions[method]
+        this.cometd.unsubscribe(subscription)
+      }
+    }
   }
   /**
    * Get a publisher for a macro definition

@@ -702,6 +702,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/client.js~client#unsubscribe",
+    "class/src/client.js~Client.html#instance-method-unsubscribe",
+    "src/client.js~Client#unsubscribe",
+    "method"
+  ],
+  [
     "src/client.js~clientconfig",
     "typedef/index.html#static-typedef-ClientConfig",
     "src/client.js~ClientConfig",
