@@ -1,3 +1,9 @@
+# 2.0.0-beta.2 (2016-05-09)
+
+### Fix
+
+* **dependencies:** Update npm dependencies
+
 # 2.0.0-beta.1 (2016-05-09)
 
 ### Fix
