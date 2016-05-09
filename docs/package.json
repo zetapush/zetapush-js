@@ -1,6 +1,6 @@
 {
   "name": "zetapush-js",
-  "version": "2.0.0-beta.0",
+  "version": "2.0.0-beta.1",
   "description": "JavaScript SDK for ZetaPush",
   "main": "dist/zetapush.js",
   "homepage": "http://zetapush.com",
@@ -29,7 +29,9 @@
     "deploy": "gulp deploy",
     "serve": "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001"
   },
-  "dependencies": {},
+  "dependencies": {
+    "zetapush-cometd": "^3.0.10"
+  },
   "devDependencies": {
     "babel-core": "^6.8.0",
     "babel-plugin-transform-inline-environment-variables": "^6.8.0",
@@ -57,8 +59,7 @@
     "request": "^2.71.0",
     "run-sequence": "^1.1.5",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "zetapush-cometd": "^3.0.10"
+    "vinyl-source-stream": "^1.1.0"
   },
   "engines": {
     "node": "^6.0.0"
