@@ -28,7 +28,7 @@ import { Client } from 'zetapush-js'
 From CDN
 
 ```html
-<script src="https://static.zpush.io/js/2.0.0-alpha.6/zetapush.min.js"></script>
+<script src="https://static.zpush.io/js/2.0.0-beta.0/zetapush.min.js"></script>
 ```
 
 ## Usage

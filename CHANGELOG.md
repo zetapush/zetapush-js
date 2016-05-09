@@ -1,3 +1,9 @@
+# 2.0.0-beta.0 (2016-05-09)
+
+### Changes
+
+* **core:** Add new API unsubscribe
+
 # 2.0.0-alpha.6 (2016-05-02)
 
 ### Changes
