@@ -133,25 +133,32 @@ export class Client {
     return this.helper.subscribe(`/service/${this.getSandboxId()}/${deploymentId}`, listener)
   }
   /**
+   * Remove all subscriptions
+   * @param {Object} subscriptions
+   */
+  unsubscribe(subscriptions = {}) {
+    return this.helper.unsubscribe(subscriptions)
+  }
+  /**
    * Create a publish/subscribe for a macro definition
    * @param {{deploymentId: string, listener: Object, definition: class}} parameters
-   * @return {Object}
+   * @return {{publisher: Object, subscriptions: Object}}
    */
   createMacroPublisherSubscriber({ deploymentId, listener, definition }) {
     return {
-      subscription: this.subscribe({ deploymentId, listener }),
-      publisher: this.createMacroPublisher({ deploymentId, definition })
+      publisher: this.createMacroPublisher({ deploymentId, definition }),
+      subscriptions: this.subscribe({ deploymentId, listener })
     }
   }
   /**
    * Create a publish/subscribe for a service definition
    * @param {{deploymentId: string, listener: Object, definition: class}} parameters
-   * @return {Object}
+   * @return {{publisher: Object, subscriptions: Object}}
    */
   createServicePublisherSubscriber({ deploymentId, listener, definition }) {
     return {
-      subscription: this.subscribe({ deploymentId, listener }),
-      publisher: this.createServicePublisher({ deploymentId, definition })
+      publisher: this.createServicePublisher({ deploymentId, definition }),
+      subscriptions: this.subscribe({ deploymentId, listener })
     }
   }
   /**
