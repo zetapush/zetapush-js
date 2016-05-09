@@ -14,7 +14,6 @@ const sequence = require('run-sequence')
 const uglify = require('gulp-uglify')
 const github = require('gulp-gh-pages')
 const request = require('request')
-const template = require('gulp-template')
 
 const pkg = require('./package')
 const { optimize = false } = minimist(process.argv)
@@ -79,9 +78,6 @@ const getSourceStream = () => {
     .on('error', onError)
     .pipe(stream('zetapush.js'))
     .pipe(buffer())
-    .pipe(template({
-      ZETAPUSH_VERSION: '1.0.0'
-    }))
 }
 
 gulp.task('remote', (done) => {
