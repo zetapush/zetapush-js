@@ -1,3 +1,9 @@
+# 2.0.0-beta.3 (2016-05-17)
+
+### Changes
+
+* **macro:** Allow hardFail and debug option for macro publisher
+
 # 2.0.0-beta.2 (2016-05-09)
 
 ### Fix

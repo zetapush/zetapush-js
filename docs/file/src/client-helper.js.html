@@ -419,13 +419,13 @@ export class ClientHelper {
    * @return {AbstractPublisherDefinition} servicePublisher
    */
   createMacroPublisher(prefix, definition) {
-    const $publish = (name, parameters) =&gt; {
+    const $publish = (name, parameters, hardFail = true, debug = 1) =&gt; {
       const channel = `${prefix}/call`
       this.publish(channel, {
         name,
         parameters,
-        hardFail: true,
-        debug: 1
+        hardFail,
+        debug
       })
     }
     return new definition({ $publish })
