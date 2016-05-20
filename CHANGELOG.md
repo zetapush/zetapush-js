@@ -1,3 +1,9 @@
+# 2.0.0-beta.5 (2016-05-20)
+
+### Changes
+
+* **core:** Rename SmartClient to WeakClient
+
 # 2.0.0-beta.4 (2016-05-20)
 
 ### Changes
