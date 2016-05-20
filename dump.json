@@ -552,7 +552,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './connection/cometd'\nimport { ConnectionStatusListener } from './connection/connection-status'\nimport { getServers, shuffle } from './utils/index'\n\n/**\n * CometD Messages enumeration\n */\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\n/**\n * CometD Transports enumeration\n */\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\n/**\n * Provide utilities and abstraction on CometD Transport layer\n * @access private\n */\nexport class ClientHelper {\n  /**\n   * Create a new ZetaPush client helper\n   */\n  constructor({ apiUrl, sandboxId, forceHttps = false, handshakeStrategy, resource }) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.sandboxId = sandboxId\n    /**\n     * @access private\n     * @type {function():AbstractHandshakeManager}\n     */\n    this.handshakeStrategy = handshakeStrategy\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.resource = resource\n    /**\n     * @access private\n     * @type {Promise}\n     */\n    this.servers = getServers({ apiUrl, sandboxId, forceHttps })\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.connectionListeners = []\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.connected = false\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.wasConnected = false\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.serverUrl = null\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.subscribeQueue = []\n    /**\n     * @access private\n     * @type {CometD}\n     */\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.updateServerUrl()\n      }\n    }\n    this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      if (successful) {\n        const { authentication = null } = ext\n        this.initialized(authentication)\n      }\n      else {\n        // this.handshakeFailure(error)\n      }\n    })\n\n    this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      // AuthNegotiation\n      if (!successful) {\n        if ('undefined' === typeof advice) {\n          return\n        }\n        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n          this.authenticationFailed(error)\n        }\n        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n          this.negotiate(ext)\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n      console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n      // ConnectionListener\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection will close\n        this.connectionWillClose()\n      }\n      else {\n        this.wasConnected = this.connected\n        this.connected = successful\n        if (!this.wasConnected && this.connected) {\n          this.cometd.batch(this, () => {\n            // Unqueue subscriptions\n            this.subscribeQueue.forEach(({ prefix, listener, subscriptions }) => {\n              this.subscribe(prefix, listener, subscriptions)\n            })\n            this.subscribeQueue = []\n          })\n          // Notify connection is established\n          this.connectionEstablished()\n        }\n        else if (this.wasConnected && !this.connected) {\n          // Notify connection is broken\n          this.connectionBroken()\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/disconnect', ({ channel, successful }) => {\n      console.debug('ClientHelper::/meta/disconnect', { channel, successful })\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection is closed\n        this.connectionClosed()\n      }\n    })\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return boolean\n   */\n  isConnected() {\n    return !this.cometd.isDisonnected()\n  }\n  /**\n   * Connect client using CometD Transport\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   * Notify listeners when connection is broken\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   * Notify listeners when a message is lost\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   * Notify listeners when connection will close\n   */\n  connectionWillClose() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionWillClose()\n    })\n  }\n  /**\n   * Notify listeners when connection is closed\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   * Notify listeners when handshake step succeed\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   * Manage handshake failure case\n   */\n  handshakeFailure() {\n\n  }\n  /**\n  * Remove current server url from the server list and shuffle for another one\n  */\n  updateServerUrl() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   * Negociate authentication\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   * Disconnect CometD client\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   * Get CometD handshake parameters\n   * @return {Object}\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeStrategy()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   * Set a new handshake factory methods\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  setHandshakeStrategy(handshakeStrategy) {\n    this.handshakeStrategy = handshakeStrategy\n  }\n  /**\n   * Get sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.sandboxId\n  }\n  /**\n   * Get session id\n   * @return {string}\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   * Get resource\n   * @return {string}\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   * Subsribe all methods defined in the listener for the given prefixed channel\n   * @param {string} prefix - Channel prefix\n   * @param {Object} listener\n   * @param {Object} subscriptions\n   * @return {Object} subscriptions\n   */\n  subscribe(prefix, listener, subscriptions = {}) {\n    if (this.cometd.isDisconnected()) {\n      this.subscribeQueue.push({ prefix, listener, subscriptions })\n    }\n    else {\n      for (const method in listener) {\n        if (listener.hasOwnProperty(method)) {\n          const channel = `${prefix}/${method}`\n          subscriptions[method] = this.cometd.subscribe(channel, listener[method])\n        }\n      }\n    }\n    return subscriptions\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions = {}) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        const subscription = subscriptions[method]\n        this.cometd.unsubscribe(subscription)\n      }\n    }\n  }\n  /**\n   * Get a publisher for a macro definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createMacroPublisher(prefix, definition) {\n    const $publish = (name, parameters, hardFail = true, debug = 1) => {\n      const channel = `${prefix}/call`\n      this.publish(channel, {\n        name,\n        parameters,\n        hardFail,\n        debug\n      })\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Get a publisher for a service definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createServicePublisher(prefix, definition) {\n    const $publish = (method, parameters) => {\n      const channel = `${prefix}/${method}`\n      this.publish(channel, parameters)\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Unsubcribe all subscriptions defined in given subscriptions object\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscriptions[method])\n      }\n    }\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    return this.connectionListeners.push(connectionListener)\n  }\n  /**\n   * Remove a connection status listener\n   * @param {number} handler\n   */\n  removeConnectionStatusListener(handler) {\n    return this.connectionListeners.splice(handler - 1 , 1)\n  }\n  /**\n   * Wrap CometdD publish method\n   * @param {String} channel\n   * @param {Object} parameters\n   */\n  publish(channel, parameters = {}) {\n    this.cometd.publish(channel, parameters)\n  }\n}\n"
+    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './connection/cometd'\nimport { ConnectionStatusListener } from './connection/connection-status'\nimport { getServers, shuffle } from './utils/index'\n\n/**\n * CometD Messages enumeration\n */\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\n/**\n * CometD Transports enumeration\n */\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\n/**\n * Provide utilities and abstraction on CometD Transport layer\n * @access private\n */\nexport class ClientHelper {\n  /**\n   * Create a new ZetaPush client helper\n   */\n  constructor({ apiUrl, sandboxId, forceHttps = false, handshakeStrategy, resource }) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.sandboxId = sandboxId\n    /**\n     * @access private\n     * @type {function():AbstractHandshakeManager}\n     */\n    this.handshakeStrategy = handshakeStrategy\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.resource = resource\n    /**\n     * @access private\n     * @type {Promise}\n     */\n    this.servers = getServers({ apiUrl, sandboxId, forceHttps })\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.connectionListeners = []\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.connected = false\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.wasConnected = false\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.serverUrl = null\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.subscribeQueue = []\n    /**\n     * @access private\n     * @type {CometD}\n     */\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.updateServerUrl()\n      }\n    }\n    this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      if (successful) {\n        const { authentication = null } = ext\n        this.initialized(authentication)\n      }\n      else {\n        // this.handshakeFailure(error)\n      }\n    })\n\n    this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      // AuthNegotiation\n      if (!successful) {\n        if ('undefined' === typeof advice) {\n          return\n        }\n        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n          this.authenticationFailed(error)\n        }\n        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n          this.negotiate(ext)\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n      console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n      // ConnectionListener\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection will close\n        this.connectionWillClose()\n      }\n      else {\n        this.wasConnected = this.connected\n        this.connected = successful\n        if (!this.wasConnected && this.connected) {\n          this.cometd.batch(this, () => {\n            // Unqueue subscriptions\n            this.subscribeQueue.forEach(({ prefix, listener, subscriptions }) => {\n              this.subscribe(prefix, listener, subscriptions)\n            })\n            this.subscribeQueue = []\n          })\n          // Notify connection is established\n          this.connectionEstablished()\n        }\n        else if (this.wasConnected && !this.connected) {\n          // Notify connection is broken\n          this.connectionBroken()\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/disconnect', ({ channel, successful }) => {\n      console.debug('ClientHelper::/meta/disconnect', { channel, successful })\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection is closed\n        this.connectionClosed()\n      }\n    })\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return boolean\n   */\n  isConnected() {\n    return !this.cometd.isDisconnected()\n  }\n  /**\n   * Connect client using CometD Transport\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   * Notify listeners when connection is broken\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   * Notify listeners when a message is lost\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   * Notify listeners when connection will close\n   */\n  connectionWillClose() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionWillClose()\n    })\n  }\n  /**\n   * Notify listeners when connection is closed\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   * Notify listeners when handshake step succeed\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   * Manage handshake failure case\n   */\n  handshakeFailure() {\n\n  }\n  /**\n  * Remove current server url from the server list and shuffle for another one\n  */\n  updateServerUrl() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   * Negociate authentication\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   * Disconnect CometD client\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   * Get CometD handshake parameters\n   * @return {Object}\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeStrategy()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   * Set a new handshake factory methods\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  setHandshakeStrategy(handshakeStrategy) {\n    this.handshakeStrategy = handshakeStrategy\n  }\n  /**\n   * Get sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.sandboxId\n  }\n  /**\n   * Get session id\n   * @return {string}\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   * Get resource\n   * @return {string}\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   * Subsribe all methods defined in the listener for the given prefixed channel\n   * @param {string} prefix - Channel prefix\n   * @param {Object} listener\n   * @param {Object} subscriptions\n   * @return {Object} subscriptions\n   */\n  subscribe(prefix, listener, subscriptions = {}) {\n    if (this.cometd.isDisconnected()) {\n      this.subscribeQueue.push({ prefix, listener, subscriptions })\n    }\n    else {\n      for (const method in listener) {\n        if (listener.hasOwnProperty(method)) {\n          const channel = `${prefix}/${method}`\n          subscriptions[method] = this.cometd.subscribe(channel, listener[method])\n        }\n      }\n    }\n    return subscriptions\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions = {}) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        const subscription = subscriptions[method]\n        this.cometd.unsubscribe(subscription)\n      }\n    }\n  }\n  /**\n   * Get a publisher for a macro definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createMacroPublisher(prefix, definition) {\n    const $publish = (name, parameters, hardFail = true, debug = 1) => {\n      const channel = `${prefix}/call`\n      this.publish(channel, {\n        name,\n        parameters,\n        hardFail,\n        debug\n      })\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Get a publisher for a service definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createServicePublisher(prefix, definition) {\n    const $publish = (method, parameters) => {\n      const channel = `${prefix}/${method}`\n      this.publish(channel, parameters)\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Unsubcribe all subscriptions defined in given subscriptions object\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscriptions[method])\n      }\n    }\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    return this.connectionListeners.push(connectionListener)\n  }\n  /**\n   * Remove a connection status listener\n   * @param {number} handler\n   */\n  removeConnectionStatusListener(handler) {\n    return this.connectionListeners.splice(handler - 1 , 1)\n  }\n  /**\n   * Wrap CometdD publish method\n   * @param {String} channel\n   * @param {Object} parameters\n   */\n  publish(channel, parameters = {}) {\n    this.cometd.publish(channel, parameters)\n  }\n}\n"
   },
   {
     "__docId__": 24,
@@ -6375,7 +6375,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import * as definitions from './definitions/index'\n\nexport { AuthentFactory } from './authentication/handshake'\nexport { ConnectionStatusListener } from './connection/connection-status'\nexport { Client } from './client'\nexport { SmartClient } from './smart-client'\nexport { definitions }\n\n/**\n * SDK Version\n * @type {string}\n */\nexport const VERSION = process.env.ZETAPUSH_VERSION\n"
+    "content": "import * as definitions from './definitions/index'\n\nexport { AuthentFactory } from './authentication/handshake'\nexport { ConnectionStatusListener } from './connection/connection-status'\nexport { Client } from './client'\nexport { WeakClient } from './weak-client'\nexport { definitions }\n\n/**\n * SDK Version\n * @type {string}\n */\nexport const VERSION = process.env.ZETAPUSH_VERSION\n"
   },
   {
     "__docId__": 264,
@@ -6405,24 +6405,486 @@
     "kind": "file",
     "static": true,
     "variation": null,
-    "name": "src/smart-client.js",
+    "name": "src/utils/index.js",
     "memberof": null,
-    "longname": "src/smart-client.js",
+    "longname": "src/utils/index.js",
     "access": null,
     "description": null,
-    "lineNumber": 1,
-    "content": "import { Client } from './client'\nimport { AuthentFactory } from './authentication/handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'\n\n/**\n * SmartClient config object.\n * @typedef {Object} SmartClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} authenticationDeploymentId - Authentication deployment id\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n * @property {AbstractTokenPersistenceStrategy} TokenPersistenceStrategy - Token storage strategy\n */\n\n/**\n * @access public\n * @extends {Client}\n */\nexport class SmartClient extends Client {\n  /**\n   * Create a new ZetaPush smart client\n   * @param {SmartClientConfig} config\n   * @example\n   * // Smart client\n   * const client = new ZetaPush.SmartClient({\n   *   sandboxId: '<YOUR-SANDBOX-ID-ID>',\n   *   authenticationDeploymentId: '<YOUR-AUTHENTICATION-DEPLOYMENT-ID>'\n   * })\n   */\n  constructor({ apiUrl, authenticationDeploymentId, sandboxId, forceHttps, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {\n    const handshakeStrategy = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId: authenticationDeploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     *\n     */\n    super({ apiUrl , sandboxId, forceHttps, handshakeStrategy, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('SmartClient::onFailedHandshake', error)\n    }\n    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new TokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
+    "lineNumber": 5,
+    "content": "/**\n * Match unsecure pattern web\n * @type {RegExp}\n */\nconst UNSECURE_PATTERN = /^http:\\/\\/|^\\/\\//\n\n/**\n* Default ZetaPush API URL\n* @access private\n*/\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @param {boolean} forceHttps\n * @return {string}\n */\nexport const getSecureUrl = (url, forceHttps) => {\n  return forceHttps ? url.replace(UNSECURE_PATTERN, 'https://') : url\n}\n\n/**\n * @access private\n * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean}} parameters\n * @return {Promise}\n */\nexport const getServers = ({ apiUrl, sandboxId, forceHttps }) => {\n  const secureApiUrl = getSecureUrl(apiUrl, forceHttps)\n  const url = `${secureApiUrl}${sandboxId}`\n  return fetch(url)\n    .then((response) => {\n      return response.json()\n    })\n    .then(({ servers }) => {\n      // TODO: Replace by a server side implementation when available\n      return servers.map((server) => {\n        return getSecureUrl(server, forceHttps)\n      })\n    })\n}\n\n/**\n * @access private\n * @extends {Error}\n */\nexport class NotYetImplementedError extends Error {\n  /**\n   * @param {string} message\n   */\n  constructor(message = '') {\n    super(message)\n    this.name = 'NotImplementedError'\n  }\n\n}\n"
   },
   {
     "__docId__": 266,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "UNSECURE_PATTERN",
+    "memberof": "src/utils/index.js",
+    "longname": "src/utils/index.js~UNSECURE_PATTERN",
+    "access": null,
+    "export": false,
+    "importPath": "zetapush-js/src/utils/index.js",
+    "importStyle": null,
+    "description": "Match unsecure pattern web",
+    "lineNumber": 5,
+    "type": {
+      "nullable": null,
+      "types": [
+        "RegExp"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 267,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "API_URL",
+    "memberof": "src/utils/index.js",
+    "longname": "src/utils/index.js~API_URL",
+    "access": "private",
+    "export": true,
+    "importPath": "zetapush-js/src/utils/index.js",
+    "importStyle": "{API_URL}",
+    "description": "Default ZetaPush API URL",
+    "lineNumber": 11,
+    "type": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 268,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "shuffle",
+    "memberof": "src/utils/index.js",
+    "longname": "src/utils/index.js~shuffle",
+    "access": "private",
+    "export": true,
+    "importPath": "zetapush-js/src/utils/index.js",
+    "importStyle": "{shuffle}",
+    "description": "",
+    "lineNumber": 18,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Array<Object>"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "list",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 269,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "getSecureUrl",
+    "memberof": "src/utils/index.js",
+    "longname": "src/utils/index.js~getSecureUrl",
+    "access": "private",
+    "export": true,
+    "importPath": "zetapush-js/src/utils/index.js",
+    "importStyle": "{getSecureUrl}",
+    "description": "",
+    "lineNumber": 29,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "url",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "forceHttps",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 270,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "getServers",
+    "memberof": "src/utils/index.js",
+    "longname": "src/utils/index.js~getServers",
+    "access": "private",
+    "export": true,
+    "importPath": "zetapush-js/src/utils/index.js",
+    "importStyle": "{getServers}",
+    "description": "",
+    "lineNumber": 38,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "{apiUrl: string, sandboxId: string, forceHttps: boolean}"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "parameters",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 271,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "NotYetImplementedError",
+    "memberof": "src/utils/index.js",
+    "longname": "src/utils/index.js~NotYetImplementedError",
+    "access": "private",
+    "export": true,
+    "importPath": "zetapush-js/src/utils/index.js",
+    "importStyle": "{NotYetImplementedError}",
+    "description": "",
+    "lineNumber": 57,
+    "interface": false,
+    "extends": [
+      "Error"
+    ]
+  },
+  {
+    "__docId__": 272,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/utils/index.js~NotYetImplementedError",
+    "longname": "src/utils/index.js~NotYetImplementedError#constructor",
+    "access": null,
+    "description": "",
+    "lineNumber": 61,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "message",
+        "description": ""
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 273,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "name",
+    "memberof": "src/utils/index.js~NotYetImplementedError",
+    "longname": "src/utils/index.js~NotYetImplementedError#name",
+    "access": null,
+    "description": null,
+    "lineNumber": 63,
+    "undocument": true,
+    "type": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 274,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/utils/token-persistence.js",
+    "memberof": null,
+    "longname": "src/utils/token-persistence.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 4,
+    "content": "/**\n * @type {string}\n */\nconst ZETAPUSH_TOKEN_KEY = 'zetapush.token'\n\n/**\n * Provide abstraction for token persistence\n * @access protected\n */\nexport class AbstractTokenPersistenceStrategy {\n  /**\n   * @param {{key: string}} parameters\n   */\n  constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.key = key\n  }\n  /**\n   * @abstract\n   * @return {string} The stored token\n   */\n  get() {}\n  /**\n   * @abstract\n   * @param {{token: string}} parameters\n   */\n  set({ token }) {}\n}\n\n/**\n * @access protected\n * @extends {AbstractTokenPersistenceStrategy}\n */\nexport class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersistenceStrategy {\n  /**\n   * @override\n   * @return {string} The stored token\n   */\n  get() {\n    return localStorage.getItem(this.key)\n  }\n  /**\n   * @override\n   * @param {{token: string}} parameters\n   */\n  set({ token }) {\n    localStorage.setItem(this.key, token)\n  }\n}\n"
+  },
+  {
+    "__docId__": 275,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "ZETAPUSH_TOKEN_KEY",
+    "memberof": "src/utils/token-persistence.js",
+    "longname": "src/utils/token-persistence.js~ZETAPUSH_TOKEN_KEY",
+    "access": null,
+    "export": false,
+    "importPath": "zetapush-js/src/utils/token-persistence.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 4,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 276,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "AbstractTokenPersistenceStrategy",
+    "memberof": "src/utils/token-persistence.js",
+    "longname": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy",
+    "access": "protected",
+    "export": true,
+    "importPath": "zetapush-js/src/utils/token-persistence.js",
+    "importStyle": "{AbstractTokenPersistenceStrategy}",
+    "description": "Provide abstraction for token persistence",
+    "lineNumber": 10,
+    "interface": false
+  },
+  {
+    "__docId__": 277,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy",
+    "longname": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy#constructor",
+    "access": null,
+    "description": "",
+    "lineNumber": 14,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "{key: string}"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "parameters",
+        "description": ""
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 278,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "key",
+    "memberof": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy",
+    "longname": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy#key",
+    "access": "private",
+    "description": "",
+    "lineNumber": 19,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 279,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "get",
+    "memberof": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy",
+    "longname": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy#get",
+    "access": null,
+    "description": "",
+    "lineNumber": 25,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": "The stored token"
+    },
+    "abstract": true,
+    "generator": false
+  },
+  {
+    "__docId__": 280,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "set",
+    "memberof": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy",
+    "longname": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy#set",
+    "access": null,
+    "description": "",
+    "lineNumber": 30,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "{token: string}"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "parameters",
+        "description": ""
+      }
+    ],
+    "abstract": true,
+    "generator": false
+  },
+  {
+    "__docId__": 281,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "LocalStorageTokenPersistenceStrategy",
+    "memberof": "src/utils/token-persistence.js",
+    "longname": "src/utils/token-persistence.js~LocalStorageTokenPersistenceStrategy",
+    "access": "protected",
+    "export": true,
+    "importPath": "zetapush-js/src/utils/token-persistence.js",
+    "importStyle": "{LocalStorageTokenPersistenceStrategy}",
+    "description": "",
+    "lineNumber": 37,
+    "interface": false,
+    "extends": [
+      "AbstractTokenPersistenceStrategy"
+    ]
+  },
+  {
+    "__docId__": 282,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "get",
+    "memberof": "src/utils/token-persistence.js~LocalStorageTokenPersistenceStrategy",
+    "longname": "src/utils/token-persistence.js~LocalStorageTokenPersistenceStrategy#get",
+    "access": null,
+    "description": "",
+    "lineNumber": 42,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": "The stored token"
+    },
+    "override": true,
+    "generator": false
+  },
+  {
+    "__docId__": 283,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "set",
+    "memberof": "src/utils/token-persistence.js~LocalStorageTokenPersistenceStrategy",
+    "longname": "src/utils/token-persistence.js~LocalStorageTokenPersistenceStrategy#set",
+    "access": null,
+    "description": "",
+    "lineNumber": 49,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "{token: string}"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "parameters",
+        "description": ""
+      }
+    ],
+    "override": true,
+    "generator": false
+  },
+  {
+    "__docId__": 284,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/weak-client.js",
+    "memberof": null,
+    "longname": "src/weak-client.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Client } from './client'\nimport { AuthentFactory } from './authentication/handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'\n\n/**\n * WeakClient config object.\n * @typedef {Object} WeakClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} authenticationDeploymentId - Authentication deployment id\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n * @property {AbstractTokenPersistenceStrategy} TokenPersistenceStrategy - Token storage strategy\n */\n\n/**\n * @access public\n * @extends {Client}\n */\nexport class WeakClient extends Client {\n  /**\n   * Create a new ZetaPush smart client\n   * @param {WeakClientConfig} config\n   * @example\n   * // Smart client\n   * const client = new ZetaPush.WeakClient({\n   *   sandboxId: '<YOUR-SANDBOX-ID-ID>',\n   *   authenticationDeploymentId: '<YOUR-AUTHENTICATION-DEPLOYMENT-ID>'\n   * })\n   */\n  constructor({ apiUrl, authenticationDeploymentId, sandboxId, forceHttps, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {\n    const handshakeStrategy = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId: authenticationDeploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     *\n     */\n    super({ apiUrl , sandboxId, forceHttps, handshakeStrategy, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('WeakClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('WeakClient::onFailedHandshake', error)\n    }\n    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new TokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
+  },
+  {
+    "__docId__": 285,
     "kind": "typedef",
     "static": true,
     "variation": null,
-    "name": "SmartClientConfig",
-    "memberof": "src/smart-client.js",
-    "longname": "src/smart-client.js~SmartClientConfig",
+    "name": "WeakClientConfig",
+    "memberof": "src/weak-client.js",
+    "longname": "src/weak-client.js~WeakClientConfig",
     "access": null,
-    "description": "SmartClient config object.",
+    "description": "WeakClient config object.",
     "properties": [
       {
         "nullable": null,
@@ -6490,21 +6952,21 @@
         "Object"
       ],
       "optional": false,
-      "name": "SmartClientConfig"
+      "name": "WeakClientConfig"
     }
   },
   {
-    "__docId__": 267,
+    "__docId__": 286,
     "kind": "class",
     "static": true,
     "variation": null,
-    "name": "SmartClient",
-    "memberof": "src/smart-client.js",
-    "longname": "src/smart-client.js~SmartClient",
+    "name": "WeakClient",
+    "memberof": "src/weak-client.js",
+    "longname": "src/weak-client.js~WeakClient",
     "access": "public",
     "export": true,
-    "importPath": "zetapush-js/src/smart-client.js",
-    "importStyle": "{SmartClient}",
+    "importPath": "zetapush-js/src/weak-client.js",
+    "importStyle": "{WeakClient}",
     "description": "",
     "lineNumber": 20,
     "interface": false,
@@ -6513,24 +6975,24 @@
     ]
   },
   {
-    "__docId__": 268,
+    "__docId__": 287,
     "kind": "constructor",
     "static": false,
     "variation": null,
     "name": "constructor",
-    "memberof": "src/smart-client.js~SmartClient",
-    "longname": "src/smart-client.js~SmartClient#constructor",
+    "memberof": "src/weak-client.js~WeakClient",
+    "longname": "src/weak-client.js~WeakClient#constructor",
     "access": null,
     "description": "Create a new ZetaPush smart client",
     "examples": [
-      "// Smart client\nconst client = new ZetaPush.SmartClient({\n  sandboxId: '<YOUR-SANDBOX-ID-ID>',\n  authenticationDeploymentId: '<YOUR-AUTHENTICATION-DEPLOYMENT-ID>'\n})"
+      "// Smart client\nconst client = new ZetaPush.WeakClient({\n  sandboxId: '<YOUR-SANDBOX-ID-ID>',\n  authenticationDeploymentId: '<YOUR-AUTHENTICATION-DEPLOYMENT-ID>'\n})"
     ],
     "lineNumber": 31,
     "params": [
       {
         "nullable": null,
         "types": [
-          "SmartClientConfig"
+          "WeakClientConfig"
         ],
         "spread": false,
         "optional": false,
@@ -6541,13 +7003,13 @@
     "generator": false
   },
   {
-    "__docId__": 269,
+    "__docId__": 288,
     "kind": "member",
     "static": false,
     "variation": null,
     "name": "strategy",
-    "memberof": "src/smart-client.js~SmartClient",
-    "longname": "src/smart-client.js~SmartClient#strategy",
+    "memberof": "src/weak-client.js~WeakClient",
+    "longname": "src/weak-client.js~WeakClient#strategy",
     "access": "private",
     "description": "",
     "lineNumber": 59,
@@ -6561,13 +7023,13 @@
     }
   },
   {
-    "__docId__": 270,
+    "__docId__": 289,
     "kind": "method",
     "static": false,
     "variation": null,
     "name": "getToken",
-    "memberof": "src/smart-client.js~SmartClient",
-    "longname": "src/smart-client.js~SmartClient#getToken",
+    "memberof": "src/weak-client.js~WeakClient",
+    "longname": "src/weak-client.js~WeakClient#getToken",
     "access": null,
     "description": "",
     "lineNumber": 64,
@@ -6580,468 +7042,6 @@
       "spread": false,
       "description": "The stored token"
     },
-    "generator": false
-  },
-  {
-    "__docId__": 271,
-    "kind": "file",
-    "static": true,
-    "variation": null,
-    "name": "src/utils/index.js",
-    "memberof": null,
-    "longname": "src/utils/index.js",
-    "access": null,
-    "description": null,
-    "lineNumber": 5,
-    "content": "/**\n * Match unsecure pattern web\n * @type {RegExp}\n */\nconst UNSECURE_PATTERN = /^http:\\/\\/|^\\/\\//\n\n/**\n* Default ZetaPush API URL\n* @access private\n*/\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @param {boolean} forceHttps\n * @return {string}\n */\nexport const getSecureUrl = (url, forceHttps) => {\n  return forceHttps ? url.replace(UNSECURE_PATTERN, 'https://') : url\n}\n\n/**\n * @access private\n * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean}} parameters\n * @return {Promise}\n */\nexport const getServers = ({ apiUrl, sandboxId, forceHttps }) => {\n  const secureApiUrl = getSecureUrl(apiUrl, forceHttps)\n  const url = `${secureApiUrl}${sandboxId}`\n  return fetch(url)\n    .then((response) => {\n      return response.json()\n    })\n    .then(({ servers }) => {\n      // TODO: Replace by a server side implementation when available\n      return servers.map((server) => {\n        return getSecureUrl(server, forceHttps)\n      })\n    })\n}\n\n/**\n * @access private\n * @extends {Error}\n */\nexport class NotYetImplementedError extends Error {\n  /**\n   * @param {string} message\n   */\n  constructor(message = '') {\n    super(message)\n    this.name = 'NotImplementedError'\n  }\n\n}\n"
-  },
-  {
-    "__docId__": 272,
-    "kind": "variable",
-    "static": true,
-    "variation": null,
-    "name": "UNSECURE_PATTERN",
-    "memberof": "src/utils/index.js",
-    "longname": "src/utils/index.js~UNSECURE_PATTERN",
-    "access": null,
-    "export": false,
-    "importPath": "zetapush-js/src/utils/index.js",
-    "importStyle": null,
-    "description": "Match unsecure pattern web",
-    "lineNumber": 5,
-    "type": {
-      "nullable": null,
-      "types": [
-        "RegExp"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 273,
-    "kind": "variable",
-    "static": true,
-    "variation": null,
-    "name": "API_URL",
-    "memberof": "src/utils/index.js",
-    "longname": "src/utils/index.js~API_URL",
-    "access": "private",
-    "export": true,
-    "importPath": "zetapush-js/src/utils/index.js",
-    "importStyle": "{API_URL}",
-    "description": "Default ZetaPush API URL",
-    "lineNumber": 11,
-    "type": {
-      "types": [
-        "string"
-      ]
-    }
-  },
-  {
-    "__docId__": 274,
-    "kind": "variable",
-    "static": true,
-    "variation": null,
-    "name": "shuffle",
-    "memberof": "src/utils/index.js",
-    "longname": "src/utils/index.js~shuffle",
-    "access": "private",
-    "export": true,
-    "importPath": "zetapush-js/src/utils/index.js",
-    "importStyle": "{shuffle}",
-    "description": "",
-    "lineNumber": 18,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "Array<Object>"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "list",
-        "description": ""
-      }
-    ],
-    "return": {
-      "nullable": null,
-      "types": [
-        "Object"
-      ],
-      "spread": false,
-      "description": ""
-    },
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 275,
-    "kind": "variable",
-    "static": true,
-    "variation": null,
-    "name": "getSecureUrl",
-    "memberof": "src/utils/index.js",
-    "longname": "src/utils/index.js~getSecureUrl",
-    "access": "private",
-    "export": true,
-    "importPath": "zetapush-js/src/utils/index.js",
-    "importStyle": "{getSecureUrl}",
-    "description": "",
-    "lineNumber": 29,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "string"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "url",
-        "description": ""
-      },
-      {
-        "nullable": null,
-        "types": [
-          "boolean"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "forceHttps",
-        "description": ""
-      }
-    ],
-    "return": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": ""
-    },
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 276,
-    "kind": "variable",
-    "static": true,
-    "variation": null,
-    "name": "getServers",
-    "memberof": "src/utils/index.js",
-    "longname": "src/utils/index.js~getServers",
-    "access": "private",
-    "export": true,
-    "importPath": "zetapush-js/src/utils/index.js",
-    "importStyle": "{getServers}",
-    "description": "",
-    "lineNumber": 38,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "{apiUrl: string, sandboxId: string, forceHttps: boolean}"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "parameters",
-        "description": ""
-      }
-    ],
-    "return": {
-      "nullable": null,
-      "types": [
-        "Promise"
-      ],
-      "spread": false,
-      "description": ""
-    },
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 277,
-    "kind": "class",
-    "static": true,
-    "variation": null,
-    "name": "NotYetImplementedError",
-    "memberof": "src/utils/index.js",
-    "longname": "src/utils/index.js~NotYetImplementedError",
-    "access": "private",
-    "export": true,
-    "importPath": "zetapush-js/src/utils/index.js",
-    "importStyle": "{NotYetImplementedError}",
-    "description": "",
-    "lineNumber": 57,
-    "interface": false,
-    "extends": [
-      "Error"
-    ]
-  },
-  {
-    "__docId__": 278,
-    "kind": "constructor",
-    "static": false,
-    "variation": null,
-    "name": "constructor",
-    "memberof": "src/utils/index.js~NotYetImplementedError",
-    "longname": "src/utils/index.js~NotYetImplementedError#constructor",
-    "access": null,
-    "description": "",
-    "lineNumber": 61,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "string"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "message",
-        "description": ""
-      }
-    ],
-    "generator": false
-  },
-  {
-    "__docId__": 279,
-    "kind": "member",
-    "static": false,
-    "variation": null,
-    "name": "name",
-    "memberof": "src/utils/index.js~NotYetImplementedError",
-    "longname": "src/utils/index.js~NotYetImplementedError#name",
-    "access": null,
-    "description": null,
-    "lineNumber": 63,
-    "undocument": true,
-    "type": {
-      "types": [
-        "string"
-      ]
-    }
-  },
-  {
-    "__docId__": 280,
-    "kind": "file",
-    "static": true,
-    "variation": null,
-    "name": "src/utils/token-persistence.js",
-    "memberof": null,
-    "longname": "src/utils/token-persistence.js",
-    "access": null,
-    "description": null,
-    "lineNumber": 4,
-    "content": "/**\n * @type {string}\n */\nconst ZETAPUSH_TOKEN_KEY = 'zetapush.token'\n\n/**\n * Provide abstraction for token persistence\n * @access protected\n */\nexport class AbstractTokenPersistenceStrategy {\n  /**\n   * @param {{key: string}} parameters\n   */\n  constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.key = key\n  }\n  /**\n   * @abstract\n   * @return {string} The stored token\n   */\n  get() {}\n  /**\n   * @abstract\n   * @param {{token: string}} parameters\n   */\n  set({ token }) {}\n}\n\n/**\n * @access protected\n * @extends {AbstractTokenPersistenceStrategy}\n */\nexport class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersistenceStrategy {\n  /**\n   * @override\n   * @return {string} The stored token\n   */\n  get() {\n    return localStorage.getItem(this.key)\n  }\n  /**\n   * @override\n   * @param {{token: string}} parameters\n   */\n  set({ token }) {\n    localStorage.setItem(this.key, token)\n  }\n}\n"
-  },
-  {
-    "__docId__": 281,
-    "kind": "variable",
-    "static": true,
-    "variation": null,
-    "name": "ZETAPUSH_TOKEN_KEY",
-    "memberof": "src/utils/token-persistence.js",
-    "longname": "src/utils/token-persistence.js~ZETAPUSH_TOKEN_KEY",
-    "access": null,
-    "export": false,
-    "importPath": "zetapush-js/src/utils/token-persistence.js",
-    "importStyle": null,
-    "description": "",
-    "lineNumber": 4,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 282,
-    "kind": "class",
-    "static": true,
-    "variation": null,
-    "name": "AbstractTokenPersistenceStrategy",
-    "memberof": "src/utils/token-persistence.js",
-    "longname": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy",
-    "access": "protected",
-    "export": true,
-    "importPath": "zetapush-js/src/utils/token-persistence.js",
-    "importStyle": "{AbstractTokenPersistenceStrategy}",
-    "description": "Provide abstraction for token persistence",
-    "lineNumber": 10,
-    "interface": false
-  },
-  {
-    "__docId__": 283,
-    "kind": "constructor",
-    "static": false,
-    "variation": null,
-    "name": "constructor",
-    "memberof": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy",
-    "longname": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy#constructor",
-    "access": null,
-    "description": "",
-    "lineNumber": 14,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "{key: string}"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "parameters",
-        "description": ""
-      }
-    ],
-    "generator": false
-  },
-  {
-    "__docId__": 284,
-    "kind": "member",
-    "static": false,
-    "variation": null,
-    "name": "key",
-    "memberof": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy",
-    "longname": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy#key",
-    "access": "private",
-    "description": "",
-    "lineNumber": 19,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 285,
-    "kind": "method",
-    "static": false,
-    "variation": null,
-    "name": "get",
-    "memberof": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy",
-    "longname": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy#get",
-    "access": null,
-    "description": "",
-    "lineNumber": 25,
-    "params": [],
-    "return": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": "The stored token"
-    },
-    "abstract": true,
-    "generator": false
-  },
-  {
-    "__docId__": 286,
-    "kind": "method",
-    "static": false,
-    "variation": null,
-    "name": "set",
-    "memberof": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy",
-    "longname": "src/utils/token-persistence.js~AbstractTokenPersistenceStrategy#set",
-    "access": null,
-    "description": "",
-    "lineNumber": 30,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "{token: string}"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "parameters",
-        "description": ""
-      }
-    ],
-    "abstract": true,
-    "generator": false
-  },
-  {
-    "__docId__": 287,
-    "kind": "class",
-    "static": true,
-    "variation": null,
-    "name": "LocalStorageTokenPersistenceStrategy",
-    "memberof": "src/utils/token-persistence.js",
-    "longname": "src/utils/token-persistence.js~LocalStorageTokenPersistenceStrategy",
-    "access": "protected",
-    "export": true,
-    "importPath": "zetapush-js/src/utils/token-persistence.js",
-    "importStyle": "{LocalStorageTokenPersistenceStrategy}",
-    "description": "",
-    "lineNumber": 37,
-    "interface": false,
-    "extends": [
-      "AbstractTokenPersistenceStrategy"
-    ]
-  },
-  {
-    "__docId__": 288,
-    "kind": "method",
-    "static": false,
-    "variation": null,
-    "name": "get",
-    "memberof": "src/utils/token-persistence.js~LocalStorageTokenPersistenceStrategy",
-    "longname": "src/utils/token-persistence.js~LocalStorageTokenPersistenceStrategy#get",
-    "access": null,
-    "description": "",
-    "lineNumber": 42,
-    "params": [],
-    "return": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": "The stored token"
-    },
-    "override": true,
-    "generator": false
-  },
-  {
-    "__docId__": 289,
-    "kind": "method",
-    "static": false,
-    "variation": null,
-    "name": "set",
-    "memberof": "src/utils/token-persistence.js~LocalStorageTokenPersistenceStrategy",
-    "longname": "src/utils/token-persistence.js~LocalStorageTokenPersistenceStrategy#set",
-    "access": null,
-    "description": "",
-    "lineNumber": 49,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "{token: string}"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "parameters",
-        "description": ""
-      }
-    ],
-    "override": true,
     "generator": false
   },
   {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../">
-  <title data-ice="title">src/smart-client.js | API Document</title>
+  <title data-ice="title">src/weak-client.js | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -33,10 +33,10 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~Client.html">Client</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/weak-client.js~WeakClient.html">WeakClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VERSION">VERSION</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~CredentialsHandshakeManager.html">CredentialsHandshakeManager</a></span></span></li>
@@ -70,14 +70,14 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/smart-client.js</h1>
+<div class="content" data-ice="content"><h1 data-ice="title">src/weak-client.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Client } from &apos;./client&apos;
 import { AuthentFactory } from &apos;./authentication/handshake&apos;
 import { LocalStorageTokenPersistenceStrategy } from &apos;./utils/token-persistence&apos;
 
 /**
- * SmartClient config object.
- * @typedef {Object} SmartClientConfig
+ * WeakClient config object.
+ * @typedef {Object} WeakClientConfig
  * @property {string} apiUrl - Api Url
  * @property {string} authenticationDeploymentId - Authentication deployment id
  * @property {string} sandboxId - Sandbox id
@@ -90,13 +90,13 @@ import { LocalStorageTokenPersistenceStrategy } from &apos;./utils/token-persist
  * @access public
  * @extends {Client}
  */
-export class SmartClient extends Client {
+export class WeakClient extends Client {
   /**
    * Create a new ZetaPush smart client
-   * @param {SmartClientConfig} config
+   * @param {WeakClientConfig} config
    * @example
    * // Smart client
-   * const client = new ZetaPush.SmartClient({
+   * const client = new ZetaPush.WeakClient({
    *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID-ID&gt;&apos;,
    *   authenticationDeploymentId: &apos;&lt;YOUR-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;
    * })
@@ -115,14 +115,14 @@ export class SmartClient extends Client {
      */
     super({ apiUrl , sandboxId, forceHttps, handshakeStrategy, resource })
     const onSuccessfulHandshake = ({ publicToken, userId, token }) =&gt; {
-      console.debug(&apos;SmartClient::onSuccessfulHandshake&apos;, { publicToken, userId, token })
+      console.debug(&apos;WeakClient::onSuccessfulHandshake&apos;, { publicToken, userId, token })
 
       if (token) {
         this.strategy.set({ token })
       }
     }
     const onFailedHandshake = (error) =&gt; {
-      console.debug(&apos;SmartClient::onFailedHandshake&apos;, error)
+      console.debug(&apos;WeakClient::onFailedHandshake&apos;, error)
     }
     this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })
     /**
