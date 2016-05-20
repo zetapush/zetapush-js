@@ -154,6 +154,13 @@ export class ClientHelper {
     })
   }
   /**
+   * Is client connected to ZetaPush
+   * @return boolean
+   */
+  isConnected() {
+    return !this.cometd.isDisonnected()
+  }
+  /**
    * Connect client using CometD Transport
    */
   connect() {

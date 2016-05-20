@@ -59,6 +59,13 @@ export class Client {
     })
   }
   /**
+   * Is client connected to ZetaPush
+   * @return boolean
+   */
+  isConnected() {
+    return this.helper.isConnected()
+  }
+  /**
    * Connect client to ZetaPush
    */
   connect() {
