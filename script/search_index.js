@@ -684,6 +684,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/client.js~client#isconnected",
+    "class/src/client.js~Client.html#instance-method-isConnected",
+    "src/client.js~Client#isConnected",
+    "method"
+  ],
+  [
     "src/client.js~client#removeconnectionstatuslistener",
     "class/src/client.js~Client.html#instance-method-removeConnectionStatusListener",
     "src/client.js~Client#removeConnectionStatusListener",
