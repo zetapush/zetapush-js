@@ -1,3 +1,9 @@
+# 2.0.0-beta.4 (2016-05-20)
+
+### Changes
+
+* **core:** Add new API isConnected
+
 # 2.0.0-beta.3 (2016-05-17)
 
 ### Changes
