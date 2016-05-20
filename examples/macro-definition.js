@@ -4,7 +4,7 @@ class HelloMacroDefinition extends ZetaPush.definitions.AbstractPublisherDefinit
   }
 }
 
-const client = new ZetaPush.SmartClient({
+const client = new ZetaPush.WeakClient({
   sandboxId: '5mln3Zxw',
   authenticationDeploymentId: 'VMuM'
 })

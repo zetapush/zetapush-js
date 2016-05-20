@@ -1,8 +1,8 @@
 ;(function () {
   var STACK_DEPLOYMENT_ID = '5CO-'
 
-  // Create a Zetapush SmartClient
-  var client = new ZetaPush.SmartClient({
+  // Create a Zetapush WeakClient
+  var client = new ZetaPush.WeakClient({
     sandboxId: '5mln3Zxw',
     enableHttps: true,
     authenticationDeploymentId: 'VMuM'

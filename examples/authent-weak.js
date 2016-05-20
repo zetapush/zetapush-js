@@ -1,22 +1,20 @@
-{
-  const client = new ZetaPush.Client({
-    sandboxId: '5mln3Zxw',
-    handshakeStrategy() {
-      return ZetaPush.AuthentFactory.createWeakHandshake({
-        token: null,
-        deploymentId: 'VMuM'
-      })
-    }
-  })
+const client = new ZetaPush.Client({
+  sandboxId: '5mln3Zxw',
+  handshakeStrategy() {
+    return ZetaPush.AuthentFactory.createWeakHandshake({
+      token: null,
+      deploymentId: 'VMuM'
+    })
+  }
+})
 
-  client.addConnectionStatusListener({
-    onSuccessfulHandshake(authentication) {
-      console.debug('onSuccessfulHandshake', authentication)
-    },
-    onConnectionEstablished() {
-      console.debug('onConnectionEstablished')
-    }
-  })
+client.addConnectionStatusListener({
+  onSuccessfulHandshake(authentication) {
+    console.debug('onSuccessfulHandshake', authentication)
+  },
+  onConnectionEstablished() {
+    console.debug('onConnectionEstablished')
+  }
+})
 
-  client.connect()
-}
+client.connect()

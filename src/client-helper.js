@@ -158,7 +158,7 @@ export class ClientHelper {
    * @return boolean
    */
   isConnected() {
-    return !this.cometd.isDisonnected()
+    return !this.cometd.isDisconnected()
   }
   /**
    * Connect client using CometD Transport

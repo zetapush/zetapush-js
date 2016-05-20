@@ -1,12 +1,12 @@
 {
-  const { SmartClient, definitions: { StackPublisherDefinition } } = ZetaPush
+  const { WeakClient, definitions: { StackPublisherDefinition } } = ZetaPush
 
   const SANDBOX_ID = 'JteMN0To'
   const DEPLOYMENT_ID = 'kiRa'
   const AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
 
-  // Create a Zetapush SmartClient
-  const client = new SmartClient({
+  // Create a Zetapush WeakClient
+  const client = new WeakClient({
     sandboxId: SANDBOX_ID,
     authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
   })

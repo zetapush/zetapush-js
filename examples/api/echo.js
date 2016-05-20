@@ -1,18 +1,18 @@
 {
-  const { SmartClient, definitions: { EchoPublisherDefinition } } = ZetaPush
+  const { WeakClient, definitions: { EchoPublisherDefinition } } = ZetaPush
 
   const SANDBOX_ID = '5mln3Zxw'
   const DEPLOYMENT_ID = 'vS7y'
   const AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
 
-  const client = new SmartClient({
+  const client = new WeakClient({
     sandboxId: SANDBOX_ID,
     authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
   })
 
   client.subscribe({
     deploymentId: DEPLOYMENT_ID,
-    listener: SmartClient.  getGenericServiceListener({
+    listener: WeakClient.  getGenericServiceListener({
       methods: ['error', ...Object.getOwnPropertyNames(EchoPublisherDefinition)],
       handler: ({ channel, data, method }) => {
         console.debug(`Echo::${method}`, { channel, data })

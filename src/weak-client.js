@@ -3,8 +3,8 @@ import { AuthentFactory } from './authentication/handshake'
 import { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'
 
 /**
- * SmartClient config object.
- * @typedef {Object} SmartClientConfig
+ * WeakClient config object.
+ * @typedef {Object} WeakClientConfig
  * @property {string} apiUrl - Api Url
  * @property {string} authenticationDeploymentId - Authentication deployment id
  * @property {string} sandboxId - Sandbox id
@@ -17,13 +17,13 @@ import { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'
  * @access public
  * @extends {Client}
  */
-export class SmartClient extends Client {
+export class WeakClient extends Client {
   /**
    * Create a new ZetaPush smart client
-   * @param {SmartClientConfig} config
+   * @param {WeakClientConfig} config
    * @example
    * // Smart client
-   * const client = new ZetaPush.SmartClient({
+   * const client = new ZetaPush.WeakClient({
    *   sandboxId: '<YOUR-SANDBOX-ID-ID>',
    *   authenticationDeploymentId: '<YOUR-AUTHENTICATION-DEPLOYMENT-ID>'
    * })
@@ -42,14 +42,14 @@ export class SmartClient extends Client {
      */
     super({ apiUrl , sandboxId, forceHttps, handshakeStrategy, resource })
     const onSuccessfulHandshake = ({ publicToken, userId, token }) => {
-      console.debug('SmartClient::onSuccessfulHandshake', { publicToken, userId, token })
+      console.debug('WeakClient::onSuccessfulHandshake', { publicToken, userId, token })
 
       if (token) {
         this.strategy.set({ token })
       }
     }
     const onFailedHandshake = (error) => {
-      console.debug('SmartClient::onFailedHandshake', error)
+      console.debug('WeakClient::onFailedHandshake', error)
     }
     this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })
     /**

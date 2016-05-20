@@ -126,12 +126,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "zetapush-js/src/smart-client.js~smartclient",
-    "class/src/smart-client.js~SmartClient.html",
-    "<span>SmartClient</span> <span class=\"search-result-import-path\">zetapush-js/src/smart-client.js</span>",
-    "class"
-  ],
-  [
     "zetapush-js/src/definitions/index.js~sms_ovhpublisherdefinition",
     "class/src/definitions/index.js~Sms_ovhPublisherDefinition.html",
     "<span>Sms_ovhPublisherDefinition</span> <span class=\"search-result-import-path\">zetapush-js/src/definitions/index.js</span>",
@@ -166,6 +160,12 @@ window.esdocSearchIndex = [
     "variable/index.html#static-variable-VERSION",
     "<span>VERSION</span> <span class=\"search-result-import-path\">zetapush-js/src/index.js</span>",
     "variable"
+  ],
+  [
+    "zetapush-js/src/weak-client.js~weakclient",
+    "class/src/weak-client.js~WeakClient.html",
+    "<span>WeakClient</span> <span class=\"search-result-import-path\">zetapush-js/src/weak-client.js</span>",
+    "class"
   ],
   [
     "zetapush-js/src/definitions/index.js~weakpublisherdefinition",
@@ -1554,30 +1554,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/smart-client.js",
-    "file/src/smart-client.js.html",
-    "src/smart-client.js",
-    "file"
-  ],
-  [
-    "src/smart-client.js~smartclient#constructor",
-    "class/src/smart-client.js~SmartClient.html#instance-constructor-constructor",
-    "src/smart-client.js~SmartClient#constructor",
-    "method"
-  ],
-  [
-    "src/smart-client.js~smartclient#gettoken",
-    "class/src/smart-client.js~SmartClient.html#instance-method-getToken",
-    "src/smart-client.js~SmartClient#getToken",
-    "method"
-  ],
-  [
-    "src/smart-client.js~smartclientconfig",
-    "typedef/index.html#static-typedef-SmartClientConfig",
-    "src/smart-client.js~SmartClientConfig",
-    "typedef"
-  ],
-  [
     "src/utils/index.js",
     "file/src/utils/index.js.html",
     "src/utils/index.js",
@@ -1588,5 +1564,29 @@ window.esdocSearchIndex = [
     "file/src/utils/token-persistence.js.html",
     "src/utils/token-persistence.js",
     "file"
+  ],
+  [
+    "src/weak-client.js",
+    "file/src/weak-client.js.html",
+    "src/weak-client.js",
+    "file"
+  ],
+  [
+    "src/weak-client.js~weakclient#constructor",
+    "class/src/weak-client.js~WeakClient.html#instance-constructor-constructor",
+    "src/weak-client.js~WeakClient#constructor",
+    "method"
+  ],
+  [
+    "src/weak-client.js~weakclient#gettoken",
+    "class/src/weak-client.js~WeakClient.html#instance-method-getToken",
+    "src/weak-client.js~WeakClient#getToken",
+    "method"
+  ],
+  [
+    "src/weak-client.js~weakclientconfig",
+    "typedef/index.html#static-typedef-WeakClientConfig",
+    "src/weak-client.js~WeakClientConfig",
+    "typedef"
   ]
 ]
