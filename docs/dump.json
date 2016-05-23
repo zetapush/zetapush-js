@@ -552,7 +552,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './connection/cometd'\nimport { ConnectionStatusListener } from './connection/connection-status'\nimport { getServers, shuffle } from './utils/index'\n\n/**\n * CometD Messages enumeration\n */\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\n/**\n * CometD Transports enumeration\n */\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\n/**\n * Provide utilities and abstraction on CometD Transport layer\n * @access private\n */\nexport class ClientHelper {\n  /**\n   * Create a new ZetaPush client helper\n   */\n  constructor({ apiUrl, sandboxId, forceHttps = false, handshakeStrategy, resource }) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.sandboxId = sandboxId\n    /**\n     * @access private\n     * @type {function():AbstractHandshakeManager}\n     */\n    this.handshakeStrategy = handshakeStrategy\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.resource = resource\n    /**\n     * @access private\n     * @type {Promise}\n     */\n    this.servers = getServers({ apiUrl, sandboxId, forceHttps })\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.connectionListeners = []\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.connected = false\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.wasConnected = false\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.serverUrl = null\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.subscribeQueue = []\n    /**\n     * @access private\n     * @type {CometD}\n     */\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.updateServerUrl()\n      }\n    }\n    this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      if (successful) {\n        const { authentication = null } = ext\n        this.initialized(authentication)\n      }\n      else {\n        // this.handshakeFailure(error)\n      }\n    })\n\n    this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      // AuthNegotiation\n      if (!successful) {\n        if ('undefined' === typeof advice) {\n          return\n        }\n        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n          this.authenticationFailed(error)\n        }\n        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n          this.negotiate(ext)\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n      console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n      // ConnectionListener\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection will close\n        this.connectionWillClose()\n      }\n      else {\n        this.wasConnected = this.connected\n        this.connected = successful\n        if (!this.wasConnected && this.connected) {\n          this.cometd.batch(this, () => {\n            // Unqueue subscriptions\n            this.subscribeQueue.forEach(({ prefix, listener, subscriptions }) => {\n              this.subscribe(prefix, listener, subscriptions)\n            })\n            this.subscribeQueue = []\n          })\n          // Notify connection is established\n          this.connectionEstablished()\n        }\n        else if (this.wasConnected && !this.connected) {\n          // Notify connection is broken\n          this.connectionBroken()\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/disconnect', ({ channel, successful }) => {\n      console.debug('ClientHelper::/meta/disconnect', { channel, successful })\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection is closed\n        this.connectionClosed()\n      }\n    })\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return boolean\n   */\n  isConnected() {\n    return !this.cometd.isDisconnected()\n  }\n  /**\n   * Connect client using CometD Transport\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  connectionEstablished() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionEstablished()\n    })\n  }\n  /**\n   * Notify listeners when connection is broken\n   */\n  connectionBroken() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionBroken()\n    })\n  }\n  /**\n   * Notify listeners when a message is lost\n   */\n  messageLost(channel, data) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onMessageLost(channel, data)\n    })\n  }\n  /**\n   * Notify listeners when connection will close\n   */\n  connectionWillClose() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionWillClose()\n    })\n  }\n  /**\n   * Notify listeners when connection is closed\n   */\n  connectionClosed() {\n    this.connectionListeners.forEach((listener) => {\n      listener.onConnectionClosed()\n    })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners.forEach((listener) => {\n      listener.onSuccessfulHandshake(authentication)\n    })\n  }\n  /**\n   * Notify listeners when handshake step succeed\n   */\n  authenticationFailed(error) {\n    this.connectionListeners.forEach((listener) => {\n      listener.onFailedHandshake(error)\n    })\n  }\n  /**\n   * Manage handshake failure case\n   */\n  handshakeFailure() {\n\n  }\n  /**\n  * Remove current server url from the server list and shuffle for another one\n  */\n  updateServerUrl() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   * Negociate authentication\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   * Disconnect CometD client\n   */\n  disconnect() {\n    this.cometd.disconnect()\n  }\n  /**\n   * Get CometD handshake parameters\n   * @return {Object}\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeStrategy()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   * Set a new handshake factory methods\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  setHandshakeStrategy(handshakeStrategy) {\n    this.handshakeStrategy = handshakeStrategy\n  }\n  /**\n   * Get sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.sandboxId\n  }\n  /**\n   * Get session id\n   * @return {string}\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   * Get resource\n   * @return {string}\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   * Subsribe all methods defined in the listener for the given prefixed channel\n   * @param {string} prefix - Channel prefix\n   * @param {Object} listener\n   * @param {Object} subscriptions\n   * @return {Object} subscriptions\n   */\n  subscribe(prefix, listener, subscriptions = {}) {\n    if (this.cometd.isDisconnected()) {\n      this.subscribeQueue.push({ prefix, listener, subscriptions })\n    }\n    else {\n      for (const method in listener) {\n        if (listener.hasOwnProperty(method)) {\n          const channel = `${prefix}/${method}`\n          subscriptions[method] = this.cometd.subscribe(channel, listener[method])\n        }\n      }\n    }\n    return subscriptions\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions = {}) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        const subscription = subscriptions[method]\n        this.cometd.unsubscribe(subscription)\n      }\n    }\n  }\n  /**\n   * Get a publisher for a macro definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createMacroPublisher(prefix, definition) {\n    const $publish = (name, parameters, hardFail = true, debug = 1) => {\n      const channel = `${prefix}/call`\n      this.publish(channel, {\n        name,\n        parameters,\n        hardFail,\n        debug\n      })\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Get a publisher for a service definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createServicePublisher(prefix, definition) {\n    const $publish = (method, parameters) => {\n      const channel = `${prefix}/${method}`\n      this.publish(channel, parameters)\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Unsubcribe all subscriptions defined in given subscriptions object\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscriptions[method])\n      }\n    }\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)\n    return this.connectionListeners.push(connectionListener)\n  }\n  /**\n   * Remove a connection status listener\n   * @param {number} handler\n   */\n  removeConnectionStatusListener(handler) {\n    return this.connectionListeners.splice(handler - 1 , 1)\n  }\n  /**\n   * Wrap CometdD publish method\n   * @param {String} channel\n   * @param {Object} parameters\n   */\n  publish(channel, parameters = {}) {\n    this.cometd.publish(channel, parameters)\n  }\n}\n"
+    "content": "import { CometD, WebSocketTransport } from 'zetapush-cometd'\nimport { FetchLongPollingTransport } from './connection/cometd'\nimport { ConnectionStatusListener } from './connection/connection-status'\nimport { getServers, shuffle } from './utils/index'\n\n/**\n * CometD Messages enumeration\n */\nconst Message = {\n  RECONNECT_HANDSHAKE_VALUE: 'handshake',\n  RECONNECT_NONE_VALUE: 'none',\n  RECONNECT_RETRY_VALUE: 'retry'\n}\n\n/**\n * CometD Transports enumeration\n */\nconst Transport = {\n  LONG_POLLING: 'long-polling',\n  WEBSOCKET: 'websocket'\n}\n\n/**\n * Provide utilities and abstraction on CometD Transport layer\n * @access private\n */\nexport class ClientHelper {\n  /**\n   * Create a new ZetaPush client helper\n   */\n  constructor({ apiUrl, sandboxId, forceHttps = false, handshakeStrategy, resource }) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.sandboxId = sandboxId\n    /**\n     * @access private\n     * @type {function():AbstractHandshakeManager}\n     */\n    this.handshakeStrategy = handshakeStrategy\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.resource = resource\n    /**\n     * @access private\n     * @type {Promise}\n     */\n    this.servers = getServers({ apiUrl, sandboxId, forceHttps })\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.connectionListeners = []\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.connected = false\n    /**\n     * @access private\n     * @type {boolean}\n     */\n    this.wasConnected = false\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.serverUrl = null\n    /**\n     * @access private\n     * @type {Array<Object>}\n     */\n    this.subscribeQueue = []\n    /**\n     * @access private\n     * @type {CometD}\n     */\n    this.cometd = new CometD()\n    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())\n    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())\n    this.cometd.onTransportException = (cometd, transport) => {\n      if (Transport.LONG_POLLING === transport) {\n        // Try to find an other available server\n        // Remove the current one from the _serverList array\n        this.updateServerUrl()\n      }\n    }\n    this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      if (successful) {\n        const { authentication = null } = ext\n        this.initialized(authentication)\n      }\n      else {\n        // this.handshakeFailure(error)\n      }\n    })\n\n    this.cometd.addListener('/meta/handshake', ({ advice, error, ext, successful }) => {\n      console.debug('ClientHelper::/meta/handshake', { ext, successful, advice, error })\n      // AuthNegotiation\n      if (!successful) {\n        if ('undefined' === typeof advice) {\n          return\n        }\n        if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {\n          this.authenticationFailed(error)\n        }\n        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {\n          this.negotiate(ext)\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/connect', ({ advice, channel, successful }) => {\n      console.debug('ClientHelper::/meta/connect', { advice, channel, successful })\n      // ConnectionListener\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection will close\n        this.connectionWillClose()\n      }\n      else {\n        this.wasConnected = this.connected\n        this.connected = successful\n        if (!this.wasConnected && this.connected) {\n          this.cometd.batch(this, () => {\n            // Unqueue subscriptions\n            this.subscribeQueue.forEach(({ prefix, listener, subscriptions }) => {\n              this.subscribe(prefix, listener, subscriptions)\n            })\n            this.subscribeQueue = []\n          })\n          // Notify connection is established\n          this.connectionEstablished()\n        }\n        else if (this.wasConnected && !this.connected) {\n          // Notify connection is broken\n          this.connectionBroken()\n        }\n      }\n    })\n\n    this.cometd.addListener('/meta/disconnect', ({ channel, successful }) => {\n      console.debug('ClientHelper::/meta/disconnect', { channel, successful })\n      if (this.cometd.isDisconnected()) {\n        this.connected = false\n        // Notify connection is closed\n        this.connectionClosed()\n      }\n    })\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return boolean\n   */\n  isConnected() {\n    return !this.cometd.isDisconnected()\n  }\n  /**\n   * Connect client using CometD Transport\n   */\n  connect() {\n    this.servers.then((servers) => {\n      this.serverUrl = shuffle(servers)\n\n      this.cometd.configure({\n        url: `${this.serverUrl}/strd`,\n        backoffIncrement: 1000,\n        maxBackoff: 60000,\n        appendMessageTypeToURL: false\n      })\n\n      this.cometd.handshake(this.getHandshakeFields())\n    })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  connectionEstablished() {\n    this.connectionListeners\n      .filter(({ enabled }) => enabled)\n      .forEach(({ listener }) => {\n        listener.onConnectionEstablished()\n      })\n  }\n  /**\n   * Notify listeners when connection is broken\n   */\n  connectionBroken() {\n    this.connectionListeners\n      .filter(({ enabled }) => enabled)\n      .forEach(({ listener }) => {\n        listener.onConnectionBroken()\n      })\n  }\n  /**\n   * Notify listeners when a message is lost\n   */\n  messageLost(channel, data) {\n    this.connectionListeners\n      .filter(({ enabled }) => enabled)\n      .forEach(({ listener }) => {\n        listener.onMessageLost(channel, data)\n      })\n  }\n  /**\n   * Notify listeners when connection will close\n   */\n  connectionWillClose() {\n    this.connectionListeners\n      .filter(({ enabled }) => enabled)\n      .forEach(({ listener }) => {\n        listener.onConnectionWillClose()\n      })\n  }\n  /**\n   * Notify listeners when connection is closed\n   */\n  connectionClosed() {\n    this.connectionListeners\n      .filter(({ enabled }) => enabled)\n      .forEach(({ listener }) => {\n        listener.onConnectionClosed()\n      })\n  }\n  /**\n   * Notify listeners when connection is established\n   */\n  initialized(authentication) {\n    if (authentication) {\n      this.userId = authentication.userId\n    }\n    this.connectionListeners\n      .filter(({ enabled }) => enabled)\n      .forEach(({ listener }) => {\n        listener.onSuccessfulHandshake(authentication)\n      })\n  }\n  /**\n   * Notify listeners when handshake step succeed\n   */\n  authenticationFailed(error) {\n    this.connectionListeners\n      .filter(({ enabled }) => enabled)\n      .forEach(({ listener }) => {\n        listener.onFailedHandshake(error)\n      })\n  }\n  /**\n   * Manage handshake failure case\n   */\n  handshakeFailure() {\n\n  }\n  /**\n  * Remove current server url from the server list and shuffle for another one\n  */\n  updateServerUrl() {\n    this.servers.then((servers) => {\n      const index = servers.indexOf(this.serverUrl)\n      if (index > -1) {\n        servers.splice(index, 1)\n      }\n      if (servers.length === 0) {\n        // No more server available\n      }\n      else {\n        this.serverUrl = shuffle(servers)\n        this.cometd.configure({\n          url: `${this.serverUrl}/strd`\n        })\n        setTimeout(() => {\n          this.cometd.handshake(this.getHandshakeFields())\n        }, 250)\n      }\n    })\n  }\n  /**\n   * Negociate authentication\n   */\n  negotiate(ext) {\n    console.debug('ClientHelper::negotiate', ext)\n  }\n  /**\n   * Disconnect CometD client\n   */\n  disconnect() {\n    this.cometd.disconnect(true)\n  }\n  /**\n   * Get CometD handshake parameters\n   * @return {Object}\n   */\n  getHandshakeFields() {\n    const handshake = this.handshakeStrategy()\n    return handshake.getHandshakeFields(this)\n  }\n  /**\n   * Set a new handshake factory methods\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  setHandshakeStrategy(handshakeStrategy) {\n    this.handshakeStrategy = handshakeStrategy\n  }\n  /**\n   * Get sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.sandboxId\n  }\n  /**\n   * Get session id\n   * @return {string}\n   */\n  getSessionId() {\n    throw NotYetImplementedError()\n  }\n  /**\n   * Get resource\n   * @return {string}\n   */\n  getResource() {\n    return this.resource\n  }\n  /**\n   * Subsribe all methods defined in the listener for the given prefixed channel\n   * @param {string} prefix - Channel prefix\n   * @param {Object} listener\n   * @param {Object} subscriptions\n   * @return {Object} subscriptions\n   */\n  subscribe(prefix, listener, subscriptions = {}) {\n    if (this.cometd.isDisconnected()) {\n      this.subscribeQueue.push({ prefix, listener, subscriptions })\n    }\n    else {\n      for (const method in listener) {\n        if (listener.hasOwnProperty(method)) {\n          const channel = `${prefix}/${method}`\n          subscriptions[method] = this.cometd.subscribe(channel, listener[method])\n        }\n      }\n    }\n    return subscriptions\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions = {}) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        const subscription = subscriptions[method]\n        this.cometd.unsubscribe(subscription)\n      }\n    }\n  }\n  /**\n   * Get a publisher for a macro definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createMacroPublisher(prefix, definition) {\n    const $publish = (name, parameters, hardFail = true, debug = 1) => {\n      const channel = `${prefix}/call`\n      this.publish(channel, {\n        name,\n        parameters,\n        hardFail,\n        debug\n      })\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Get a publisher for a service definition\n   * @param {string} prefix - Channel prefix\n   * @param {class} definition\n   * @return {AbstractPublisherDefinition} servicePublisher\n   */\n  createServicePublisher(prefix, definition) {\n    const $publish = (method, parameters) => {\n      const channel = `${prefix}/${method}`\n      this.publish(channel, parameters)\n    }\n    return new definition({ $publish })\n  }\n  /**\n   * Unsubcribe all subscriptions defined in given subscriptions object\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions) {\n    for (const method in subscriptions) {\n      if (subscriptions.hasOwnProperty(method)) {\n        this.cometd.unsubscribe(subscriptions[method])\n      }\n    }\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    this.connectionListeners.push({\n      enabled: true,\n      listener: Object.assign(new ConnectionStatusListener(), listener)\n    })\n    return this.connectionListeners.length - 1\n  }\n  /**\n   * Remove a connection status listener\n   */\n  removeConnectionStatusListener(handler) {\n    const listener = this.connectionListeners[handler]\n    if (listener) {\n      listener.enabled = false\n    }\n  }\n  /**\n   * Wrap CometdD publish method\n   * @param {String} channel\n   * @param {Object} parameters\n   */\n  publish(channel, parameters = {}) {\n    this.cometd.publish(channel, parameters)\n  }\n}\n"
   },
   {
     "__docId__": 24,
@@ -1007,7 +1007,7 @@
     "longname": "src/client-helper.js~ClientHelper#connectionBroken",
     "access": null,
     "description": "Notify listeners when connection is broken",
-    "lineNumber": 191,
+    "lineNumber": 193,
     "params": [],
     "generator": false
   },
@@ -1021,7 +1021,7 @@
     "longname": "src/client-helper.js~ClientHelper#messageLost",
     "access": null,
     "description": "Notify listeners when a message is lost",
-    "lineNumber": 199,
+    "lineNumber": 203,
     "params": [
       {
         "name": "channel",
@@ -1048,7 +1048,7 @@
     "longname": "src/client-helper.js~ClientHelper#connectionWillClose",
     "access": null,
     "description": "Notify listeners when connection will close",
-    "lineNumber": 207,
+    "lineNumber": 213,
     "params": [],
     "generator": false
   },
@@ -1062,7 +1062,7 @@
     "longname": "src/client-helper.js~ClientHelper#connectionClosed",
     "access": null,
     "description": "Notify listeners when connection is closed",
-    "lineNumber": 215,
+    "lineNumber": 223,
     "params": [],
     "generator": false
   },
@@ -1076,7 +1076,7 @@
     "longname": "src/client-helper.js~ClientHelper#initialized",
     "access": null,
     "description": "Notify listeners when connection is established",
-    "lineNumber": 223,
+    "lineNumber": 233,
     "params": [
       {
         "name": "authentication",
@@ -1097,7 +1097,7 @@
     "longname": "src/client-helper.js~ClientHelper#userId",
     "access": null,
     "description": null,
-    "lineNumber": 225,
+    "lineNumber": 235,
     "undocument": true,
     "type": {
       "types": [
@@ -1115,7 +1115,7 @@
     "longname": "src/client-helper.js~ClientHelper#authenticationFailed",
     "access": null,
     "description": "Notify listeners when handshake step succeed",
-    "lineNumber": 234,
+    "lineNumber": 246,
     "params": [
       {
         "name": "error",
@@ -1136,7 +1136,7 @@
     "longname": "src/client-helper.js~ClientHelper#handshakeFailure",
     "access": null,
     "description": "Manage handshake failure case",
-    "lineNumber": 242,
+    "lineNumber": 256,
     "params": [],
     "generator": false
   },
@@ -1150,7 +1150,7 @@
     "longname": "src/client-helper.js~ClientHelper#updateServerUrl",
     "access": null,
     "description": "Remove current server url from the server list and shuffle for another one",
-    "lineNumber": 248,
+    "lineNumber": 262,
     "params": [],
     "generator": false
   },
@@ -1164,7 +1164,7 @@
     "longname": "src/client-helper.js~ClientHelper#serverUrl",
     "access": null,
     "description": null,
-    "lineNumber": 258,
+    "lineNumber": 272,
     "undocument": true,
     "type": {
       "types": [
@@ -1182,7 +1182,7 @@
     "longname": "src/client-helper.js~ClientHelper#negotiate",
     "access": null,
     "description": "Negociate authentication",
-    "lineNumber": 271,
+    "lineNumber": 285,
     "params": [
       {
         "name": "ext",
@@ -1203,7 +1203,7 @@
     "longname": "src/client-helper.js~ClientHelper#disconnect",
     "access": null,
     "description": "Disconnect CometD client",
-    "lineNumber": 277,
+    "lineNumber": 291,
     "params": [],
     "generator": false
   },
@@ -1217,7 +1217,7 @@
     "longname": "src/client-helper.js~ClientHelper#getHandshakeFields",
     "access": null,
     "description": "Get CometD handshake parameters",
-    "lineNumber": 284,
+    "lineNumber": 298,
     "params": [],
     "return": {
       "nullable": null,
@@ -1239,7 +1239,7 @@
     "longname": "src/client-helper.js~ClientHelper#setHandshakeStrategy",
     "access": null,
     "description": "Set a new handshake factory methods",
-    "lineNumber": 292,
+    "lineNumber": 306,
     "params": [
       {
         "nullable": null,
@@ -1264,7 +1264,7 @@
     "longname": "src/client-helper.js~ClientHelper#handshakeStrategy",
     "access": null,
     "description": null,
-    "lineNumber": 293,
+    "lineNumber": 307,
     "undocument": true,
     "type": {
       "types": [
@@ -1282,7 +1282,7 @@
     "longname": "src/client-helper.js~ClientHelper#getSandboxId",
     "access": null,
     "description": "Get sandbox id",
-    "lineNumber": 299,
+    "lineNumber": 313,
     "params": [],
     "return": {
       "nullable": null,
@@ -1304,7 +1304,7 @@
     "longname": "src/client-helper.js~ClientHelper#getSessionId",
     "access": null,
     "description": "Get session id",
-    "lineNumber": 306,
+    "lineNumber": 320,
     "params": [],
     "return": {
       "nullable": null,
@@ -1326,7 +1326,7 @@
     "longname": "src/client-helper.js~ClientHelper#getResource",
     "access": null,
     "description": "Get resource",
-    "lineNumber": 313,
+    "lineNumber": 327,
     "params": [],
     "return": {
       "nullable": null,
@@ -1348,7 +1348,7 @@
     "longname": "src/client-helper.js~ClientHelper#subscribe",
     "access": null,
     "description": "Subsribe all methods defined in the listener for the given prefixed channel",
-    "lineNumber": 323,
+    "lineNumber": 337,
     "params": [
       {
         "nullable": null,
@@ -1401,7 +1401,7 @@
     "longname": "src/client-helper.js~ClientHelper#unsubscribe",
     "access": null,
     "description": "Remove all subscriptions",
-    "lineNumber": 341,
+    "lineNumber": 355,
     "params": [
       {
         "nullable": null,
@@ -1426,7 +1426,7 @@
     "longname": "src/client-helper.js~ClientHelper#createMacroPublisher",
     "access": null,
     "description": "Get a publisher for a macro definition",
-    "lineNumber": 355,
+    "lineNumber": 369,
     "params": [
       {
         "nullable": null,
@@ -1469,7 +1469,7 @@
     "longname": "src/client-helper.js~ClientHelper#createServicePublisher",
     "access": null,
     "description": "Get a publisher for a service definition",
-    "lineNumber": 373,
+    "lineNumber": 387,
     "params": [
       {
         "nullable": null,
@@ -1512,7 +1512,7 @@
     "longname": "src/client-helper.js~ClientHelper#unsubscribe",
     "access": null,
     "description": "Unsubcribe all subscriptions defined in given subscriptions object",
-    "lineNumber": 384,
+    "lineNumber": 398,
     "params": [
       {
         "nullable": null,
@@ -1537,7 +1537,7 @@
     "longname": "src/client-helper.js~ClientHelper#addConnectionStatusListener",
     "access": null,
     "description": "Add a connection listener to handle life cycle connection events",
-    "lineNumber": 396,
+    "lineNumber": 410,
     "params": [
       {
         "nullable": null,
@@ -1570,24 +1570,15 @@
     "longname": "src/client-helper.js~ClientHelper#removeConnectionStatusListener",
     "access": null,
     "description": "Remove a connection status listener",
-    "lineNumber": 404,
+    "lineNumber": 420,
     "params": [
       {
-        "nullable": null,
-        "types": [
-          "number"
-        ],
-        "spread": false,
-        "optional": false,
         "name": "handler",
-        "description": ""
+        "types": [
+          "*"
+        ]
       }
     ],
-    "return": {
-      "types": [
-        "*"
-      ]
-    },
     "generator": false
   },
   {
@@ -1600,7 +1591,7 @@
     "longname": "src/client-helper.js~ClientHelper#publish",
     "access": null,
     "description": "Wrap CometdD publish method",
-    "lineNumber": 412,
+    "lineNumber": 431,
     "params": [
       {
         "nullable": null,

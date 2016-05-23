@@ -181,41 +181,51 @@ export class ClientHelper {
    * Notify listeners when connection is established
    */
   connectionEstablished() {
-    this.connectionListeners.forEach((listener) => {
-      listener.onConnectionEstablished()
-    })
+    this.connectionListeners
+      .filter(({ enabled }) => enabled)
+      .forEach(({ listener }) => {
+        listener.onConnectionEstablished()
+      })
   }
   /**
    * Notify listeners when connection is broken
    */
   connectionBroken() {
-    this.connectionListeners.forEach((listener) => {
-      listener.onConnectionBroken()
-    })
+    this.connectionListeners
+      .filter(({ enabled }) => enabled)
+      .forEach(({ listener }) => {
+        listener.onConnectionBroken()
+      })
   }
   /**
    * Notify listeners when a message is lost
    */
   messageLost(channel, data) {
-    this.connectionListeners.forEach((listener) => {
-      listener.onMessageLost(channel, data)
-    })
+    this.connectionListeners
+      .filter(({ enabled }) => enabled)
+      .forEach(({ listener }) => {
+        listener.onMessageLost(channel, data)
+      })
   }
   /**
    * Notify listeners when connection will close
    */
   connectionWillClose() {
-    this.connectionListeners.forEach((listener) => {
-      listener.onConnectionWillClose()
-    })
+    this.connectionListeners
+      .filter(({ enabled }) => enabled)
+      .forEach(({ listener }) => {
+        listener.onConnectionWillClose()
+      })
   }
   /**
    * Notify listeners when connection is closed
    */
   connectionClosed() {
-    this.connectionListeners.forEach((listener) => {
-      listener.onConnectionClosed()
-    })
+    this.connectionListeners
+      .filter(({ enabled }) => enabled)
+      .forEach(({ listener }) => {
+        listener.onConnectionClosed()
+      })
   }
   /**
    * Notify listeners when connection is established
@@ -224,17 +234,21 @@ export class ClientHelper {
     if (authentication) {
       this.userId = authentication.userId
     }
-    this.connectionListeners.forEach((listener) => {
-      listener.onSuccessfulHandshake(authentication)
-    })
+    this.connectionListeners
+      .filter(({ enabled }) => enabled)
+      .forEach(({ listener }) => {
+        listener.onSuccessfulHandshake(authentication)
+      })
   }
   /**
    * Notify listeners when handshake step succeed
    */
   authenticationFailed(error) {
-    this.connectionListeners.forEach((listener) => {
-      listener.onFailedHandshake(error)
-    })
+    this.connectionListeners
+      .filter(({ enabled }) => enabled)
+      .forEach(({ listener }) => {
+        listener.onFailedHandshake(error)
+      })
   }
   /**
    * Manage handshake failure case
@@ -275,7 +289,7 @@ export class ClientHelper {
    * Disconnect CometD client
    */
   disconnect() {
-    this.cometd.disconnect()
+    this.cometd.disconnect(true)
   }
   /**
    * Get CometD handshake parameters
@@ -394,15 +408,20 @@ export class ClientHelper {
    * @return {number} handler
    */
   addConnectionStatusListener(listener) {
-    const connectionListener = Object.assign(new ConnectionStatusListener(), listener)
-    return this.connectionListeners.push(connectionListener)
+    this.connectionListeners.push({
+      enabled: true,
+      listener: Object.assign(new ConnectionStatusListener(), listener)
+    })
+    return this.connectionListeners.length - 1
   }
   /**
    * Remove a connection status listener
-   * @param {number} handler
    */
   removeConnectionStatusListener(handler) {
-    return this.connectionListeners.splice(handler - 1 , 1)
+    const listener = this.connectionListeners[handler]
+    if (listener) {
+      listener.enabled = false
+    }
   }
   /**
    * Wrap CometdD publish method

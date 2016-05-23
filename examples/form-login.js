@@ -5,12 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const password = document.querySelector('input[name="password"]')
 
   const client = new ZetaPush.Client({
-    sandboxId: '5mln3Zxw',
+    apiUrl: '//demo-1.zpush.io/zbo/pub/business/',
+    sandboxId: 'XpqH6O1y',
     handshakeStrategy() {
       return ZetaPush.AuthentFactory.createSimpleHandshake({
         login: login.value,
         password: password.value,
-        deploymentId: 'LkvA'
+        deploymentId: 'simple_main'
       })
     }
   })
@@ -25,6 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
       console.debug('onFailedHandshake', error)
       aside.className = 'error'
       aside.textContent = error
+    },
+    onConnectionClosed() {
+      console.debug('onConnectionClosed')
+      client.connect()
     }
   })
 
@@ -32,4 +37,5 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault()
     client.connect()
   })
+  window.client = client
 })
