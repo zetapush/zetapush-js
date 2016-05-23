@@ -24,8 +24,7 @@
     "prebuild": "npm run doc",
     "build": "gulp build --optimize",
     "build:dev": "gulp build",
-    "predeploy": "npm run doc",
-    "deploy": "gulp deploy",
+    "deploy:github": "npm run doc && gulp deploy:github",
     "serve": "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001"
   },
   "dependencies": {

@@ -98,7 +98,7 @@ gulp.task('clean', (callback) => {
   ], callback)
 })
 
-gulp.task('deploy', () => {
+gulp.task('deploy:github', () => {
   return gulp.src([__dirname + '/docs/**/**.*'])
     .pipe(github({
       remoteUrl : pkg.repository.url,
