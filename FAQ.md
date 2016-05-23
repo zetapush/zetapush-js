@@ -21,3 +21,11 @@ const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>'
 })
 ```
+
+## How to know my ZetaPush SDK version ?
+
+ZetaPush SDK provide a top level constant VERSION
+
+```js
+console.log(ZetaPush.VERSION)
+```
