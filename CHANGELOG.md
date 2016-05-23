@@ -1,3 +1,9 @@
+# 2.0.0-beta.6 (2016-05-20)
+
+### Fix
+
+* **core:** Fix connection status listener index
+
 # 2.0.0-beta.5 (2016-05-20)
 
 ### Changes
