@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl" href="../">
-  <title data-ice="title">Typedef | API Document</title>
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">lib/authentication/handshake.js | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -70,248 +70,191 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">Typedef</h1>
-<div data-ice="summaries"><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Static Public Summary</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Client config object.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>WeakClient config object.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
-<div data-ice="details"><h2 data-ice="title">Static Public </h2>
+<div class="content" data-ice="content"><h1 data-ice="title">lib/authentication/handshake.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * ZetaPush deployables names
+ */
+const DeployableNames = {
+  AUTH_SIMPLE: &apos;simple&apos;,
+  AUTH_WEAK: &apos;weak&apos;,
+  AUTH_DELEGATING: &apos;delegating&apos;
+}
 
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="static-typedef-ClientConfig">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">ClientConfig</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/lib/client.js.html#lineNumberundefined">source</a></span></span>
-    </span>
-  </h3>
+/**
+ * Provide abstraction over CometD handshake data structure
+ * @access public
+ */
+export class AbstractHandshakeManager {
+  /**
+   * Create a new handshake manager
+   * @param {{authType: string, sandboxId: string, deploymentId: string}} parameters
+   */
+  constructor({ authType, sandboxId, deploymentId }) {
+    /**
+     * @access protected
+     * @type {string}
+     */
+    this.authType = authType
+    /**
+     * @access protected
+     * @type {string}
+     */
+    this.sandboxId = sandboxId
+    /**
+     * @access protected
+     * @type {string}
+     */
+    this.deploymentId = deploymentId
+  }
+  /**
+   * @param {ClientHelper} client
+   * @return {Object}
+   */
+  getHandshakeFields(client) {
+    const authentication = {
+      data: this.authData,
+      type: `${client.getSandboxId()}.${this.deploymentId}.${this.authType}`,
+      version: this.authVersion
+    }
+    if (client.getResource()) {
+      authentication.resource = client.getResource()
+    }
+    return {
+      ext: {
+        authentication
+      }
+    }
+  }
+  /**
+   * Get auth version
+   * @return {string}
+   */
+  get authVersion() {
+    return &apos;none&apos;
+  }
 
-  
-  
-  
-  <div data-ice="description"><p>Client config object.</p>
-</div>
+}
 
-  
+/**
+ * Provide abstraction over CometD token base handshake data structure
+ * @access public
+ * @extends {AbstractHandshakeManager}
+ */
+export class TokenHandshakeManager extends AbstractHandshakeManager {
+  /**
+   * @param {{authType: string, deploymentId: string, token: string}} parameters
+   */
+  constructor({ authType, deploymentId, token }) {
+    super({ deploymentId, authType })
+    /**
+     * @access private
+     * @type {string}
+     */
+    this.token = token
+  }
+  /**
+   * @return {token: string}
+   */
+  get authData() {
+    const { token } = this
+    return {
+      token
+    }
+  }
 
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Properties:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">apiUrl</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Api Url</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">sandboxId</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Sandbox id</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">forceHttps</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Force end to end HTTPS connection</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">handshakeStrategy</td>
-      <td data-ice="type"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span>: <span><a href="class/lib/authentication/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Handshake strategy</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">resource</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Client resource id</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
+}
 
-  
+/**
+ * Provide abstraction over CometD credentials based handshake data structure
+ * @access public
+ * @extends {AbstractHandshakeManager}
+ */
+export class CredentialsHandshakeManager extends AbstractHandshakeManager {
 
-  
+  /**
+   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
+   */
+  constructor({ authType, deploymentId, login, password }) {
+    super({ authType, deploymentId })
+    /**
+     * @access private
+     * @type {string}
+     */
+    this.login = login
+    /**
+     * @access private
+     * @type {string}
+     */
+    this.password = password
+  }
+  /**
+   * Get auth data
+   * @return {login: string, password: string}
+   */
+  get authData() {
+    const { login, password } = this
+    return {
+      login, password
+    }
+  }
 
-  
+}
 
-  
+/**
+ * Factory to create handshake
+ * @access public
+ */
+export class AuthentFactory {
+  /**
+   * @param {{deploymentId: string, login: string, password: string}} parameters
+   * @return {CredentialsHandshakeManager}
+   */
+  static createSimpleHandshake({ deploymentId, login, password }) {
+    return AuthentFactory.createHandshake({
+      authType: DeployableNames.AUTH_SIMPLE,
+      deploymentId,
+      login,
+      password
+    })
+  }
+  /**
+   * @param {{deploymentId: string, token: string}} parameters
+   * @return {TokenHandshakeManager}
+   */
+  static createWeakHandshake({ deploymentId, token }) {
+    return AuthentFactory.createHandshake({
+      authType: DeployableNames.AUTH_WEAK,
+      deploymentId,
+      login: token,
+      password: null
+    })
+  }
+  /**
+   * @param {{deploymentId: string, token: string}} parameters
+   * @return {TokenHandshakeManager}
+   */
+  static createDelegatingHandshake({ deploymentId, token }) {
+    return AuthentFactory.createHandshake({
+      authType: DeployableNames.AUTH_DELEGATING,
+      deploymentId,
+      login: token,
+      password: null
+    })
+  }
+  /**
+   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
+   * @return {TokenHandshakeManager|CredentialsHandshakeManager}
+   */
+  static createHandshake({ authType, deploymentId, login, password }) {
+    if (null === password) {
+      return new TokenHandshakeManager({ authType, deploymentId, token: login })
+    }
+    return new CredentialsHandshakeManager({ authType, deploymentId, login, password  })
+  }
 
-  
+}
+</code></pre>
 
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="static-typedef-WeakClientConfig">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">WeakClientConfig</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/lib/weak-client.js.html#lineNumberundefined">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>WeakClient config object.</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Properties:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">apiUrl</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Api Url</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">authenticationDeploymentId</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Authentication deployment id</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">sandboxId</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Sandbox id</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">forceHttps</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Force end to end HTTPS connection</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">resource</td>
-      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Client resource id</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">TokenPersistenceStrategy</td>
-      <td data-ice="type"><span>AbstractTokenPersistenceStrategy</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Token storage strategy</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-</div>
 </div>
 
 <footer class="footer">
