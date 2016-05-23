@@ -1,10 +1,16 @@
-# 2.0.0-beta.6 (2016-05-20)
+# 2.0.0-beta.8 (2016-05-23)
+
+### Changes
+
+* **core:** Use subscription queue to automatically reconnect subscription
+
+# 2.0.0-beta.7 (2016-05-23)
 
 ### Fix
 
 * **core:** Fix connection status listener index
 
-# 2.0.0-beta.5 (2016-05-20)
+# 2.0.0-beta.6 (2016-05-20)
 
 ### Changes
 
