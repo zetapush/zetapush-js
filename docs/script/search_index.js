@@ -696,6 +696,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "lib/client.js~client#setloglevel",
+    "class/lib/client.js~Client.html#instance-method-setLogLevel",
+    "lib/client.js~Client#setLogLevel",
+    "method"
+  ],
+  [
     "lib/client.js~client#setresource",
     "class/lib/client.js~Client.html#instance-method-setResource",
     "lib/client.js~Client#setResource",

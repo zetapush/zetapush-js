@@ -274,6 +274,15 @@ export class Client {
     }
     this.connect()
   }
+  /**
+   * Set logging level
+   * Valid values are the strings &apos;error&apos;, &apos;warn&apos;, &apos;info&apos; and &apos;debug&apos;, from
+   * less verbose to more verbose.
+   * @param {string} level
+   */
+  setLogLevel(level) {
+    this.helper.setLogLevel(level)
+  }
 
   /**
    * Get a service lister from methods list with a default handler
