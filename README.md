@@ -8,7 +8,7 @@
 From bower
 
 ```console
-bower install zetapush-js@2.0.0-beta.8 --save
+bower install zetapush-js#2.0.0-beta.8 --save
 ```
 
 ```html
@@ -28,7 +28,7 @@ import { Client } from 'zetapush-js/lib/client'
 From CDN
 
 ```html
-<script src="https://static.zpush.io/js/2.0.0-beta.8/zetapush.min.js"></script>
+<script src="//cdn.rawgit.com/zetapush/zetapush-js/v2.0.0-beta.8/dist/zetapush.js"></script>
 ```
 
 ## Usage
