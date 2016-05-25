@@ -1,3 +1,13 @@
+# 2.0.0-beta.9
+
+### Changes
+
+* **core:** Add new API setLogLevel
+
+### Fix
+
+* **doc:** Update bower install path
+
 # 2.0.0-beta.8 (2016-05-23)
 
 ### Changes
