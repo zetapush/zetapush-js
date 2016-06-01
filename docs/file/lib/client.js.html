@@ -118,7 +118,7 @@ export class Client {
    * @param {ClientConfig} config
    * Create a new ZetaPush client
    */
-  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(document), handshakeStrategy, resource = null }) {
+  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(location), handshakeStrategy, resource = null }) {
     /**
      * @access private
      * @type {ClientHelper}
