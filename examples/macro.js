@@ -1,10 +1,8 @@
 const client = new ZetaPush.WeakClient({
-  sandboxId: '5mln3Zxw',
-  authenticationDeploymentId: 'VMuM'
+  sandboxId: 'mv-BrBKU'
 })
 
 const { publisher } = client.createServicePublisherSubscriber({
-  deploymentId: 'api',
   listener: {
     error(message) {
       console.error('macro error', message.data)
@@ -25,22 +23,20 @@ client.addConnectionStatusListener({
   }
 })
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('.js-SayHello').addEventListener('click', () => {
-    console.log('.js-SayHello', 'click')
-    publisher.call({
-      name: 'hello',
-      parameters: {
-        value: 'World'
-      }
-    })
+document.querySelector('.js-SayHello').addEventListener('click', () => {
+  console.log('.js-SayHello', 'click')
+  publisher.call({
+    name: 'hello',
+    parameters: {
+      value: 'World'
+    }
   })
-  document.querySelector('.js-Connect').addEventListener('click', () => {
-    console.log('.js-Connect', 'click')
-    client.connect()
-  })
-  document.querySelector('.js-Disconnect').addEventListener('click', () => {
-    console.log('.js-Disconnect', 'click')
-    client.disconnect()
-  })
+})
+document.querySelector('.js-Connect').addEventListener('click', () => {
+  console.log('.js-Connect', 'click')
+  client.connect()
+})
+document.querySelector('.js-Disconnect').addEventListener('click', () => {
+  console.log('.js-Disconnect', 'click')
+  client.disconnect()
 })

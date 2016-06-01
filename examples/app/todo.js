@@ -1,11 +1,10 @@
 ;(function () {
-  var STACK_DEPLOYMENT_ID = '5CO-'
+  var STACK_DEPLOYMENT_ID = 'stack_main'
 
   // Create a Zetapush WeakClient
   var client = new ZetaPush.WeakClient({
-    sandboxId: '5mln3Zxw',
-    enableHttps: true,
-    authenticationDeploymentId: 'VMuM'
+    sandboxId: 'mv-BrBKU',
+    forceHttps: true
   })
 
   // Declare a service listener mapping stack methods
@@ -83,15 +82,11 @@
     return wrapper ? dom('li', { 'class': completed ? 'completed' : '', 'data-guid': guid }, fragment) : fragment
   }
   // Create a service publish to interact with remote API
-  var stackServicePublisher = client.createServicePublisher({
-    deploymentId: STACK_DEPLOYMENT_ID,
+  var pubsub = client.createServicePublisherSubscriber({
+    listener: stackServiceListener,
     definition: ZetaPush.definitions.StackPublisherDefinition
   })
-  // Subscribe listener methods for a given deploymentId
-  client.subscribe({
-    deploymentId: STACK_DEPLOYMENT_ID,
-    listener: stackServiceListener
-  })
+  var stackServicePublisher = pubsub.publisher
   // Add listener to life cycle connection events
   client.addConnectionStatusListener({
     onConnectionEstablished() {

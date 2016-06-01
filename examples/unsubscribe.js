@@ -1,10 +1,8 @@
 const client = new ZetaPush.WeakClient({
-  sandboxId: '5mln3Zxw',
-  authenticationDeploymentId: 'VMuM'
+  sandboxId: 'mv-BrBKU'
 })
 
 const { publisher, subscriptions } = client.createServicePublisherSubscriber({
-  deploymentId: 'api',
   listener: {
     error(message) {
       console.error('macro error', message.data)
@@ -24,18 +22,16 @@ client.addConnectionStatusListener({
 
 client.connect()
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('.js-SayHello').addEventListener('click', () => {
-    console.log('.js-SayHello', 'click')
-    publisher.call({
-      name: 'hello',
-      parameters: {
-        value: 'World'
-      }
-    })
+document.querySelector('.js-SayHello').addEventListener('click', () => {
+  console.log('.js-SayHello', 'click')
+  publisher.call({
+    name: 'hello',
+    parameters: {
+      value: 'World'
+    }
   })
-  document.querySelector('.js-Unsubscribe').addEventListener('click', () => {
-    console.log('.js-Unsubscribe', 'click')
-    client.unsubscribe(subscriptions)
-  })
+})
+document.querySelector('.js-Unsubscribe').addEventListener('click', () => {
+  console.log('.js-Unsubscribe', 'click')
+  client.unsubscribe(subscriptions)
 })

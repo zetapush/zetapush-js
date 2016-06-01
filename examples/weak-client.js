@@ -1,6 +1,5 @@
 const client = new ZetaPush.WeakClient({
-  sandboxId: '5mln3Zxw',
-  authenticationDeploymentId: 'VMuM'
+  sandboxId: 'mv-BrBKU'
 })
 
 client.addConnectionStatusListener({

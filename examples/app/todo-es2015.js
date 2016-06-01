@@ -1,14 +1,11 @@
 {
   const { WeakClient, definitions: { StackPublisherDefinition } } = ZetaPush
 
-  const SANDBOX_ID = 'JteMN0To'
-  const DEPLOYMENT_ID = 'kiRa'
-  const AUTHENTICATION_DEPLOYMENT_ID = 'VMuM'
+  const DEPLOYMENT_ID = 'stack_main'
 
   // Create a Zetapush WeakClient
   const client = new WeakClient({
-    sandboxId: SANDBOX_ID,
-    authenticationDeploymentId: AUTHENTICATION_DEPLOYMENT_ID
+    sandboxId: 'mv-BrBKU'
   })
   // Get Todo item DOM
   const getTodoItemDom = ({ guid, data }, wrapper = true) => {
@@ -80,19 +77,14 @@
     }
   }
   // Create a service publish to interact with remote API
-  const stackServicePublisher = client.createServicePublisher({
-    deploymentId: DEPLOYMENT_ID,
-    definition: StackPublisherDefinition
-  })
-  // Subscribe listener methods for a given deploymentId
-  client.subscribe({
-    deploymentId: DEPLOYMENT_ID,
-    listener: stackServiceListener
+  const { publisher } = client.createServicePublisherSubscriber({
+    listener: stackServiceListener,
+    definition: ZetaPush.definitions.StackPublisherDefinition
   })
   // Add listener to life cycle connection events
   client.addConnectionStatusListener({
     onConnectionEstablished() {
-      stackServicePublisher.list({
+      publisher.list({
         stack: 'todo-list'
       })
     }
@@ -106,7 +98,7 @@
 
     on({ node: main, type: 'submit', selector: '.header form', handler: (event) => {
       event.preventDefault()
-      stackServicePublisher.push({
+      publisher.push({
         stack: 'todo-list',
         data: {
           text: todo.value,
@@ -117,7 +109,7 @@
     on({ node: main, type: 'change', selector: '.toggle', handler: (event) => {
       const { target } = event
       const { guid, text } = target.dataset
-      stackServicePublisher.update({
+      publisher.update({
         stack: 'todo-list',
         guid,
         data: {
@@ -129,13 +121,13 @@
     on({ node: main, type: 'click', selector: '.destroy', handler: (event) => {
       const { target } = event
       const { guid } = target.dataset
-      stackServicePublisher.remove({
+      publisher.remove({
         stack: 'todo-list',
         guids: [guid]
       })
     }})
     on({ node: main, type: 'click', selector: '.clear-all', handler: (event) => {
-      stackServicePublisher.purge({
+      publisher.purge({
         stack: 'todo-list'
       })
     }})
@@ -150,7 +142,7 @@
       const { target } = event
       const input = target.querySelector('input')
       const { guid } = target.dataset
-      stackServicePublisher.update({
+      publisher.update({
         stack: 'todo-list',
         guid,
         data: {

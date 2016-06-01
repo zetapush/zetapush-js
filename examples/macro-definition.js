@@ -1,16 +1,14 @@
-class HelloMacroDefinition extends ZetaPush.definitions.AbstractPublisherDefinition {
+class HelloMacroDefinition extends ZetaPush.definitions.MacroPublisherDefinition {
   hello({ value }) {
     this.$publish('hello', { value })
   }
 }
 
 const client = new ZetaPush.WeakClient({
-  sandboxId: '5mln3Zxw',
-  authenticationDeploymentId: 'VMuM'
+  sandboxId: 'mv-BrBKU'
 })
 
 const { publisher } = client.createMacroPublisherSubscriber({
-  deploymentId: 'api',
   listener: {
     error(message) {
       console.error('macro error', message.data)
