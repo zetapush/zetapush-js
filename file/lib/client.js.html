@@ -92,11 +92,9 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
  * // Securized client with token based connection
  * const client = new ZetaPush.Client({
  *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
- *   forceHttps: true,
- *   handshakeStrategy: function() {
+ *   handshakeStrategy() {
  *     return ZetaPush.AuthentFactory.createWeakHandshake({
- *       token: null,
- *       deploymentId: &apos;&lt;YOUR-DEPLOYMENT-ID&gt;&apos;
+ *       token: null
   *    })
  *   }
  * })
@@ -104,11 +102,10 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
  * // Client with credentials based connection
  * const client = new ZetaPush.Client({
  *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
- *   handshakeStrategy: function() {
+ *   handshakeStrategy() {
  *     return ZetaPush.AuthentFactory.createSimpleHandshake({
  *       login: &apos;&lt;USER-LOGIN&gt;&apos;,
- *       password: &apos;&lt;USER-PASSWORD&gt;&apos;,
- *       deploymentId: &apos;&lt;YOUR-DEPLOYMENT-ID&gt;&apos;
+ *       password: &apos;&lt;USER-PASSWORD&gt;&apos;
   *    })
  *   }
  * })
