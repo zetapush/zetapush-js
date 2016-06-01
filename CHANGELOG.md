@@ -1,3 +1,9 @@
+# 2.0.0-beta.10
+
+### Changes
+
+* **core:** Use default deploymentId for all services and authentication
+
 # 2.0.0-beta.9
 
 ### Changes
