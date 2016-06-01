@@ -14,10 +14,8 @@ const { publisher, subscriptions } = client.createServicePublisherSubscriber({
   definition: ZetaPush.definitions.MacroPublisherDefinition
 })
 
-client.addConnectionStatusListener({
-  onConnectionEstablished() {
-    console.debug('onConnectionEstablished')
-  }
+client.onConnectionEstablished(() => {
+  console.debug('onConnectionEstablished')
 })
 
 client.connect()

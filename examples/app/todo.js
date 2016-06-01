@@ -88,12 +88,10 @@
   })
   var stackServicePublisher = pubsub.publisher
   // Add listener to life cycle connection events
-  client.addConnectionStatusListener({
-    onConnectionEstablished() {
-      stackServicePublisher.list({
-        stack: 'todo-list'
-      })
-    }
+  client.onConnectionEstablished(() => {
+    stackServicePublisher.list({
+      stack: 'todo-list'
+    })
   })
   // Connect client
   client.connect()

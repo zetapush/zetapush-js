@@ -20,14 +20,12 @@ const { publisher } = client.createMacroPublisherSubscriber({
   definition: HelloMacroDefinition
 })
 
-client.addConnectionStatusListener({
-  onConnectionEstablished() {
-    console.debug('onConnectionEstablished')
+client.onConnectionEstablished(() => {
+  console.debug('onConnectionEstablished')
 
-    publisher.hello({
-      value: 'World'
-    })
-  }
+  publisher.hello({
+    value: 'World'
+  })
 })
 
 client.connect()

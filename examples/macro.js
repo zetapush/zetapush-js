@@ -14,13 +14,11 @@ const { publisher } = client.createServicePublisherSubscriber({
   definition: ZetaPush.definitions.MacroPublisherDefinition
 })
 
-client.addConnectionStatusListener({
-  onConnectionEstablished() {
-    console.debug('onConnectionEstablished')
-  },
-  onConnectionClosed() {
-    console.debug('onConnectionClosed')
-  }
+client.onConnectionEstablished(() => {
+  console.debug('onConnectionEstablished')
+}),
+client.onConnectionClosed(() => {
+  console.debug('onConnectionClosed')
 })
 
 document.querySelector('.js-SayHello').addEventListener('click', () => {

@@ -15,12 +15,10 @@ const { publisher } = client.createServicePublisherSubscriber({
   definition: StackPublisherDefinition
 })
 
-client.addConnectionStatusListener({
-  onSuccessfulHandshake(authentication) {
-    console.debug('App::onSuccessfulHandshake', authentication)
+client.onSuccessfulHandshake((authentication) => {
+  console.debug('App::onSuccessfulHandshake', authentication)
 
-    document.querySelector('i').textContent = `User Id: ${authentication.userId}`
-  }
+  document.querySelector('i').textContent = `User Id: ${authentication.userId}`
 })
 
 client.connect()

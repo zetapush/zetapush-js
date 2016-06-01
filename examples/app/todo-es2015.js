@@ -82,12 +82,10 @@
     definition: ZetaPush.definitions.StackPublisherDefinition
   })
   // Add listener to life cycle connection events
-  client.addConnectionStatusListener({
-    onConnectionEstablished() {
-      publisher.list({
-        stack: 'todo-list'
-      })
-    }
+  client.onConnectionEstablished(() => {
+    publisher.list({
+      stack: 'todo-list'
+    })
   })
   // Connect client
   client.connect()

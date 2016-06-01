@@ -6,14 +6,10 @@ const client = new ZetaPush.Client({
     })
   }
 })
-
-client.addConnectionStatusListener({
-  onSuccessfulHandshake(authentication) {
-    console.debug('onSuccessfulHandshake', authentication)
-  },
-  onConnectionEstablished() {
-    console.debug('onConnectionEstablished')
-  }
+client.onSuccessfulHandshake((authentication) => {
+  console.debug('onSuccessfulHandshake', authentication)
 })
-
+client.onConnectionEstablished(() => {
+  console.debug('onConnectionEstablished')
+})
 client.connect()
