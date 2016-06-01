@@ -99,7 +99,7 @@ export class WeakClient extends Client {
    *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID-ID&gt;&apos;
    * })
    */
-  constructor({apiUrl, sandboxId, deploymentId, forceHttps = false, resource = null }) {
+  constructor({ apiUrl, sandboxId, deploymentId, forceHttps, resource }) {
     const handshakeStrategy = () =&gt; {
       const token = this.getToken()
       const handshake = AuthentFactory.createWeakHandshake({

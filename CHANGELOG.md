@@ -1,8 +1,14 @@
+# 2.0.0-beta.13 (2016-06-01)
+
+### Fix
+
+* **security:** Dont override forceHttps for WeakClient
+
 # 2.0.0-beta.12 (2016-06-01)
 
 ### Changes
 
-* **core:** Force HTTPS when location.protocol is HTTPS
+* **security:** Force HTTPS when location.protocol is HTTPS
 
 # 2.0.0-beta.11 (2016-06-01)
 
