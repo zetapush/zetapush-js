@@ -152,18 +152,18 @@ export class Client {
   }
   /**
    * Create a macro publisher based on publisher definition for the given deployment id
-   * @param {{deploymentId: string, definition: class}} parameters
+   * @param {{definition: class, deploymentId: string}} parameters
    * @return {Object}
    */
-  createMacroPublisher({ deploymentId, definition }) {
+  createMacroPublisher({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID }) {
     return this.helper.createMacroPublisher(`/service/${this.getSandboxId()}/${deploymentId}`, definition)
   }
   /**
    * Create a service publisher based on publisher definition for the given deployment id
-   * @param {{deploymentId: string, definition: class}} parameters
+   * @param {{definition: class, deploymentId: string}} parameters
    * @return {Object}
    */
-  createServicePublisher({ deploymentId, definition }) {
+  createServicePublisher({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID }) {
     return this.helper.createServicePublisher(`/service/${this.getSandboxId()}/${deploymentId}`, definition)
   }
   /**
@@ -221,23 +221,23 @@ export class Client {
   }
   /**
    * Create a publish/subscribe for a macro definition
-   * @param {{deploymentId: string, listener: Object, definition: class}} parameters
+   * @param {{definition: class, deploymentId: string, listener: Object}} parameters
    * @return {{publisher: Object, subscriptions: Object}}
    */
-  createMacroPublisherSubscriber({ deploymentId, listener, definition }) {
+  createMacroPublisherSubscriber({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID, listener }) {
     return {
-      publisher: this.createMacroPublisher({ deploymentId, definition }),
+      publisher: this.createMacroPublisher({ definition, deploymentId }),
       subscriptions: this.subscribe({ deploymentId, listener })
     }
   }
   /**
    * Create a publish/subscribe for a service definition
-   * @param {{deploymentId: string, listener: Object, definition: class}} parameters
+   * @param {{definition: class, deploymentId: string, listener: Object}} parameters
    * @return {{publisher: Object, subscriptions: Object}}
    */
-  createServicePublisherSubscriber({ deploymentId, listener, definition }) {
+  createServicePublisherSubscriber({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID, listener }) {
     return {
-      publisher: this.createServicePublisher({ deploymentId, definition }),
+      publisher: this.createServicePublisher({ definition, deploymentId }),
       subscriptions: this.subscribe({ deploymentId, listener })
     }
   }
@@ -283,30 +283,6 @@ export class Client {
   setLogLevel(level) {
     this.helper.setLogLevel(level)
   }
-
-  /**
-   * Get a service lister from methods list with a default handler
-   * @access private
-   * @param {{methods: Array&lt;function&gt;, handler: function}} params
-   * @return {Object} listener
-   * @example
-   * const getStackServiceListener = () =&gt; {
-   *   return Client.getGenericServiceListener({
-   *     methods: [&apos;getListeners&apos;, &apos;list&apos;, &apos;purge&apos;, &apos;push&apos;, &apos;remove&apos;, &apos;setListeners&apos;, &apos;update&apos;, &apos;error&apos;],
-   *     handler: ({ channel, data }) =&gt; {
-   *       console.debug(`Stack::${method}`, { channel, data })
-   *       document.querySelector(`form[name=&quot;${method}&quot;] [name=&quot;output&quot;]`).value = JSON.stringify(data)
-   *     }
-   *   })
-   * }
-   */
-  static getGenericServiceListener({ methods = [], handler = () =&gt; {} }) {
-    return methods.reduce((listener, method) =&gt; {
-      listener[method] = ({ channel, data }) =&gt; handler({ channel, data, method })
-      return listener
-    }, {})
-  }
-
 }
 </code></pre>
 

@@ -79,11 +79,10 @@ import { LocalStorageTokenPersistenceStrategy } from &apos;./utils/token-persist
  * WeakClient config object.
  * @typedef {Object} WeakClientConfig
  * @property {string} apiUrl - Api Url
- * @property {string} authenticationDeploymentId - Authentication deployment id
+ * @property {string} deploymentId - Authentication deployment id
  * @property {string} sandboxId - Sandbox id
  * @property {boolean} forceHttps - Force end to end HTTPS connection
  * @property {string} resource - Client resource id
- * @property {AbstractTokenPersistenceStrategy} TokenPersistenceStrategy - Token storage strategy
  */
 
 /**
@@ -97,15 +96,14 @@ export class WeakClient extends Client {
    * @example
    * // Smart client
    * const client = new ZetaPush.WeakClient({
-   *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID-ID&gt;&apos;,
-   *   authenticationDeploymentId: &apos;&lt;YOUR-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;
+   *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID-ID&gt;&apos;
    * })
    */
-  constructor({ apiUrl, authenticationDeploymentId, sandboxId, forceHttps, resource = null, TokenPersistenceStrategy = LocalStorageTokenPersistenceStrategy }) {
+  constructor({apiUrl, sandboxId, deploymentId, forceHttps = false, resource = null }) {
     const handshakeStrategy = () =&gt; {
       const token = this.getToken()
       const handshake = AuthentFactory.createWeakHandshake({
-        deploymentId: authenticationDeploymentId,
+        deploymentId,
         token
       })
       return handshake
@@ -129,7 +127,7 @@ export class WeakClient extends Client {
      * @access private
      * @type {TokenPersistenceStrategy}
      */
-    this.strategy = new TokenPersistenceStrategy()
+    this.strategy = new LocalStorageTokenPersistenceStrategy()
   }
   /**
    * @return {string} The stored token
