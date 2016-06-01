@@ -122,6 +122,14 @@ export const getServers = ({ apiUrl, sandboxId, forceHttps }) =&gt; {
       })
     })
 }
+
+/**
+ * @access private
+ * @return {boolean}
+ */
+export const isHttpsProtocol = ({ protocol } = {}) =&gt; {
+  return &apos;https:&apos; === protocol
+}
 </code></pre>
 
 </div>

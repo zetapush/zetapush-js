@@ -1644,7 +1644,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { API_URL } from './utils/index'\nimport { ClientHelper } from './client-helper'\nimport { ConnectionStatusListener } from './connection/connection-status'\n\n/**\n * Client config object.\n * @typedef {Object} ClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {function():AbstractHandshakeManager} handshakeStrategy - Handshake strategy\n * @property {string} resource - Client resource id\n */\n\n/**\n * ZetaPush Client to connect\n * @access public\n * @example\n * // Securized client with token based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   forceHttps: true,\n *   handshakeStrategy: function() {\n *     return ZetaPush.AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n * @example\n * // Client with credentials based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   handshakeStrategy: function() {\n *     return ZetaPush.AuthentFactory.createSimpleHandshake({\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>',\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   * @param {ClientConfig} config\n   * Create a new ZetaPush client\n   */\n  constructor({ apiUrl = API_URL, sandboxId, forceHttps = false, handshakeStrategy, resource = null }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.helper = new ClientHelper({\n      apiUrl,\n      sandboxId,\n      forceHttps,\n      handshakeStrategy,\n      resource\n    })\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return boolean\n   */\n  isConnected() {\n    return this.helper.isConnected()\n  }\n  /**\n   * Connect client to ZetaPush\n   */\n  connect() {\n    this.helper.connect()\n  }\n  /**\n   * Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.helper.disconnect()\n  }\n  /**\n   * Create a macro publisher based on publisher definition for the given deployment id\n   * @param {{definition: class, deploymentId: string}} parameters\n   * @return {Object}\n   */\n  createMacroPublisher({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID }) {\n    return this.helper.createMacroPublisher(`/service/${this.getSandboxId()}/${deploymentId}`, definition)\n  }\n  /**\n   * Create a service publisher based on publisher definition for the given deployment id\n   * @param {{definition: class, deploymentId: string}} parameters\n   * @return {Object}\n   */\n  createServicePublisher({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID }) {\n    return this.helper.createServicePublisher(`/service/${this.getSandboxId()}/${deploymentId}`, definition)\n  }\n  /**\n   * Get the client sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.helper.getSandboxId()\n  }\n  /**\n   * Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.helper.getResource()\n  }\n  /**\n   * Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.helper.getUserId()\n  }\n  /**\n   * Get the client session id\n   * @return {string}\n   */\n  getSessionId() {\n    return this.helper.getSessionId()\n  }\n  /**\n   * Subscribe all methods described in the listener for the given deploymentId\n   * @param {{deploymentId: string, listener: Object}} parameters\n   * @return {Object} subscription\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribe({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   listener: stackServiceListener\n   * })\n   */\n  subscribe({ deploymentId, listener }) {\n    return this.helper.subscribe(`/service/${this.getSandboxId()}/${deploymentId}`, listener)\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions = {}) {\n    return this.helper.unsubscribe(subscriptions)\n  }\n  /**\n   * Create a publish/subscribe for a macro definition\n   * @param {{definition: class, deploymentId: string, listener: Object}} parameters\n   * @return {{publisher: Object, subscriptions: Object}}\n   */\n  createMacroPublisherSubscriber({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID, listener }) {\n    return {\n      publisher: this.createMacroPublisher({ definition, deploymentId }),\n      subscriptions: this.subscribe({ deploymentId, listener })\n    }\n  }\n  /**\n   * Create a publish/subscribe for a service definition\n   * @param {{definition: class, deploymentId: string, listener: Object}} parameters\n   * @return {{publisher: Object, subscriptions: Object}}\n   */\n  createServicePublisherSubscriber({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID, listener }) {\n    return {\n      publisher: this.createServicePublisher({ definition, deploymentId }),\n      subscriptions: this.subscribe({ deploymentId, listener })\n    }\n  }\n  /**\n   * Set new client resource value\n   * @param {string} resource\n   */\n  setResource(resource) {\n    this.helper.setResource(resource)\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    return this.helper.addConnectionStatusListener(listener)\n  }\n  /**\n   * Remove a connection status listener\n   * @param {number} handler\n   */\n  removeConnectionStatusListener(handler) {\n    return this.helper.removeConnectionStatusListener(handler)\n  }\n  /**\n   * Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  handshake(handshakeStrategy) {\n    this.disconnect()\n    if (handshakeStrategy) {\n      this.helper.setHandshakeStrategy(handshakeStrategy)\n    }\n    this.connect()\n  }\n  /**\n   * Set logging level\n   * Valid values are the strings 'error', 'warn', 'info' and 'debug', from\n   * less verbose to more verbose.\n   * @param {string} level\n   */\n  setLogLevel(level) {\n    this.helper.setLogLevel(level)\n  }\n}\n\n/**\n * Add shorthand connection status method\n */\nObject.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) => {\n  // Only implements unsupported methods\n  if (!Client.prototype.hasOwnProperty(method)) {\n    Client.prototype[method] = function addListener(listener) {\n      return this.addConnectionStatusListener({\n        [method]: listener\n      })\n    }\n  }\n})\n"
+    "content": "import { API_URL, isHttpsProtocol } from './utils/index'\nimport { ClientHelper } from './client-helper'\nimport { ConnectionStatusListener } from './connection/connection-status'\n\n/**\n * Client config object.\n * @typedef {Object} ClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {function():AbstractHandshakeManager} handshakeStrategy - Handshake strategy\n * @property {string} resource - Client resource id\n */\n\n/**\n * ZetaPush Client to connect\n * @access public\n * @example\n * // Securized client with token based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   forceHttps: true,\n *   handshakeStrategy: function() {\n *     return ZetaPush.AuthentFactory.createWeakHandshake({\n *       token: null,\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n * @example\n * // Client with credentials based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   handshakeStrategy: function() {\n *     return ZetaPush.AuthentFactory.createSimpleHandshake({\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>',\n *       deploymentId: '<YOUR-DEPLOYMENT-ID>'\n  *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   * @param {ClientConfig} config\n   * Create a new ZetaPush client\n   */\n  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(document), handshakeStrategy, resource = null }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.helper = new ClientHelper({\n      apiUrl,\n      sandboxId,\n      forceHttps,\n      handshakeStrategy,\n      resource\n    })\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return boolean\n   */\n  isConnected() {\n    return this.helper.isConnected()\n  }\n  /**\n   * Connect client to ZetaPush\n   */\n  connect() {\n    this.helper.connect()\n  }\n  /**\n   * Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.helper.disconnect()\n  }\n  /**\n   * Create a macro publisher based on publisher definition for the given deployment id\n   * @param {{definition: class, deploymentId: string}} parameters\n   * @return {Object}\n   */\n  createMacroPublisher({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID }) {\n    return this.helper.createMacroPublisher(`/service/${this.getSandboxId()}/${deploymentId}`, definition)\n  }\n  /**\n   * Create a service publisher based on publisher definition for the given deployment id\n   * @param {{definition: class, deploymentId: string}} parameters\n   * @return {Object}\n   */\n  createServicePublisher({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID }) {\n    return this.helper.createServicePublisher(`/service/${this.getSandboxId()}/${deploymentId}`, definition)\n  }\n  /**\n   * Get the client sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.helper.getSandboxId()\n  }\n  /**\n   * Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.helper.getResource()\n  }\n  /**\n   * Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.helper.getUserId()\n  }\n  /**\n   * Get the client session id\n   * @return {string}\n   */\n  getSessionId() {\n    return this.helper.getSessionId()\n  }\n  /**\n   * Subscribe all methods described in the listener for the given deploymentId\n   * @param {{deploymentId: string, listener: Object}} parameters\n   * @return {Object} subscription\n   * @example\n   * const stackServiceListener = {\n   *   list() {},\n   *   push() {},\n   *   update() {}\n   * }\n   * client.subscribe({\n   *   deploymentId: '<YOUR-STACK-DEPLOYMENT-ID>',\n   *   listener: stackServiceListener\n   * })\n   */\n  subscribe({ deploymentId, listener }) {\n    return this.helper.subscribe(`/service/${this.getSandboxId()}/${deploymentId}`, listener)\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} subscriptions\n   */\n  unsubscribe(subscriptions = {}) {\n    return this.helper.unsubscribe(subscriptions)\n  }\n  /**\n   * Create a publish/subscribe for a macro definition\n   * @param {{definition: class, deploymentId: string, listener: Object}} parameters\n   * @return {{publisher: Object, subscriptions: Object}}\n   */\n  createMacroPublisherSubscriber({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID, listener }) {\n    return {\n      publisher: this.createMacroPublisher({ definition, deploymentId }),\n      subscriptions: this.subscribe({ deploymentId, listener })\n    }\n  }\n  /**\n   * Create a publish/subscribe for a service definition\n   * @param {{definition: class, deploymentId: string, listener: Object}} parameters\n   * @return {{publisher: Object, subscriptions: Object}}\n   */\n  createServicePublisherSubscriber({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID, listener }) {\n    return {\n      publisher: this.createServicePublisher({ definition, deploymentId }),\n      subscriptions: this.subscribe({ deploymentId, listener })\n    }\n  }\n  /**\n   * Set new client resource value\n   * @param {string} resource\n   */\n  setResource(resource) {\n    this.helper.setResource(resource)\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    return this.helper.addConnectionStatusListener(listener)\n  }\n  /**\n   * Remove a connection status listener\n   * @param {number} handler\n   */\n  removeConnectionStatusListener(handler) {\n    return this.helper.removeConnectionStatusListener(handler)\n  }\n  /**\n   * Force disconnect/connect with new handshake factory\n   * @param {function():AbstractHandshakeManager} handshakeStrategy\n   */\n  handshake(handshakeStrategy) {\n    this.disconnect()\n    if (handshakeStrategy) {\n      this.helper.setHandshakeStrategy(handshakeStrategy)\n    }\n    this.connect()\n  }\n  /**\n   * Set logging level\n   * Valid values are the strings 'error', 'warn', 'info' and 'debug', from\n   * less verbose to more verbose.\n   * @param {string} level\n   */\n  setLogLevel(level) {\n    this.helper.setLogLevel(level)\n  }\n}\n\n/**\n * Add shorthand connection status method\n */\nObject.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) => {\n  // Only implements unsupported methods\n  if (!Client.prototype.hasOwnProperty(method)) {\n    Client.prototype[method] = function addListener(listener) {\n      return this.addConnectionStatusListener({\n        [method]: listener\n      })\n    }\n  }\n})\n"
   },
   {
     "__docId__": 74,
@@ -7032,7 +7032,7 @@
     "access": null,
     "description": null,
     "lineNumber": 5,
-    "content": "/**\n * Match unsecure pattern web\n * @type {RegExp}\n */\nconst UNSECURE_PATTERN = /^http:\\/\\/|^\\/\\//\n\n/**\n* Default ZetaPush API URL\n* @access private\n*/\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @param {boolean} forceHttps\n * @return {string}\n */\nexport const getSecureUrl = (url, forceHttps) => {\n  return forceHttps ? url.replace(UNSECURE_PATTERN, 'https://') : url\n}\n\n/**\n * @access private\n * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean}} parameters\n * @return {Promise}\n */\nexport const getServers = ({ apiUrl, sandboxId, forceHttps }) => {\n  const secureApiUrl = getSecureUrl(apiUrl, forceHttps)\n  const url = `${secureApiUrl}${sandboxId}`\n  return fetch(url)\n    .then((response) => {\n      return response.json()\n    })\n    .then(({ servers }) => {\n      // TODO: Replace by a server side implementation when available\n      return servers.map((server) => {\n        return getSecureUrl(server, forceHttps)\n      })\n    })\n}\n"
+    "content": "/**\n * Match unsecure pattern web\n * @type {RegExp}\n */\nconst UNSECURE_PATTERN = /^http:\\/\\/|^\\/\\//\n\n/**\n* Default ZetaPush API URL\n* @access private\n*/\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @param {boolean} forceHttps\n * @return {string}\n */\nexport const getSecureUrl = (url, forceHttps) => {\n  return forceHttps ? url.replace(UNSECURE_PATTERN, 'https://') : url\n}\n\n/**\n * @access private\n * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean}} parameters\n * @return {Promise}\n */\nexport const getServers = ({ apiUrl, sandboxId, forceHttps }) => {\n  const secureApiUrl = getSecureUrl(apiUrl, forceHttps)\n  const url = `${secureApiUrl}${sandboxId}`\n  return fetch(url)\n    .then((response) => {\n      return response.json()\n    })\n    .then(({ servers }) => {\n      // TODO: Replace by a server side implementation when available\n      return servers.map((server) => {\n        return getSecureUrl(server, forceHttps)\n      })\n    })\n}\n\n/**\n * @access private\n * @return {boolean}\n */\nexport const isHttpsProtocol = ({ protocol } = {}) => {\n  return 'https:' === protocol\n}\n"
   },
   {
     "__docId__": 290,
@@ -7209,6 +7209,34 @@
   },
   {
     "__docId__": 295,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "isHttpsProtocol",
+    "memberof": "lib/utils/index.js",
+    "longname": "lib/utils/index.js~isHttpsProtocol",
+    "access": "private",
+    "export": true,
+    "importPath": "zetapush-js/lib/utils/index.js",
+    "importStyle": "{isHttpsProtocol}",
+    "description": "",
+    "lineNumber": 57,
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 296,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -7221,7 +7249,7 @@
     "content": "/**\n * @type {string}\n */\nconst ZETAPUSH_TOKEN_KEY = 'zetapush.token'\n\n/**\n * Provide abstraction for token persistence\n * @access protected\n */\nexport class AbstractTokenPersistenceStrategy {\n  /**\n   * @param {{key: string}} parameters\n   */\n  constructor({ key = ZETAPUSH_TOKEN_KEY } = {}) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.key = key\n  }\n  /**\n   * @abstract\n   * @return {string} The stored token\n   */\n  get() {}\n  /**\n   * @abstract\n   * @param {{token: string}} parameters\n   */\n  set({ token }) {}\n}\n\n/**\n * @access protected\n * @extends {AbstractTokenPersistenceStrategy}\n */\nexport class LocalStorageTokenPersistenceStrategy extends AbstractTokenPersistenceStrategy {\n  /**\n   * @override\n   * @return {string} The stored token\n   */\n  get() {\n    return localStorage.getItem(this.key)\n  }\n  /**\n   * @override\n   * @param {{token: string}} parameters\n   */\n  set({ token }) {\n    localStorage.setItem(this.key, token)\n  }\n}\n"
   },
   {
-    "__docId__": 296,
+    "__docId__": 297,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -7244,7 +7272,7 @@
     }
   },
   {
-    "__docId__": 297,
+    "__docId__": 298,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -7260,7 +7288,7 @@
     "interface": false
   },
   {
-    "__docId__": 298,
+    "__docId__": 299,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -7285,7 +7313,7 @@
     "generator": false
   },
   {
-    "__docId__": 299,
+    "__docId__": 300,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -7305,7 +7333,7 @@
     }
   },
   {
-    "__docId__": 300,
+    "__docId__": 301,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -7328,7 +7356,7 @@
     "generator": false
   },
   {
-    "__docId__": 301,
+    "__docId__": 302,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -7354,7 +7382,7 @@
     "generator": false
   },
   {
-    "__docId__": 302,
+    "__docId__": 303,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -7373,7 +7401,7 @@
     ]
   },
   {
-    "__docId__": 303,
+    "__docId__": 304,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -7396,7 +7424,7 @@
     "generator": false
   },
   {
-    "__docId__": 304,
+    "__docId__": 305,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -7422,7 +7450,7 @@
     "generator": false
   },
   {
-    "__docId__": 305,
+    "__docId__": 306,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -7435,7 +7463,7 @@
     "content": "import { Client } from './client'\nimport { AuthentFactory } from './authentication/handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'\n\n/**\n * WeakClient config object.\n * @typedef {Object} WeakClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} deploymentId - Authentication deployment id\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n */\n\n/**\n * @access public\n * @extends {Client}\n */\nexport class WeakClient extends Client {\n  /**\n   * Create a new ZetaPush smart client\n   * @param {WeakClientConfig} config\n   * @example\n   * // Smart client\n   * const client = new ZetaPush.WeakClient({\n   *   sandboxId: '<YOUR-SANDBOX-ID-ID>'\n   * })\n   */\n  constructor({apiUrl, sandboxId, deploymentId, forceHttps = false, resource = null }) {\n    const handshakeStrategy = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     *\n     */\n    super({ apiUrl , sandboxId, forceHttps, handshakeStrategy, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('WeakClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('WeakClient::onFailedHandshake', error)\n    }\n    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new LocalStorageTokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
   },
   {
-    "__docId__": 306,
+    "__docId__": 307,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -7505,7 +7533,7 @@
     }
   },
   {
-    "__docId__": 307,
+    "__docId__": 308,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -7524,7 +7552,7 @@
     ]
   },
   {
-    "__docId__": 308,
+    "__docId__": 309,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -7552,7 +7580,7 @@
     "generator": false
   },
   {
-    "__docId__": 309,
+    "__docId__": 310,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -7572,7 +7600,7 @@
     }
   },
   {
-    "__docId__": 310,
+    "__docId__": 311,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -7594,7 +7622,7 @@
     "generator": false
   },
   {
-    "__docId__": 312,
+    "__docId__": 313,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7607,7 +7635,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 313,
+    "__docId__": 314,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7620,7 +7648,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 314,
+    "__docId__": 315,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7633,7 +7661,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 315,
+    "__docId__": 316,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7646,7 +7674,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 316,
+    "__docId__": 317,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7659,7 +7687,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 317,
+    "__docId__": 318,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7672,7 +7700,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 318,
+    "__docId__": 319,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7685,7 +7713,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 319,
+    "__docId__": 320,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7698,7 +7726,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 320,
+    "__docId__": 321,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7711,7 +7739,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 321,
+    "__docId__": 322,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7724,7 +7752,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 322,
+    "__docId__": 323,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7737,7 +7765,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 323,
+    "__docId__": 324,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7750,7 +7778,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 324,
+    "__docId__": 325,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7763,7 +7791,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 325,
+    "__docId__": 326,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7776,7 +7804,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 326,
+    "__docId__": 327,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7789,7 +7817,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 327,
+    "__docId__": 328,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7802,7 +7830,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 328,
+    "__docId__": 329,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7815,7 +7843,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 329,
+    "__docId__": 330,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7828,7 +7856,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 330,
+    "__docId__": 331,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7841,7 +7869,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 331,
+    "__docId__": 332,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7854,7 +7882,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 332,
+    "__docId__": 333,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7867,7 +7895,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 333,
+    "__docId__": 334,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7880,7 +7908,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 334,
+    "__docId__": 335,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7893,7 +7921,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 335,
+    "__docId__": 336,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7906,7 +7934,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 336,
+    "__docId__": 337,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7919,7 +7947,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 337,
+    "__docId__": 338,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7932,7 +7960,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 338,
+    "__docId__": 339,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7945,7 +7973,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 339,
+    "__docId__": 340,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7958,7 +7986,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 340,
+    "__docId__": 341,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7971,7 +7999,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 341,
+    "__docId__": 342,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7984,7 +8012,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 342,
+    "__docId__": 343,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -7997,7 +8025,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 343,
+    "__docId__": 344,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8010,7 +8038,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 344,
+    "__docId__": 345,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8023,7 +8051,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 345,
+    "__docId__": 346,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8036,7 +8064,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 346,
+    "__docId__": 347,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8049,7 +8077,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 347,
+    "__docId__": 348,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8062,7 +8090,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 348,
+    "__docId__": 349,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8075,7 +8103,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 349,
+    "__docId__": 350,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8088,7 +8116,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 350,
+    "__docId__": 351,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8101,7 +8129,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 351,
+    "__docId__": 352,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8114,7 +8142,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 352,
+    "__docId__": 353,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8127,7 +8155,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 353,
+    "__docId__": 354,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8140,7 +8168,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 354,
+    "__docId__": 355,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8153,7 +8181,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 355,
+    "__docId__": 356,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8166,7 +8194,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 356,
+    "__docId__": 357,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8179,7 +8207,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 357,
+    "__docId__": 358,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8192,7 +8220,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 358,
+    "__docId__": 359,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8205,7 +8233,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 360,
+    "__docId__": 361,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8218,7 +8246,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 361,
+    "__docId__": 362,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8231,7 +8259,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 362,
+    "__docId__": 363,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8244,7 +8272,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 363,
+    "__docId__": 364,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8257,7 +8285,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 364,
+    "__docId__": 365,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8270,7 +8298,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 365,
+    "__docId__": 366,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8283,7 +8311,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 366,
+    "__docId__": 367,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -8296,7 +8324,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 367,
+    "__docId__": 368,
     "kind": "external",
     "static": true,
     "variation": null,

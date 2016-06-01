@@ -71,7 +71,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">lib/client.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { API_URL } from &apos;./utils/index&apos;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { API_URL, isHttpsProtocol } from &apos;./utils/index&apos;
 import { ClientHelper } from &apos;./client-helper&apos;
 import { ConnectionStatusListener } from &apos;./connection/connection-status&apos;
 
@@ -118,7 +118,7 @@ export class Client {
    * @param {ClientConfig} config
    * Create a new ZetaPush client
    */
-  constructor({ apiUrl = API_URL, sandboxId, forceHttps = false, handshakeStrategy, resource = null }) {
+  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(document), handshakeStrategy, resource = null }) {
     /**
      * @access private
      * @type {ClientHelper}
