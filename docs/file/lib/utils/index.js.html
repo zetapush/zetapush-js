@@ -122,21 +122,6 @@ export const getServers = ({ apiUrl, sandboxId, forceHttps }) =&gt; {
       })
     })
 }
-
-/**
- * @access private
- * @extends {Error}
- */
-export class NotYetImplementedError extends Error {
-  /**
-   * @param {string} message
-   */
-  constructor(message = &apos;&apos;) {
-    super(message)
-    this.name = &apos;NotImplementedError&apos;
-  }
-
-}
 </code></pre>
 
 </div>

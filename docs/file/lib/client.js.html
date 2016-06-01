@@ -73,7 +73,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">lib/client.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { API_URL } from &apos;./utils/index&apos;
 import { ClientHelper } from &apos;./client-helper&apos;
-import { NotYetImplementedError } from &apos;./utils/index&apos;
+import { ConnectionStatusListener } from &apos;./connection/connection-status&apos;
 
 /**
  * Client config object.
@@ -284,6 +284,20 @@ export class Client {
     this.helper.setLogLevel(level)
   }
 }
+
+/**
+ * Add shorthand connection status method
+ */
+Object.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) =&gt; {
+  // Only implements unsupported methods
+  if (!Client.prototype.hasOwnProperty(method)) {
+    Client.prototype[method] = function addListener(listener) {
+      return this.addConnectionStatusListener({
+        [method]: listener
+      })
+    }
+  }
+})
 </code></pre>
 
 </div>

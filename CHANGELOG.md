@@ -1,4 +1,10 @@
-# 2.0.0-beta.10
+# 2.0.0-beta.11 (2016-06-01)
+
+### Changes
+
+* **core:**  Add shorthand methods to handle lifecycle connection events
+
+# 2.0.0-beta.10 (2016-06-01)
 
 ### Changes
 
