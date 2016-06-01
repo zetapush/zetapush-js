@@ -125,17 +125,10 @@ export const getServers = ({ apiUrl, sandboxId, forceHttps }) =&gt; {
 
 /**
  * @access private
- * @extends {Error}
+ * @return {boolean}
  */
-export class NotYetImplementedError extends Error {
-  /**
-   * @param {string} message
-   */
-  constructor(message = &apos;&apos;) {
-    super(message)
-    this.name = &apos;NotImplementedError&apos;
-  }
-
+export const isHttpsProtocol = ({ protocol } = {}) =&gt; {
+  return &apos;https:&apos; === protocol
 }
 </code></pre>
 
