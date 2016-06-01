@@ -523,6 +523,15 @@ export class ClientHelper {
   publish(channel, parameters = {}) {
     this.cometd.publish(channel, parameters)
   }
+  /**
+   * Set logging level for CometD client
+   * Valid values are the strings &apos;error&apos;, &apos;warn&apos;, &apos;info&apos; and &apos;debug&apos;, from
+   * less verbose to more verbose.
+   * @param {string} level
+   */
+  setLogLevel(level) {
+    this.cometd.setLogLevel(level)
+  }
 }
 </code></pre>
 

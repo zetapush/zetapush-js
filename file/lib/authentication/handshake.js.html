@@ -71,7 +71,9 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">lib/authentication/handshake.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { DelegatingPublisherDefinition, SimplePublisherDefinition, WeakPublisherDefinition } from &apos;../definitions&apos;
+
+/**
  * ZetaPush deployables names
  */
 const DeployableNames = {
@@ -209,7 +211,7 @@ export class AuthentFactory {
    * @param {{deploymentId: string, login: string, password: string}} parameters
    * @return {CredentialsHandshakeManager}
    */
-  static createSimpleHandshake({ deploymentId, login, password }) {
+  static createSimpleHandshake({ deploymentId = SimplePublisherDefinition.DEFAULT_DEPLOYMENT_ID, login, password }) {
     return AuthentFactory.createHandshake({
       authType: DeployableNames.AUTH_SIMPLE,
       deploymentId,
@@ -221,7 +223,7 @@ export class AuthentFactory {
    * @param {{deploymentId: string, token: string}} parameters
    * @return {TokenHandshakeManager}
    */
-  static createWeakHandshake({ deploymentId, token }) {
+  static createWeakHandshake({ deploymentId = WeakPublisherDefinition.DEFAULT_DEPLOYMENT_ID, token }) {
     return AuthentFactory.createHandshake({
       authType: DeployableNames.AUTH_WEAK,
       deploymentId,
@@ -233,7 +235,7 @@ export class AuthentFactory {
    * @param {{deploymentId: string, token: string}} parameters
    * @return {TokenHandshakeManager}
    */
-  static createDelegatingHandshake({ deploymentId, token }) {
+  static createDelegatingHandshake({ deploymentId = DelegatingPublisherDefinition.DEFAULT_DEPLOYMENT_ID, token }) {
     return AuthentFactory.createHandshake({
       authType: DeployableNames.AUTH_DELEGATING,
       deploymentId,
