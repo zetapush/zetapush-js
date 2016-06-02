@@ -1,108 +1,98 @@
-;(function () {
-  var STACK_DEPLOYMENT_ID = 'stack_main'
-
+{
   // Create a Zetapush WeakClient
-  var client = new ZetaPush.WeakClient({
-    sandboxId: 'mv-BrBKU',
-    forceHttps: true
+  const client = new ZetaPush.WeakClient({
+    sandboxId: 'mv-BrBKU'
   })
-
-  // Declare a service listener mapping stack methods
-  var stackServiceListener = {
+  // Get Todo item DOM
+  const getTodoItemDom = ({ guid, data }, wrapper = true) => {
+    const { completed, text } = data
+    const checkbox = dom('input', { 'class': 'toggle', 'type': 'checkbox', 'data-guid': guid, 'data-text': text })
+    if (completed) {
+      checkbox.setAttribute('checked', completed)
+    }
+    const content = dom('div', { 'class': 'view' },
+      checkbox,
+      dom('label', {}, text),
+      dom('button', { 'class': 'destroy', 'data-guid': guid })
+    )
+    const form = dom('form', { 'autocomplete': 'off', 'data-guid': guid, 'data-text': text },
+      dom('input', { 'class': 'edit', 'value': text, 'autofocus': 'on', 'type': 'text' })
+    )
+    const fragment = document.createDocumentFragment()
+    fragment.appendChild(content)
+    fragment.appendChild(form)
+    return wrapper ? dom('li', { 'class': completed ? 'completed' : '', 'data-guid': guid }, fragment) : fragment
+  }
+  // Declare a service listner mapping stack methods
+  const stackServiceListener = {
     // Triggered when api return list of stack elements
-    list: function list(message) {
-      var content = message.data.result.content
-      var fragment = document.createDocumentFragment()
-      content.map(function (item) {
+    list({ channel, data }) {
+      const { result: { content } } = data
+      const fragment = document.createDocumentFragment()
+      content.map((item) => {
         fragment.appendChild(getTodoItemDom(item))
       })
       document.querySelector('.todo-list').appendChild(fragment)
     },
     // Triggered when api has purged
-    purge: function purge()  {
-      var list = document.querySelector('.todo-list')
+    purge({ channel, data })  {
+      const list = document.querySelector('.todo-list')
       while (list.firstChild) {
         list.removeChild(list.firstChild)
       }
     },
     // Triggered when a new item is pushed
-    push(message)  {
-      var list = document.querySelector('.todo-list')
-      var todo = getTodoItemDom(message.data)
+    push({ channel, data })  {
+      const list = document.querySelector('.todo-list')
+      const todo = getTodoItemDom(data)
       list.insertBefore(todo, list.firstChild)
       document.querySelector('.new-todo').value = ''
     },
     // Triggered when an item is removed
-    remove: function remove(message) {
-      var guids = message.data.guids
-      guids.forEach(function (guid) {
-        var li = document.querySelector(`input[data-guid="${guid}"]`).parentNode.parentNode
+    remove({ channel, data }) {
+      const { guids = [] } = data
+      guids.forEach((guid) => {
+        const li = document.querySelector(`input[data-guid="${guid}"]`).parentNode.parentNode
         li.parentNode.removeChild(li)
       })
     },
     // Triggered when an item is updated
-    update: function update(message) {
-      var data = message.data
-      var guid = data.guid
-      var li = document.querySelector(`li[data-guid="${guid}"]`)
+    update({ channel, data }) {
+      const { guid } = data
+      const li = document.querySelector(`li[data-guid="${guid}"]`)
       li.className = data.data.completed ? 'completed' : ''
       while (li.firstChild) {
         li.removeChild(li.firstChild)
       }
-      var todo = getTodoItemDom(data, false)
+      const todo = getTodoItemDom(data, false)
       li.appendChild(todo)
-      var items = document.querySelectorAll('.todo-list li')
-      Array.prototype.forEach.call(items, function (item) {
+      const items = Array.from(document.querySelectorAll('.todo-list li'))
+      items.forEach((item) => {
         item.classList.remove('editing')
       })
     }
   }
-
-  // Get Todo item DOM
-  function getTodoItemDom(todo, wrapper = true) {
-    var data = todo.data
-    var guid = todo.guid
-    var completed = data.completed
-    var text = data.text
-    var checkbox = dom('input', { 'class': 'toggle', 'type': 'checkbox', 'data-guid': guid, 'data-text': text })
-    if (completed) {
-      checkbox.setAttribute('checked', completed)
-    }
-    var content = dom('div', { 'class': 'view' },
-      checkbox,
-      dom('label', {}, text),
-      dom('button', { 'class': 'destroy', 'data-guid': guid })
-    )
-    var form = dom('form', { 'autocomplete': 'off', 'data-guid': guid, 'data-text': text },
-      dom('input', { 'class': 'edit', 'value': text, 'autofocus': 'on', 'type': 'text' })
-    )
-    var fragment = document.createDocumentFragment()
-    fragment.appendChild(content)
-    fragment.appendChild(form)
-    return wrapper ? dom('li', { 'class': completed ? 'completed' : '', 'data-guid': guid }, fragment) : fragment
-  }
   // Create a service publish to interact with remote API
-  var pubsub = client.createServicePublisherSubscriber({
-    listener: stackServiceListener,
-    definition: ZetaPush.definitions.StackPublisherDefinition
+  const { publisher } = client.createServicePublisherSubscriber({
+    definition: ZetaPush.definitions.StackPublisherDefinition,
+    listener: stackServiceListener
   })
-  var stackServicePublisher = pubsub.publisher
   // Add listener to life cycle connection events
   client.onConnectionEstablished(() => {
-    stackServicePublisher.list({
+    publisher.list({
       stack: 'todo-list'
     })
   })
   // Connect client
   client.connect()
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var main = document.querySelector('main')
-    var todo = document.querySelector('[name="todo"]')
+  document.addEventListener('DOMContentLoaded', () => {
+    const main = document.querySelector('main')
+    const todo = document.querySelector('[name="todo"]')
 
-    on({ node: main, type: 'submit', selector: '.header form', handler: function (event) {
+    on({ node: main, type: 'submit', selector: '.header form', handler: (event) => {
       event.preventDefault()
-      stackServicePublisher.push({
+      publisher.push({
         stack: 'todo-list',
         data: {
           text: todo.value,
@@ -110,56 +100,59 @@
         }
       })
     }})
-    on({ node: main, type: 'change', selector: '.toggle', handler: function (event) {
-      var target = event.target
-      stackServicePublisher.update({
+    on({ node: main, type: 'change', selector: '.toggle', handler: (event) => {
+      const { target } = event
+      const { guid, text } = target.dataset
+      publisher.update({
         stack: 'todo-list',
-        guid: target.dataset.guid,
+        guid,
         data: {
-          text: target.dataset.text,
+          text,
           completed: target.checked
         }
       })
     }})
-    on({ node: main, type: 'click', selector: '.destroy', handler: function (event) {
-      var target = event.target
-      stackServicePublisher.remove({
+    on({ node: main, type: 'click', selector: '.destroy', handler: (event) => {
+      const { target } = event
+      const { guid } = target.dataset
+      publisher.remove({
         stack: 'todo-list',
-        guids: [target.dataset.guid]
+        guids: [guid]
       })
     }})
-    on({ node: main, type: 'click', selector: '.clear-all', handler: function (event) {
-      stackServicePublisher.purge({
+    on({ node: main, type: 'click', selector: '.clear-all', handler: (event) => {
+      publisher.purge({
         stack: 'todo-list'
       })
     }})
-    on({ node: main, type: 'dblclick', selector: 'li:not(.completed) label', handler: function (event) {
-      var target = event.target
-      var li = target.parentNode.parentNode
+    on({ node: main, type: 'dblclick', selector: 'li:not(.completed) label', handler: (event) => {
+      const { target } = event
+      const li = target.parentNode.parentNode
       li.classList.add('editing')
       li.querySelector('form input.edit').focus()
     }})
-    on({ node: main, type: 'submit', selector: '.todo-list form', handler: function (event) {
+    on({ node: main, type: 'submit', selector: '.todo-list form', handler: (event) => {
       event.preventDefault()
-      var target = event.target
-      var input = target.querySelector('input')
-      stackServicePublisher.update({
+      const { target } = event
+      const input = target.querySelector('input')
+      const { guid } = target.dataset
+      publisher.update({
         stack: 'todo-list',
-        guid: target.dataset.guid,
+        guid,
         data: {
           text: input.value,
           completed: false
         }
       })
     }})
-    on({ node: document.documentElement, type: 'click', handler: function (event) {
-      var target = event.target
+    on({ node: document.documentElement, type: 'click', handler: (event) => {
+      const { target } = event
       if (!target.classList.contains('edit')) {
-        var items = document.querySelectorAll('.todo-list li')
-        Array.prototype.forEach.call(items, function (item) {
+        const items = Array.from(document.querySelectorAll('.todo-list li'))
+        items.forEach((item) => {
           item.classList.remove('editing')
         })
       }
     }})
   })
-}())
+}
