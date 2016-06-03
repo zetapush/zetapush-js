@@ -1,3 +1,15 @@
+# 2.0.0-beta.15 (2016-06-03)
+
+### Changes
+
+* **misc:** Update internal default deployment id
+
+# 2.0.0-beta.14 (2016-06-01)
+
+### Fix
+
+* **security:** Update forceHttps implementation
+
 # 2.0.0-beta.13 (2016-06-01)
 
 ### Fix
