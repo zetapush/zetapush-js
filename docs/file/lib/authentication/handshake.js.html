@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">lib/authentication/handshake.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/zetapush/zetapush-js" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/weak-client.js~WeakClient.html">WeakClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VERSION">VERSION</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~CredentialsHandshakeManager.html">CredentialsHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">definitions</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~AggregPublisherDefinition.html">AggregPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~CronPublisherDefinition.html">CronPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~DelegatingPublisherDefinition.html">DelegatingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~EchoPublisherDefinition.html">EchoPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~GameEnginePublisherDefinition.html">GameEnginePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~GamePublisherDefinition.html">GamePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~GdaPublisherDefinition.html">GdaPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~GroupManagementPublisherDefinition.html">GroupManagementPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~HttpclientPublisherDefinition.html">HttpclientPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~MacroPublisherDefinition.html">MacroPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~MessagingPublisherDefinition.html">MessagingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~QueuePublisherDefinition.html">QueuePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~RemotingPublisherDefinition.html">RemotingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~SearchPublisherDefinition.html">SearchPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~SendmailPublisherDefinition.html">SendmailPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~SimplePublisherDefinition.html">SimplePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~Sms_ovhPublisherDefinition.html">Sms_ovhPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~StackPublisherDefinition.html">StackPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~TemplatePublisherDefinition.html">TemplatePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~UserdirPublisherDefinition.html">UserdirPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~WeakPublisherDefinition.html">WeakPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~Zpfs_hdfsPublisherDefinition.html">Zpfs_hdfsPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~Zpfs_s3PublisherDefinition.html">Zpfs_s3PublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~Zpfs_s3compatPublisherDefinition.html">Zpfs_s3compatPublisherDefinition</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/authentication/handshake.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { DelegatingPublisherDefinition, SimplePublisherDefinition, WeakPublisherDefinition } from &apos;../definitions&apos;
+
+/**
+ * ZetaPush deployables names
+ */
+const DeployableNames = {
+  AUTH_SIMPLE: &apos;simple&apos;,
+  AUTH_WEAK: &apos;weak&apos;,
+  AUTH_DELEGATING: &apos;delegating&apos;
+}
+
+/**
+ * Provide abstraction over CometD handshake data structure
+ * @access public
+ */
+export class AbstractHandshakeManager {
+  /**
+   * Create a new handshake manager
+   * @param {{authType: string, sandboxId: string, deploymentId: string}} parameters
+   */
+  constructor({ authType, sandboxId, deploymentId }) {
+    /**
+     * @access protected
+     * @type {string}
+     */
+    this.authType = authType
+    /**
+     * @access protected
+     * @type {string}
+     */
+    this.sandboxId = sandboxId
+    /**
+     * @access protected
+     * @type {string}
+     */
+    this.deploymentId = deploymentId
+  }
+  /**
+   * @param {ClientHelper} client
+   * @return {Object}
+   */
+  getHandshakeFields(client) {
+    const authentication = {
+      data: this.authData,
+      type: `${client.getSandboxId()}.${this.deploymentId}.${this.authType}`,
+      version: this.authVersion
+    }
+    if (client.getResource()) {
+      authentication.resource = client.getResource()
+    }
+    return {
+      ext: {
+        authentication
+      }
+    }
+  }
+  /**
+   * Get auth version
+   * @return {string}
+   */
+  get authVersion() {
+    return &apos;none&apos;
+  }
+
+}
+
+/**
+ * Provide abstraction over CometD token base handshake data structure
+ * @access public
+ * @extends {AbstractHandshakeManager}
+ */
+export class TokenHandshakeManager extends AbstractHandshakeManager {
+  /**
+   * @param {{authType: string, deploymentId: string, token: string}} parameters
+   */
+  constructor({ authType, deploymentId, token }) {
+    super({ deploymentId, authType })
+    /**
+     * @access private
+     * @type {string}
+     */
+    this.token = token
+  }
+  /**
+   * @return {token: string}
+   */
+  get authData() {
+    const { token } = this
+    return {
+      token
+    }
+  }
+
+}
+
+/**
+ * Provide abstraction over CometD credentials based handshake data structure
+ * @access public
+ * @extends {AbstractHandshakeManager}
+ */
+export class CredentialsHandshakeManager extends AbstractHandshakeManager {
+
+  /**
+   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
+   */
+  constructor({ authType, deploymentId, login, password }) {
+    super({ authType, deploymentId })
+    /**
+     * @access private
+     * @type {string}
+     */
+    this.login = login
+    /**
+     * @access private
+     * @type {string}
+     */
+    this.password = password
+  }
+  /**
+   * Get auth data
+   * @return {login: string, password: string}
+   */
+  get authData() {
+    const { login, password } = this
+    return {
+      login, password
+    }
+  }
+
+}
+
+/**
+ * Factory to create handshake
+ * @access public
+ */
+export class AuthentFactory {
+  /**
+   * @param {{deploymentId: string, login: string, password: string}} parameters
+   * @return {CredentialsHandshakeManager}
+   */
+  static createSimpleHandshake({ deploymentId = SimplePublisherDefinition.DEFAULT_DEPLOYMENT_ID, login, password }) {
+    return AuthentFactory.createHandshake({
+      authType: DeployableNames.AUTH_SIMPLE,
+      deploymentId,
+      login,
+      password
+    })
+  }
+  /**
+   * @param {{deploymentId: string, token: string}} parameters
+   * @return {TokenHandshakeManager}
+   */
+  static createWeakHandshake({ deploymentId = WeakPublisherDefinition.DEFAULT_DEPLOYMENT_ID, token }) {
+    return AuthentFactory.createHandshake({
+      authType: DeployableNames.AUTH_WEAK,
+      deploymentId,
+      login: token,
+      password: null
+    })
+  }
+  /**
+   * @param {{deploymentId: string, token: string}} parameters
+   * @return {TokenHandshakeManager}
+   */
+  static createDelegatingHandshake({ deploymentId = DelegatingPublisherDefinition.DEFAULT_DEPLOYMENT_ID, token }) {
+    return AuthentFactory.createHandshake({
+      authType: DeployableNames.AUTH_DELEGATING,
+      deploymentId,
+      login: token,
+      password: null
+    })
+  }
+  /**
+   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
+   * @return {TokenHandshakeManager|CredentialsHandshakeManager}
+   */
+  static createHandshake({ authType, deploymentId, login, password }) {
+    if (null === password) {
+      return new TokenHandshakeManager({ authType, deploymentId, token: login })
+    }
+    return new CredentialsHandshakeManager({ authType, deploymentId, login, password  })
+  }
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lib/client.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/zetapush/zetapush-js" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/weak-client.js~WeakClient.html">WeakClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VERSION">VERSION</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshakeManager.html">AbstractHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~CredentialsHandshakeManager.html">CredentialsHandshakeManager</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~TokenHandshakeManager.html">TokenHandshakeManager</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">definitions</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~AggregPublisherDefinition.html">AggregPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~CronPublisherDefinition.html">CronPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~DelegatingPublisherDefinition.html">DelegatingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~EchoPublisherDefinition.html">EchoPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~GameEnginePublisherDefinition.html">GameEnginePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~GamePublisherDefinition.html">GamePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~GdaPublisherDefinition.html">GdaPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~GroupManagementPublisherDefinition.html">GroupManagementPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~HttpclientPublisherDefinition.html">HttpclientPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~MacroPublisherDefinition.html">MacroPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~MessagingPublisherDefinition.html">MessagingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~QueuePublisherDefinition.html">QueuePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~RemotingPublisherDefinition.html">RemotingPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~SearchPublisherDefinition.html">SearchPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~SendmailPublisherDefinition.html">SendmailPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~SimplePublisherDefinition.html">SimplePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~Sms_ovhPublisherDefinition.html">Sms_ovhPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~StackPublisherDefinition.html">StackPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~TemplatePublisherDefinition.html">TemplatePublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~UserdirPublisherDefinition.html">UserdirPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~WeakPublisherDefinition.html">WeakPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~Zpfs_hdfsPublisherDefinition.html">Zpfs_hdfsPublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~Zpfs_s3PublisherDefinition.html">Zpfs_s3PublisherDefinition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/definitions/index.js~Zpfs_s3compatPublisherDefinition.html">Zpfs_s3compatPublisherDefinition</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/client.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { API_URL, isHttpsProtocol } from &apos;./utils/index&apos;
+import { ClientHelper } from &apos;./client-helper&apos;
+import { ConnectionStatusListener } from &apos;./connection/connection-status&apos;
+
+/**
+ * Client config object.
+ * @typedef {Object} ClientConfig
+ * @property {string} apiUrl - Api Url
+ * @property {string} sandboxId - Sandbox id
+ * @property {boolean} forceHttps - Force end to end HTTPS connection
+ * @property {function():AbstractHandshakeManager} handshakeStrategy - Handshake strategy
+ * @property {string} resource - Client resource id
+ */
+
+/**
+ * ZetaPush Client to connect
+ * @access public
+ * @example
+ * // Securized client with token based connection
+ * const client = new ZetaPush.Client({
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
+ *   handshakeStrategy() {
+ *     return ZetaPush.AuthentFactory.createWeakHandshake({
+ *       token: null
+  *    })
+ *   }
+ * })
+ * @example
+ * // Client with credentials based connection
+ * const client = new ZetaPush.Client({
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
+ *   handshakeStrategy() {
+ *     return ZetaPush.AuthentFactory.createSimpleHandshake({
+ *       login: &apos;&lt;USER-LOGIN&gt;&apos;,
+ *       password: &apos;&lt;USER-PASSWORD&gt;&apos;
+  *    })
+ *   }
+ * })
+ */
+export class Client {
+  /**
+   * @param {ClientConfig} config
+   * Create a new ZetaPush client
+   */
+  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(location), handshakeStrategy, resource = null }) {
+    /**
+     * @access private
+     * @type {ClientHelper}
+     */
+    this.helper = new ClientHelper({
+      apiUrl,
+      sandboxId,
+      forceHttps,
+      handshakeStrategy,
+      resource
+    })
+  }
+  /**
+   * Is client connected to ZetaPush
+   * @return boolean
+   */
+  isConnected() {
+    return this.helper.isConnected()
+  }
+  /**
+   * Connect client to ZetaPush
+   */
+  connect() {
+    this.helper.connect()
+  }
+  /**
+   * Disonnect client from ZetaPush
+   */
+  disconnect() {
+    this.helper.disconnect()
+  }
+  /**
+   * Create a macro publisher based on publisher definition for the given deployment id
+   * @param {{definition: class, deploymentId: string}} parameters
+   * @return {Object}
+   */
+  createMacroPublisher({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID }) {
+    return this.helper.createMacroPublisher(`/service/${this.getSandboxId()}/${deploymentId}`, definition)
+  }
+  /**
+   * Create a service publisher based on publisher definition for the given deployment id
+   * @param {{definition: class, deploymentId: string}} parameters
+   * @return {Object}
+   */
+  createServicePublisher({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID }) {
+    return this.helper.createServicePublisher(`/service/${this.getSandboxId()}/${deploymentId}`, definition)
+  }
+  /**
+   * Get the client sandbox id
+   * @return {string}
+   */
+  getSandboxId() {
+    return this.helper.getSandboxId()
+  }
+  /**
+   * Get the client resource
+   * @return {string}
+   */
+  getResource() {
+    return this.helper.getResource()
+  }
+  /**
+   * Get the client user id
+   * @return {string}
+   */
+  getUserId() {
+    return this.helper.getUserId()
+  }
+  /**
+   * Get the client session id
+   * @return {string}
+   */
+  getSessionId() {
+    return this.helper.getSessionId()
+  }
+  /**
+   * Subscribe all methods described in the listener for the given deploymentId
+   * @param {{deploymentId: string, listener: Object}} parameters
+   * @return {Object} subscription
+   * @example
+   * const stackServiceListener = {
+   *   list() {},
+   *   push() {},
+   *   update() {}
+   * }
+   * client.subscribe({
+   *   deploymentId: &apos;&lt;YOUR-STACK-DEPLOYMENT-ID&gt;&apos;,
+   *   listener: stackServiceListener
+   * })
+   */
+  subscribe({ deploymentId, listener }) {
+    return this.helper.subscribe(`/service/${this.getSandboxId()}/${deploymentId}`, listener)
+  }
+  /**
+   * Remove all subscriptions
+   * @param {Object} subscriptions
+   */
+  unsubscribe(subscriptions = {}) {
+    return this.helper.unsubscribe(subscriptions)
+  }
+  /**
+   * Create a publish/subscribe for a macro definition
+   * @param {{definition: class, deploymentId: string, listener: Object}} parameters
+   * @return {{publisher: Object, subscriptions: Object}}
+   */
+  createMacroPublisherSubscriber({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID, listener }) {
+    return {
+      publisher: this.createMacroPublisher({ definition, deploymentId }),
+      subscriptions: this.subscribe({ deploymentId, listener })
+    }
+  }
+  /**
+   * Create a publish/subscribe for a service definition
+   * @param {{definition: class, deploymentId: string, listener: Object}} parameters
+   * @return {{publisher: Object, subscriptions: Object}}
+   */
+  createServicePublisherSubscriber({ definition, deploymentId = definition.DEFAULT_DEPLOYMENT_ID, listener }) {
+    return {
+      publisher: this.createServicePublisher({ definition, deploymentId }),
+      subscriptions: this.subscribe({ deploymentId, listener })
+    }
+  }
+  /**
+   * Set new client resource value
+   * @param {string} resource
+   */
+  setResource(resource) {
+    this.helper.setResource(resource)
+  }
+  /**
+   * Add a connection listener to handle life cycle connection events
+   * @param {ConnectionStatusListener} listener
+   * @return {number} handler
+   */
+  addConnectionStatusListener(listener) {
+    return this.helper.addConnectionStatusListener(listener)
+  }
+  /**
+   * Remove a connection status listener
+   * @param {number} handler
+   */
+  removeConnectionStatusListener(handler) {
+    return this.helper.removeConnectionStatusListener(handler)
+  }
+  /**
+   * Force disconnect/connect with new handshake factory
+   * @param {function():AbstractHandshakeManager} handshakeStrategy
+   */
+  handshake(handshakeStrategy) {
+    this.disconnect()
+    if (handshakeStrategy) {
+      this.helper.setHandshakeStrategy(handshakeStrategy)
+    }
+    this.connect()
+  }
+  /**
+   * Set logging level
+   * Valid values are the strings &apos;error&apos;, &apos;warn&apos;, &apos;info&apos; and &apos;debug&apos;, from
+   * less verbose to more verbose.
+   * @param {string} level
+   */
+  setLogLevel(level) {
+    this.helper.setLogLevel(level)
+  }
+}
+
+/**
+ * Add shorthand connection status method
+ */
+Object.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) =&gt; {
+  // Only implements unsupported methods
+  if (!Client.prototype.hasOwnProperty(method)) {
+    Client.prototype[method] = function addListener(listener) {
+      return this.addConnectionStatusListener({
+        [method]: listener
+      })
+    }
+  }
+})
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
