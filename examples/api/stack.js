@@ -1,7 +1,7 @@
 const { WeakClient, definitions: { StackPublisherDefinition } } = ZetaPush
 
 const client = new WeakClient({
-  sandboxId: 'mv-BrBKU'
+  sandboxId: '0gDnCfo3'
 })
 
 const { publisher } = client.createServicePublisherSubscriber({

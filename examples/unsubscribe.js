@@ -1,5 +1,5 @@
 const client = new ZetaPush.WeakClient({
-  sandboxId: 'mv-BrBKU'
+  sandboxId: '0gDnCfo3'
 })
 
 const { publisher, subscriptions } = client.createServicePublisherSubscriber({

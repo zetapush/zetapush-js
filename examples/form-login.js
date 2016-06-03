@@ -4,7 +4,7 @@ const login = document.querySelector('input[name="login"]')
 const password = document.querySelector('input[name="password"]')
 
 const client = new ZetaPush.Client({
-  sandboxId: 'mv-BrBKU',
+  sandboxId: '0gDnCfo3',
   handshakeStrategy() {
     return ZetaPush.AuthentFactory.createSimpleHandshake({
       login: login.value,

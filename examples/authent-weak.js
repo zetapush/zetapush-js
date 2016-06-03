@@ -1,5 +1,5 @@
 const client = new ZetaPush.Client({
-  sandboxId: 'mv-BrBKU',
+  sandboxId: '0gDnCfo3',
   handshakeStrategy() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null

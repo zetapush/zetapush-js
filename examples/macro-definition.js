@@ -5,7 +5,7 @@ class HelloMacroDefinition extends ZetaPush.definitions.MacroPublisherDefinition
 }
 
 const client = new ZetaPush.WeakClient({
-  sandboxId: 'mv-BrBKU'
+  sandboxId: '0gDnCfo3'
 })
 
 const { publisher } = client.createMacroPublisherSubscriber({
