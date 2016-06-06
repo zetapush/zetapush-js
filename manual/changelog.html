@@ -45,6 +45,7 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/faq.html#frequently-asked-questions" data-ice="link">Frequently Asked Questions</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-call-subscribe-and-publish-to-a-zetapush-service-" data-ice="link">How to call  subscribe and publish to a ZetaPush service ?</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-force-zetapush-sdk-to-use-https-instead-http-" data-ice="link">How force ZetaPush SDK to use https instead http ?</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-use-zetapush-with-my-on-premise-backend-" data-ice="link">How to use ZetaPush with my on-premise backend ?</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-know-my-zetapush-sdk-version-" data-ice="link">How to know my ZetaPush SDK version ?</a></li>
@@ -54,7 +55,9 @@
     <h1 class="manual-toc-title"><a href="manual/changelog.html" data-ice="title">Changelog</a></h1>
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-beta-15-2016-06-03-" data-ice="link">2.0.0-beta.15 (2016-06-03)</a></li>
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-beta-16-2016-06-06-" data-ice="link">2.0.0-beta.16 (2016-06-06)</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/changelog.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-beta-15-2016-06-03-" data-ice="link">2.0.0-beta.15 (2016-06-03)</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/changelog.html#changes" data-ice="link">Changes</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-beta-14-2016-06-01-" data-ice="link">2.0.0-beta.14 (2016-06-01)</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/changelog.html#fix" data-ice="link">Fix</a></li>
@@ -109,7 +112,46 @@
     <span>&#xBB;</span>
     <span data-ice="title">Changelog</span>
   </div>
-  <div data-ice="content"><h1 id="2-0-0-beta-15-2016-06-03-">2.0.0-beta.15 (2016-06-03)</h1>
+  <div data-ice="content"><h1 id="2-0-0-beta-16-2016-06-06-">2.0.0-beta.16 (2016-06-06)</h1>
+<p>Major API simplification</p>
+<h3 id="breaking-changes">BREAKING CHANGES</h3>
+<ul>
+<li><strong>core:</strong> Add lib/client.createService()</li>
+<li><strong>core:</strong> Remove lib/client.createMacroPublisher()</li>
+<li><strong>core:</strong> Remove lib/client.createServicePublisher()</li>
+<li><strong>core:</strong> Remove lib/client.getSessionId()</li>
+<li><strong>core:</strong> Remove lib/client.subscribe()</li>
+<li><strong>core:</strong> Remove lib/client.createMacroPublisherSubscriber()</li>
+<li><strong>core:</strong> Remove lib/client.createServicePublisherSubscriber()</li>
+<li><strong>core:</strong> Remove lib/client.handshake()</li>
+<li><strong>core:</strong> Rename lib/definitions to lib/services</li>
+</ul>
+<p><strong>Before</strong></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var service = client.createServicePublisherSubscriber({
+  definition: ZetaPush.definitions.StackPublisherDefinition,
+    list: function (message) {
+      console.log(&apos;on list stack&apos;, message.data)
+    }
+  }
+})
+service.publisher.list({
+  stack: &apos;&lt;STACK-ID&gt;&apos;
+})</code>
+</code></pre>
+<p><strong>After</strong></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var service = client.createService({
+  type: ZetaPush.services.Stack,
+  listener: {
+    list: function (message) {
+      console.log(&apos;on list stack&apos;, message.data)
+    }
+  }
+})
+service.publisher.list({
+  stack: &apos;&lt;STACK-ID&gt;&apos;
+})</code>
+</code></pre>
+<h1 id="2-0-0-beta-15-2016-06-03-">2.0.0-beta.15 (2016-06-03)</h1>
 <h3 id="changes">Changes</h3>
 <ul>
 <li><strong>misc:</strong> Update internal default deployment id</li>
