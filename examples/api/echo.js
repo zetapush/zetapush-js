@@ -1,21 +1,20 @@
-const { WeakClient, definitions: { EchoPublisherDefinition } } = ZetaPush
-
-const client = new WeakClient({
+var client = new ZetaPush.WeakClient({
   sandboxId: '0gDnCfo3'
 })
 
-const { publisher, subscriptions } = client.createServicePublisherSubscriber({
+var service = client.createServicePublisherSubscriber({
+  definition: ZetaPush.definitions.EchoPublisherDefinition,
   listener: getGenericServiceListener({
-    definition: EchoPublisherDefinition,
-    handler: ({ channel, data, method }) => {
-      console.debug(`Stack::${method}`, { channel, data })
-      document.querySelector(`form[name="${method}"] [name="output"]`).value = JSON.stringify(data)
+    definition: ZetaPush.definitions.EchoPublisherDefinition,
+    handler: function (message) {
+      var method = message.method
+      console.debug(method, message)
+      document.querySelector('form[name="' + method + '"] [name="output"]').value = JSON.stringify(message.data)
     }
-  }),
-  definition: EchoPublisherDefinition
+  })
 })
 
-client.onSuccessfulHandshake((authentication) => {
+client.onSuccessfulHandshake(function (authentication) {
   console.debug('App::onSuccessfulHandshake', authentication)
 
   document.querySelector('i').textContent = `User Id: ${authentication.userId}`
@@ -23,13 +22,13 @@ client.onSuccessfulHandshake((authentication) => {
 
 client.connect()
 
-const main = document.querySelector('main')
+var main = document.querySelector('main')
 
-on({ node: main, type: 'click', selector: 'form button', handler: (event) => {
+on(main, 'click', 'form button', function (event) {
   event.preventDefault()
-  const { target } = event
-  const method = target.getAttribute('method')
-  const parameters = document.querySelector(`form[name="${method}"] [name="parameters"]`)
-  const params = JSON.parse(parameters.value)
-  publisher[method](params)
-}})
+  var target = event.target
+  var method = target.getAttribute('method')
+  var parameters = document.querySelector('form[name="' + method + '"] [name="parameters"]')
+  var params = JSON.parse(parameters.value)
+  service.publisher[method](params)
+})

@@ -1,5 +1,5 @@
-{
-  const getCurrentTarget = ({ node, target, selector }) => {
+(function () {
+  function getCurrentTarget(node, target, selector) {
     if (target.matches(selector)) {
       return target
     }
@@ -14,10 +14,10 @@
     return false
   }
 
-  const on = ({ node, type, selector = null, handler }) => {
-    node.addEventListener(type, (event) => {
-      const { target } = event
-      const current = (selector === null) ? node : getCurrentTarget({ node, target, selector })
+  function on(node, type, selector, handler) {
+    node.addEventListener(type, function (event) {
+      var target = event.target
+      var current = (selector === null) ? node : getCurrentTarget(node, target, selector)
       if (current) {
         handler.call(current, event)
       }
@@ -25,15 +25,16 @@
   }
   window.on = on
 
-  const dom = (tag, attributes = {}, ...children) => {
-    const element = document.createElement(tag)
-    for (const attribute in attributes) {
+  function dom(tag, attributes) {
+    var children = Array.prototype.slice.call(arguments, 2)
+    var element = document.createElement(tag)
+    for (var attribute in attributes) {
       if (attributes.hasOwnProperty(attribute)) {
         element.setAttribute(attribute, attributes[attribute])
       }
     }
-    const fragment = document.createDocumentFragment()
-    children.forEach((child) => {
+    var fragment = document.createDocumentFragment()
+    children.forEach(function (child) {
       if (typeof child === 'string') {
         child = document.createTextNode(child)
       }
@@ -44,12 +45,19 @@
   }
   window.dom = dom
 
-  const getGenericServiceListener = ({ definition, handler }) => {
-    const methods = ['error', ...Object.getOwnPropertyNames(definition.prototype).filter(property=>property!='constructor')]
-    return methods.reduce((listener, method) => {
-      listener[method] = ({ channel, data }) => handler({ channel, data, method })
+  function getGenericServiceListener(parameters) {
+    var definition = parameters.definition
+    var handler = parameters.handler
+    var methods = ['error'].concat(Object.getOwnPropertyNames(definition.prototype).filter(function (property) {
+      return property != 'constructor'
+    }))
+    return methods.reduce(function (listener, method) {
+      listener[method] = function (message) {
+        message.method = method
+        handler(message)
+      }
       return listener
     }, {})
   }
   window.getGenericServiceListener = getGenericServiceListener
-}
+}())

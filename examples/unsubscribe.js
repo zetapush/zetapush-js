@@ -1,35 +1,35 @@
-const client = new ZetaPush.WeakClient({
+var client = new ZetaPush.WeakClient({
   sandboxId: '0gDnCfo3'
 })
 
-const { publisher, subscriptions } = client.createServicePublisherSubscriber({
+var service = client.createServicePublisherSubscriber({
+  definition: ZetaPush.definitions.MacroPublisherDefinition,
   listener: {
-    error(message) {
+    error: function (message) {
       console.error('macro error', message.data)
     },
-    completed(message) {
+    completed: function (message) {
       console.log('macro completed', message.data.result)
     }
-  },
-  definition: ZetaPush.definitions.MacroPublisherDefinition
+  }
 })
 
-client.onConnectionEstablished(() => {
+client.onConnectionEstablished(function () {
   console.debug('onConnectionEstablished')
 })
 
 client.connect()
 
-document.querySelector('.js-SayHello').addEventListener('click', () => {
+document.querySelector('.js-SayHello').addEventListener('click', function () {
   console.log('.js-SayHello', 'click')
-  publisher.call({
+  service.publisher.call({
     name: 'hello',
     parameters: {
       value: 'World'
     }
   })
 })
-document.querySelector('.js-Unsubscribe').addEventListener('click', () => {
+document.querySelector('.js-Unsubscribe').addEventListener('click', function () {
   console.log('.js-Unsubscribe', 'click')
-  client.unsubscribe(subscriptions)
+  client.unsubscribe(service.subscriptions)
 })

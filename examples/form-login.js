@@ -1,11 +1,11 @@
-const aside = document.querySelector('aside')
-const form = document.querySelector('form')
-const login = document.querySelector('input[name="login"]')
-const password = document.querySelector('input[name="password"]')
+var aside = document.querySelector('aside')
+var form = document.querySelector('form')
+var login = document.querySelector('input[name="login"]')
+var password = document.querySelector('input[name="password"]')
 
-const client = new ZetaPush.Client({
+var client = new ZetaPush.Client({
   sandboxId: '0gDnCfo3',
-  handshakeStrategy() {
+  handshakeStrategy: function () {
     return ZetaPush.AuthentFactory.createSimpleHandshake({
       login: login.value,
       password: password.value
@@ -14,23 +14,23 @@ const client = new ZetaPush.Client({
 })
 
 client.addConnectionStatusListener({
-  onConnectionEstablished() {
+  onConnectionEstablished: function () {
     console.debug('onConnectionEstablished')
     aside.className = 'success'
     aside.textContent = 'ConnectionEstablished'
   },
-  onFailedHandshake(error) {
+  onFailedHandshake: function (error) {
     console.debug('onFailedHandshake', error)
     aside.className = 'error'
     aside.textContent = error
   },
-  onConnectionClosed() {
+  onConnectionClosed: function () {
     console.debug('onConnectionClosed')
     client.connect()
   }
 })
 
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', function (event) {
   event.preventDefault()
   client.connect()
 })

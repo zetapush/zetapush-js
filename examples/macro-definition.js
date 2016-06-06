@@ -1,29 +1,35 @@
-class HelloMacroDefinition extends ZetaPush.definitions.MacroPublisherDefinition {
-  hello({ value }) {
-    this.$publish('hello', { value })
-  }
+var MacroPublisherDefinition = ZetaPush.definitions.MacroPublisherDefinition
+function HelloMacroDefinition() {
+  MacroPublisherDefinition.apply(this, arguments)
 }
+HelloMacroDefinition.prototype = Object.create(MacroPublisherDefinition.prototype)
+HelloMacroDefinition.prototype.hello = function (value) {
+  this.$publish('hello', {
+    value: value
+  })
+}
+HelloMacroDefinition.DEFAULT_DEPLOYMENT_ID = MacroPublisherDefinition.DEFAULT_DEPLOYMENT_ID
 
-const client = new ZetaPush.WeakClient({
+var client = new ZetaPush.WeakClient({
   sandboxId: '0gDnCfo3'
 })
 
-const { publisher } = client.createMacroPublisherSubscriber({
+var service = client.createMacroPublisherSubscriber({
+  definition: HelloMacroDefinition,
   listener: {
-    error(message) {
+    error: function (message) {
       console.error('macro error', message.data)
     },
-    completed(message) {
+    completed: function (message) {
       console.log('macro completed', message.data.result)
     }
-  },
-  definition: HelloMacroDefinition
+  }
 })
 
-client.onConnectionEstablished(() => {
+client.onConnectionEstablished(function () {
   console.debug('onConnectionEstablished')
 
-  publisher.hello({
+  service.publisher.hello({
     value: 'World'
   })
 })
