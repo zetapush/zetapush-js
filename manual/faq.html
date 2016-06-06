@@ -45,10 +45,11 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/faq.html#frequently-asked-questions" data-ice="link">Frequently Asked Questions</a></li>
-<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-call-subscribe-and-publish-to-a-zetapush-service-" data-ice="link">How to call  subscribe and publish to a ZetaPush service ?</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-subscribe-and-publish-to-a-zetapush-service-" data-ice="link">How to subscribe and publish to a ZetaPush service ?</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-force-zetapush-sdk-to-use-https-instead-http-" data-ice="link">How force ZetaPush SDK to use https instead http ?</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-use-zetapush-with-my-on-premise-backend-" data-ice="link">How to use ZetaPush with my on-premise backend ?</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-know-my-zetapush-sdk-version-" data-ice="link">How to know my ZetaPush SDK version ?</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-change-log-level-" data-ice="link">How to change log level ?</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="changelog">
@@ -113,12 +114,12 @@
     <span data-ice="title">FAQ</span>
   </div>
   <div data-ice="content"><h1 id="frequently-asked-questions">Frequently Asked Questions</h1>
-<h2 id="how-to-call-subscribe-and-publish-to-a-zetapush-service-">How to call  subscribe and publish to a ZetaPush service ?</h2>
-<p>ZetaPush client allow you to declare a specific apiUrl</p>
+<h2 id="how-to-subscribe-and-publish-to-a-zetapush-service-">How to subscribe and publish to a ZetaPush service ?</h2>
+<p>ZetaPush Client provide a function <strong>createService({ type, listener })</strong></p>
 <pre><code class="lang-js"><code class="source-code prettyprint">var client = new ZetaPush.Client({ ... })
 // Create a service publisher mapping Stack service
 var service = client.createService({
-  type: ZetaPush.services.StackService,
+  type: ZetaPush.services.Stack,
   listener: {
     // callback fired when a list message is fired by ZetaPush
     list: function (message) {
@@ -146,6 +147,13 @@ service.publisher.list()</code>
 <h2 id="how-to-know-my-zetapush-sdk-version-">How to know my ZetaPush SDK version ?</h2>
 <p>ZetaPush SDK provide a top level constant VERSION</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">console.log(ZetaPush.VERSION)</code>
+</code></pre>
+<h2 id="how-to-change-log-level-">How to change log level ?</h2>
+<p>ZetaPush Client provide a function <strong>setLogLevel</strong></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var client = new ZetaPush.Client({
+  sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;
+})
+client.setLogLevel(&apos;debug&apos;)</code>
 </code></pre>
 </div>
 </div>
