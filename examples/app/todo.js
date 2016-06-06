@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
       stack: 'todo-list',
       guid: guid,
       data: {
-        text,
+        text: text,
         completed: target.checked
       }
     })
