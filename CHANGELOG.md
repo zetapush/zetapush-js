@@ -1,3 +1,50 @@
+# 2.0.0-beta.16 (2016-06-06)
+
+Major API simplification
+
+### BREAKING CHANGES
+
+* **core:** Add lib/client.createService()
+* **core:** Remove lib/client.createMacroPublisher()
+* **core:** Remove lib/client.createServicePublisher()
+* **core:** Remove lib/client.getSessionId()
+* **core:** Remove lib/client.subscribe()
+* **core:** Remove lib/client.createMacroPublisherSubscriber()
+* **core:** Remove lib/client.createServicePublisherSubscriber()
+* **core:** Remove lib/client.handshake()
+* **core:** Rename lib/definitions to lib/services
+
+**Before**
+
+```js
+var service = client.createServicePublisherSubscriber({
+  definition: ZetaPush.definitions.StackPublisherDefinition,
+    list: function (message) {
+      console.log('on list stack', message.data)
+    }
+  }
+})
+service.publisher.list({
+  stack: '<STACK-ID>'
+})
+```
+
+**After**
+
+```js
+var service = client.createService({
+  type: ZetaPush.services.Stack,
+  listener: {
+    list: function (message) {
+      console.log('on list stack', message.data)
+    }
+  }
+})
+service.publisher.list({
+  stack: '<STACK-ID>'
+})
+```
+
 # 2.0.0-beta.15 (2016-06-03)
 
 ### Changes

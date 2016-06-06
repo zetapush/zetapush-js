@@ -2,10 +2,10 @@ var client = new ZetaPush.WeakClient({
   sandboxId: '0gDnCfo3'
 })
 
-var service = client.createServicePublisherSubscriber({
-  definition: ZetaPush.definitions.StackPublisherDefinition,
+var service = client.createService({
+  type: ZetaPush.services.Stack,
   listener: getGenericServiceListener({
-    definition: ZetaPush.definitions.StackPublisherDefinition,
+    type: ZetaPush.services.Stack,
     handler: function (message) {
       var method = message.method
       console.debug(method, message)

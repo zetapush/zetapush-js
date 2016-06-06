@@ -82,7 +82,7 @@ const getSourceStream = () => {
 
 gulp.task('remote', (done) => {
   return request(REMOTE_DEFINITIONS_URL)
-    .pipe(fs.createWriteStream('./lib/definitions/index.js'))
+    .pipe(fs.createWriteStream('./lib/services/index.js'))
 })
 
 gulp.task('bundle', () => {

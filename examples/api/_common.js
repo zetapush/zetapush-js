@@ -46,9 +46,9 @@
   window.dom = dom
 
   function getGenericServiceListener(parameters) {
-    var definition = parameters.definition
+    var type = parameters.type
     var handler = parameters.handler
-    var methods = ['error'].concat(Object.getOwnPropertyNames(definition.prototype).filter(function (property) {
+    var methods = ['error'].concat(Object.getOwnPropertyNames(type.prototype).filter(function (property) {
       return property != 'constructor'
     }))
     return methods.reduce(function (listener, method) {

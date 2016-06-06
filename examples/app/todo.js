@@ -27,8 +27,8 @@ function getTodoItemDom(message, wrapper) {
   return wrapper ? dom('li', { 'class': completed ? 'completed' : '', 'data-guid': guid }, fragment) : fragment
 }
 // Create a service publish to interact with remote API
-var service = client.createServicePublisherSubscriber({
-  definition: ZetaPush.definitions.StackPublisherDefinition,
+var service = client.createService({
+  type: ZetaPush.services.Stack,
   listener: {
     // Triggered when api return list of stack elements
     list: function (message) {

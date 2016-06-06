@@ -2,8 +2,8 @@ var client = new ZetaPush.WeakClient({
   sandboxId: '0gDnCfo3'
 })
 
-var service = client.createServicePublisherSubscriber({
-  definition: ZetaPush.definitions.MacroPublisherDefinition,
+var service = client.createService({
+  type: ZetaPush.services.Macro,
   listener: {
     error: function (message) {
       console.error('macro error', message.data)
