@@ -1,14 +1,14 @@
 # Frequently Asked Questions
 
-## How to call  subscribe and publish to a ZetaPush service ?
+## How to subscribe and publish to a ZetaPush service ?
 
-ZetaPush client allow you to declare a specific apiUrl
+ZetaPush Client provide a function **createService({ type, listener })**
 
 ```js
 var client = new ZetaPush.Client({ ... })
 // Create a service publisher mapping Stack service
 var service = client.createService({
-  type: ZetaPush.services.StackService,
+  type: ZetaPush.services.Stack,
   listener: {
     // callback fired when a list message is fired by ZetaPush
     list: function (message) {
@@ -48,4 +48,15 @@ ZetaPush SDK provide a top level constant VERSION
 
 ```js
 console.log(ZetaPush.VERSION)
+```
+
+## How to change log level ?
+
+ZetaPush Client provide a function **setLogLevel**
+
+```js
+var client = new ZetaPush.Client({
+  sandboxId: '<YOUR-SANDBOX-ID>'
+})
+client.setLogLevel('debug')
 ```
