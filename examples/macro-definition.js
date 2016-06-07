@@ -1,46 +1,27 @@
-function _possibleConstructorReturn(self, call) {
-  if (!self) {
-    throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called')
-  }
-  return call && (typeof call === 'object' || typeof call === 'function') ? call : self
-}
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError('Cannot call a class as a function')
-  }
-}
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== 'function' && superClass !== null) {
-    throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass)
-  }
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
+/**
+ * ES2015 Polyfill to support class derivation
+ */
+function inherits(derived, parent) {
+  derived.prototype = Object.create(parent && parent.prototype, {
     constructor: {
-      value: subClass,
+      value: derived,
       enumerable: false,
       writable: true,
       configurable: true
     }
   })
-  if (superClass) {
-    Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass
-  }
+  Object.setPrototypeOf ? Object.setPrototypeOf(derived, parent) : derived.__proto__ = parent
 }
 
-var HelloMacro = function (_ZetaPush$services$Ma) {
-  _inherits(HelloMacro, _ZetaPush$services$Ma)
-  function HelloMacro() {
-    _classCallCheck(this, HelloMacro)
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(HelloMacro).apply(this, arguments))
-  }
-  HelloMacro.prototype.hello = function (value) {
-    this.$publish('hello', {
-      value: value
-    })
-  }
-  return HelloMacro
-}(ZetaPush.services.Macro)
+function HelloMacro() {
+  return ZetaPush.services.Macro.apply(this, arguments)
+}
+inherits(HelloMacro, ZetaPush.services.Macro)
+HelloMacro.prototype.hello = function (value) {
+  this.$publish('hello', {
+    value: value
+  })
+}
 
 var client = new ZetaPush.WeakClient({
   sandboxId: '0gDnCfo3'
