@@ -24,11 +24,11 @@ client.connect()
 
 var main = document.querySelector('main')
 
-on(main, 'click', 'form button', function (event) {
+on(main, 'submit', 'form', function (event) {
   event.preventDefault()
   var target = event.target
-  var method = target.getAttribute('method')
-  var parameters = document.querySelector('form[name="' + method + '"] [name="parameters"]')
+  var method = target.getAttribute('name')
+  var parameters = target.querySelector('[name="parameters"]')
   var params = JSON.parse(parameters.value)
   service.publisher[method](params)
 })
