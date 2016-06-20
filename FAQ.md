@@ -17,7 +17,9 @@ var service = client.createService({
   }
 })
 // Request a list
-service.publisher.list()
+service.list({
+  stack: '<YOUR-STACK-ID>'
+})
 ```
 
 ## How force ZetaPush SDK to use **https** instead **http** ?
