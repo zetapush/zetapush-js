@@ -130,7 +130,9 @@ var service = client.createService({
   }
 })
 // Request a list
-service.publisher.list()</code>
+service.list({
+  stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
+})</code>
 </code></pre>
 <h2 id="how-force-zetapush-sdk-to-use-https-instead-http-">How force ZetaPush SDK to use <strong>https</strong> instead <strong>http</strong> ?</h2>
 <p>ZetaPush client allow you to declare a specific apiUrl</p>
