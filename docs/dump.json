@@ -7319,7 +7319,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { Client } from './client'\nimport { AuthentFactory } from './authentication/handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'\n\n/**\n * WeakClient config object.\n * @typedef {Object} WeakClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} deploymentId - Authentication deployment id\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n */\n\n/**\n * @access public\n * @extends {Client}\n */\nexport class WeakClient extends Client {\n  /**\n   * Create a new ZetaPush smart client\n   * @param {WeakClientConfig} config\n   * @example\n   * // Smart client\n   * const client = new ZetaPush.WeakClient({\n   *   sandboxId: '<YOUR-SANDBOX-ID-ID>'\n   * })\n   */\n  constructor({ apiUrl, sandboxId, deploymentId, forceHttps, resource }) {\n    const handshakeStrategy = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     *\n     */\n    super({ apiUrl , sandboxId, forceHttps, handshakeStrategy, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('WeakClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('WeakClient::onFailedHandshake', error)\n    }\n    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new LocalStorageTokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
+    "content": "import { Client } from './client'\nimport { AuthentFactory } from './authentication/handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'\n\n/**\n * WeakClient config object.\n * @typedef {Object} WeakClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} deploymentId - Authentication deployment id\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n */\n\n/**\n * @access public\n * @extends {Client}\n * @example\n * // Create a new WeakClient\n * const client = new ZetaPush.WeakClient({\n *   sandboxId: '<YOUR-SANDBOX-ID>'\n * })\n */\nexport class WeakClient extends Client {\n  /**\n   * Create a new ZetaPush smart client\n   * @param {WeakClientConfig} config\n   */\n  constructor({ apiUrl, sandboxId, deploymentId, forceHttps, resource }) {\n    const handshakeStrategy = () => {\n      const token = this.getToken()\n      const handshake = AuthentFactory.createWeakHandshake({\n        deploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     * Call Client constructor with specific parameters\n     */\n    super({ apiUrl , sandboxId, forceHttps, handshakeStrategy, resource })\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      console.debug('WeakClient::onSuccessfulHandshake', { publicToken, userId, token })\n\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    const onFailedHandshake = (error) => {\n      console.debug('WeakClient::onFailedHandshake', error)\n    }\n    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new LocalStorageTokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
   },
   {
     "__docId__": 303,
@@ -7404,7 +7404,10 @@
     "importPath": "zetapush-js/lib/weak-client.js",
     "importStyle": "{WeakClient}",
     "description": "",
-    "lineNumber": 19,
+    "examples": [
+      "// Create a new WeakClient\nconst client = new ZetaPush.WeakClient({\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})"
+    ],
+    "lineNumber": 24,
     "interface": false,
     "extends": [
       "Client"
@@ -7420,9 +7423,6 @@
     "longname": "lib/weak-client.js~WeakClient#constructor",
     "access": null,
     "description": "Create a new ZetaPush smart client",
-    "examples": [
-      "// Smart client\nconst client = new ZetaPush.WeakClient({\n  sandboxId: '<YOUR-SANDBOX-ID-ID>'\n})"
-    ],
     "lineNumber": 29,
     "params": [
       {

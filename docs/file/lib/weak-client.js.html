@@ -88,16 +88,16 @@ import { LocalStorageTokenPersistenceStrategy } from &apos;./utils/token-persist
 /**
  * @access public
  * @extends {Client}
+ * @example
+ * // Create a new WeakClient
+ * const client = new ZetaPush.WeakClient({
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;
+ * })
  */
 export class WeakClient extends Client {
   /**
    * Create a new ZetaPush smart client
    * @param {WeakClientConfig} config
-   * @example
-   * // Smart client
-   * const client = new ZetaPush.WeakClient({
-   *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID-ID&gt;&apos;
-   * })
    */
   constructor({ apiUrl, sandboxId, deploymentId, forceHttps, resource }) {
     const handshakeStrategy = () =&gt; {
@@ -109,7 +109,7 @@ export class WeakClient extends Client {
       return handshake
     }
     /**
-     *
+     * Call Client constructor with specific parameters
      */
     super({ apiUrl , sandboxId, forceHttps, handshakeStrategy, resource })
     const onSuccessfulHandshake = ({ publicToken, userId, token }) =&gt; {
