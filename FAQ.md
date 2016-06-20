@@ -12,7 +12,7 @@ var service = client.createService({
   listener: {
     // callback fired when a list message is fired by ZetaPush
     list: function (message) {
-      console.log('cal')
+      console.log('list callback', message)
     }
   }
 })
