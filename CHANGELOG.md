@@ -1,3 +1,44 @@
+# 2.0.0-beta.17 (2016-06-20)
+
+Major API simplification
+
+### BREAKING CHANGES
+
+* **core:** Update lib/client.createService()
+* **core:** Update lib/client.unsubscribe()
+
+**Before**
+
+```js
+var service = client.createService({
+  type: ZetaPush.services.Stack,
+  listener: {
+    list: function (message) {
+      console.log('on list stack', message.data)
+    }
+  }
+})
+service.publisher.list({
+  stack: '<STACK-ID>'
+})
+```
+
+**After**
+
+```js
+var service = client.createService({
+  type: ZetaPush.services.Stack,
+  listener: {
+    list: function (message) {
+      console.log('on list stack', message.data)
+    }
+  }
+})
+service.list({
+  stack: '<STACK-ID>'
+})
+```
+
 # 2.0.0-beta.16 (2016-06-06)
 
 Major API simplification
