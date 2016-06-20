@@ -88,14 +88,33 @@
 <pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;//cdn.rawgit.com/zetapush/zetapush-js/v2.0.0-beta.17/dist/zetapush.js&quot;&gt;&lt;/script&gt;</code>
 </code></pre>
 <h2 id="usage">Usage</h2>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">const client = new ZetaPush.Client({
+<pre><code class="lang-js"><code class="source-code prettyprint">// Create new ZetaPush Client
+var client = new ZetaPush.Client({
   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
-  handshakeStrategy() {
+  handshakeStrategy: function() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null
     })
   }
-})</code>
+})
+// Create a service
+var service = client.createService({
+  type: ZetaPush.services.Stack,
+  listener: {
+    list: function(message) {
+      console.log(&apos;list callback&apos;, message)
+    }
+  }
+})
+// Add connection listener
+client.onConnectionEstablished(function () {
+  // Call service methods
+  service.list({
+    stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
+  })
+})
+// Connect client to ZetaPush backend
+client.connect()</code>
 </code></pre>
 </div>
 </div>
