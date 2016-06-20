@@ -92,73 +92,71 @@ client.onConnectionEstablished(function () {
 // Connect client
 client.connect()
 
-document.addEventListener('DOMContentLoaded', function () {
-  var main = document.querySelector('main')
-  var todo = document.querySelector('[name="todo"]')
+var main = document.querySelector('main')
+var todo = document.querySelector('[name="todo"]')
 
-  on(main, 'submit', '.header form', function (event) {
-    event.preventDefault()
-    service.publisher.push({
-      stack: 'todo-list',
-      data: {
-        text: todo.value,
-        completed: false
-      }
-    })
-  })
-  on(main, 'change', '.toggle', function (event) {
-    var target = event.target
-    var guid = target.dataset.guid
-    var text = target.dataset.text
-    service.publisher.update({
-      stack: 'todo-list',
-      guid: guid,
-      data: {
-        text: text,
-        completed: target.checked
-      }
-    })
-  })
-  on(main, 'click', '.destroy', function (event) {
-    var target = event.target
-    var guid = target.dataset.guid
-    service.publisher.remove({
-      stack: 'todo-list',
-      guids: [guid]
-    })
-  })
-  on(main, 'click', '.clear-all', function (event) {
-    service.publisher.purge({
-      stack: 'todo-list'
-    })
-  })
-  on(main, 'dblclick', 'li:not(.completed) label', function (event) {
-    var target = event.target
-    var li = target.parentNode.parentNode
-    li.classList.add('editing')
-    li.querySelector('form input.edit').focus()
-  })
-  on(main, 'submit', '.todo-list form', function (event) {
-    event.preventDefault()
-    var target = event.target
-    var input = target.querySelector('input')
-    var guid = target.dataset.guid
-    service.publisher.update({
-      stack: 'todo-list',
-      guid: guid,
-      data: {
-        text: input.value,
-        completed: false
-      }
-    })
-  })
-  on(document.documentElement, 'click', null, function (event) {
-    var target = event.target
-    if (!target.classList.contains('edit')) {
-      var items = Array.from(document.querySelectorAll('.todo-list li'))
-      items.forEach(function (item) {
-        item.classList.remove('editing')
-      })
+on(main, 'submit', '.header form', function (event) {
+  event.preventDefault()
+  service.publisher.push({
+    stack: 'todo-list',
+    data: {
+      text: todo.value,
+      completed: false
     }
   })
+})
+on(main, 'change', '.toggle', function (event) {
+  var target = event.target
+  var guid = target.dataset.guid
+  var text = target.dataset.text
+  service.publisher.update({
+    stack: 'todo-list',
+    guid: guid,
+    data: {
+      text: text,
+      completed: target.checked
+    }
+  })
+})
+on(main, 'click', '.destroy', function (event) {
+  var target = event.target
+  var guid = target.dataset.guid
+  service.publisher.remove({
+    stack: 'todo-list',
+    guids: [guid]
+  })
+})
+on(main, 'click', '.clear-all', function (event) {
+  service.publisher.purge({
+    stack: 'todo-list'
+  })
+})
+on(main, 'dblclick', 'li:not(.completed) label', function (event) {
+  var target = event.target
+  var li = target.parentNode.parentNode
+  li.classList.add('editing')
+  li.querySelector('form input.edit').focus()
+})
+on(main, 'submit', '.todo-list form', function (event) {
+  event.preventDefault()
+  var target = event.target
+  var input = target.querySelector('input')
+  var guid = target.dataset.guid
+  service.publisher.update({
+    stack: 'todo-list',
+    guid: guid,
+    data: {
+      text: input.value,
+      completed: false
+    }
+  })
+})
+on(document.documentElement, 'click', null, function (event) {
+  var target = event.target
+  if (!target.classList.contains('edit')) {
+    var items = Array.from(document.querySelectorAll('.todo-list li'))
+    items.forEach(function (item) {
+      item.classList.remove('editing')
+    })
+  }
 })
