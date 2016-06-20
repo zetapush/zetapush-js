@@ -97,7 +97,7 @@ var client = new ZetaPush.Client({
     })
   }
 })
-// Create a service
+// Create a Stack service
 var service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
@@ -113,7 +113,7 @@ client.onConnectionEstablished(function () {
     stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
   })
 })
-// Connect client to ZetaPush backend
+// Connect client to ZetaPush BaaS
 client.connect()</code>
 </code></pre>
 </div>
