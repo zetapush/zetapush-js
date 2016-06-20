@@ -1,7 +1,6 @@
 var client = new ZetaPush.WeakClient({
   sandboxId: '0gDnCfo3'
 })
-
 var service = client.createService({
   type: ZetaPush.services.Macro,
   listener: {
@@ -13,13 +12,12 @@ var service = client.createService({
     }
   }
 })
-
+// Add connection listener
 client.onConnectionEstablished(function () {
   console.debug('onConnectionEstablished')
 })
-
+// Connect client to ZetaPush BaaS
 client.connect()
-
 document.querySelector('.js-SayHello').addEventListener('click', function () {
   console.log('.js-SayHello', 'click')
   service.call({

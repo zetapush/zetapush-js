@@ -12,7 +12,6 @@ function inherits(derived, parent) {
   })
   Object.setPrototypeOf ? Object.setPrototypeOf(derived, parent) : derived.__proto__ = parent
 }
-
 function HelloMacro() {
   return ZetaPush.services.Macro.apply(this, arguments)
 }
@@ -22,7 +21,7 @@ HelloMacro.prototype.hello = function (value) {
     value: value
   })
 }
-
+// Create new ZetaPush Client
 var client = new ZetaPush.WeakClient({
   sandboxId: '0gDnCfo3'
 })
@@ -38,7 +37,6 @@ var service = client.createService({
     }
   }
 })
-
 client.onConnectionEstablished(function () {
   console.debug('onConnectionEstablished')
 
@@ -46,5 +44,5 @@ client.onConnectionEstablished(function () {
     value: 'World'
   })
 })
-
+// Connect client to ZetaPush BaaS
 client.connect()
