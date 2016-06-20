@@ -42,7 +42,7 @@ var service = client.createService({
 client.onConnectionEstablished(function () {
   console.debug('onConnectionEstablished')
 
-  service.publisher.hello({
+  service.hello({
     value: 'World'
   })
 })

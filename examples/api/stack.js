@@ -30,5 +30,5 @@ on(main, 'submit', 'form', function (event) {
   var method = target.getAttribute('name')
   var parameters = target.querySelector('[name="parameters"]')
   var params = JSON.parse(parameters.value)
-  service.publisher[method](params)
+  service[method](params)
 })

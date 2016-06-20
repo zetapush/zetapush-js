@@ -23,7 +23,7 @@ client.onConnectionClosed(function () {
 
 document.querySelector('.js-SayHello').addEventListener('click', function () {
   console.log('.js-SayHello', 'click')
-  service.publisher.call({
+  service.call({
     name: 'hello',
     parameters: {
       value: 'World'

@@ -85,7 +85,7 @@ var service = client.createService({
 })
 // Add listener to life cycle connection events
 client.onConnectionEstablished(function () {
-  service.publisher.list({
+  service.list({
     stack: 'todo-list'
   })
 })
@@ -97,7 +97,7 @@ var todo = document.querySelector('[name="todo"]')
 
 on(main, 'submit', '.header form', function (event) {
   event.preventDefault()
-  service.publisher.push({
+  service.push({
     stack: 'todo-list',
     data: {
       text: todo.value,
@@ -109,7 +109,7 @@ on(main, 'change', '.toggle', function (event) {
   var target = event.target
   var guid = target.dataset.guid
   var text = target.dataset.text
-  service.publisher.update({
+  service.update({
     stack: 'todo-list',
     guid: guid,
     data: {
@@ -121,13 +121,13 @@ on(main, 'change', '.toggle', function (event) {
 on(main, 'click', '.destroy', function (event) {
   var target = event.target
   var guid = target.dataset.guid
-  service.publisher.remove({
+  service.remove({
     stack: 'todo-list',
     guids: [guid]
   })
 })
 on(main, 'click', '.clear-all', function (event) {
-  service.publisher.purge({
+  service.purge({
     stack: 'todo-list'
   })
 })
@@ -142,7 +142,7 @@ on(main, 'submit', '.todo-list form', function (event) {
   var target = event.target
   var input = target.querySelector('input')
   var guid = target.dataset.guid
-  service.publisher.update({
+  service.update({
     stack: 'todo-list',
     guid: guid,
     data: {

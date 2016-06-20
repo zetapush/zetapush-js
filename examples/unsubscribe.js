@@ -22,7 +22,7 @@ client.connect()
 
 document.querySelector('.js-SayHello').addEventListener('click', function () {
   console.log('.js-SayHello', 'click')
-  service.publisher.call({
+  service.call({
     name: 'hello',
     parameters: {
       value: 'World'
@@ -31,5 +31,5 @@ document.querySelector('.js-SayHello').addEventListener('click', function () {
 })
 document.querySelector('.js-Unsubscribe').addEventListener('click', function () {
   console.log('.js-Unsubscribe', 'click')
-  client.unsubscribe(service.subscriptions)
+  client.unsubscribe(service)
 })
