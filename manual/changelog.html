@@ -56,7 +56,9 @@
     <h1 class="manual-toc-title"><a href="manual/changelog.html" data-ice="title">Changelog</a></h1>
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-beta-16-2016-06-06-" data-ice="link">2.0.0-beta.16 (2016-06-06)</a></li>
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-beta-17-2016-06-20-" data-ice="link">2.0.0-beta.17 (2016-06-20)</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/changelog.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-beta-16-2016-06-06-" data-ice="link">2.0.0-beta.16 (2016-06-06)</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/changelog.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-beta-15-2016-06-03-" data-ice="link">2.0.0-beta.15 (2016-06-03)</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/changelog.html#changes" data-ice="link">Changes</a></li>
@@ -113,7 +115,40 @@
     <span>&#xBB;</span>
     <span data-ice="title">Changelog</span>
   </div>
-  <div data-ice="content"><h1 id="2-0-0-beta-16-2016-06-06-">2.0.0-beta.16 (2016-06-06)</h1>
+  <div data-ice="content"><h1 id="2-0-0-beta-17-2016-06-20-">2.0.0-beta.17 (2016-06-20)</h1>
+<p>Major API simplification</p>
+<h3 id="breaking-changes">BREAKING CHANGES</h3>
+<ul>
+<li><strong>core:</strong> Update lib/client.createService()</li>
+<li><strong>core:</strong> Update lib/client.unsubscribe()</li>
+</ul>
+<p><strong>Before</strong></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var service = client.createService({
+  type: ZetaPush.services.Stack,
+  listener: {
+    list: function (message) {
+      console.log(&apos;on list stack&apos;, message.data)
+    }
+  }
+})
+service.publisher.list({
+  stack: &apos;&lt;STACK-ID&gt;&apos;
+})</code>
+</code></pre>
+<p><strong>After</strong></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">var service = client.createService({
+  type: ZetaPush.services.Stack,
+  listener: {
+    list: function (message) {
+      console.log(&apos;on list stack&apos;, message.data)
+    }
+  }
+})
+service.list({
+  stack: &apos;&lt;STACK-ID&gt;&apos;
+})</code>
+</code></pre>
+<h1 id="2-0-0-beta-16-2016-06-06-">2.0.0-beta.16 (2016-06-06)</h1>
 <p>Major API simplification</p>
 <h3 id="breaking-changes">BREAKING CHANGES</h3>
 <ul>
