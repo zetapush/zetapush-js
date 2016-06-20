@@ -33,15 +33,34 @@ From CDN
 
 ## Usage
 
-```javascript
-const client = new ZetaPush.Client({
+```js
+// Create new ZetaPush Client
+var client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
-  handshakeStrategy() {
+  handshakeStrategy: function() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null
     })
   }
 })
+// Create a service
+var service = client.createService({
+  type: ZetaPush.services.Stack,
+  listener: {
+    list: function(message) {
+      console.log('list callback', message)
+    }
+  }
+})
+// Add connection listener
+client.onConnectionEstablished(function () {
+  // Call service methods
+  service.list({
+    stack: '<YOUR-STACK-ID>'
+  })
+})
+// Connect client to ZetaPush backend
+client.connect()
 ```
 
 [npm-version-image]: http://img.shields.io/npm/v/zetapush-js.svg?style=flat-square
