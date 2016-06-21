@@ -1,3 +1,39 @@
+# 2.0.0-beta.18 (2016-06-21)
+
+Major API modification
+
+### BREAKING CHANGES
+
+* **core:** Update lib/client.constructor()
+
+**Before**
+
+```js
+// Create new ZetaPush Client
+var client = new ZetaPush.Client({
+  sandboxId: '<YOUR-SANDBOX-ID>',
+  handshakeStrategy: function() {
+    return ZetaPush.AuthentFactory.createWeakHandshake({
+      token: null
+    })
+  }
+})
+```
+
+**After**
+
+```js
+// Create new ZetaPush Client
+var client = new ZetaPush.Client({
+  sandboxId: '<YOUR-SANDBOX-ID>',
+  credentials: function() {
+    return ZetaPush.AuthentFactory.createWeakHandshake({
+      token: null
+    })
+  }
+})
+```
+
 # 2.0.0-beta.17 (2016-06-20)
 
 Major API simplification

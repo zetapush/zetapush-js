@@ -8,7 +8,7 @@
 From bower
 
 ```console
-bower install zetapush-js#2.0.0-beta.17 --save
+bower install zetapush-js#2.0.0-beta.18 --save
 ```
 
 ```html
@@ -18,7 +18,7 @@ bower install zetapush-js#2.0.0-beta.17 --save
 From npm
 
 ```console
-npm install zetapush-js@2.0.0-beta.17 --save
+npm install zetapush-js@2.0.0-beta.18 --save
 ```
 
 ```js
@@ -28,7 +28,7 @@ import { Client } from 'zetapush-js/lib/client'
 From CDN
 
 ```html
-<script src="//cdn.rawgit.com/zetapush/zetapush-js/v2.0.0-beta.17/dist/zetapush.js"></script>
+<script src="//cdn.rawgit.com/zetapush/zetapush-js/v2.0.0-beta.18/dist/zetapush.js"></script>
 ```
 
 ## Usage
@@ -37,7 +37,7 @@ From CDN
 // Create new ZetaPush Client
 var client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
-  handshakeStrategy: function() {
+  credentials: function() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null
     })
