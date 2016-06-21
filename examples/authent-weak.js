@@ -1,7 +1,7 @@
 // Create new ZetaPush Client
 var client = new ZetaPush.Client({
   sandboxId: '0gDnCfo3',
-  handshakeStrategy: function () {
+  credentials: function () {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null
     })

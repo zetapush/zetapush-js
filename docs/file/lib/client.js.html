@@ -81,7 +81,7 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
  * @property {string} apiUrl - Api Url
  * @property {string} sandboxId - Sandbox id
  * @property {boolean} forceHttps - Force end to end HTTPS connection
- * @property {function():AbstractHandshakeManager} handshakeStrategy - Handshake strategy
+ * @property {function():AbstractHandshake} credentials - Return credentials properties
  * @property {string} resource - Client resource id
  */
 
@@ -90,9 +90,9 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
  * @access public
  * @example
  * // Securized client with token based connection
- * const client = new ZetaPush.Client({
+ * var client = new ZetaPush.Client({
  *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
- *   handshakeStrategy() {
+ *   credentials: function () {
  *     return ZetaPush.AuthentFactory.createWeakHandshake({
  *       token: null
   *    })
@@ -100,9 +100,9 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
  * })
  * @example
  * // Client with credentials based connection
- * const client = new ZetaPush.Client({
+ * var client = new ZetaPush.Client({
  *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
- *   handshakeStrategy() {
+ *   credentials: function () {
  *     return ZetaPush.AuthentFactory.createSimpleHandshake({
  *       login: &apos;&lt;USER-LOGIN&gt;&apos;,
  *       password: &apos;&lt;USER-PASSWORD&gt;&apos;
@@ -115,7 +115,7 @@ export class Client {
    * @param {ClientConfig} config
    * Create a new ZetaPush client
    */
-  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(location), handshakeStrategy, resource = null }) {
+  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(location), credentials, resource = null }) {
     /**
      * @access private
      * @type {ClientHelper}
@@ -124,7 +124,7 @@ export class Client {
       apiUrl,
       sandboxId,
       forceHttps,
-      handshakeStrategy,
+      credentials,
       resource
     })
   }

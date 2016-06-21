@@ -108,9 +108,9 @@
   <div class="example-doc" data-ice="exampleDoc">
       
       <pre class="prettyprint source-code"><code data-ice="exampleCode">// Securized client with token based connection
-const client = new ZetaPush.Client({
+var client = new ZetaPush.Client({
   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
-  handshakeStrategy() {
+  credentials: function () {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null
    })
@@ -120,9 +120,9 @@ const client = new ZetaPush.Client({
 <div class="example-doc" data-ice="exampleDoc">
       
       <pre class="prettyprint source-code"><code data-ice="exampleCode">// Client with credentials based connection
-const client = new ZetaPush.Client({
+var client = new ZetaPush.Client({
   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
-  handshakeStrategy() {
+  credentials: function () {
     return ZetaPush.AuthentFactory.createSimpleHandshake({
       login: &apos;&lt;USER-LOGIN&gt;&apos;,
       password: &apos;&lt;USER-PASSWORD&gt;&apos;

@@ -100,7 +100,7 @@ export class WeakClient extends Client {
    * @param {WeakClientConfig} config
    */
   constructor({ apiUrl, sandboxId, deploymentId, forceHttps, resource }) {
-    const handshakeStrategy = () =&gt; {
+    const credentials = () =&gt; {
       const token = this.getToken()
       const handshake = AuthentFactory.createWeakHandshake({
         deploymentId,
@@ -111,7 +111,7 @@ export class WeakClient extends Client {
     /**
      * Call Client constructor with specific parameters
      */
-    super({ apiUrl , sandboxId, forceHttps, handshakeStrategy, resource })
+    super({ apiUrl , sandboxId, forceHttps, credentials, resource })
     const onSuccessfulHandshake = ({ publicToken, userId, token }) =&gt; {
       console.debug(&apos;WeakClient::onSuccessfulHandshake&apos;, { publicToken, userId, token })
 

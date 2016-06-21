@@ -1,7 +1,7 @@
 // Create new ZetaPush Client
 var client = new ZetaPush.Client({
   sandboxId: '0gDnCfo3',
-  handshakeStrategy: function () {
+  credentials: function () {
     return ZetaPush.AuthentFactory.createSimpleHandshake({
       login: document.querySelector('input[name="login"]').value,
       password: document.querySelector('input[name="password"]').value
