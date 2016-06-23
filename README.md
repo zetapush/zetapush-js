@@ -35,25 +35,25 @@ From CDN
 
 ```js
 // Create new ZetaPush Client
-var client = new ZetaPush.Client({
+const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
-  credentials: function() {
+  credentials() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null
     })
   }
 })
 // Create a Stack service
-var service = client.createService({
+const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
-    list: function(message) {
+    list(message) {
       console.log('list callback', message)
     }
   }
 })
 // Add connection listener
-client.onConnectionEstablished(function () {
+client.onConnectionEstablished(() => {
   // Call service methods
   service.list({
     stack: '<YOUR-STACK-ID>'

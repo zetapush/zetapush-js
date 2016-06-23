@@ -89,25 +89,25 @@
 </code></pre>
 <h2 id="usage">Usage</h2>
 <pre><code class="lang-js"><code class="source-code prettyprint">// Create new ZetaPush Client
-var client = new ZetaPush.Client({
+const client = new ZetaPush.Client({
   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
-  credentials: function() {
+  credentials() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null
     })
   }
 })
 // Create a Stack service
-var service = client.createService({
+const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
-    list: function(message) {
+    list(message) {
       console.log(&apos;list callback&apos;, message)
     }
   }
 })
 // Add connection listener
-client.onConnectionEstablished(function () {
+client.onConnectionEstablished(() =&gt; {
   // Call service methods
   service.list({
     stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;

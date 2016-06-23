@@ -10,9 +10,9 @@ Major API modification
 
 ```js
 // Create new ZetaPush Client
-var client = new ZetaPush.Client({
+const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
-  handshakeStrategy: function() {
+  handshakeStrategy() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null
     })
@@ -24,9 +24,9 @@ var client = new ZetaPush.Client({
 
 ```js
 // Create new ZetaPush Client
-var client = new ZetaPush.Client({
+const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
-  credentials: function() {
+  credentials() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null
     })
@@ -46,10 +46,10 @@ Major API simplification
 **Before**
 
 ```js
-var service = client.createService({
+const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
-    list: function (message) {
+    list(message) {
       console.log('on list stack', message.data)
     }
   }
@@ -62,10 +62,10 @@ service.publisher.list({
 **After**
 
 ```js
-var service = client.createService({
+const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
-    list: function (message) {
+    list(message) {
       console.log('on list stack', message.data)
     }
   }
@@ -109,10 +109,10 @@ service.publisher.list({
 **After**
 
 ```js
-var service = client.createService({
+const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
-    list: function (message) {
+    list(message) {
       console.log('on list stack', message.data)
     }
   }

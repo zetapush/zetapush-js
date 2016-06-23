@@ -1,28 +1,28 @@
 // Create new ZetaPush Client
-var client = new ZetaPush.WeakClient({
-  sandboxId: '0gDnCfo3'
+const client = new ZetaPush.WeakClient({
+  sandboxId: 'Y1k3xBDc'
 })
 // Create a Macro service
-var service = client.createService({
+const service = client.createService({
   type: ZetaPush.services.Macro,
   listener: {
-    error: function (message) {
-      console.error('macro error', message.data)
+    error({ data }) {
+      console.error('macro error', data)
     },
-    completed: function (message) {
-      console.log('macro completed', message.data.result)
+    completed({ data }) {
+      console.log('macro completed', data.result)
     }
   }
 })
 // Add connection establised listener
-client.onConnectionEstablished(function () {
+client.onConnectionEstablished(() => {
   console.debug('onConnectionEstablished')
 })
 // Add connection closed listener
-client.onConnectionClosed(function () {
+client.onConnectionClosed(() => {
   console.debug('onConnectionClosed')
 })
-document.querySelector('.js-SayHello').addEventListener('click', function () {
+document.querySelector('.js-SayHello').addEventListener('click', () => {
   console.log('.js-SayHello', 'click')
   service.call({
     name: 'hello',
@@ -31,12 +31,12 @@ document.querySelector('.js-SayHello').addEventListener('click', function () {
     }
   })
 })
-document.querySelector('.js-Connect').addEventListener('click', function () {
+document.querySelector('.js-Connect').addEventListener('click', () => {
   console.log('.js-Connect', 'click')
   // Connect client to ZetaPush BaaS
   client.connect()
 })
-document.querySelector('.js-Disconnect').addEventListener('click', function () {
+document.querySelector('.js-Disconnect').addEventListener('click', () => {
   console.log('.js-Disconnect', 'click')
   // Disconnect client from ZetaPush BaaS
   client.disconnect()

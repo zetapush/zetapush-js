@@ -45,6 +45,7 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/faq.html#frequently-asked-questions" data-ice="link">Frequently Asked Questions</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-use-es2015-features-https-babeljs-io-docs-learn-es2015-const-class-arrow-functions-on-my-project-today" data-ice="link">How to use ES2015 features (const, class, arrow functions, ...) on my project today</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-subscribe-and-publish-to-a-zetapush-service-" data-ice="link">How to subscribe and publish to a ZetaPush service ?</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-force-zetapush-sdk-to-use-https-instead-http-" data-ice="link">How force ZetaPush SDK to use https instead http ?</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-use-zetapush-with-my-on-premise-backend-" data-ice="link">How to use ZetaPush with my on-premise backend ?</a></li>
@@ -125,9 +126,9 @@
 </ul>
 <p><strong>Before</strong></p>
 <pre><code class="lang-js"><code class="source-code prettyprint">// Create new ZetaPush Client
-var client = new ZetaPush.Client({
+const client = new ZetaPush.Client({
   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
-  handshakeStrategy: function() {
+  handshakeStrategy() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null
     })
@@ -136,9 +137,9 @@ var client = new ZetaPush.Client({
 </code></pre>
 <p><strong>After</strong></p>
 <pre><code class="lang-js"><code class="source-code prettyprint">// Create new ZetaPush Client
-var client = new ZetaPush.Client({
+const client = new ZetaPush.Client({
   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
-  credentials: function() {
+  credentials() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
       token: null
     })
@@ -153,10 +154,10 @@ var client = new ZetaPush.Client({
 <li><strong>core:</strong> Update lib/client.unsubscribe()</li>
 </ul>
 <p><strong>Before</strong></p>
-<pre><code class="lang-js"><code class="source-code prettyprint">var service = client.createService({
+<pre><code class="lang-js"><code class="source-code prettyprint">const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
-    list: function (message) {
+    list(message) {
       console.log(&apos;on list stack&apos;, message.data)
     }
   }
@@ -166,10 +167,10 @@ service.publisher.list({
 })</code>
 </code></pre>
 <p><strong>After</strong></p>
-<pre><code class="lang-js"><code class="source-code prettyprint">var service = client.createService({
+<pre><code class="lang-js"><code class="source-code prettyprint">const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
-    list: function (message) {
+    list(message) {
       console.log(&apos;on list stack&apos;, message.data)
     }
   }
@@ -205,10 +206,10 @@ service.publisher.list({
 })</code>
 </code></pre>
 <p><strong>After</strong></p>
-<pre><code class="lang-js"><code class="source-code prettyprint">var service = client.createService({
+<pre><code class="lang-js"><code class="source-code prettyprint">const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
-    list: function (message) {
+    list(message) {
       console.log(&apos;on list stack&apos;, message.data)
     }
   }

@@ -1,17 +1,21 @@
 # Frequently Asked Questions
 
+## How to use [ES2015 features](https://babeljs.io/docs/learn-es2015/) (const, class, arrow functions, ...) on my project today
+
+ZetaPush source code and examples are written in plain [ES2015](http://kangax.github.io/compat-table/es6/), you can use [Babel to transpile your code](https://babeljs.io/docs/learn-es2015/)
+
 ## How to subscribe and publish to a ZetaPush service ?
 
 ZetaPush Client provide a function **createService({ type, listener })**
 
 ```js
-var client = new ZetaPush.Client({ ... })
+const client = new ZetaPush.Client({ ... })
 // Create a service publisher mapping Stack service
-var service = client.createService({
+const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
     // callback fired when a list message is fired by ZetaPush
-    list: function (message) {
+    list(message) {
       console.log('list callback', message)
     }
   }
@@ -27,7 +31,7 @@ service.list({
 ZetaPush client allow you to declare a specific apiUrl
 
 ```js
-var client = new ZetaPush.Client({
+const client = new ZetaPush.Client({
   forceHttps: true,
   sandboxId: '<YOUR-SANDBOX-ID>'
 })
@@ -38,7 +42,7 @@ var client = new ZetaPush.Client({
 ZetaPush client allow you to declare a specific apiUrl
 
 ```js
-var client = new ZetaPush.Client({
+const client = new ZetaPush.Client({
   apiUrl: '<YOUR-ON-PREMISE-URL>',
   sandboxId: '<YOUR-SANDBOX-ID>'
 })
@@ -57,7 +61,7 @@ console.log(ZetaPush.VERSION)
 ZetaPush Client provide a function **setLogLevel**
 
 ```js
-var client = new ZetaPush.Client({
+const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>'
 })
 client.setLogLevel('debug')

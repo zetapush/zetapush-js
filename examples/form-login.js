@@ -1,34 +1,34 @@
 // Create new ZetaPush Client
-var client = new ZetaPush.Client({
-  sandboxId: '0gDnCfo3',
-  credentials: function () {
+const client = new ZetaPush.Client({
+  sandboxId: 'Y1k3xBDc',
+  credentials() {
     return ZetaPush.AuthentFactory.createSimpleHandshake({
       login: document.querySelector('input[name="login"]').value,
       password: document.querySelector('input[name="password"]').value
     })
   }
 })
-var aside = document.querySelector('aside')
-var form = document.querySelector('form')
+const aside = document.querySelector('aside')
+const form = document.querySelector('form')
 // Add connections status handlers
 client.addConnectionStatusListener({
-  onConnectionEstablished: function () {
+  onConnectionEstablished() {
     console.debug('onConnectionEstablished')
     aside.className = 'success'
     aside.textContent = 'ConnectionEstablished'
   },
-  onFailedHandshake: function (error) {
+  onFailedHandshake(error) {
     console.debug('onFailedHandshake', error)
     aside.className = 'error'
     aside.textContent = error
   },
-  onConnectionClosed: function () {
+  onConnectionClosed() {
     console.debug('onConnectionClosed')
     client.connect()
   }
 })
 // Bind form submit event to connect user on ZetaPush
-form.addEventListener('submit', function (event) {
+form.addEventListener('submit', (event) => {
   event.preventDefault()
   client.connect()
 })

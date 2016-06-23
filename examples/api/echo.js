@@ -1,15 +1,14 @@
-var client = new ZetaPush.WeakClient({
-  sandboxId: '0gDnCfo3'
+const client = new ZetaPush.WeakClient({
+  sandboxId: 'Y1k3xBDc'
 })
 
-var service = client.createService({
+const service = client.createService({
   type: ZetaPush.services.Echo,
   listener: getGenericServiceListener({
     type: ZetaPush.services.Echo,
-    handler: function (message) {
-      var method = message.method
-      console.debug(method, message)
-      document.querySelector('form[name="' + method + '"] [name="output"]').value = JSON.stringify(message.data)
+    handler({ method, data }) {
+      console.debug(method, data)
+      document.querySelector(`form[name="${method}"] [name="output"]`).value = JSON.stringify(data)
     }
   })
 })
@@ -22,13 +21,13 @@ client.onSuccessfulHandshake(function (authentication) {
 
 client.connect()
 
-var main = document.querySelector('main')
+const main = document.querySelector('main')
 
-on(main, 'submit', 'form', function (event) {
+on(main, 'submit', 'form', (event) => {
   event.preventDefault()
-  var target = event.target
-  var method = target.getAttribute('name')
-  var parameters = target.querySelector('[name="parameters"]')
-  var params = JSON.parse(parameters.value)
+  const target = event.target
+  const method = target.getAttribute('name')
+  const parameters = target.querySelector('[name="parameters"]')
+  const params = JSON.parse(parameters.value)
   service[method](params)
 })
