@@ -87,7 +87,7 @@ gulp.task('remote', (done) => {
 
 gulp.task('bundle', () => {
   return merge(getVendorStream(), getSourceStream())
-    .pipe(concat('zetapush.js'))
+    .pipe(concat('zetapush.min.js'))
     .pipe(optimize ? uglify() : util.noop())
     .pipe(gulp.dest(paths.output))
 })
