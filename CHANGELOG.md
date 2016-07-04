@@ -1,3 +1,9 @@
+# 2.0.0-beta.19 (2016-07-04)
+
+### Changes
+
+* **dist** Add suffix min to build file
+
 # 2.0.0-beta.18 (2016-06-21)
 
 Major API modification
