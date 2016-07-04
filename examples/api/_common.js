@@ -26,7 +26,7 @@ function on(node, type, selector, handler) {
 
 function dom(tag, attributes = {}, ...children) {
   const element = document.createElement(tag)
-  for (const attribute in attributes) {
+  for (let attribute in attributes) {
     if (attributes.hasOwnProperty(attribute)) {
       element.setAttribute(attribute, attributes[attribute])
     }
