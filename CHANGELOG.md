@@ -1,3 +1,9 @@
+# 2.0.0-beta.21 (2016-07-05)
+
+### Fixes
+
+* **stand by** Update cometd version version to fix stand by bug
+
 # 2.0.0-beta.20 (2016-07-05)
 
 ### Changes
