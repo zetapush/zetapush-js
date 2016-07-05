@@ -31,9 +31,6 @@ process.env.ZETAPUSH_VERSION = pkg.version
 const getBabelifyConfig = () => {
   const text = fs.readFileSync('./.babelrc', 'utf8')
   const config = JSON.parse(text)
-  if (optimize) {
-    config.plugins.push('transform-remove-console')
-  }
   return config
 }
 
