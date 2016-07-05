@@ -1,3 +1,10 @@
+# 2.0.0-beta.20 (2016-07-05)
+
+### Changes
+
+* **log** Replace console.log in source code by cometd log layer
+* **examples** Update examples with new **zetapush.min.js** file name
+
 # 2.0.0-beta.19 (2016-07-04)
 
 ### Changes

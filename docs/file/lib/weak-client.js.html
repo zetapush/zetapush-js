@@ -113,16 +113,11 @@ export class WeakClient extends Client {
      */
     super({ apiUrl , sandboxId, forceHttps, credentials, resource })
     const onSuccessfulHandshake = ({ publicToken, userId, token }) =&gt; {
-      console.debug(&apos;WeakClient::onSuccessfulHandshake&apos;, { publicToken, userId, token })
-
       if (token) {
         this.strategy.set({ token })
       }
     }
-    const onFailedHandshake = (error) =&gt; {
-      console.debug(&apos;WeakClient::onFailedHandshake&apos;, error)
-    }
-    this.addConnectionStatusListener({ onFailedHandshake, onSuccessfulHandshake })
+    this.addConnectionStatusListener({ onSuccessfulHandshake })
     /**
      * @access private
      * @type {TokenPersistenceStrategy}

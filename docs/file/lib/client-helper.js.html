@@ -163,7 +163,7 @@ export class ClientHelper {
       }
     }
     this.cometd.addListener(&apos;/meta/handshake&apos;, ({ ext, successful, advice, error }) =&gt; {
-      console.debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
+      this.cometd._debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
       if (successful) {
         const { authentication = null } = ext
         this.initialized(authentication)
@@ -174,7 +174,7 @@ export class ClientHelper {
     })
 
     this.cometd.addListener(&apos;/meta/handshake&apos;, ({ advice, error, ext, successful }) =&gt; {
-      console.debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
+      this.cometd._debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
       // AuthNegotiation
       if (!successful) {
         if (&apos;undefined&apos; === typeof advice) {
@@ -190,7 +190,7 @@ export class ClientHelper {
     })
 
     this.cometd.addListener(&apos;/meta/connect&apos;, ({ advice, channel, successful }) =&gt; {
-      console.debug(&apos;ClientHelper::/meta/connect&apos;, { advice, channel, successful })
+      this.cometd._debug(&apos;ClientHelper::/meta/connect&apos;, { advice, channel, successful })
       // ConnectionListener
       if (this.cometd.isDisconnected()) {
         this.connected = false
@@ -218,7 +218,7 @@ export class ClientHelper {
     })
 
     this.cometd.addListener(&apos;/meta/disconnect&apos;, ({ channel, successful }) =&gt; {
-      console.debug(&apos;ClientHelper::/meta/disconnect&apos;, { channel, successful })
+      this.cometd._debug(&apos;ClientHelper::/meta/disconnect&apos;, { channel, successful })
       if (this.cometd.isDisconnected()) {
         this.connected = false
         // Notify connection is closed
@@ -356,7 +356,7 @@ export class ClientHelper {
    * Negociate authentication
    */
   negotiate(ext) {
-    console.debug(&apos;ClientHelper::negotiate&apos;, ext)
+    this.cometd._debug(&apos;ClientHelper::negotiate&apos;, ext)
   }
   /**
    * Disconnect CometD client
