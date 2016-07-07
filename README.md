@@ -22,7 +22,7 @@ npm install zetapush-js@2.0.0-beta.22 --save
 ```
 
 ```js
-import { Client } from 'zetapush-js/lib/client'
+import { Client } from 'zetapush-js'
 ```
 
 From CDN
