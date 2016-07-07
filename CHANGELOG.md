@@ -1,3 +1,9 @@
+# 2.0.0-beta.22 (2016-07-07)
+
+### Changes
+
+* **tools** Build file is now generated via webpack instead of gulp
+
 # 2.0.0-beta.21 (2016-07-05)
 
 ### Fixes
