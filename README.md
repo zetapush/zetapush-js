@@ -25,10 +25,10 @@ npm install zetapush-js@2.0.0-beta.22 --save
 import { Client } from 'zetapush-js'
 ```
 
-From CDN
+From CDN (npmcdn recommended)
 
 ```html
-<script src="//cdn.rawgit.com/zetapush/zetapush-js/v2.0.0-beta.22/dist/zetapush.min.js"></script>
+<script src="//npmcdn.com/zetapush-js@2.0.0-beta.22/dist/zetapush.min.js"></script>
 ```
 
 ## Usage
