@@ -1,3 +1,9 @@
+# 2.0.0-beta.22 (2016-07-08)
+
+### Fixes
+
+* **client** Expose user Id
+
 # 2.0.0-beta.22 (2016-07-07)
 
 ### Changes
