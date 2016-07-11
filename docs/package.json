@@ -27,7 +27,6 @@
     "serve": "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001"
   },
   "dependencies": {
-    "whatwg-fetch": "^1.0.0",
     "zetapush-cometd": "^3.0.12"
   },
   "devDependencies": {
@@ -46,7 +45,8 @@
     "esdoc": "^0.4.6",
     "lr-http-server": "^0.1.1",
     "request": "^2.71.0",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "whatwg-fetch": "^1.0.0"
   },
   "engines": {
     "node": "^6.0.0"
