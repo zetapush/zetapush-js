@@ -1,4 +1,4 @@
-# 2.0.0-beta.24 (2016-07-12)
+# 2.0.0-rc.1 (2016-07-12)
 
 Major API modification
 
