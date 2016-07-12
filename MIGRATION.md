@@ -27,8 +27,8 @@ const client = new ZetaPush.Client({
 `ZetaPush 1`
 
 ```js
-zp.init()
-const authent= new zp.authent.Simple('<YOUR-SIMPLE-DEPLOYMENT-ID>')
+zp.init('<YOUR-SANDBOX-ID>')
+const authent = new zp.authent.Simple('<YOUR-SIMPLE-DEPLOYMENT-ID>')
 zp.onHandshake((message) => {    
   console.log('ZetaPush_Hanshake_Successful', message)
 })
@@ -50,7 +50,9 @@ const client = new ZetaPush.Client({
       login: 'login',
       password: 'password'
     })
-  }
+  },
+  resource: 'resource',
+  sandboxId: '<YOUR-SANDBOX-ID>'
 })
 zp.onSuccessfulHandshake((message) => {
   console.log('ZetaPush_Hanshake_Successful', message)
@@ -73,7 +75,6 @@ service.onError((message) => {
 service.on('list', (message) => {
   console.log('on stack list', message)
 })
-
 service.send('list', {
   stack: '<YOUR-STACK-ID>'
 })
