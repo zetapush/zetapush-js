@@ -1,22 +1,22 @@
-const webpack = require('webpack')
-const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
 const path = require('path')
+const webpack = require('webpack')
+const { UglifyJsPlugin } = webpack.optimize
 
-const libraryName = 'ZetaPush'
+const library = 'ZetaPush'
 
 const plugins = [new UglifyJsPlugin({
   minimize: true
 })]
 
-const outputFile = `${libraryName.toLowerCase()}.min.js`
+const filename = `${library.toLowerCase()}.min.js`
 
 module.exports = {
   entry: ['whatwg-fetch', __dirname + '/lib/index.js'],
   devtool: 'source-map',
   output: {
     path: __dirname + '/dist',
-    filename: outputFile,
-    library: libraryName,
+    filename,
+    library,
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
@@ -29,7 +29,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'eslint-loader',
+        loader: 'eslint',
         exclude: /node_modules/
       }
     ]
@@ -38,5 +38,5 @@ module.exports = {
     root: path.resolve('./lib'),
     extensions: ['', '.js']
   },
-  plugins: plugins
+  plugins
 }
