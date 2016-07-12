@@ -1,3 +1,39 @@
+# 2.0.0-beta.24 (2016-07-12)
+
+Major API modification
+
+### BREAKING CHANGES
+
+* **core:** Update lib/authentication/handshake
+
+**Before**
+
+```js
+// Create new ZetaPush Client
+const client = new ZetaPush.Client({
+  sandboxId: '<YOUR-SANDBOX-ID>',
+  credentials() {
+    return ZetaPush.AuthentFactory.createWeakHandshake({
+      token: null
+    })
+  }
+})
+```
+
+**After**
+
+```js
+// Create new ZetaPush Client
+const client = new ZetaPush.Client({
+  sandboxId: '<YOUR-SANDBOX-ID>',
+  credentials() {
+    return ZetaPush.Authentication.weak({
+      token: null
+    })
+  }
+})
+```
+
 # 2.0.0-beta.23 (2016-07-08)
 
 ### Fixes

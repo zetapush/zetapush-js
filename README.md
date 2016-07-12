@@ -38,7 +38,7 @@ From CDN (npmcdn recommended)
 const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
   credentials() {
-    return ZetaPush.AuthentFactory.createWeakHandshake({
+    return ZetaPush.Authentication.weak({
       token: null
     })
   }

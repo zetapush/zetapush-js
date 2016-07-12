@@ -38,7 +38,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html">AbstractHandshake</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~Authentication.html">Authentication</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~CredentialsHandshake.html">CredentialsHandshake</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~TokenHandshake.html">TokenHandshake</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
@@ -108,10 +108,10 @@
   <div class="example-doc" data-ice="exampleDoc">
       
       <pre class="prettyprint source-code"><code data-ice="exampleCode">// Securized client with token based connection
-var client = new ZetaPush.Client({
+const client = new ZetaPush.Client({
   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
-  credentials: function () {
-    return ZetaPush.AuthentFactory.createWeakHandshake({
+  credentials() {
+    return ZetaPush.Authentication.weak({
       token: null
    })
   }
@@ -120,10 +120,10 @@ var client = new ZetaPush.Client({
 <div class="example-doc" data-ice="exampleDoc">
       
       <pre class="prettyprint source-code"><code data-ice="exampleCode">// Client with credentials based connection
-var client = new ZetaPush.Client({
+const client = new ZetaPush.Client({
   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
-  credentials: function () {
-    return ZetaPush.AuthentFactory.createSimpleHandshake({
+  credentials() {
+    return ZetaPush.Authentication.simple({
       login: &apos;&lt;USER-LOGIN&gt;&apos;,
       password: &apos;&lt;USER-PASSWORD&gt;&apos;
    })

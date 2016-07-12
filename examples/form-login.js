@@ -2,7 +2,7 @@
 const client = new ZetaPush.Client({
   sandboxId: 'Y1k3xBDc',
   credentials() {
-    return ZetaPush.AuthentFactory.createSimpleHandshake({
+    return ZetaPush.Authentication.simple({
       login: document.querySelector('input[name="login"]').value,
       password: document.querySelector('input[name="password"]').value
     })

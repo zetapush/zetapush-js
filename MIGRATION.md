@@ -45,7 +45,7 @@ zp.connect(authent.getConnectionData('login', 'password', 'resource'))
 ```js
 const client = new ZetaPush.Client({
   credentials() {
-    return ZetaPush.AuthentFactory.createSimpleHandshake({
+    return ZetaPush.Authentication.simple({
       deploymentId: '<YOUR-SIMPLE-DEPLOYMENT-ID>',
       login: 'login',
       password: 'password'

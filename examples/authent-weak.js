@@ -2,7 +2,7 @@
 const client = new ZetaPush.Client({
   sandboxId: 'Y1k3xBDc',
   credentials() {
-    return ZetaPush.AuthentFactory.createWeakHandshake({
+    return ZetaPush.Authentication.weak({
       token: null
     })
   }
