@@ -42,6 +42,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~CredentialsHandshake.html">CredentialsHandshake</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~TokenHandshake.html">TokenHandshake</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TransportLayers">TransportLayers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TransportTypes">TransportTypes</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">services</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Aggreg.html">Aggreg</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Cron.html">Cron</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Delegating.html">Delegating</a></span></span></li>
@@ -83,6 +85,7 @@ import { LocalStorageTokenPersistenceStrategy } from &apos;./utils/token-persist
  * @property {string} sandboxId - Sandbox id
  * @property {boolean} forceHttps - Force end to end HTTPS connection
  * @property {string} resource - Client resource id
+ * @property {Array} transports - Client transports list
  */
 
 /**
@@ -99,7 +102,7 @@ export class WeakClient extends Client {
    * Create a new ZetaPush smart client
    * @param {WeakClientConfig} config
    */
-  constructor({ apiUrl, sandboxId, deploymentId, forceHttps, resource }) {
+  constructor({ apiUrl, sandboxId, deploymentId, forceHttps, resource, transports }) {
     const credentials = () =&gt; {
       const token = this.getToken()
       const handshake = Authentication.weak({
@@ -111,7 +114,8 @@ export class WeakClient extends Client {
     /**
      * Call Client constructor with specific parameters
      */
-    super({ apiUrl , sandboxId, forceHttps, credentials, resource })
+    super({ apiUrl , sandboxId, forceHttps, credentials, resource, transports })
+    // Handle successful handshake
     const onSuccessfulHandshake = ({ publicToken, userId, token }) =&gt; {
       if (token) {
         this.strategy.set({ token })

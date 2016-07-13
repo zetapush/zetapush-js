@@ -42,6 +42,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~CredentialsHandshake.html">CredentialsHandshake</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~TokenHandshake.html">TokenHandshake</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TransportLayers">TransportLayers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TransportTypes">TransportTypes</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">services</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Aggreg.html">Aggreg</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Cron.html">Cron</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Delegating.html">Delegating</a></span></span></li>
@@ -71,8 +73,8 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">lib/client-helper.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { CometD, WebSocketTransport } from &apos;zetapush-cometd&apos;
-import { FetchLongPollingTransport } from &apos;./connection/cometd&apos;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { CometD } from &apos;zetapush-cometd&apos;
+import { TransportTypes, TransportLayers } from &apos;./connection/cometd&apos;
 import { ConnectionStatusListener } from &apos;./connection/connection-status&apos;
 import { Macro } from &apos;./services&apos;
 import { getServers, shuffle, isPrototypeOf } from &apos;./utils/index&apos;
@@ -87,12 +89,9 @@ const Message = {
 }
 
 /**
- * CometD Transports enumeration
+ * Get all transport types
  */
-const Transport = {
-  LONG_POLLING: &apos;long-polling&apos;,
-  WEBSOCKET: &apos;websocket&apos;
-}
+const AllTransports = Object.values(TransportTypes)
 
 /**
  * Provide utilities and abstraction on CometD Transport layer
@@ -102,7 +101,7 @@ export class ClientHelper {
   /**
    * Create a new ZetaPush client helper
    */
-  constructor({ apiUrl, sandboxId, forceHttps = false, credentials, resource }) {
+  constructor({ apiUrl, sandboxId, forceHttps = false, credentials, resource = null, transports = AllTransports }) {
     /**
      * @access private
      * @type {string}
@@ -158,15 +157,23 @@ export class ClientHelper {
      * @type {CometD}
      */
     this.cometd = new CometD()
-    this.cometd.registerTransport(Transport.WEBSOCKET, new WebSocketTransport())
-    this.cometd.registerTransport(Transport.LONG_POLLING, new FetchLongPollingTransport())
+
+    // Filter transports layers
+    TransportLayers.filter(({ type }) =&gt; {
+      return transports.includes(type)
+    }).forEach(({ type, Transport }) =&gt; {
+      this.cometd.registerTransport(type, new Transport())
+    })
+
+    // Handle transport exception
     this.cometd.onTransportException = (cometd, transport) =&gt; {
-      if (Transport.LONG_POLLING === transport) {
+      if (TransportTypes.LONG_POLLING === transport) {
         // Try to find an other available server
         // Remove the current one from the _serverList array
         this.updateServerUrl()
       }
     }
+
     this.cometd.addListener(&apos;/meta/handshake&apos;, ({ ext, successful, advice, error }) =&gt; {
       this.cometd._debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
       if (successful) {

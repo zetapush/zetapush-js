@@ -51,13 +51,16 @@
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-use-zetapush-with-my-on-premise-backend-" data-ice="link">How to use ZetaPush with my on-premise backend ?</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-know-my-zetapush-sdk-version-" data-ice="link">How to know my ZetaPush SDK version ?</a></li>
 <li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-change-log-level-" data-ice="link">How to change log level ?</a></li>
+<li data-ice="manualNav" class="indent-h2"><span class="manual-dot"></span><a href="manual/faq.html#how-to-force-long-polling-instead-of-websocket-" data-ice="link">How to force long polling instead of websocket ?</a></li>
 </ul>
   </div>
 <div data-ice="manual" data-toc-name="changelog">
     <h1 class="manual-toc-title"><a href="manual/changelog.html" data-ice="title">Changelog</a></h1>
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-rc-1-2016-07-12-" data-ice="link">2.0.0-rc.1 (2016-07-12)</a></li>
+    <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-rc-2-2016-07-13-" data-ice="link">2.0.0-rc.2 (2016-07-13)</a></li>
+<li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/changelog.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-rc-1-2016-07-12-" data-ice="link">2.0.0-rc.1 (2016-07-12)</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/changelog.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="manual/changelog.html#2-0-0-beta-23-2016-07-08-" data-ice="link">2.0.0-beta.23 (2016-07-08)</a></li>
 <li data-ice="manualNav" class="indent-h3"><span class="manual-dot"></span><a href="manual/changelog.html#fixes" data-ice="link">Fixes</a></li>
@@ -175,6 +178,13 @@ service.list({
   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;
 })
 client.setLogLevel(&apos;debug&apos;)</code>
+</code></pre>
+<h2 id="how-to-force-long-polling-instead-of-websocket-">How to force long polling instead of websocket ?</h2>
+<p>ZetaPush Client provide an option to specify active transports</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const client = new ZetaPush.WeakClient({
+  sandboxId: &apos;Y1k3xBDc&apos;,
+  transports: [ZetaPush.TransportTypes.LONG_POLLING]
+})</code>
 </code></pre>
 </div>
 </div>

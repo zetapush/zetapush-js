@@ -66,3 +66,14 @@ const client = new ZetaPush.Client({
 })
 client.setLogLevel('debug')
 ```
+
+## How to force long polling instead of websocket ?
+
+ZetaPush Client provide an option to specify active transports
+
+```js
+const client = new ZetaPush.WeakClient({
+  sandboxId: 'Y1k3xBDc',
+  transports: [ZetaPush.TransportTypes.LONG_POLLING]
+})
+```

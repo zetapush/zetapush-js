@@ -1,3 +1,17 @@
+# 2.0.0-rc.2 (2016-07-13)
+
+### Features
+
+* **core:** Update lib/client, add new transports option
+* **core:** Update lib/weak-client, add new transports option
+
+```js
+const client = new ZetaPush.WeakClient({
+  sandboxId: 'Y1k3xBDc',
+  transports: [ZetaPush.TransportTypes.LONG_POLLING]
+})
+```
+
 # 2.0.0-rc.1 (2016-07-12)
 
 Major API modification
