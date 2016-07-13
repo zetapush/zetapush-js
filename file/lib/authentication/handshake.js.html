@@ -38,7 +38,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html">AbstractHandshake</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AuthentFactory.html">AuthentFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~Authentication.html">Authentication</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~CredentialsHandshake.html">CredentialsHandshake</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~TokenHandshake.html">TokenHandshake</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
@@ -206,13 +206,13 @@ export class CredentialsHandshake extends AbstractHandshake {
  * Factory to create handshake
  * @access public
  */
-export class AuthentFactory {
+export class Authentication {
   /**
    * @param {{deploymentId: string, login: string, password: string}} parameters
    * @return {CredentialsHandshake}
    */
-  static createSimpleHandshake({ deploymentId = Simple.DEFAULT_DEPLOYMENT_ID, login, password }) {
-    return AuthentFactory.createHandshake({
+  static simple({ deploymentId = Simple.DEFAULT_DEPLOYMENT_ID, login, password }) {
+    return Authentication.create({
       authType: DeployableNames.AUTH_SIMPLE,
       deploymentId,
       login,
@@ -223,8 +223,8 @@ export class AuthentFactory {
    * @param {{deploymentId: string, token: string}} parameters
    * @return {TokenHandshake}
    */
-  static createWeakHandshake({ deploymentId = Weak.DEFAULT_DEPLOYMENT_ID, token }) {
-    return AuthentFactory.createHandshake({
+  static weak({ deploymentId = Weak.DEFAULT_DEPLOYMENT_ID, token }) {
+    return Authentication.create({
       authType: DeployableNames.AUTH_WEAK,
       deploymentId,
       login: token,
@@ -235,8 +235,8 @@ export class AuthentFactory {
    * @param {{deploymentId: string, token: string}} parameters
    * @return {TokenHandshake}
    */
-  static createDelegatingHandshake({ deploymentId = Delegating.DEFAULT_DEPLOYMENT_ID, token }) {
-    return AuthentFactory.createHandshake({
+  static delegating({ deploymentId = Delegating.DEFAULT_DEPLOYMENT_ID, token }) {
+    return Authentication.create({
       authType: DeployableNames.AUTH_DELEGATING,
       deploymentId,
       login: token,
@@ -247,7 +247,7 @@ export class AuthentFactory {
    * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
    * @return {TokenHandshake|CredentialsHandshake}
    */
-  static createHandshake({ authType, deploymentId, login, password }) {
+  static create({ authType, deploymentId, login, password }) {
     if (null === password) {
       return new TokenHandshake({ authType, deploymentId, token: login })
     }

@@ -12,9 +12,9 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "zetapush-js/lib/authentication/handshake.js~authentfactory",
-    "class/lib/authentication/handshake.js~AuthentFactory.html",
-    "<span>AuthentFactory</span> <span class=\"search-result-import-path\">zetapush-js/lib/authentication/handshake.js</span>",
+    "zetapush-js/lib/authentication/handshake.js~authentication",
+    "class/lib/authentication/handshake.js~Authentication.html",
+    "<span>Authentication</span> <span class=\"search-result-import-path\">zetapush-js/lib/authentication/handshake.js</span>",
     "class"
   ],
   [
@@ -546,27 +546,27 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "lib/authentication/handshake.js~authentfactory.createdelegatinghandshake",
-    "class/lib/authentication/handshake.js~AuthentFactory.html#static-method-createDelegatingHandshake",
-    "lib/authentication/handshake.js~AuthentFactory.createDelegatingHandshake",
+    "lib/authentication/handshake.js~authentication.create",
+    "class/lib/authentication/handshake.js~Authentication.html#static-method-create",
+    "lib/authentication/handshake.js~Authentication.create",
     "method"
   ],
   [
-    "lib/authentication/handshake.js~authentfactory.createhandshake",
-    "class/lib/authentication/handshake.js~AuthentFactory.html#static-method-createHandshake",
-    "lib/authentication/handshake.js~AuthentFactory.createHandshake",
+    "lib/authentication/handshake.js~authentication.delegating",
+    "class/lib/authentication/handshake.js~Authentication.html#static-method-delegating",
+    "lib/authentication/handshake.js~Authentication.delegating",
     "method"
   ],
   [
-    "lib/authentication/handshake.js~authentfactory.createsimplehandshake",
-    "class/lib/authentication/handshake.js~AuthentFactory.html#static-method-createSimpleHandshake",
-    "lib/authentication/handshake.js~AuthentFactory.createSimpleHandshake",
+    "lib/authentication/handshake.js~authentication.simple",
+    "class/lib/authentication/handshake.js~Authentication.html#static-method-simple",
+    "lib/authentication/handshake.js~Authentication.simple",
     "method"
   ],
   [
-    "lib/authentication/handshake.js~authentfactory.createweakhandshake",
-    "class/lib/authentication/handshake.js~AuthentFactory.html#static-method-createWeakHandshake",
-    "lib/authentication/handshake.js~AuthentFactory.createWeakHandshake",
+    "lib/authentication/handshake.js~authentication.weak",
+    "class/lib/authentication/handshake.js~Authentication.html#static-method-weak",
+    "lib/authentication/handshake.js~Authentication.weak",
     "method"
   ],
   [
