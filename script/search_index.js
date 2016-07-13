@@ -150,6 +150,18 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "zetapush-js/lib/connection/cometd.js~transportlayers",
+    "variable/index.html#static-variable-TransportLayers",
+    "<span>TransportLayers</span> <span class=\"search-result-import-path\">zetapush-js/lib/connection/cometd.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/lib/connection/cometd.js~transporttypes",
+    "variable/index.html#static-variable-TransportTypes",
+    "<span>TransportTypes</span> <span class=\"search-result-import-path\">zetapush-js/lib/connection/cometd.js</span>",
+    "variable"
+  ],
+  [
     "zetapush-js/lib/services/index.js~userdir",
     "class/lib/services/index.js~Userdir.html",
     "<span>Userdir</span> <span class=\"search-result-import-path\">zetapush-js/lib/services/index.js</span>",

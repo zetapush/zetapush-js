@@ -266,10 +266,10 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "Client",
+            "name": "TransportTypes",
             "range": [
               189,
-              195
+              203
             ],
             "loc": {
               "start": {
@@ -278,16 +278,16 @@
               },
               "end": {
                 "line": 5,
-                "column": 15
+                "column": 23
               }
             }
           },
           "local": {
             "type": "Identifier",
-            "name": "Client",
+            "name": "TransportTypes",
             "range": [
               189,
-              195
+              203
             ],
             "loc": {
               "start": {
@@ -296,13 +296,13 @@
               },
               "end": {
                 "line": 5,
-                "column": 15
+                "column": 23
               }
             }
           },
           "range": [
             189,
-            195
+            203
           ],
           "loc": {
             "start": {
@@ -311,33 +311,33 @@
             },
             "end": {
               "line": 5,
-              "column": 15
+              "column": 23
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "./client",
-        "raw": "'./client'",
+        "value": "./connection/cometd",
+        "raw": "'./connection/cometd'",
         "range": [
-          203,
-          213
+          211,
+          232
         ],
         "loc": {
           "start": {
             "line": 5,
-            "column": 23
+            "column": 31
           },
           "end": {
             "line": 5,
-            "column": 33
+            "column": 52
           }
         }
       },
       "range": [
         180,
-        214
+        233
       ],
       "loc": {
         "start": {
@@ -358,10 +358,10 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "WeakClient",
+            "name": "Client",
             "range": [
-              223,
-              233
+              242,
+              248
             ],
             "loc": {
               "start": {
@@ -370,16 +370,16 @@
               },
               "end": {
                 "line": 6,
-                "column": 19
+                "column": 15
               }
             }
           },
           "local": {
             "type": "Identifier",
-            "name": "WeakClient",
+            "name": "Client",
             "range": [
-              223,
-              233
+              242,
+              248
             ],
             "loc": {
               "start": {
@@ -388,13 +388,13 @@
               },
               "end": {
                 "line": 6,
-                "column": 19
+                "column": 15
               }
             }
           },
           "range": [
-            223,
-            233
+            242,
+            248
           ],
           "loc": {
             "start": {
@@ -403,33 +403,33 @@
             },
             "end": {
               "line": 6,
-              "column": 19
+              "column": 15
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "./weak-client",
-        "raw": "'./weak-client'",
+        "value": "./client",
+        "raw": "'./client'",
         "range": [
-          241,
-          256
+          256,
+          266
         ],
         "loc": {
           "start": {
             "line": 6,
-            "column": 27
+            "column": 23
           },
           "end": {
             "line": 6,
-            "column": 42
+            "column": 33
           }
         }
       },
       "range": [
-        214,
-        257
+        233,
+        267
       ],
       "loc": {
         "start": {
@@ -450,10 +450,10 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "services",
+            "name": "WeakClient",
             "range": [
-              266,
-              274
+              276,
+              286
             ],
             "loc": {
               "start": {
@@ -462,16 +462,16 @@
               },
               "end": {
                 "line": 7,
-                "column": 17
+                "column": 19
               }
             }
           },
           "local": {
             "type": "Identifier",
-            "name": "services",
+            "name": "WeakClient",
             "range": [
-              266,
-              274
+              276,
+              286
             ],
             "loc": {
               "start": {
@@ -480,13 +480,13 @@
               },
               "end": {
                 "line": 7,
-                "column": 17
+                "column": 19
               }
             }
           },
           "range": [
-            266,
-            274
+            276,
+            286
           ],
           "loc": {
             "start": {
@@ -495,15 +495,33 @@
             },
             "end": {
               "line": 7,
-              "column": 17
+              "column": 19
             }
           }
         }
       ],
-      "source": null,
+      "source": {
+        "type": "Literal",
+        "value": "./weak-client",
+        "raw": "'./weak-client'",
+        "range": [
+          294,
+          309
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 27
+          },
+          "end": {
+            "line": 7,
+            "column": 42
+          }
+        }
+      },
       "range": [
-        257,
-        319
+        267,
+        310
       ],
       "loc": {
         "start": {
@@ -511,7 +529,81 @@
           "column": 0
         },
         "end": {
-          "line": 13,
+          "line": 8,
+          "column": 0
+        }
+      }
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": null,
+      "specifiers": [
+        {
+          "type": "ExportSpecifier",
+          "exported": {
+            "type": "Identifier",
+            "name": "services",
+            "range": [
+              319,
+              327
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 9
+              },
+              "end": {
+                "line": 8,
+                "column": 17
+              }
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "name": "services",
+            "range": [
+              319,
+              327
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 9
+              },
+              "end": {
+                "line": 8,
+                "column": 17
+              }
+            }
+          },
+          "range": [
+            319,
+            327
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 9
+            },
+            "end": {
+              "line": 8,
+              "column": 17
+            }
+          }
+        }
+      ],
+      "source": null,
+      "range": [
+        310,
+        372
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 14,
           "column": 0
         }
       }
@@ -527,50 +619,50 @@
               "type": "Identifier",
               "name": "VERSION",
               "range": [
-                332,
-                339
+                385,
+                392
               ],
               "loc": {
                 "start": {
-                  "line": 13,
+                  "line": 14,
                   "column": 13
                 },
                 "end": {
-                  "line": 13,
+                  "line": 14,
                   "column": 20
                 }
               }
             },
             "init": {
               "type": "Literal",
-              "value": "2.0.0-rc.1",
-              "raw": "'2.0.0-rc.1'",
+              "value": "2.0.0-rc.2",
+              "raw": "'2.0.0-rc.2'",
               "range": [
-                342,
-                354
+                395,
+                407
               ],
               "loc": {
                 "start": {
-                  "line": 13,
+                  "line": 14,
                   "column": 23
                 },
                 "end": {
-                  "line": 13,
+                  "line": 14,
                   "column": 35
                 }
               }
             },
             "range": [
-              332,
-              354
+              385,
+              407
             ],
             "loc": {
               "start": {
-                "line": 13,
+                "line": 14,
                 "column": 13
               },
               "end": {
-                "line": 13,
+                "line": 14,
                 "column": 35
               }
             }
@@ -578,16 +670,16 @@
         ],
         "kind": "const",
         "range": [
-          326,
-          355
+          379,
+          408
         ],
         "loc": {
           "start": {
-            "line": 13,
+            "line": 14,
             "column": 7
           },
           "end": {
-            "line": 14,
+            "line": 15,
             "column": 0
           }
         },
@@ -596,16 +688,16 @@
             "type": "Block",
             "value": "*\n * SDK Version\n * @type {string}\n ",
             "range": [
-              278,
-              318
+              331,
+              371
             ],
             "loc": {
               "start": {
-                "line": 9,
+                "line": 10,
                 "column": 0
               },
               "end": {
-                "line": 12,
+                "line": 13,
                 "column": 3
               }
             }
@@ -616,16 +708,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        319,
-        355
+        372,
+        408
       ],
       "loc": {
         "start": {
-          "line": 13,
+          "line": 14,
           "column": 0
         },
         "end": {
-          "line": 14,
+          "line": 15,
           "column": 0
         }
       },
@@ -634,16 +726,16 @@
           "type": "Block",
           "value": "*\n * SDK Version\n * @type {string}\n ",
           "range": [
-            278,
-            318
+            331,
+            371
           ],
           "loc": {
             "start": {
-              "line": 9,
+              "line": 10,
               "column": 0
             },
             "end": {
-              "line": 12,
+              "line": 13,
               "column": 3
             }
           }
@@ -654,7 +746,7 @@
   "sourceType": "module",
   "range": [
     0,
-    355
+    408
   ],
   "loc": {
     "start": {
@@ -662,7 +754,7 @@
       "column": 0
     },
     "end": {
-      "line": 14,
+      "line": 15,
       "column": 0
     }
   },
@@ -671,16 +763,16 @@
       "type": "Block",
       "value": "*\n * SDK Version\n * @type {string}\n ",
       "range": [
-        278,
-        318
+        331,
+        371
       ],
       "loc": {
         "start": {
-          "line": 9,
+          "line": 10,
           "column": 0
         },
         "end": {
-          "line": 12,
+          "line": 13,
           "column": 3
         }
       }
