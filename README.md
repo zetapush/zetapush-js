@@ -22,7 +22,7 @@ npm install zetapush-js@2.0.0-rc.2 --save
 ```
 
 ```js
-import { Client } from 'zetapush-js'
+import { Client, Authentication, services } from 'zetapush-js'
 ```
 
 From CDN (npmcdn recommended)
@@ -31,21 +31,25 @@ From CDN (npmcdn recommended)
 <script src="//npmcdn.com/zetapush-js@2.0.0-rc.2/dist/zetapush.min.js"></script>
 ```
 
+```js
+const { Client, Authentication, services } = ZetaPush
+```
+
 ## Usage
 
 ```js
 // Create new ZetaPush Client
-const client = new ZetaPush.Client({
+const client = new Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
   credentials() {
-    return ZetaPush.Authentication.weak({
+    return Authentication.weak({
       token: null
     })
   }
 })
 // Create a Stack service
 const service = client.createService({
-  type: ZetaPush.services.Stack,
+  type: services.Stack,
   listener: {
     list(message) {
       console.log('list callback', message)
