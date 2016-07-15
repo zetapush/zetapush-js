@@ -191,7 +191,8 @@ client.setLogLevel(&apos;debug&apos;)</code>
 </code></pre>
 <h2 id="how-zetapush-client-call-my-service-without-explicit-deployment-id-">How ZetaPush client call my service without explicit deployment id ?</h2>
 <p>ZetaPush Client provide optional deployment id, according to the following convention <code>${ServiceType.toLowerCase()_0}</code></p>
-<pre><code class="lang-js"><code class="source-code prettyprint">const service = client.createService({
+<pre><code class="lang-js"><code class="source-code prettyprint">// Create service with implicit service deployment id
+const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
     list(message) {
@@ -204,7 +205,8 @@ service.list({
 })</code>
 </code></pre>
 <p>In the previous example, deployment id is <code>stack_0</code></p>
-<pre><code class="lang-js"><code class="source-code prettyprint">const service = client.createService({
+<pre><code class="lang-js"><code class="source-code prettyprint">// Create service with explicit service deployment id
+const service = client.createService({
   deploymentId: &apos;stack_0&apos;,
   type: ZetaPush.services.Stack,
   listener: {
