@@ -10,7 +10,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { Delegating, Simple, Weak } from '../services'\n\n/**\n * ZetaPush deployables names\n */\nconst DeployableNames = {\n  AUTH_SIMPLE: 'simple',\n  AUTH_WEAK: 'weak',\n  AUTH_DELEGATING: 'delegating'\n}\n\n/**\n * Provide abstraction over CometD handshake data structure\n * @access public\n */\nexport class AbstractHandshake {\n  /**\n   * Create a new handshake manager\n   * @param {{authType: string, sandboxId: string, deploymentId: string}} parameters\n   */\n  constructor({ authType, sandboxId, deploymentId }) {\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.authType = authType\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.sandboxId = sandboxId\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.deploymentId = deploymentId\n  }\n  /**\n   * @param {ClientHelper} client\n   * @return {Object}\n   */\n  getHandshakeFields(client) {\n    const authentication = {\n      data: this.authData,\n      type: `${client.getSandboxId()}.${this.deploymentId}.${this.authType}`,\n      version: this.authVersion\n    }\n    if (client.getResource()) {\n      authentication.resource = client.getResource()\n    }\n    return {\n      ext: {\n        authentication\n      }\n    }\n  }\n  /**\n   * Get auth version\n   * @return {string}\n   */\n  get authVersion() {\n    return 'none'\n  }\n\n}\n\n/**\n * Provide abstraction over CometD token base handshake data structure\n * @access public\n * @extends {AbstractHandshake}\n */\nexport class TokenHandshake extends AbstractHandshake {\n  /**\n   * @param {{authType: string, deploymentId: string, token: string}} parameters\n   */\n  constructor({ authType, deploymentId, token }) {\n    super({ deploymentId, authType })\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.token = token\n  }\n  /**\n   * @return {token: string}\n   */\n  get authData() {\n    const { token } = this\n    return {\n      token\n    }\n  }\n\n}\n\n/**\n * Provide abstraction over CometD credentials based handshake data structure\n * @access public\n * @extends {AbstractHandshake}\n */\nexport class CredentialsHandshake extends AbstractHandshake {\n\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   */\n  constructor({ authType, deploymentId, login, password }) {\n    super({ authType, deploymentId })\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.login = login\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.password = password\n  }\n  /**\n   * Get auth data\n   * @return {login: string, password: string}\n   */\n  get authData() {\n    const { login, password } = this\n    return {\n      login, password\n    }\n  }\n\n}\n\n/**\n * Factory to create handshake\n * @access public\n */\nexport class Authentication {\n  /**\n   * @param {{deploymentId: string, login: string, password: string}} parameters\n   * @return {CredentialsHandshake}\n   */\n  static simple({ deploymentId = Simple.DEFAULT_DEPLOYMENT_ID, login, password }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_SIMPLE,\n      deploymentId,\n      login,\n      password\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshake}\n   */\n  static weak({ deploymentId = Weak.DEFAULT_DEPLOYMENT_ID, token }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_WEAK,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshake}\n   */\n  static delegating({ deploymentId = Delegating.DEFAULT_DEPLOYMENT_ID, token }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_DELEGATING,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   * @return {TokenHandshake|CredentialsHandshake}\n   */\n  static create({ authType, deploymentId, login, password }) {\n    if (null === password) {\n      return new TokenHandshake({ authType, deploymentId, token: login })\n    }\n    return new CredentialsHandshake({ authType, deploymentId, login, password  })\n  }\n\n}\n"
+    "content": "import { Delegating, Simple, Weak } from '../services'\n\n/**\n * ZetaPush deployables names\n */\nconst DeployableNames = {\n  AUTH_SIMPLE: 'simple',\n  AUTH_WEAK: 'weak',\n  AUTH_DELEGATING: 'delegating'\n}\n\n/**\n * Provide abstraction over CometD handshake data structure\n * @access public\n */\nexport class AbstractHandshake {\n  /**\n   * Create a new handshake manager\n   * @param {{authType: string, sandboxId: string, deploymentId: string}} parameters\n   */\n  constructor({ authType, sandboxId, deploymentId }) {\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.authType = authType\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.sandboxId = sandboxId\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.deploymentId = deploymentId\n  }\n  /**\n   * @param {ClientHelper} client\n   * @return {Object}\n   */\n  getHandshakeFields(client) {\n    const authentication = {\n      data: this.authData,\n      type: `${client.getSandboxId()}.${this.deploymentId}.${this.authType}`,\n      version: this.authVersion\n    }\n    if (client.getResource()) {\n      authentication.resource = client.getResource()\n    }\n    return {\n      ext: {\n        authentication\n      }\n    }\n  }\n  /**\n   * Get auth version\n   * @return {string}\n   */\n  get authVersion() {\n    return 'none'\n  }\n\n}\n\n/**\n * Provide abstraction over CometD token base handshake data structure\n * @access public\n * @extends {AbstractHandshake}\n */\nexport class TokenHandshake extends AbstractHandshake {\n  /**\n   * @param {{authType: string, deploymentId: string, token: string}} parameters\n   */\n  constructor({ authType, deploymentId, token }) {\n    super({ deploymentId, authType })\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.token = token\n  }\n  /**\n   * @return {token: string}\n   */\n  get authData() {\n    const { token } = this\n    return {\n      token\n    }\n  }\n\n}\n\n/**\n * Provide abstraction over CometD credentials based handshake data structure\n * @access public\n * @extends {AbstractHandshake}\n */\nexport class CredentialsHandshake extends AbstractHandshake {\n\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   */\n  constructor({ authType, deploymentId, login, password }) {\n    super({ authType, deploymentId })\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.login = login\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.password = password\n  }\n  /**\n   * Get auth data\n   * @return {login: string, password: string}\n   */\n  get authData() {\n    const { login, password } = this\n    return {\n      login, password\n    }\n  }\n\n}\n\n/**\n * Factory to create handshake\n * @access public\n */\nexport class Authentication {\n  /**\n   * @param {{deploymentId: string, login: string, password: string}} parameters\n   * @return {CredentialsHandshake}\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * Authentication.delegating({\n   *   deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n   *   login: <USER-LOGIN>,\n   *   password: '<USER-PASSWORD>'\n   * })\n   */\n  static simple({ deploymentId = Simple.DEFAULT_DEPLOYMENT_ID, login, password }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_SIMPLE,\n      deploymentId,\n      login,\n      password\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshake}\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * Authentication.delegating({\n   *   deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n   *   token: null\n   * })\n   */\n  static weak({ deploymentId = Weak.DEFAULT_DEPLOYMENT_ID, token }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_WEAK,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshake}\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * Authentication.delegating({\n   *   deploymentId: '<YOUR-DELEGATING-AUTHENTICATION-DEPLOYMENT-ID>',\n   *   token: null\n   * })\n   */\n  static delegating({ deploymentId = Delegating.DEFAULT_DEPLOYMENT_ID, token }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_DELEGATING,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   * @return {TokenHandshake|CredentialsHandshake}\n   */\n  static create({ authType, deploymentId, login, password }) {\n    if (null === password) {\n      return new TokenHandshake({ authType, deploymentId, token: login })\n    }\n    return new CredentialsHandshake({ authType, deploymentId, login, password  })\n  }\n\n}\n"
   },
   {
     "__docId__": 1,
@@ -418,7 +418,10 @@
     "longname": "lib/authentication/handshake.js~Authentication.simple",
     "access": null,
     "description": "",
-    "lineNumber": 141,
+    "examples": [
+      "// Explicit deploymentId\n// Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\nAuthentication.delegating({\n  deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n  login: <USER-LOGIN>,\n  password: '<USER-PASSWORD>'\n})"
+    ],
+    "lineNumber": 149,
     "params": [
       {
         "nullable": null,
@@ -451,7 +454,10 @@
     "longname": "lib/authentication/handshake.js~Authentication.weak",
     "access": null,
     "description": "",
-    "lineNumber": 153,
+    "examples": [
+      "// Explicit deploymentId\n// Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\nAuthentication.delegating({\n  deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n  token: null\n})"
+    ],
+    "lineNumber": 168,
     "params": [
       {
         "nullable": null,
@@ -484,7 +490,10 @@
     "longname": "lib/authentication/handshake.js~Authentication.delegating",
     "access": null,
     "description": "",
-    "lineNumber": 165,
+    "examples": [
+      "// Explicit deploymentId\n// Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\nAuthentication.delegating({\n  deploymentId: '<YOUR-DELEGATING-AUTHENTICATION-DEPLOYMENT-ID>',\n  token: null\n})"
+    ],
+    "lineNumber": 187,
     "params": [
       {
         "nullable": null,
@@ -517,7 +526,7 @@
     "longname": "lib/authentication/handshake.js~Authentication.create",
     "access": null,
     "description": "",
-    "lineNumber": 177,
+    "lineNumber": 199,
     "params": [
       {
         "nullable": null,
@@ -1754,7 +1763,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { API_URL, isHttpsProtocol } from './utils/index'\nimport { ClientHelper } from './client-helper'\nimport { ConnectionStatusListener } from './connection/connection-status'\n\n/**\n * Client config object.\n * @typedef {Object} ClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {function():AbstractHandshake} credentials - Return credentials properties\n * @property {string} resource - Client resource id\n * @property {Array} transports - Client transports list\n */\n\n/**\n * ZetaPush Client to connect\n * @access public\n * @example\n * // Securized client with token based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.weak({\n *       token: null\n  *    })\n *   }\n * })\n * @example\n * // Client with credentials based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.simple({\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n  *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   * @param {ClientConfig} config\n   * Create a new ZetaPush client\n   */\n  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(), credentials, resource, transports }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.helper = new ClientHelper({\n      apiUrl,\n      sandboxId,\n      forceHttps,\n      credentials,\n      resource,\n      transports\n    })\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return {boolean}\n   */\n  isConnected() {\n    return this.helper.isConnected()\n  }\n  /**\n   * Connect client to ZetaPush\n   */\n  connect() {\n    this.helper.connect()\n  }\n  /**\n   * Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.helper.disconnect()\n  }\n  /**\n   * Get the client sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.helper.getSandboxId()\n  }\n  /**\n   * Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.helper.getResource()\n  }\n  /**\n   * Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.helper.getUserId()\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} service\n   */\n  unsubscribe(service) {\n    if (!service.$subscriptions) {\n      throw new TypeError('Missing $subscriptions property in service')\n    }\n    return this.helper.unsubscribe(service.$subscriptions)\n  }\n  /**\n   * Create a publish/subscribe for a service type\n   * @param {{type: class, deploymentId: string, listener: Object}} parameters\n   * @return {Object} service\n   */\n  createService({ type, listener, deploymentId = type.DEFAULT_DEPLOYMENT_ID }) {\n    return this.helper.createService({ deploymentId, listener, type })\n  }\n  /**\n   * Set new client resource value\n   * @param {string} resource\n   */\n  setResource(resource) {\n    this.helper.setResource(resource)\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    return this.helper.addConnectionStatusListener(listener)\n  }\n  /**\n   * Remove a connection status listener\n   * @param {number} handler\n   */\n  removeConnectionStatusListener(handler) {\n    return this.helper.removeConnectionStatusListener(handler)\n  }\n  /**\n   * Set logging level\n   * Valid values are the strings 'error', 'warn', 'info' and 'debug', from\n   * less verbose to more verbose.\n   * @param {string} level\n   */\n  setLogLevel(level) {\n    this.helper.setLogLevel(level)\n  }\n}\n\n/**\n * Add shorthand connection status method\n */\nObject.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) => {\n  // Only implements unsupported methods\n  if (!Client.prototype.hasOwnProperty(method)) {\n    Client.prototype[method] = function addListener(listener) {\n      return this.addConnectionStatusListener({\n        [method]: listener\n      })\n    }\n  }\n})\n"
+    "content": "import { API_URL, isHttpsProtocol } from './utils/index'\nimport { ClientHelper } from './client-helper'\nimport { ConnectionStatusListener } from './connection/connection-status'\n\n/**\n * Client config object.\n * @typedef {Object} ClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {function():AbstractHandshake} credentials - Return credentials properties\n * @property {string} resource - Client resource id\n * @property {Array} transports - Client transports list\n */\n\n/**\n * ZetaPush Client to connect\n * @access public\n * @example\n * // Securized client with token based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.weak({\n *       token: null\n  *    })\n *   }\n * })\n * @example\n * // Client with credentials based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.simple({\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n  *    })\n *   }\n * })\n * @example\n * // Explicit deploymentId\n * const clientSimple = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.simple({\n *       deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n *    })\n *   }\n * })\n * const clientWeak = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.weak({\n *       deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   * @param {ClientConfig} config\n   * Create a new ZetaPush client\n   */\n  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(), credentials, resource, transports }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.helper = new ClientHelper({\n      apiUrl,\n      sandboxId,\n      forceHttps,\n      credentials,\n      resource,\n      transports\n    })\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return {boolean}\n   */\n  isConnected() {\n    return this.helper.isConnected()\n  }\n  /**\n   * Connect client to ZetaPush\n   */\n  connect() {\n    this.helper.connect()\n  }\n  /**\n   * Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.helper.disconnect()\n  }\n  /**\n   * Get the client sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.helper.getSandboxId()\n  }\n  /**\n   * Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.helper.getResource()\n  }\n  /**\n   * Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.helper.getUserId()\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} service\n   */\n  unsubscribe(service) {\n    if (!service.$subscriptions) {\n      throw new TypeError('Missing $subscriptions property in service')\n    }\n    return this.helper.unsubscribe(service.$subscriptions)\n  }\n  /**\n   * Create a publish/subscribe for a service type\n   * @param {{type: class, deploymentId: string, listener: Object}} parameters\n   * @return {Object} service\n   * @example\n   * const service = client.createService({\n   *   type: ZetaPush.services.Stack,\n   *   listener: {\n   *     list(message) {\n   *       console.log('Stack list callback', message)\n   *     },\n   *     push(message) {\n   *       console.log('Stack push callback', message)\n   *     }\n   *   }\n   * })\n   * service.list({\n   *   stack: 'myHistory'\n   * })\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * const service = client.createService({\n   *   deploymentId: 'stack_0',\n   *   type: ZetaPush.services.Stack,\n   *   listener: {\n   *     list(message) {\n   *       console.log('Stack list callback', message)\n   *     },\n   *     push(message) {\n   *       console.log('Stack push callback', message)\n   *     }\n   *   }\n   * })\n   * service.list({\n   *   stack: 'myHistory'\n   * })\n   */\n  createService({ type, listener, deploymentId = type.DEFAULT_DEPLOYMENT_ID }) {\n    return this.helper.createService({ deploymentId, listener, type })\n  }\n  /**\n   * Set new client resource value\n   * @param {string} resource\n   */\n  setResource(resource) {\n    this.helper.setResource(resource)\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    return this.helper.addConnectionStatusListener(listener)\n  }\n  /**\n   * Remove a connection status listener\n   * @param {number} handler\n   */\n  removeConnectionStatusListener(handler) {\n    return this.helper.removeConnectionStatusListener(handler)\n  }\n  /**\n   * Set logging level\n   * Valid values are the strings 'error', 'warn', 'info' and 'debug', from\n   * less verbose to more verbose.\n   * @param {string} level\n   */\n  setLogLevel(level) {\n    this.helper.setLogLevel(level)\n  }\n}\n\n/**\n * Add shorthand connection status method\n */\nObject.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) => {\n  // Only implements unsupported methods\n  if (!Client.prototype.hasOwnProperty(method)) {\n    Client.prototype[method] = function addListener(listener) {\n      return this.addConnectionStatusListener({\n        [method]: listener\n      })\n    }\n  }\n})\n"
   },
   {
     "__docId__": 80,
@@ -1851,9 +1860,10 @@
     "description": "ZetaPush Client to connect",
     "examples": [
       "// Securized client with token based connection\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.weak({\n      token: null\n   })\n  }\n})",
-      "// Client with credentials based connection\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.simple({\n      login: '<USER-LOGIN>',\n      password: '<USER-PASSWORD>'\n   })\n  }\n})"
+      "// Client with credentials based connection\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.simple({\n      login: '<USER-LOGIN>',\n      password: '<USER-PASSWORD>'\n   })\n  }\n})",
+      "// Explicit deploymentId\nconst clientSimple = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.simple({\n      deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n      login: '<USER-LOGIN>',\n      password: '<USER-PASSWORD>'\n   })\n  }\n})\nconst clientWeak = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.weak({\n      deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n      login: '<USER-LOGIN>',\n      password: '<USER-PASSWORD>'\n   })\n  }\n})"
     ],
-    "lineNumber": 41,
+    "lineNumber": 63,
     "interface": false
   },
   {
@@ -1866,7 +1876,7 @@
     "longname": "lib/client.js~Client#constructor",
     "access": null,
     "description": "",
-    "lineNumber": 46,
+    "lineNumber": 68,
     "params": [
       {
         "nullable": null,
@@ -1891,7 +1901,7 @@
     "longname": "lib/client.js~Client#helper",
     "access": "private",
     "description": "",
-    "lineNumber": 51,
+    "lineNumber": 73,
     "type": {
       "nullable": null,
       "types": [
@@ -1911,7 +1921,7 @@
     "longname": "lib/client.js~Client#isConnected",
     "access": null,
     "description": "Is client connected to ZetaPush",
-    "lineNumber": 64,
+    "lineNumber": 86,
     "params": [],
     "return": {
       "nullable": null,
@@ -1933,7 +1943,7 @@
     "longname": "lib/client.js~Client#connect",
     "access": null,
     "description": "Connect client to ZetaPush",
-    "lineNumber": 70,
+    "lineNumber": 92,
     "params": [],
     "generator": false
   },
@@ -1947,7 +1957,7 @@
     "longname": "lib/client.js~Client#disconnect",
     "access": null,
     "description": "Disonnect client from ZetaPush",
-    "lineNumber": 76,
+    "lineNumber": 98,
     "params": [],
     "generator": false
   },
@@ -1961,7 +1971,7 @@
     "longname": "lib/client.js~Client#getSandboxId",
     "access": null,
     "description": "Get the client sandbox id",
-    "lineNumber": 83,
+    "lineNumber": 105,
     "params": [],
     "return": {
       "nullable": null,
@@ -1983,7 +1993,7 @@
     "longname": "lib/client.js~Client#getResource",
     "access": null,
     "description": "Get the client resource",
-    "lineNumber": 90,
+    "lineNumber": 112,
     "params": [],
     "return": {
       "nullable": null,
@@ -2005,7 +2015,7 @@
     "longname": "lib/client.js~Client#getUserId",
     "access": null,
     "description": "Get the client user id",
-    "lineNumber": 97,
+    "lineNumber": 119,
     "params": [],
     "return": {
       "nullable": null,
@@ -2027,7 +2037,7 @@
     "longname": "lib/client.js~Client#unsubscribe",
     "access": null,
     "description": "Remove all subscriptions",
-    "lineNumber": 104,
+    "lineNumber": 126,
     "params": [
       {
         "nullable": null,
@@ -2057,7 +2067,11 @@
     "longname": "lib/client.js~Client#createService",
     "access": null,
     "description": "Create a publish/subscribe for a service type",
-    "lineNumber": 115,
+    "examples": [
+      "const service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('Stack list callback', message)\n    },\n    push(message) {\n      console.log('Stack push callback', message)\n    }\n  }\n})\nservice.list({\n  stack: 'myHistory'\n})",
+      "// Explicit deploymentId\n// Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\nconst service = client.createService({\n  deploymentId: 'stack_0',\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('Stack list callback', message)\n    },\n    push(message) {\n      console.log('Stack push callback', message)\n    }\n  }\n})\nservice.list({\n  stack: 'myHistory'\n})"
+    ],
+    "lineNumber": 170,
     "params": [
       {
         "nullable": null,
@@ -2090,7 +2104,7 @@
     "longname": "lib/client.js~Client#setResource",
     "access": null,
     "description": "Set new client resource value",
-    "lineNumber": 122,
+    "lineNumber": 177,
     "params": [
       {
         "nullable": null,
@@ -2115,7 +2129,7 @@
     "longname": "lib/client.js~Client#addConnectionStatusListener",
     "access": null,
     "description": "Add a connection listener to handle life cycle connection events",
-    "lineNumber": 130,
+    "lineNumber": 185,
     "params": [
       {
         "nullable": null,
@@ -2148,7 +2162,7 @@
     "longname": "lib/client.js~Client#removeConnectionStatusListener",
     "access": null,
     "description": "Remove a connection status listener",
-    "lineNumber": 137,
+    "lineNumber": 192,
     "params": [
       {
         "nullable": null,
@@ -2178,7 +2192,7 @@
     "longname": "lib/client.js~Client#setLogLevel",
     "access": null,
     "description": "Set logging level\nValid values are the strings 'error', 'warn', 'info' and 'debug', from\nless verbose to more verbose.",
-    "lineNumber": 146,
+    "lineNumber": 201,
     "params": [
       {
         "nullable": null,
@@ -7466,7 +7480,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { Client } from './client'\nimport { Authentication } from './authentication/handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'\n\n/**\n * WeakClient config object.\n * @typedef {Object} WeakClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} deploymentId - Authentication deployment id\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n * @property {Array} transports - Client transports list\n */\n\n/**\n * @access public\n * @extends {Client}\n * @example\n * // Create a new WeakClient\n * const client = new ZetaPush.WeakClient({\n *   sandboxId: '<YOUR-SANDBOX-ID>'\n * })\n */\nexport class WeakClient extends Client {\n  /**\n   * Create a new ZetaPush smart client\n   * @param {WeakClientConfig} config\n   */\n  constructor({ apiUrl, sandboxId, deploymentId, forceHttps, resource, transports }) {\n    const credentials = () => {\n      const token = this.getToken()\n      const handshake = Authentication.weak({\n        deploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     * Call Client constructor with specific parameters\n     */\n    super({ apiUrl , sandboxId, forceHttps, credentials, resource, transports })\n    // Handle successful handshake\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    this.addConnectionStatusListener({ onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new LocalStorageTokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
+    "content": "import { Client } from './client'\nimport { Authentication } from './authentication/handshake'\nimport { LocalStorageTokenPersistenceStrategy } from './utils/token-persistence'\n\n/**\n * WeakClient config object.\n * @typedef {Object} WeakClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} deploymentId - Authentication deployment id, default value is 'weak_0'\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n * @property {Array} transports - Client transports list\n */\n\n/**\n * @access public\n * @extends {Client}\n * @example\n * // Create a new WeakClient\n * const client = new ZetaPush.WeakClient({\n *   sandboxId: '<YOUR-SANDBOX-ID>'\n * })\n * @example\n * // Explicit deploymentId\n * // WeakClient provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n * // deploymentId default value is weak_0\n * const client = new ZetaPush.WeakClient({\n *   deploymentId: 'weak_0',\n *   sandboxId: '<YOUR-SANDBOX-ID>'\n * })\n */\nexport class WeakClient extends Client {\n  /**\n   * Create a new ZetaPush smart client\n   * @param {WeakClientConfig} config\n   */\n  constructor({ apiUrl, sandboxId, deploymentId, forceHttps, resource, transports }) {\n    const credentials = () => {\n      const token = this.getToken()\n      const handshake = Authentication.weak({\n        deploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     * Call Client constructor with specific parameters\n     */\n    super({ apiUrl , sandboxId, forceHttps, credentials, resource, transports })\n    // Handle successful handshake\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      if (token) {\n        this.strategy.set({ token })\n      }\n    }\n    this.addConnectionStatusListener({ onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {TokenPersistenceStrategy}\n     */\n    this.strategy = new LocalStorageTokenPersistenceStrategy()\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    return this.strategy.get()\n  }\n}\n"
   },
   {
     "__docId__": 310,
@@ -7497,7 +7511,7 @@
         "spread": false,
         "optional": false,
         "name": "deploymentId",
-        "description": "Authentication deployment id"
+        "description": "Authentication deployment id, default value is 'weak_0'"
       },
       {
         "nullable": null,
@@ -7562,9 +7576,10 @@
     "importStyle": "{WeakClient}",
     "description": "",
     "examples": [
-      "// Create a new WeakClient\nconst client = new ZetaPush.WeakClient({\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})"
+      "// Create a new WeakClient\nconst client = new ZetaPush.WeakClient({\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})",
+      "// Explicit deploymentId\n// WeakClient provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n// deploymentId default value is weak_0\nconst client = new ZetaPush.WeakClient({\n  deploymentId: 'weak_0',\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})"
     ],
-    "lineNumber": 25,
+    "lineNumber": 33,
     "interface": false,
     "extends": [
       "Client"
@@ -7580,7 +7595,7 @@
     "longname": "lib/weak-client.js~WeakClient#constructor",
     "access": null,
     "description": "Create a new ZetaPush smart client",
-    "lineNumber": 30,
+    "lineNumber": 38,
     "params": [
       {
         "nullable": null,
@@ -7605,7 +7620,7 @@
     "longname": "lib/weak-client.js~WeakClient#strategy",
     "access": "private",
     "description": "",
-    "lineNumber": 54,
+    "lineNumber": 62,
     "type": {
       "nullable": null,
       "types": [
@@ -7625,7 +7640,7 @@
     "longname": "lib/weak-client.js~WeakClient#getToken",
     "access": null,
     "description": "",
-    "lineNumber": 59,
+    "lineNumber": 67,
     "params": [],
     "return": {
       "nullable": null,

@@ -81,7 +81,7 @@ import { LocalStorageTokenPersistenceStrategy } from &apos;./utils/token-persist
  * WeakClient config object.
  * @typedef {Object} WeakClientConfig
  * @property {string} apiUrl - Api Url
- * @property {string} deploymentId - Authentication deployment id
+ * @property {string} deploymentId - Authentication deployment id, default value is &apos;weak_0&apos;
  * @property {string} sandboxId - Sandbox id
  * @property {boolean} forceHttps - Force end to end HTTPS connection
  * @property {string} resource - Client resource id
@@ -94,6 +94,14 @@ import { LocalStorageTokenPersistenceStrategy } from &apos;./utils/token-persist
  * @example
  * // Create a new WeakClient
  * const client = new ZetaPush.WeakClient({
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;
+ * })
+ * @example
+ * // Explicit deploymentId
+ * // WeakClient provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
+ * // deploymentId default value is weak_0
+ * const client = new ZetaPush.WeakClient({
+ *   deploymentId: &apos;weak_0&apos;,
  *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;
  * })
  */

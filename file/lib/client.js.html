@@ -112,6 +112,28 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
   *    })
  *   }
  * })
+ * @example
+ * // Explicit deploymentId
+ * const clientSimple = new ZetaPush.Client({
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
+ *   credentials() {
+ *     return ZetaPush.Authentication.simple({
+ *       deploymentId: &apos;&lt;YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
+ *       login: &apos;&lt;USER-LOGIN&gt;&apos;,
+ *       password: &apos;&lt;USER-PASSWORD&gt;&apos;
+ *    })
+ *   }
+ * })
+ * const clientWeak = new ZetaPush.Client({
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
+ *   credentials() {
+ *     return ZetaPush.Authentication.weak({
+ *       deploymentId: &apos;&lt;YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
+ *       login: &apos;&lt;USER-LOGIN&gt;&apos;,
+ *       password: &apos;&lt;USER-PASSWORD&gt;&apos;
+ *    })
+ *   }
+ * })
  */
 export class Client {
   /**
@@ -186,6 +208,39 @@ export class Client {
    * Create a publish/subscribe for a service type
    * @param {{type: class, deploymentId: string, listener: Object}} parameters
    * @return {Object} service
+   * @example
+   * const service = client.createService({
+   *   type: ZetaPush.services.Stack,
+   *   listener: {
+   *     list(message) {
+   *       console.log(&apos;Stack list callback&apos;, message)
+   *     },
+   *     push(message) {
+   *       console.log(&apos;Stack push callback&apos;, message)
+   *     }
+   *   }
+   * })
+   * service.list({
+   *   stack: &apos;myHistory&apos;
+   * })
+   * @example
+   * // Explicit deploymentId
+   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
+   * const service = client.createService({
+   *   deploymentId: &apos;stack_0&apos;,
+   *   type: ZetaPush.services.Stack,
+   *   listener: {
+   *     list(message) {
+   *       console.log(&apos;Stack list callback&apos;, message)
+   *     },
+   *     push(message) {
+   *       console.log(&apos;Stack push callback&apos;, message)
+   *     }
+   *   }
+   * })
+   * service.list({
+   *   stack: &apos;myHistory&apos;
+   * })
    */
   createService({ type, listener, deploymentId = type.DEFAULT_DEPLOYMENT_ID }) {
     return this.helper.createService({ deploymentId, listener, type })

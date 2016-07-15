@@ -212,6 +212,14 @@ export class Authentication {
   /**
    * @param {{deploymentId: string, login: string, password: string}} parameters
    * @return {CredentialsHandshake}
+   * @example
+   * // Explicit deploymentId
+   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
+   * Authentication.delegating({
+   *   deploymentId: &apos;&lt;YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
+   *   login: &lt;USER-LOGIN&gt;,
+   *   password: &apos;&lt;USER-PASSWORD&gt;&apos;
+   * })
    */
   static simple({ deploymentId = Simple.DEFAULT_DEPLOYMENT_ID, login, password }) {
     return Authentication.create({
@@ -224,6 +232,13 @@ export class Authentication {
   /**
    * @param {{deploymentId: string, token: string}} parameters
    * @return {TokenHandshake}
+   * @example
+   * // Explicit deploymentId
+   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
+   * Authentication.delegating({
+   *   deploymentId: &apos;&lt;YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
+   *   token: null
+   * })
    */
   static weak({ deploymentId = Weak.DEFAULT_DEPLOYMENT_ID, token }) {
     return Authentication.create({
@@ -236,6 +251,13 @@ export class Authentication {
   /**
    * @param {{deploymentId: string, token: string}} parameters
    * @return {TokenHandshake}
+   * @example
+   * // Explicit deploymentId
+   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
+   * Authentication.delegating({
+   *   deploymentId: &apos;&lt;YOUR-DELEGATING-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
+   *   token: null
+   * })
    */
   static delegating({ deploymentId = Delegating.DEFAULT_DEPLOYMENT_ID, token }) {
     return Authentication.create({
