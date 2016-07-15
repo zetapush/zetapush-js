@@ -129,8 +129,7 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
  *   credentials() {
  *     return ZetaPush.Authentication.weak({
  *       deploymentId: &apos;&lt;YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
- *       login: &apos;&lt;USER-LOGIN&gt;&apos;,
- *       password: &apos;&lt;USER-PASSWORD&gt;&apos;
+ *       token: &apos;&lt;SESSION-TOKEN&gt;&apos;
  *    })
  *   }
  * })
@@ -221,7 +220,7 @@ export class Client {
    *   }
    * })
    * service.list({
-   *   stack: &apos;myHistory&apos;
+   *   stack: &apos;&lt;STACK-ID&gt;&apos;
    * })
    * @example
    * // Explicit deploymentId
@@ -239,7 +238,7 @@ export class Client {
    *   }
    * })
    * service.list({
-   *   stack: &apos;myHistory&apos;
+   *   stack: &apos;&lt;STACK-ID&gt;&apos;
    * })
    */
   createService({ type, listener, deploymentId = type.DEFAULT_DEPLOYMENT_ID }) {

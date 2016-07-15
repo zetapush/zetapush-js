@@ -1763,7 +1763,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { API_URL, isHttpsProtocol } from './utils/index'\nimport { ClientHelper } from './client-helper'\nimport { ConnectionStatusListener } from './connection/connection-status'\n\n/**\n * Client config object.\n * @typedef {Object} ClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {function():AbstractHandshake} credentials - Return credentials properties\n * @property {string} resource - Client resource id\n * @property {Array} transports - Client transports list\n */\n\n/**\n * ZetaPush Client to connect\n * @access public\n * @example\n * // Securized client with token based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.weak({\n *       token: null\n  *    })\n *   }\n * })\n * @example\n * // Client with credentials based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.simple({\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n  *    })\n *   }\n * })\n * @example\n * // Explicit deploymentId\n * const clientSimple = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.simple({\n *       deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n *    })\n *   }\n * })\n * const clientWeak = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.weak({\n *       deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   * @param {ClientConfig} config\n   * Create a new ZetaPush client\n   */\n  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(), credentials, resource, transports }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.helper = new ClientHelper({\n      apiUrl,\n      sandboxId,\n      forceHttps,\n      credentials,\n      resource,\n      transports\n    })\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return {boolean}\n   */\n  isConnected() {\n    return this.helper.isConnected()\n  }\n  /**\n   * Connect client to ZetaPush\n   */\n  connect() {\n    this.helper.connect()\n  }\n  /**\n   * Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.helper.disconnect()\n  }\n  /**\n   * Get the client sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.helper.getSandboxId()\n  }\n  /**\n   * Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.helper.getResource()\n  }\n  /**\n   * Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.helper.getUserId()\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} service\n   */\n  unsubscribe(service) {\n    if (!service.$subscriptions) {\n      throw new TypeError('Missing $subscriptions property in service')\n    }\n    return this.helper.unsubscribe(service.$subscriptions)\n  }\n  /**\n   * Create a publish/subscribe for a service type\n   * @param {{type: class, deploymentId: string, listener: Object}} parameters\n   * @return {Object} service\n   * @example\n   * const service = client.createService({\n   *   type: ZetaPush.services.Stack,\n   *   listener: {\n   *     list(message) {\n   *       console.log('Stack list callback', message)\n   *     },\n   *     push(message) {\n   *       console.log('Stack push callback', message)\n   *     }\n   *   }\n   * })\n   * service.list({\n   *   stack: 'myHistory'\n   * })\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * const service = client.createService({\n   *   deploymentId: 'stack_0',\n   *   type: ZetaPush.services.Stack,\n   *   listener: {\n   *     list(message) {\n   *       console.log('Stack list callback', message)\n   *     },\n   *     push(message) {\n   *       console.log('Stack push callback', message)\n   *     }\n   *   }\n   * })\n   * service.list({\n   *   stack: 'myHistory'\n   * })\n   */\n  createService({ type, listener, deploymentId = type.DEFAULT_DEPLOYMENT_ID }) {\n    return this.helper.createService({ deploymentId, listener, type })\n  }\n  /**\n   * Set new client resource value\n   * @param {string} resource\n   */\n  setResource(resource) {\n    this.helper.setResource(resource)\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    return this.helper.addConnectionStatusListener(listener)\n  }\n  /**\n   * Remove a connection status listener\n   * @param {number} handler\n   */\n  removeConnectionStatusListener(handler) {\n    return this.helper.removeConnectionStatusListener(handler)\n  }\n  /**\n   * Set logging level\n   * Valid values are the strings 'error', 'warn', 'info' and 'debug', from\n   * less verbose to more verbose.\n   * @param {string} level\n   */\n  setLogLevel(level) {\n    this.helper.setLogLevel(level)\n  }\n}\n\n/**\n * Add shorthand connection status method\n */\nObject.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) => {\n  // Only implements unsupported methods\n  if (!Client.prototype.hasOwnProperty(method)) {\n    Client.prototype[method] = function addListener(listener) {\n      return this.addConnectionStatusListener({\n        [method]: listener\n      })\n    }\n  }\n})\n"
+    "content": "import { API_URL, isHttpsProtocol } from './utils/index'\nimport { ClientHelper } from './client-helper'\nimport { ConnectionStatusListener } from './connection/connection-status'\n\n/**\n * Client config object.\n * @typedef {Object} ClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {function():AbstractHandshake} credentials - Return credentials properties\n * @property {string} resource - Client resource id\n * @property {Array} transports - Client transports list\n */\n\n/**\n * ZetaPush Client to connect\n * @access public\n * @example\n * // Securized client with token based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.weak({\n *       token: null\n  *    })\n *   }\n * })\n * @example\n * // Client with credentials based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.simple({\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n  *    })\n *   }\n * })\n * @example\n * // Explicit deploymentId\n * const clientSimple = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.simple({\n *       deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n *    })\n *   }\n * })\n * const clientWeak = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   credentials() {\n *     return ZetaPush.Authentication.weak({\n *       deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n *       token: '<SESSION-TOKEN>'\n *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   * @param {ClientConfig} config\n   * Create a new ZetaPush client\n   */\n  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(), credentials, resource, transports }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.helper = new ClientHelper({\n      apiUrl,\n      sandboxId,\n      forceHttps,\n      credentials,\n      resource,\n      transports\n    })\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return {boolean}\n   */\n  isConnected() {\n    return this.helper.isConnected()\n  }\n  /**\n   * Connect client to ZetaPush\n   */\n  connect() {\n    this.helper.connect()\n  }\n  /**\n   * Disonnect client from ZetaPush\n   */\n  disconnect() {\n    this.helper.disconnect()\n  }\n  /**\n   * Get the client sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.helper.getSandboxId()\n  }\n  /**\n   * Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.helper.getResource()\n  }\n  /**\n   * Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.helper.getUserId()\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} service\n   */\n  unsubscribe(service) {\n    if (!service.$subscriptions) {\n      throw new TypeError('Missing $subscriptions property in service')\n    }\n    return this.helper.unsubscribe(service.$subscriptions)\n  }\n  /**\n   * Create a publish/subscribe for a service type\n   * @param {{type: class, deploymentId: string, listener: Object}} parameters\n   * @return {Object} service\n   * @example\n   * const service = client.createService({\n   *   type: ZetaPush.services.Stack,\n   *   listener: {\n   *     list(message) {\n   *       console.log('Stack list callback', message)\n   *     },\n   *     push(message) {\n   *       console.log('Stack push callback', message)\n   *     }\n   *   }\n   * })\n   * service.list({\n   *   stack: '<STACK-ID>'\n   * })\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * const service = client.createService({\n   *   deploymentId: 'stack_0',\n   *   type: ZetaPush.services.Stack,\n   *   listener: {\n   *     list(message) {\n   *       console.log('Stack list callback', message)\n   *     },\n   *     push(message) {\n   *       console.log('Stack push callback', message)\n   *     }\n   *   }\n   * })\n   * service.list({\n   *   stack: '<STACK-ID>'\n   * })\n   */\n  createService({ type, listener, deploymentId = type.DEFAULT_DEPLOYMENT_ID }) {\n    return this.helper.createService({ deploymentId, listener, type })\n  }\n  /**\n   * Set new client resource value\n   * @param {string} resource\n   */\n  setResource(resource) {\n    this.helper.setResource(resource)\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    return this.helper.addConnectionStatusListener(listener)\n  }\n  /**\n   * Remove a connection status listener\n   * @param {number} handler\n   */\n  removeConnectionStatusListener(handler) {\n    return this.helper.removeConnectionStatusListener(handler)\n  }\n  /**\n   * Set logging level\n   * Valid values are the strings 'error', 'warn', 'info' and 'debug', from\n   * less verbose to more verbose.\n   * @param {string} level\n   */\n  setLogLevel(level) {\n    this.helper.setLogLevel(level)\n  }\n}\n\n/**\n * Add shorthand connection status method\n */\nObject.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) => {\n  // Only implements unsupported methods\n  if (!Client.prototype.hasOwnProperty(method)) {\n    Client.prototype[method] = function addListener(listener) {\n      return this.addConnectionStatusListener({\n        [method]: listener\n      })\n    }\n  }\n})\n"
   },
   {
     "__docId__": 80,
@@ -1861,9 +1861,9 @@
     "examples": [
       "// Securized client with token based connection\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.weak({\n      token: null\n   })\n  }\n})",
       "// Client with credentials based connection\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.simple({\n      login: '<USER-LOGIN>',\n      password: '<USER-PASSWORD>'\n   })\n  }\n})",
-      "// Explicit deploymentId\nconst clientSimple = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.simple({\n      deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n      login: '<USER-LOGIN>',\n      password: '<USER-PASSWORD>'\n   })\n  }\n})\nconst clientWeak = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.weak({\n      deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n      login: '<USER-LOGIN>',\n      password: '<USER-PASSWORD>'\n   })\n  }\n})"
+      "// Explicit deploymentId\nconst clientSimple = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.simple({\n      deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n      login: '<USER-LOGIN>',\n      password: '<USER-PASSWORD>'\n   })\n  }\n})\nconst clientWeak = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.weak({\n      deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n      token: '<SESSION-TOKEN>'\n   })\n  }\n})"
     ],
-    "lineNumber": 63,
+    "lineNumber": 62,
     "interface": false
   },
   {
@@ -1876,7 +1876,7 @@
     "longname": "lib/client.js~Client#constructor",
     "access": null,
     "description": "",
-    "lineNumber": 68,
+    "lineNumber": 67,
     "params": [
       {
         "nullable": null,
@@ -1901,7 +1901,7 @@
     "longname": "lib/client.js~Client#helper",
     "access": "private",
     "description": "",
-    "lineNumber": 73,
+    "lineNumber": 72,
     "type": {
       "nullable": null,
       "types": [
@@ -1921,7 +1921,7 @@
     "longname": "lib/client.js~Client#isConnected",
     "access": null,
     "description": "Is client connected to ZetaPush",
-    "lineNumber": 86,
+    "lineNumber": 85,
     "params": [],
     "return": {
       "nullable": null,
@@ -1943,7 +1943,7 @@
     "longname": "lib/client.js~Client#connect",
     "access": null,
     "description": "Connect client to ZetaPush",
-    "lineNumber": 92,
+    "lineNumber": 91,
     "params": [],
     "generator": false
   },
@@ -1957,7 +1957,7 @@
     "longname": "lib/client.js~Client#disconnect",
     "access": null,
     "description": "Disonnect client from ZetaPush",
-    "lineNumber": 98,
+    "lineNumber": 97,
     "params": [],
     "generator": false
   },
@@ -1971,7 +1971,7 @@
     "longname": "lib/client.js~Client#getSandboxId",
     "access": null,
     "description": "Get the client sandbox id",
-    "lineNumber": 105,
+    "lineNumber": 104,
     "params": [],
     "return": {
       "nullable": null,
@@ -1993,7 +1993,7 @@
     "longname": "lib/client.js~Client#getResource",
     "access": null,
     "description": "Get the client resource",
-    "lineNumber": 112,
+    "lineNumber": 111,
     "params": [],
     "return": {
       "nullable": null,
@@ -2015,7 +2015,7 @@
     "longname": "lib/client.js~Client#getUserId",
     "access": null,
     "description": "Get the client user id",
-    "lineNumber": 119,
+    "lineNumber": 118,
     "params": [],
     "return": {
       "nullable": null,
@@ -2037,7 +2037,7 @@
     "longname": "lib/client.js~Client#unsubscribe",
     "access": null,
     "description": "Remove all subscriptions",
-    "lineNumber": 126,
+    "lineNumber": 125,
     "params": [
       {
         "nullable": null,
@@ -2068,10 +2068,10 @@
     "access": null,
     "description": "Create a publish/subscribe for a service type",
     "examples": [
-      "const service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('Stack list callback', message)\n    },\n    push(message) {\n      console.log('Stack push callback', message)\n    }\n  }\n})\nservice.list({\n  stack: 'myHistory'\n})",
-      "// Explicit deploymentId\n// Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\nconst service = client.createService({\n  deploymentId: 'stack_0',\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('Stack list callback', message)\n    },\n    push(message) {\n      console.log('Stack push callback', message)\n    }\n  }\n})\nservice.list({\n  stack: 'myHistory'\n})"
+      "const service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('Stack list callback', message)\n    },\n    push(message) {\n      console.log('Stack push callback', message)\n    }\n  }\n})\nservice.list({\n  stack: '<STACK-ID>'\n})",
+      "// Explicit deploymentId\n// Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\nconst service = client.createService({\n  deploymentId: 'stack_0',\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('Stack list callback', message)\n    },\n    push(message) {\n      console.log('Stack push callback', message)\n    }\n  }\n})\nservice.list({\n  stack: '<STACK-ID>'\n})"
     ],
-    "lineNumber": 170,
+    "lineNumber": 169,
     "params": [
       {
         "nullable": null,
@@ -2104,7 +2104,7 @@
     "longname": "lib/client.js~Client#setResource",
     "access": null,
     "description": "Set new client resource value",
-    "lineNumber": 177,
+    "lineNumber": 176,
     "params": [
       {
         "nullable": null,
@@ -2129,7 +2129,7 @@
     "longname": "lib/client.js~Client#addConnectionStatusListener",
     "access": null,
     "description": "Add a connection listener to handle life cycle connection events",
-    "lineNumber": 185,
+    "lineNumber": 184,
     "params": [
       {
         "nullable": null,
@@ -2162,7 +2162,7 @@
     "longname": "lib/client.js~Client#removeConnectionStatusListener",
     "access": null,
     "description": "Remove a connection status listener",
-    "lineNumber": 192,
+    "lineNumber": 191,
     "params": [
       {
         "nullable": null,
@@ -2192,7 +2192,7 @@
     "longname": "lib/client.js~Client#setLogLevel",
     "access": null,
     "description": "Set logging level\nValid values are the strings 'error', 'warn', 'info' and 'debug', from\nless verbose to more verbose.",
-    "lineNumber": 201,
+    "lineNumber": 200,
     "params": [
       {
         "nullable": null,
