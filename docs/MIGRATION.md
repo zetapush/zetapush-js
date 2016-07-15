@@ -105,12 +105,10 @@ service.list({
 `ZetaPush 2` provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
 
 ```js
+// Create service with implicit service deployment id
 const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
-    error(message) {
-      console.error('on stack error', message)
-    },
     list(message) {
       console.log('on stack list', message)
     }
@@ -122,3 +120,19 @@ service.list({
 ```
 
 In the previous example, deployment id is `stack_0`
+
+```js
+// Create service with explicit service deployment id
+const service = client.createService({
+  deploymentId: 'stack_0',
+  type: ZetaPush.services.Stack,
+  listener: {
+    list(message) {
+      console.log('on stack list', message)
+    }
+  }
+})
+service.list({
+  stack: '<YOUR-STACK-ID>'
+})
+```

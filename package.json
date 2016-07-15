@@ -23,7 +23,6 @@
   },
   "scripts": {
     "doc": "esdoc -c esdoc.json",
-    "prebuild": "npm run doc",
     "build": "webpack",
     "deploy:github": "npm run doc && gulp deploy:github",
     "serve": "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001"

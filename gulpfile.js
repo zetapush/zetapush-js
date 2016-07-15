@@ -13,7 +13,7 @@ gulp.task('remote', (done) => {
 })
 
 gulp.task('deploy:github', () => {
-  return gulp.src([__dirname + '/docs/**/**.*'])
+  return gulp.src([__dirname + '/.esdoc/**/**.*'])
     .pipe(github({
       remoteUrl : pkg.repository.url,
       branch : 'gh-pages',

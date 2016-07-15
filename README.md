@@ -67,6 +67,11 @@ client.onConnectionEstablished(() => {
 client.connect()
 ```
 
+## Any questions?
+
+* :warning: ZetaPush v1.x users? Please check [Migration Guide](./docs/MIGRATION.md)
+* [Frequently Asked Questions](./docs/FAQ.md)
+
 [npm-version-image]: http://img.shields.io/npm/v/zetapush-js.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/zetapush-js
 
