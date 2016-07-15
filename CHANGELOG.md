@@ -1,3 +1,9 @@
+# 2.0.0-rc.3 (2016-07-15)
+
+### Fixes
+
+* **build** Improve build support with babel-plugin-transform-runtime
+
 # 2.0.0-rc.2 (2016-07-13)
 
 ### Features
