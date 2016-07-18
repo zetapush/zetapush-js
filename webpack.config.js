@@ -21,18 +21,11 @@ module.exports = {
     umdNamedDefine: true
   },
   module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.js$/,
-        loader: 'eslint',
-        exclude: /node_modules/
-      }
-    ]
+    loaders: ['babel', 'eslint'].map((loader) => ({
+      test: /\.js$/,
+      loader,
+      exclude: /node_modules/
+    }))
   },
   resolve: {
     root: path.resolve('./lib'),
