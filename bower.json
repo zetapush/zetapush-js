@@ -1,30 +1,28 @@
 {
   "name": "zetapush-js",
-  "version": "1.1.13",
+  "version": "2.0.0",
+  "description": "JavaScript SDK for ZetaPush",
   "authors": [
+    "Grégory Houllier",
     "Mikael Morvan"
   ],
-  "description": "core library for ZetaPush",
-  "main": "dist/zetapush.js",
+  "main": "dist/zetapush.min.js",
   "moduleType": [
-    "globals"
+    "umd"
   ],
   "keywords": [
     "zetapush",
-    "core"
+    "realtime",
+    "sdk"
   ],
   "license": "MIT",
-  "homepage": "zetapush.com",
+  "homepage": "https://zetapush.com/",
   "ignore": [
     "**/.*",
+    "docs",
+    "esdoc.json",
+    "examples",
     "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "devDependencies": {
-    "loglevel": "1.2.0",
-    "cometd-jquery": "3.0.4"
-  },
-  "dependencies": {}
+    "gulpfile.js"
+  ]
 }

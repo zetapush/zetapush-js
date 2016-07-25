@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZetaPush SDK Examples - Todo</title>
+    <link rel="stylesheet" href="./todo.css"></style>
+  </head>
+  <body>
+    <main>
+      <section class="todoapp">
+        <header class="header">
+          <h1>todos</h1>
+          <form autocomplete="off">
+            <input class="new-todo" placeholder="What needs to be done?" autofocus name="todo">
+          </form>
+        </header>
+        <section class="main">
+          <input class="toggle-all" type="checkbox">
+          <label for="toggle-all">Mark all as complete</label>
+          <ul class="todo-list"></ul>
+        </section>
+        <footer class="footer">
+          <span class="todo-count"></span>
+          <ul class="filters"></ul>
+          <button class="clear-all">Clear all</button>
+        </footer>
+      </section>
+      <footer class="info">
+        <p>Double-click to edit a todo</p>
+        <p>Created by <a href="http://twitter.com/zetapush">ZetaPush</a></p>
+      </footer>
+    </main>
+    <script src="../../dist/zetapush.min.js"></script>
+    <script src="../api/_common.js"></script>
+    <script src="./todo.js"></script>
+  </body>
+</html>

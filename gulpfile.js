@@ -1,43 +1,22 @@
-var gulp = require('gulp'),
-  rename = require('gulp-rename')
-	uglify = require('gulp-uglify'),
-	concat = require('gulp-concat');
+const gulp = require('gulp')
+const fs = require('fs')
+const github = require('gulp-gh-pages')
+const request = require('request')
 
-// CometD build process
-// This task build the CometD Library
-// Launch this task with "gulp cometd"
-// One can include Zepto (light JQuery)
+const pkg = require('./package')
 
-var cometdPath= 'bower_components/cometd-jquery/cometd-javascript/common/src/main/js/org/cometd/';
+const REMOTE_DEFINITIONS_URL = 'http://pinte-silver-2/sdks/generated/2.4.0/js/zp_services.js'
 
-gulp.task('zetapush', function() {
-  return gulp.src([
-      cometdPath + 'cometd-namespace.js',
-      cometdPath + 'CometD.js',
-      cometdPath + 'Utils.js' ,
-      cometdPath + 'cometd-json.js',
-      cometdPath + 'Transport.js',
-      cometdPath + 'RequestTransport.js',
-      cometdPath + 'TransportRegistry.js',
-      cometdPath + 'WebSocketTransport.js',
-      cometdPath + 'LongPollingTransport.js',
-      'bower_components/loglevel/dist/loglevel.min.js',
-      'src/qwest.js',
-      'src/zetapush.js',
-      'src/_base.js',
-      'src/generic.js',
-      'src/authentication/simple.js',
-      'src/authentication/weak.js',
-      'src/authentication/delegating.js'
-    ])
-    .pipe(concat('zetapush.js'))
-    .pipe(gulp.dest('dist'))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
-    .pipe(gulp.dest('dist'));
-});
+gulp.task('remote', (done) => {
+  return request(REMOTE_DEFINITIONS_URL)
+    .pipe(fs.createWriteStream('./lib/services/index.js'))
+})
 
-
-gulp.task('default', [], function() {
-    gulp.start('zetapush');
-});
+gulp.task('deploy:github', () => {
+  return gulp.src([__dirname + '/.esdoc/**/**.*'])
+    .pipe(github({
+      remoteUrl : pkg.repository.url,
+      branch : 'gh-pages',
+      cacheDir : __dirname + '/.deploy/'
+    }))
+})

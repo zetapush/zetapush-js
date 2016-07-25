@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZetaPush SDK Examples - Form Login</title>
+    <style>
+      form { display: flex; justify-content: space-around; border: 1px dotted black; }
+      aside, form { padding: 1rem; }
+      aside { text-align: center; }
+      .error { color: red; }
+      .success { color: green; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <form autocomplete="off" name="form-login">
+        <div>
+          <label>
+            <span>Login</span>
+            <input type="text" name="login">
+          </label>
+        </div>
+        <div>
+          <label>
+            <span>Password</span>
+            <input type="password" name="password">
+          </label>
+        </div>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+      <aside></aside>
+    </main>
+    <script src="../dist/zetapush.min.js"></script>
+    <script src="./form-login.js"></script>
+  </body>
+</html>
