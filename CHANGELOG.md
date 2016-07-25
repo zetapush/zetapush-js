@@ -1,3 +1,7 @@
+# 2.0.0 (2016-07-25)
+
+:tada: After a complete refactoring, ZetaPush 2.0 is production ready
+
 # 2.0.0-rc.3 (2016-07-15)
 
 ### Fixes
