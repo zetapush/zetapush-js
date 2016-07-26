@@ -8,7 +8,7 @@
 From bower
 
 ```console
-bower install zetapush-js#2.0.0 --save
+bower install zetapush-js --save
 ```
 
 ```html
@@ -18,7 +18,7 @@ bower install zetapush-js#2.0.0 --save
 From npm
 
 ```console
-npm install zetapush-js@2.0.0 --save
+npm install zetapush-js --save
 ```
 
 ```js
@@ -28,7 +28,7 @@ import { Client, Authentication, services } from 'zetapush-js'
 From CDN (npmcdn recommended)
 
 ```html
-<script src="//npmcdn.com/zetapush-js@2.0.0/dist/zetapush.min.js"></script>
+<script src="//npmcdn.com/zetapush-js/dist/zetapush.min.js"></script>
 ```
 
 ```js

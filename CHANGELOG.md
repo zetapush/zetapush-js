@@ -1,3 +1,9 @@
+# 2.0.1 (2016-07-26)
+
+### Fixes
+
+* **cometd** Update cometd to 3.0.13 to fix network overflow on handshake failure with reconnect advice
+
 # 2.0.0 (2016-07-25)
 
 :tada: After a complete refactoring, ZetaPush 2.0 is production ready
