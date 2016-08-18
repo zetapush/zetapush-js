@@ -85,4 +85,5 @@ describe('WeakClient',  () => {
       client.connect()
     })
   })
+
 })
