@@ -27,7 +27,7 @@ document.querySelector('.js-SendMessage').addEventListener('click', () => {
   service.send({
     target: prompt('Target User Id', client.getUserId()),
     data: {
-      value: 'World'
+      name: 'World'
     }
   })
 })

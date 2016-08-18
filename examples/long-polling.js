@@ -28,7 +28,7 @@ document.querySelector('.js-SayHello').addEventListener('click', () => {
   service.call({
     name: 'hello',
     parameters: {
-      value: 'World'
+      name: 'World'
     }
   })
 })

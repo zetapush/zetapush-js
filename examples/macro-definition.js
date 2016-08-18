@@ -24,7 +24,7 @@ const service = client.createService({
 client.onConnectionEstablished(() => {
   console.debug('onConnectionEstablished')
   service.hello({
-    value: 'World'
+    name: 'World'
   })
 })
 // Connect client to ZetaPush BaaS
