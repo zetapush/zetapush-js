@@ -25,7 +25,8 @@
     "doc": "esdoc -c esdoc.json",
     "build": "webpack",
     "deploy:github": "npm run doc && gulp deploy:github",
-    "serve": "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001"
+    "serve": "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001",
+    "test": "karma start karma.conf.js"
   },
   "dependencies": {
     "zetapush-cometd": "^3.0.13"
@@ -44,7 +45,14 @@
     "eslint-loader": "^1.4.0",
     "gulp": "^3.9.1",
     "gulp-gh-pages": "^0.5.4",
+    "jasmine-core": "^2.4.1",
+    "karma": "^1.2.0",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-cli": "^1.0.1",
+    "karma-jasmine": "^1.0.2",
+    "karma-phantomjs-launcher": "^1.0.1",
     "lr-http-server": "^0.1.1",
+    "phantomjs-prebuilt": "^2.1.12",
     "request": "^2.73.0",
     "webpack": "^1.13.1",
     "whatwg-fetch": "^1.0.0"
