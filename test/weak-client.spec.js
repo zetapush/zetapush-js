@@ -28,24 +28,61 @@ describe('WeakClient',  () => {
 
   describe('WeakClient connection',  () => {
     it('Should connect', (done) => {
-      this.client.onConnectionEstablished(() => {
-        expect(this.client.isConnected()).toBeTruthy()
+      const client = this.client
+      client.onConnectionEstablished(() => {
+        expect(client.isConnected()).toBeTruthy()
         done()
       })
-      this.client.connect()
+      client.connect()
     })
   })
+
   describe('WeakClient deconnection',  () => {
     it('Should connect and disconnect', (done) => {
-      this.client.onConnectionEstablished(() => {
-        expect(this.client.isConnected()).toBeTruthy()
-        this.client.onConnectionClosed(() => {
-          expect(this.client.isConnected()).toBeFalsy()
+      const client = this.client
+      client.addConnectionStatusListener({
+        onConnectionEstablished() {
+          expect(client.isConnected()).toBeTruthy()
+          client.disconnect()
+        },
+        onConnectionClosed() {
+          expect(client.isConnected()).toBeFalsy()
           done()
-        })
-        this.client.disconnect()
+        }
       })
-      this.client.connect()
+      client.connect()
+    })
+  })
+
+  describe('WeakClient session persistence',  () => {
+    it('Should keep user session between connections', (done) => {
+      const client = this.client
+      const sessions = []
+      client.addConnectionStatusListener({
+        onConnectionEstablished() {
+          expect(client.isConnected()).toBeTruthy()
+          if (sessions.length < 2) {
+            client.disconnect()
+          }
+          else {
+            const [ first, second ] = sessions
+            expect(first.userId).toBeDefined()
+            expect(second.userId).toBeDefined()
+            expect(first.userId).toBe(second.userId)
+            done()
+          }
+        },
+        onConnectionClosed() {
+          expect(client.isConnected()).toBeFalsy()
+          if (sessions.length < 2) {
+            client.connect()
+          }
+        },
+        onSuccessfulHandshake(session) {
+          sessions.push(session)
+        }
+      })
+      client.connect()
     })
   })
 })
