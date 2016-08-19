@@ -1,3 +1,44 @@
+# 3.0.0-alpha.1 (2016-08-19)
+
+Major API modification
+
+### BREAKING CHANGES
+
+* **core:** Update lib/client, rename credentials to authentication
+
+**Before**
+
+```js
+// Create new ZetaPush Client
+const client = new ZetaPush.Client({
+  sandboxId: '<YOUR-SANDBOX-ID>',
+  credentials() {
+    return ZetaPush.AuthentFactory.createWeakHandshake({
+      token: null
+    })
+  }
+})
+```
+
+**After**
+
+```js
+// Create new ZetaPush Client
+const client = new ZetaPush.Client({
+  sandboxId: '<YOUR-SANDBOX-ID>',
+  authentication() {
+    return ZetaPush.Authentication.weak({
+      token: null
+    })
+  }
+})
+```
+
+### Features
+
+* **core** Add lib/smart-client
+* **test** ZetaPush core functionalities are now tested with Karma/Jasmine
+
 # 2.0.1 (2016-07-26)
 
 ### Fixes
