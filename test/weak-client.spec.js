@@ -1,4 +1,6 @@
 describe('WeakClient',  function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
+
   var sandboxId = 'Y1k3xBDc'
 
   beforeEach(function () {
@@ -7,7 +9,7 @@ describe('WeakClient',  function () {
     })
   })
 
-  describe('WeakClient initial state',  function () {
+  describe('Initial state',  function () {
     it('Should correctly create a WeakClient object', function () {
       expect(typeof this.client).toBe('object')
       expect(this.client instanceof ZetaPush.WeakClient).toBeTruthy()
@@ -26,7 +28,7 @@ describe('WeakClient',  function () {
     })
   })
 
-  describe('WeakClient connection',  function () {
+  describe('Connection',  function () {
     it('Should connect', function (done) {
       var client = this.client
       client.onConnectionEstablished(function () {
@@ -54,7 +56,7 @@ describe('WeakClient',  function () {
     })
   })
 
-  describe('WeakClient session persistence', function () {
+  describe('Session persistence', function () {
     it('Should keep user session between connections', function (done) {
       var client = this.client
       var sessions = []

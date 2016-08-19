@@ -1,10 +1,12 @@
 describe('Client',  function () {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
+
   var sandboxId = 'Y1k3xBDc'
 
   beforeEach(function () {
     this.client = new ZetaPush.Client({
       sandboxId: sandboxId,
-      credentials: function () {
+      authentication: function () {
         return ZetaPush.Authentication.simple({
           login: 'root',
           password: 'root'
@@ -13,7 +15,7 @@ describe('Client',  function () {
     })
   })
 
-  describe('Client initial state',  function () {
+  describe('Initial State',  function () {
     it('Should correctly create a Client object', function () {
       expect(typeof this.client).toBe('object')
       expect(this.client instanceof ZetaPush.Client).toBeTruthy()
@@ -32,13 +34,14 @@ describe('Client',  function () {
     })
   })
 
-  describe('Client connection',  function () {
+  describe('Connection',  function () {
     it('Should connect', function (done) {
       var client = this.client
       client.onConnectionEstablished(function () {
         expect(client.isConnected()).toBeTruthy()
         done()
       })
+      expect(client.isConnected()).toBeFalsy()
       client.connect()
     })
   })
