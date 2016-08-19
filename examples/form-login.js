@@ -1,7 +1,7 @@
 // Create new ZetaPush Client
 const client = new ZetaPush.Client({
   sandboxId: 'Y1k3xBDc',
-  credentials() {
+  authentication() {
     return ZetaPush.Authentication.simple({
       login: document.querySelector('input[name="login"]').value,
       password: document.querySelector('input[name="password"]').value
