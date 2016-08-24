@@ -42,7 +42,7 @@ const { Client, Authentication, services } = ZetaPush
 // Create new ZetaPush Client
 const client = new Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
-  credentials() {
+  authentication() {
     return Authentication.weak({
       token: null
     })
