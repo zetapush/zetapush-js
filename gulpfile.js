@@ -5,7 +5,7 @@ const request = require('request')
 
 const pkg = require('./package')
 
-const REMOTE_DEFINITIONS_URL = 'http://pinte-silver-2/sdks/generated/2.4.0/js/zp_services.js'
+const REMOTE_DEFINITIONS_URL = 'http://pinte-silver-2/sdks/generated/2.4.8/js/zp_services.js'
 
 gulp.task('remote', (done) => {
   return request(REMOTE_DEFINITIONS_URL)
