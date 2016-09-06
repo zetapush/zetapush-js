@@ -1,3 +1,9 @@
+# 3.0.0-alpha.1 (2016-09-06)
+
+### Fix
+
+* **smart-client** Fix sessions persistence key generation
+
 # 3.0.0-alpha.1 (2016-08-19)
 
 Major API modification
