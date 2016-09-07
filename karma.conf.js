@@ -62,7 +62,7 @@ module.exports = function (config) {
     customLaunchers: {
       PhantomJS_CI: {
         base: 'PhantomJS',
-        flags: ['--ignore-ssl-errors=true']
+        flags: ['--debug=true']
       }
     }
   })
