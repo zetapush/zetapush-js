@@ -25,10 +25,10 @@ npm install zetapush-js --save
 import { Client, Authentication, services } from 'zetapush-js'
 ```
 
-From CDN (npmcdn recommended)
+From CDN (unpkg recommended)
 
 ```html
-<script src="//npmcdn.com/zetapush-js/dist/zetapush.min.js"></script>
+<script src="//unpkg.com/zetapush-js/dist/zetapush.min.js"></script>
 ```
 
 ```js
