@@ -1,4 +1,40 @@
-# 3.0.0-alpha.1 (2016-09-06)
+# 3.0.0-alpha.3 (2016-09-16)
+
+Major API modification
+
+### BREAKING CHANGES
+
+* **client** Rename createService parameter from type to Type
+
+**Before**
+
+```js
+// Create new service
+const service = new client.createService({
+  type: ZetaPush.services.Stack,
+  listener: {
+    list(message) {
+      console.log('on list', message)
+    }
+  }
+})
+```
+
+**After**
+
+```js
+// Create new service
+const service = new client.createService({
+  Type: ZetaPush.services.Stack,
+  listener: {
+    list(message) {
+      console.log('on list', message)
+    }
+  }
+})
+```
+
+# 3.0.0-alpha.2 (2016-09-06)
 
 ### Fix
 

@@ -3,9 +3,9 @@ const client = new ZetaPush.WeakClient({
 })
 
 const service = client.createService({
-  type: ZetaPush.services.Echo,
-  listener: getGenericServiceListener({
-    type: ZetaPush.services.Echo,
+  Type: ZetaPush.services.Echo,
+  listener: window.getGenericServiceListener({
+    Type: ZetaPush.services.Echo,
     handler({ method, data }) {
       console.debug(method, data)
       document.querySelector(`form[name="${method}"] [name="output"]`).value = JSON.stringify(data)

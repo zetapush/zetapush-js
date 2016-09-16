@@ -1,15 +1,17 @@
-describe('WeakClient',  function () {
+describe('WeakClient', function () {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
 
+  var apiUrl = 'http://api.zpush.io/'
   var sandboxId = 'Y1k3xBDc'
 
   beforeEach(function () {
     this.client = new ZetaPush.WeakClient({
+      apiUrl: apiUrl,
       sandboxId: sandboxId
     })
   })
 
-  describe('Initial state',  function () {
+  describe('Initial state', function () {
     it('Should correctly create a WeakClient object', function () {
       expect(typeof this.client).toBe('object')
       expect(this.client instanceof ZetaPush.WeakClient).toBeTruthy()
@@ -28,7 +30,7 @@ describe('WeakClient',  function () {
     })
   })
 
-  describe('Connection',  function () {
+  describe('Connection', function () {
     it('Should connect', function (done) {
       var client = this.client
       client.onConnectionEstablished(function () {
@@ -39,7 +41,7 @@ describe('WeakClient',  function () {
     })
   })
 
-  describe('WeakClient deconnection',  function () {
+  describe('WeakClient deconnection', function () {
     it('Should connect and disconnect', function (done) {
       var client = this.client
       client.addConnectionStatusListener({
@@ -65,8 +67,7 @@ describe('WeakClient',  function () {
           expect(client.isConnected()).toBeTruthy()
           if (sessions.length < 2) {
             client.disconnect()
-          }
-          else {
+          } else {
             var first = sessions[0]
             var second = sessions[1]
             expect(first.userId).toBeDefined()
@@ -88,5 +89,4 @@ describe('WeakClient',  function () {
       client.connect()
     })
   })
-
 })

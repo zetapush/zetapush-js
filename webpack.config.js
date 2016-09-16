@@ -11,21 +11,26 @@ const plugins = [new UglifyJsPlugin({
 const filename = `${library.toLowerCase()}.min.js`
 
 module.exports = {
-  entry: ['whatwg-fetch', __dirname + '/lib/index.js'],
+  entry: ['whatwg-fetch', path.join(__dirname, 'lib/index.js')],
   devtool: 'source-map',
   output: {
-    path: __dirname + '/dist',
+    path: path.join(__dirname, 'dist'),
     filename,
     library,
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
   module: {
-    loaders: ['babel', 'eslint'].map((loader) => ({
+    preLoaders: [{
       test: /\.js$/,
-      loader,
+      loader: 'eslint',
       exclude: /node_modules/
-    }))
+    }],
+    loaders: [{
+      test: /\.js$/,
+      loader: 'babel',
+      exclude: /node_modules/
+    }]
   },
   resolve: {
     root: path.resolve('./lib'),

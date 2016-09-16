@@ -3,7 +3,8 @@ function getCurrentTarget(node, target, selector) {
   if (target.matches(selector)) {
     return target
   }
-  while (target = target.parentNode && node !== target) {
+  while (target && node !== target) {
+    target = target.parentNode
     if (target.nodeType !== 1) {
       return false
     }
@@ -23,6 +24,7 @@ function on(node, type, selector, handler) {
     }
   }, false)
 }
+window.on = on
 
 function dom(tag, attributes = {}, ...children) {
   const element = document.createElement(tag)
@@ -41,10 +43,11 @@ function dom(tag, attributes = {}, ...children) {
   element.appendChild(fragment)
   return element
 }
+window.dom = dom
 
 function getGenericServiceListener({ handler, type }) {
   const methods = ['error'].concat(Object.getOwnPropertyNames(type.prototype).filter((property) => {
-    return property != 'constructor'
+    return property !== 'constructor'
   }))
   return methods.reduce((listener, method) => {
     listener[method] = (message) => {
@@ -54,3 +57,4 @@ function getGenericServiceListener({ handler, type }) {
     return listener
   }, {})
 }
+window.getGenericServiceListener = getGenericServiceListener

@@ -4,7 +4,7 @@ const client = new ZetaPush.WeakClient({
 })
 // Create Messaging service
 const service = client.createService({
-  type: ZetaPush.services.Messaging,
+  Type: ZetaPush.services.Messaging,
   listener: {
     error(error) {
       console.log('error', error)

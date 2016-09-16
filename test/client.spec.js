@@ -1,10 +1,12 @@
-describe('Client',  function () {
+describe('Client', function () {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
 
+  var apiUrl = 'http://api.zpush.io/'
   var sandboxId = 'Y1k3xBDc'
 
   beforeEach(function () {
     this.client = new ZetaPush.Client({
+      apiUrl: apiUrl,
       sandboxId: sandboxId,
       authentication: function () {
         return ZetaPush.Authentication.simple({
@@ -15,7 +17,7 @@ describe('Client',  function () {
     })
   })
 
-  describe('Initial State',  function () {
+  describe('Initial State', function () {
     it('Should correctly create a Client object', function () {
       expect(typeof this.client).toBe('object')
       expect(this.client instanceof ZetaPush.Client).toBeTruthy()
@@ -34,7 +36,7 @@ describe('Client',  function () {
     })
   })
 
-  describe('Connection',  function () {
+  describe('Connection', function () {
     it('Should connect', function (done) {
       var client = this.client
       client.onConnectionEstablished(function () {
@@ -45,5 +47,4 @@ describe('Client',  function () {
       client.connect()
     })
   })
-
 })

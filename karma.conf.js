@@ -62,7 +62,7 @@ module.exports = function (config) {
     customLaunchers: {
       PhantomJS_CI: {
         base: 'PhantomJS',
-        flags: ['--debug=true']
+        flags: ['--debug=true', '--disk-cache=false', '--ssl-protocol=any']
       }
     }
   })
