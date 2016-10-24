@@ -45,8 +45,8 @@ function dom(tag, attributes = {}, ...children) {
 }
 window.dom = dom
 
-function getGenericServiceListener({ handler, type }) {
-  const methods = ['error'].concat(Object.getOwnPropertyNames(type.prototype).filter((property) => {
+function getGenericServiceListener({ handler, Type }) {
+  const methods = ['error'].concat(Object.getOwnPropertyNames(Type.prototype).filter((property) => {
     return property !== 'constructor'
   }))
   return methods.reduce((listener, method) => {
