@@ -1,3 +1,19 @@
+# 3.0.0 (2016-10-24)
+
+### Changes
+
+* **client** Rename createService parameter from type to Type
+* **core:** Update lib/client, rename credentials to authentication
+
+### Fixes
+
+* **smart-client** Fix sessions persistence key generation
+
+### Features
+
+* **core** Add lib/smart-client
+* **test** ZetaPush core functionalities are now tested with Karma/Jasmine
+
 # 3.0.0-alpha.3 (2016-09-16)
 
 Major API modification
