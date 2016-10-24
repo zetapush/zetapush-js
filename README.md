@@ -50,7 +50,7 @@ const client = new Client({
 })
 // Create a Stack service
 const service = client.createService({
-  type: services.Stack,
+  Type: services.Stack,
   listener: {
     list(message) {
       console.log('list callback', message)
