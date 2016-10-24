@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">Cron | API Document</title>
+  <title data-ice="title">MacroDebug | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -78,23 +78,23 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Cron} from &apos;<span><a href="file/lib/services/index.js.html#lineNumber775">zetapush-js/lib/services/index.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {MacroDebug} from &apos;<span><a href="file/lib/services/index.js.html#lineNumber575">zetapush-js/lib/services/index.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/lib/services/index.js.html#lineNumber775">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/lib/services/index.js.html#lineNumber575">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
-  <h1 data-ice="name">Cron</h1>
+  <h1 data-ice="name">MacroDebug</h1>
 
   
 
   
   
-  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span>lib/services/index.js~Service</span> &#x2192; Cron</div></div>
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span>lib/services/index.js~Service</span> &#x2192; MacroDebug</div></div>
   
   
   
@@ -104,10 +104,9 @@
 
   
   
-  <div class="description" data-ice="description"><p>User API for the Scheduler</p>
-<p>User endpoints for scheduling : users can schedule, list and delete tasks.
-Tasks are stored on a per-user basis: a task will run with the priviledges of the user who stored it.
-Tasks are run on the server and thus can call api verbs marked as server-only.</p>
+  <div class="description" data-ice="description"><p>User API for macro debugging</p>
+<p>Debugger API for macro.
+These API verbs are not intended for use by most developers.</p>
 </div>
 
   
@@ -134,13 +133,13 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/lib/services/index.js~Cron.html#static-get-DEFAULT_DEPLOYMENT_ID">DEFAULT_DEPLOYMENT_ID</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+           <span data-ice="name"><span><a href="class/lib/services/index.js~MacroDebug.html#static-get-DEFAULT_DEPLOYMENT_ID">DEFAULT_DEPLOYMENT_ID</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Get default deployment id associated to Cron service</p>
+        <div data-ice="description"><p>Get default deployment id associated to MacroDebug service</p>
 </div>
       </div>
     </td>
@@ -170,13 +169,13 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/lib/services/index.js~Cron.html#instance-method-list">list</a></span></span><span data-ice="signature">(objectPattern: {&quot;owner&quot;: <span>*</span>, &quot;page&quot;: <span>*</span>, &quot;start&quot;: <span>*</span>, &quot;stop&quot;: <span>*</span>})</span>
+           <span data-ice="name"><span><a href="class/lib/services/index.js~MacroDebug.html#instance-method-breakpoint">breakpoint</a></span></span><span data-ice="signature">(objectPattern: {&quot;breakpoint&quot;: <span>*</span>, &quot;enabled&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>})</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>List the configured tasks</p>
+        <div data-ice="description"><p>Enables or disables a breakpoint</p>
 </div>
       </div>
     </td>
@@ -196,13 +195,91 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/lib/services/index.js~Cron.html#instance-method-unschedule">unschedule</a></span></span><span data-ice="signature">(objectPattern: {&quot;cronName&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>})</span>
+           <span data-ice="name"><span><a href="class/lib/services/index.js~MacroDebug.html#instance-method-info">info</a></span></span><span data-ice="signature">(objectPattern: {&quot;exp&quot;: <span>*</span>, &quot;frame&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>})</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Removes a scheduled task</p>
+        <div data-ice="description"><p>Requests some information</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/lib/services/index.js~MacroDebug.html#instance-method-livedebug">livedebug</a></span></span><span data-ice="signature">(objectPattern: {&quot;breakpoints&quot;: <span>*</span>, &quot;debug&quot;: <span>*</span>, &quot;hardFail&quot;: <span>*</span>, &quot;name&quot;: <span>*</span>, &quot;parameters&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Debugs a previously recorded macro</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/lib/services/index.js~MacroDebug.html#instance-method-resume">resume</a></span></span><span data-ice="signature">(objectPattern: {&quot;token&quot;: <span>*</span>, &quot;type&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Resumes a paused macro</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/lib/services/index.js~MacroDebug.html#instance-method-variable">variable</a></span></span><span data-ice="signature">(objectPattern: {&quot;data&quot;: <span>*</span>, &quot;frame&quot;: <span>*</span>, &quot;name&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>})</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Sets a variable value</p>
 </div>
       </div>
     </td>
@@ -230,14 +307,14 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber780">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber580">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Get default deployment id associated to Cron service</p>
+  <div data-ice="description"><p>Get default deployment id associated to MacroDebug service</p>
 </div>
 
   
@@ -277,25 +354,24 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
 <div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
 
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-list">
+  <h3 data-ice="anchor" id="instance-method-breakpoint">
     <span class="access" data-ice="access">public</span>
     
     
     
     
-    <span data-ice="name">list</span><span data-ice="signature">(objectPattern: {&quot;owner&quot;: <span>*</span>, &quot;page&quot;: <span>*</span>, &quot;start&quot;: <span>*</span>, &quot;stop&quot;: <span>*</span>})</span>
+    <span data-ice="name">breakpoint</span><span data-ice="signature">(objectPattern: {&quot;breakpoint&quot;: <span>*</span>, &quot;enabled&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>})</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber788">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber584">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>List the configured tasks</p>
-<p>Returns a paginated list of the asking user&apos;s tasks.</p>
+  <div data-ice="description"><p>Enables or disables a breakpoint</p>
 </div>
 
   
@@ -310,8 +386,8 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">objectPattern</td>
-      <td data-ice="type">{&quot;owner&quot;: <span>*</span>, &quot;page&quot;: <span>*</span>, &quot;start&quot;: <span>*</span>, &quot;stop&quot;: <span>*</span>}</td>
-      <td data-ice="appendix"><ul><li>default: {&quot;owner&quot;:null,&quot;page&quot;:null,&quot;start&quot;:null,&quot;stop&quot;:null}</li></ul></td>
+      <td data-ice="type">{&quot;breakpoint&quot;: <span>*</span>, &quot;enabled&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;breakpoint&quot;:null,&quot;enabled&quot;:null,&quot;token&quot;:null}</li></ul></td>
       <td data-ice="description"></td>
     </tr>
 </tbody>
@@ -335,26 +411,24 @@ Tasks are run on the server and thus can call api verbs marked as server-only.</
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-unschedule">
+  <h3 data-ice="anchor" id="instance-method-info">
     <span class="access" data-ice="access">public</span>
     
     
     
     
-    <span data-ice="name">unschedule</span><span data-ice="signature">(objectPattern: {&quot;cronName&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>})</span>
+    <span data-ice="name">info</span><span data-ice="signature">(objectPattern: {&quot;exp&quot;: <span>*</span>, &quot;frame&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>})</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber795">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber586">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Removes a scheduled task</p>
-<p>Removes a previously scheduled task.
-Does absolutely nothing if asked to remove a non-existent task.</p>
+  <div data-ice="description"><p>Requests some information</p>
 </div>
 
   
@@ -369,8 +443,181 @@ Does absolutely nothing if asked to remove a non-existent task.</p>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">objectPattern</td>
-      <td data-ice="type">{&quot;cronName&quot;: <span>*</span>, &quot;owner&quot;: <span>*</span>}</td>
-      <td data-ice="appendix"><ul><li>default: {&quot;cronName&quot;:null,&quot;owner&quot;:null}</li></ul></td>
+      <td data-ice="type">{&quot;exp&quot;: <span>*</span>, &quot;frame&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;exp&quot;:null,&quot;frame&quot;:null,&quot;token&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-livedebug">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">livedebug</span><span data-ice="signature">(objectPattern: {&quot;breakpoints&quot;: <span>*</span>, &quot;debug&quot;: <span>*</span>, &quot;hardFail&quot;: <span>*</span>, &quot;name&quot;: <span>*</span>, &quot;parameters&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber593">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Debugs a previously recorded macro</p>
+<p>The given breakpoints will be honored, causing a suspension of the execution, resumable via &apos;resume&apos;.
+Only one debug session can be active at any given time.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;breakpoints&quot;: <span>*</span>, &quot;debug&quot;: <span>*</span>, &quot;hardFail&quot;: <span>*</span>, &quot;name&quot;: <span>*</span>, &quot;parameters&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;breakpoints&quot;:null,&quot;debug&quot;:null,&quot;hardFail&quot;:null,&quot;name&quot;:null,&quot;parameters&quot;:null,&quot;token&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-resume">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">resume</span><span data-ice="signature">(objectPattern: {&quot;token&quot;: <span>*</span>, &quot;type&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber595">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Resumes a paused macro</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;token&quot;: <span>*</span>, &quot;type&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;token&quot;:null,&quot;type&quot;:null}</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-variable">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">variable</span><span data-ice="signature">(objectPattern: {&quot;data&quot;: <span>*</span>, &quot;frame&quot;: <span>*</span>, &quot;name&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>})</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber597">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Sets a variable value</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">objectPattern</td>
+      <td data-ice="type">{&quot;data&quot;: <span>*</span>, &quot;frame&quot;: <span>*</span>, &quot;name&quot;: <span>*</span>, &quot;token&quot;: <span>*</span>}</td>
+      <td data-ice="appendix"><ul><li>default: {&quot;data&quot;:null,&quot;frame&quot;:null,&quot;name&quot;:null,&quot;token&quot;:null}</li></ul></td>
       <td data-ice="description"></td>
     </tr>
 </tbody>

@@ -33,9 +33,11 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/weak-client.js~WeakClient.html">WeakClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VERSION">VERSION</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html">AbstractHandshake</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~Authentication.html">Authentication</a></span></span></li>
@@ -54,7 +56,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~GroupManagement.html">GroupManagement</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Httpclient.html">Httpclient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Macro.html">Macro</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~MacroDebug.html">MacroDebug</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Messaging.html">Messaging</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Notif.html">Notif</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Queue.html">Queue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Remoting.html">Remoting</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Search.html">Search</a></span></span></li>
@@ -68,18 +72,19 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_hdfs.html">Zpfs_hdfs</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_s3.html">Zpfs_s3</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_s3compat.html">Zpfs_s3compat</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">utils</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ZETAPUSH_SESSION_KEY">ZETAPUSH_SESSION_KEY</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Remoting} from &apos;<span><a href="file/lib/services/index.js.html#lineNumber338">zetapush-js/lib/services/index.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Remoting} from &apos;<span><a href="file/lib/services/index.js.html#lineNumber330">zetapush-js/lib/services/index.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/lib/services/index.js.html#lineNumber338">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/lib/services/index.js.html#lineNumber330">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -132,7 +137,7 @@
       <div>
         
         
-        <div data-ice="description"><p>Get default deployment id associated to RemotingService</p>
+        <div data-ice="description"><p>Get default deployment id associated to Remoting service</p>
 </div>
       </div>
     </td>
@@ -240,7 +245,7 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/lib/services/index.js~Remoting.html#instance-method-getCapabilities">getCapabilities</a></span></span><span data-ice="signature">(objectPattern: {})</span>
+           <span data-ice="name"><span><a href="class/lib/services/index.js~Remoting.html#instance-method-getCapabilities">getCapabilities</a></span></span><span data-ice="signature">()</span>
         </p>
       </div>
       <div>
@@ -378,14 +383,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber343">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber335">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Get default deployment id associated to RemotingService</p>
+  <div data-ice="description"><p>Get default deployment id associated to Remoting service</p>
 </div>
 
   
@@ -435,7 +440,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber352">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber344">source</a></span></span>
     </span>
   </h3>
 
@@ -494,7 +499,7 @@ Whenever the device calls &apos;notify&apos;, notifications will be sent to the 
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber354">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber346">source</a></span></span>
     </span>
   </h3>
 
@@ -551,7 +556,7 @@ Whenever the device calls &apos;notify&apos;, notifications will be sent to the 
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber361">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber353">source</a></span></span>
     </span>
   </h3>
 
@@ -606,11 +611,11 @@ The command is issued on channel &apos;command&apos;</p>
     
     
     
-    <span data-ice="name">getCapabilities</span><span data-ice="signature">(objectPattern: {})</span>
+    <span data-ice="name">getCapabilities</span><span data-ice="signature">()</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber368">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber360">source</a></span></span>
     </span>
   </h3>
 
@@ -624,23 +629,7 @@ Devices are expected to answer on channel &apos;capabilities&apos;</p>
 
   
 
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">objectPattern</td>
-      <td data-ice="type">{}</td>
-      <td data-ice="appendix"><ul><li>default: {}</li></ul></td>
-      <td data-ice="description"></td>
-    </tr>
-</tbody>
-  </table>
-</div>
+  <div data-ice="properties">
 </div>
 
   
@@ -669,7 +658,7 @@ Devices are expected to answer on channel &apos;capabilities&apos;</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber375">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber367">source</a></span></span>
     </span>
   </h3>
 
@@ -728,7 +717,7 @@ The server forwards the notification to said users.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber381">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber373">source</a></span></span>
     </span>
   </h3>
 
@@ -786,7 +775,7 @@ The server forwards the notification to said users.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber383">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber375">source</a></span></span>
     </span>
   </h3>
 
@@ -843,7 +832,7 @@ The server forwards the notification to said users.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber389">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber381">source</a></span></span>
     </span>
   </h3>
 
@@ -894,7 +883,7 @@ The server forwards the notification to said users.</p>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

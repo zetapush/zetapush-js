@@ -450,10 +450,10 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "WeakClient",
+            "name": "SmartClient",
             "range": [
               276,
-              286
+              287
             ],
             "loc": {
               "start": {
@@ -462,16 +462,16 @@
               },
               "end": {
                 "line": 7,
-                "column": 19
+                "column": 20
               }
             }
           },
           "local": {
             "type": "Identifier",
-            "name": "WeakClient",
+            "name": "SmartClient",
             "range": [
               276,
-              286
+              287
             ],
             "loc": {
               "start": {
@@ -480,13 +480,13 @@
               },
               "end": {
                 "line": 7,
-                "column": 19
+                "column": 20
               }
             }
           },
           "range": [
             276,
-            286
+            287
           ],
           "loc": {
             "start": {
@@ -495,33 +495,33 @@
             },
             "end": {
               "line": 7,
-              "column": 19
+              "column": 20
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "./weak-client",
-        "raw": "'./weak-client'",
+        "value": "./smart-client",
+        "raw": "'./smart-client'",
         "range": [
-          294,
-          309
+          295,
+          311
         ],
         "loc": {
           "start": {
             "line": 7,
-            "column": 27
+            "column": 28
           },
           "end": {
             "line": 7,
-            "column": 42
+            "column": 44
           }
         }
       },
       "range": [
         267,
-        310
+        312
       ],
       "loc": {
         "start": {
@@ -542,10 +542,10 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "services",
+            "name": "WeakClient",
             "range": [
-              319,
-              327
+              321,
+              331
             ],
             "loc": {
               "start": {
@@ -554,16 +554,16 @@
               },
               "end": {
                 "line": 8,
-                "column": 17
+                "column": 19
               }
             }
           },
           "local": {
             "type": "Identifier",
-            "name": "services",
+            "name": "WeakClient",
             "range": [
-              319,
-              327
+              321,
+              331
             ],
             "loc": {
               "start": {
@@ -572,13 +572,13 @@
               },
               "end": {
                 "line": 8,
-                "column": 17
+                "column": 19
               }
             }
           },
           "range": [
-            319,
-            327
+            321,
+            331
           ],
           "loc": {
             "start": {
@@ -587,15 +587,33 @@
             },
             "end": {
               "line": 8,
-              "column": 17
+              "column": 19
             }
           }
         }
       ],
-      "source": null,
+      "source": {
+        "type": "Literal",
+        "value": "./weak-client",
+        "raw": "'./weak-client'",
+        "range": [
+          339,
+          354
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 27
+          },
+          "end": {
+            "line": 8,
+            "column": 42
+          }
+        }
+      },
       "range": [
-        310,
-        372
+        312,
+        355
       ],
       "loc": {
         "start": {
@@ -603,7 +621,81 @@
           "column": 0
         },
         "end": {
-          "line": 14,
+          "line": 9,
+          "column": 0
+        }
+      }
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": null,
+      "specifiers": [
+        {
+          "type": "ExportSpecifier",
+          "exported": {
+            "type": "Identifier",
+            "name": "services",
+            "range": [
+              364,
+              372
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 9
+              },
+              "end": {
+                "line": 9,
+                "column": 17
+              }
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "name": "services",
+            "range": [
+              364,
+              372
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 9
+              },
+              "end": {
+                "line": 9,
+                "column": 17
+              }
+            }
+          },
+          "range": [
+            364,
+            372
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 9
+            },
+            "end": {
+              "line": 9,
+              "column": 17
+            }
+          }
+        }
+      ],
+      "source": null,
+      "range": [
+        355,
+        417
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
           "column": 0
         }
       }
@@ -619,67 +711,67 @@
               "type": "Identifier",
               "name": "VERSION",
               "range": [
-                385,
-                392
+                430,
+                437
               ],
               "loc": {
                 "start": {
-                  "line": 14,
+                  "line": 15,
                   "column": 13
                 },
                 "end": {
-                  "line": 14,
+                  "line": 15,
                   "column": 20
                 }
               }
             },
             "init": {
               "type": "Literal",
-              "value": "2.0.1",
-              "raw": "'2.0.1'",
+              "value": "3.0.0-alpha.3",
+              "raw": "'3.0.0-alpha.3'",
               "range": [
-                395,
-                402
+                440,
+                455
               ],
               "loc": {
                 "start": {
-                  "line": 14,
+                  "line": 15,
                   "column": 23
                 },
                 "end": {
-                  "line": 14,
-                  "column": 30
+                  "line": 15,
+                  "column": 38
                 }
               }
             },
             "range": [
-              385,
-              402
+              430,
+              455
             ],
             "loc": {
               "start": {
-                "line": 14,
+                "line": 15,
                 "column": 13
               },
               "end": {
-                "line": 14,
-                "column": 30
+                "line": 15,
+                "column": 38
               }
             }
           }
         ],
         "kind": "const",
         "range": [
-          379,
-          403
+          424,
+          456
         ],
         "loc": {
           "start": {
-            "line": 14,
+            "line": 15,
             "column": 7
           },
           "end": {
-            "line": 15,
+            "line": 16,
             "column": 0
           }
         },
@@ -688,16 +780,16 @@
             "type": "Block",
             "value": "*\n * SDK Version\n * @type {string}\n ",
             "range": [
-              331,
-              371
+              376,
+              416
             ],
             "loc": {
               "start": {
-                "line": 10,
+                "line": 11,
                 "column": 0
               },
               "end": {
-                "line": 13,
+                "line": 14,
                 "column": 3
               }
             }
@@ -708,16 +800,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        372,
-        403
+        417,
+        456
       ],
       "loc": {
         "start": {
-          "line": 14,
+          "line": 15,
           "column": 0
         },
         "end": {
-          "line": 15,
+          "line": 16,
           "column": 0
         }
       },
@@ -726,16 +818,16 @@
           "type": "Block",
           "value": "*\n * SDK Version\n * @type {string}\n ",
           "range": [
-            331,
-            371
+            376,
+            416
           ],
           "loc": {
             "start": {
-              "line": 10,
+              "line": 11,
               "column": 0
             },
             "end": {
-              "line": 13,
+              "line": 14,
               "column": 3
             }
           }
@@ -746,7 +838,7 @@
   "sourceType": "module",
   "range": [
     0,
-    403
+    456
   ],
   "loc": {
     "start": {
@@ -754,7 +846,7 @@
       "column": 0
     },
     "end": {
-      "line": 15,
+      "line": 16,
       "column": 0
     }
   },
@@ -763,16 +855,16 @@
       "type": "Block",
       "value": "*\n * SDK Version\n * @type {string}\n ",
       "range": [
-        331,
-        371
+        376,
+        416
       ],
       "loc": {
         "start": {
-          "line": 10,
+          "line": 11,
           "column": 0
         },
         "end": {
-          "line": 13,
+          "line": 14,
           "column": 3
         }
       }

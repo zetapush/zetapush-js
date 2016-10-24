@@ -33,9 +33,11 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/weak-client.js~WeakClient.html">WeakClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VERSION">VERSION</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html">AbstractHandshake</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~Authentication.html">Authentication</a></span></span></li>
@@ -54,7 +56,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~GroupManagement.html">GroupManagement</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Httpclient.html">Httpclient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Macro.html">Macro</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~MacroDebug.html">MacroDebug</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Messaging.html">Messaging</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Notif.html">Notif</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Queue.html">Queue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Remoting.html">Remoting</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Search.html">Search</a></span></span></li>
@@ -68,6 +72,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_hdfs.html">Zpfs_hdfs</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_s3.html">Zpfs_s3</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_s3compat.html">Zpfs_s3compat</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">utils</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ZETAPUSH_SESSION_KEY">ZETAPUSH_SESSION_KEY</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -83,7 +88,7 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
  * @property {string} apiUrl - Api Url
  * @property {string} sandboxId - Sandbox id
  * @property {boolean} forceHttps - Force end to end HTTPS connection
- * @property {function():AbstractHandshake} credentials - Return credentials properties
+ * @property {function():AbstractHandshake} authentication - Return authentication properties
  * @property {string} resource - Client resource id
  * @property {Array} transports - Client transports list
  */
@@ -95,17 +100,17 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
  * // Securized client with token based connection
  * const client = new ZetaPush.Client({
  *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
- *   credentials() {
+ *   authentication() {
  *     return ZetaPush.Authentication.weak({
  *       token: null
   *    })
  *   }
  * })
  * @example
- * // Client with credentials based connection
+ * // Client with authentication based connection
  * const client = new ZetaPush.Client({
  *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
- *   credentials() {
+ *   authentication() {
  *     return ZetaPush.Authentication.simple({
  *       login: &apos;&lt;USER-LOGIN&gt;&apos;,
  *       password: &apos;&lt;USER-PASSWORD&gt;&apos;
@@ -116,7 +121,7 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
  * // Explicit deploymentId
  * const clientSimple = new ZetaPush.Client({
  *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
- *   credentials() {
+ *   authentication() {
  *     return ZetaPush.Authentication.simple({
  *       deploymentId: &apos;&lt;YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
  *       login: &apos;&lt;USER-LOGIN&gt;&apos;,
@@ -126,7 +131,7 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
  * })
  * const clientWeak = new ZetaPush.Client({
  *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
- *   credentials() {
+ *   authentication() {
  *     return ZetaPush.Authentication.weak({
  *       deploymentId: &apos;&lt;YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
  *       token: &apos;&lt;SESSION-TOKEN&gt;&apos;
@@ -136,10 +141,10 @@ import { ConnectionStatusListener } from &apos;./connection/connection-status&ap
  */
 export class Client {
   /**
+   * Create a new ZetaPush Client
    * @param {ClientConfig} config
-   * Create a new ZetaPush client
    */
-  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(), credentials, resource, transports }) {
+  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(), authentication, resource, transports }) {
     /**
      * @access private
      * @type {ClientHelper}
@@ -148,10 +153,83 @@ export class Client {
       apiUrl,
       sandboxId,
       forceHttps,
-      credentials,
+      authentication,
       resource,
       transports
     })
+  }
+  /**
+   * Add a connection listener to handle life cycle connection events
+   * @param {ConnectionStatusListener} listener
+   * @return {number} handler
+   */
+  addConnectionStatusListener(listener) {
+    return this.helper.addConnectionStatusListener(listener)
+  }
+  /**
+   * Safely connect client to ZetaPush
+   */
+  connect() {
+    if (this.isConnected()) {
+      const handler = this.addConnectionStatusListener({
+        onConnectionClosed: () =&gt; {
+          this.removeConnectionStatusListener(handler)
+          this.helper.connect()
+        }
+      })
+      this.disconnect()
+    } else {
+      this.helper.connect()
+    }
+  }
+  /**
+   * Create a publish/subscribe for a service type
+   * @param {{Type: class, deploymentId: string, listener: Object}} parameters
+   * @return {Object} service
+   * @example
+   * const service = client.createService({
+   *   Type: ZetaPush.services.Stack,
+   *   listener: {
+   *     list(message) {
+   *       console.log(&apos;Stack list callback&apos;, message)
+   *     },
+   *     push(message) {
+   *       console.log(&apos;Stack push callback&apos;, message)
+   *     }
+   *   }
+   * })
+   * service.list({
+   *   stack: &apos;&lt;STACK-ID&gt;&apos;
+   * })
+   * @example
+   * // Explicit deploymentId
+   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
+   * const service = client.createService({
+   *   deploymentId: &apos;stack_0&apos;,
+   *   Type: ZetaPush.services.Stack,
+   *   listener: {
+   *     list(message) {
+   *       console.log(&apos;Stack list callback&apos;, message)
+   *     },
+   *     push(message) {
+   *       console.log(&apos;Stack push callback&apos;, message)
+   *     }
+   *   }
+   * })
+   * service.list({
+   *   stack: &apos;&lt;STACK-ID&gt;&apos;
+   * })
+   */
+  createService({ Type, listener, deploymentId = Type.DEFAULT_DEPLOYMENT_ID }) {
+    return this.helper.createService({ deploymentId, listener, Type })
+  }
+  /**
+   * Disonnect client from ZetaPush
+   */
+  disconnect() {
+    if (this.isConnected()) {
+      this.helper.disconnect()
+    }
   }
   /**
    * Is client connected to ZetaPush
@@ -159,18 +237,6 @@ export class Client {
    */
   isConnected() {
     return this.helper.isConnected()
-  }
-  /**
-   * Connect client to ZetaPush
-   */
-  connect() {
-    this.helper.connect()
-  }
-  /**
-   * Disonnect client from ZetaPush
-   */
-  disconnect() {
-    this.helper.disconnect()
   }
   /**
    * Get the client sandbox id
@@ -194,77 +260,18 @@ export class Client {
     return this.helper.getUserId()
   }
   /**
-   * Remove all subscriptions
-   * @param {Object} service
-   */
-  unsubscribe(service) {
-    if (!service.$subscriptions) {
-      throw new TypeError(&apos;Missing $subscriptions property in service&apos;)
-    }
-    return this.helper.unsubscribe(service.$subscriptions)
-  }
-  /**
-   * Create a publish/subscribe for a service type
-   * @param {{type: class, deploymentId: string, listener: Object}} parameters
-   * @return {Object} service
-   * @example
-   * const service = client.createService({
-   *   type: ZetaPush.services.Stack,
-   *   listener: {
-   *     list(message) {
-   *       console.log(&apos;Stack list callback&apos;, message)
-   *     },
-   *     push(message) {
-   *       console.log(&apos;Stack push callback&apos;, message)
-   *     }
-   *   }
-   * })
-   * service.list({
-   *   stack: &apos;&lt;STACK-ID&gt;&apos;
-   * })
-   * @example
-   * // Explicit deploymentId
-   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
-   * const service = client.createService({
-   *   deploymentId: &apos;stack_0&apos;,
-   *   type: ZetaPush.services.Stack,
-   *   listener: {
-   *     list(message) {
-   *       console.log(&apos;Stack list callback&apos;, message)
-   *     },
-   *     push(message) {
-   *       console.log(&apos;Stack push callback&apos;, message)
-   *     }
-   *   }
-   * })
-   * service.list({
-   *   stack: &apos;&lt;STACK-ID&gt;&apos;
-   * })
-   */
-  createService({ type, listener, deploymentId = type.DEFAULT_DEPLOYMENT_ID }) {
-    return this.helper.createService({ deploymentId, listener, type })
-  }
-  /**
-   * Set new client resource value
-   * @param {string} resource
-   */
-  setResource(resource) {
-    this.helper.setResource(resource)
-  }
-  /**
-   * Add a connection listener to handle life cycle connection events
-   * @param {ConnectionStatusListener} listener
-   * @return {number} handler
-   */
-  addConnectionStatusListener(listener) {
-    return this.helper.addConnectionStatusListener(listener)
-  }
-  /**
    * Remove a connection status listener
    * @param {number} handler
    */
   removeConnectionStatusListener(handler) {
     return this.helper.removeConnectionStatusListener(handler)
+  }
+  /**
+   * Set a new authentication methods
+   * @param {function():AbstractHandshake} authentication
+   */
+  setAuthentication(authentication) {
+    this.helper.setAuthentication(authentication)
   }
   /**
    * Set logging level
@@ -274,6 +281,23 @@ export class Client {
    */
   setLogLevel(level) {
     this.helper.setLogLevel(level)
+  }
+  /**
+   * Set new client resource value
+   * @param {string} resource
+   */
+  setResource(resource) {
+    this.helper.setResource(resource)
+  }
+  /**
+   * Remove all subscriptions
+   * @param {Object} service
+   */
+  unsubscribe(service) {
+    if (!service.$subscriptions) {
+      throw new TypeError(&apos;Missing $subscriptions property in service&apos;)
+    }
+    return this.helper.unsubscribe(service.$subscriptions)
   }
 }
 
@@ -295,7 +319,7 @@ Object.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) 
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

@@ -90,9 +90,21 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "zetapush-js/lib/services/index.js~macrodebug",
+    "class/lib/services/index.js~MacroDebug.html",
+    "<span>MacroDebug</span> <span class=\"search-result-import-path\">zetapush-js/lib/services/index.js</span>",
+    "class"
+  ],
+  [
     "zetapush-js/lib/services/index.js~messaging",
     "class/lib/services/index.js~Messaging.html",
     "<span>Messaging</span> <span class=\"search-result-import-path\">zetapush-js/lib/services/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/lib/services/index.js~notif",
+    "class/lib/services/index.js~Notif.html",
+    "<span>Notif</span> <span class=\"search-result-import-path\">zetapush-js/lib/services/index.js</span>",
     "class"
   ],
   [
@@ -123,6 +135,12 @@ window.esdocSearchIndex = [
     "zetapush-js/lib/services/index.js~simple",
     "class/lib/services/index.js~Simple.html",
     "<span>Simple</span> <span class=\"search-result-import-path\">zetapush-js/lib/services/index.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/lib/smart-client.js~smartclient",
+    "class/lib/smart-client.js~SmartClient.html",
+    "<span>SmartClient</span> <span class=\"search-result-import-path\">zetapush-js/lib/smart-client.js</span>",
     "class"
   ],
   [
@@ -184,6 +202,12 @@ window.esdocSearchIndex = [
     "class/lib/weak-client.js~WeakClient.html",
     "<span>WeakClient</span> <span class=\"search-result-import-path\">zetapush-js/lib/weak-client.js</span>",
     "class"
+  ],
+  [
+    "zetapush-js/lib/utils/session-persistence.js~zetapush_session_key",
+    "variable/index.html#static-variable-ZETAPUSH_SESSION_KEY",
+    "<span>ZETAPUSH_SESSION_KEY</span> <span class=\"search-result-import-path\">zetapush-js/lib/utils/session-persistence.js</span>",
+    "variable"
   ],
   [
     "zetapush-js/lib/services/index.js~zpfs_hdfs",
@@ -678,6 +702,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "lib/client.js~client#setauthentication",
+    "class/lib/client.js~Client.html#instance-method-setAuthentication",
+    "lib/client.js~Client#setAuthentication",
+    "method"
+  ],
+  [
     "lib/client.js~client#setloglevel",
     "class/lib/client.js~Client.html#instance-method-setLogLevel",
     "lib/client.js~Client#setLogLevel",
@@ -786,12 +816,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "lib/services/index.js~cron#schedule",
-    "class/lib/services/index.js~Cron.html#instance-method-schedule",
-    "lib/services/index.js~Cron#schedule",
-    "method"
-  ],
-  [
     "lib/services/index.js~cron#unschedule",
     "class/lib/services/index.js~Cron.html#instance-method-unschedule",
     "lib/services/index.js~Cron#unschedule",
@@ -802,12 +826,6 @@ window.esdocSearchIndex = [
     "class/lib/services/index.js~Cron.html#static-get-DEFAULT_DEPLOYMENT_ID",
     "lib/services/index.js~Cron.DEFAULT_DEPLOYMENT_ID",
     "member"
-  ],
-  [
-    "lib/services/index.js~delegating#userinfo",
-    "class/lib/services/index.js~Delegating.html#instance-method-userInfo",
-    "lib/services/index.js~Delegating#userInfo",
-    "method"
   ],
   [
     "lib/services/index.js~delegating.default_deployment_id",
@@ -951,12 +969,6 @@ window.esdocSearchIndex = [
     "lib/services/index.js~gda#range",
     "class/lib/services/index.js~Gda.html#instance-method-range",
     "lib/services/index.js~Gda#range",
-    "method"
-  ],
-  [
-    "lib/services/index.js~gda#reduce",
-    "class/lib/services/index.js~Gda.html#instance-method-reduce",
-    "lib/services/index.js~Gda#reduce",
     "method"
   ],
   [
@@ -1116,12 +1128,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "lib/services/index.js~httpclient#request",
-    "class/lib/services/index.js~Httpclient.html#instance-method-request",
-    "lib/services/index.js~Httpclient#request",
-    "method"
-  ],
-  [
     "lib/services/index.js~httpclient.default_deployment_id",
     "class/lib/services/index.js~Httpclient.html#static-get-DEFAULT_DEPLOYMENT_ID",
     "lib/services/index.js~Httpclient.DEFAULT_DEPLOYMENT_ID",
@@ -1134,21 +1140,45 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "lib/services/index.js~macro#func",
-    "class/lib/services/index.js~Macro.html#instance-method-func",
-    "lib/services/index.js~Macro#func",
-    "method"
-  ],
-  [
-    "lib/services/index.js~macro#sudo",
-    "class/lib/services/index.js~Macro.html#instance-method-sudo",
-    "lib/services/index.js~Macro#sudo",
-    "method"
-  ],
-  [
     "lib/services/index.js~macro.default_deployment_id",
     "class/lib/services/index.js~Macro.html#static-get-DEFAULT_DEPLOYMENT_ID",
     "lib/services/index.js~Macro.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "lib/services/index.js~macrodebug#breakpoint",
+    "class/lib/services/index.js~MacroDebug.html#instance-method-breakpoint",
+    "lib/services/index.js~MacroDebug#breakpoint",
+    "method"
+  ],
+  [
+    "lib/services/index.js~macrodebug#info",
+    "class/lib/services/index.js~MacroDebug.html#instance-method-info",
+    "lib/services/index.js~MacroDebug#info",
+    "method"
+  ],
+  [
+    "lib/services/index.js~macrodebug#livedebug",
+    "class/lib/services/index.js~MacroDebug.html#instance-method-livedebug",
+    "lib/services/index.js~MacroDebug#livedebug",
+    "method"
+  ],
+  [
+    "lib/services/index.js~macrodebug#resume",
+    "class/lib/services/index.js~MacroDebug.html#instance-method-resume",
+    "lib/services/index.js~MacroDebug#resume",
+    "method"
+  ],
+  [
+    "lib/services/index.js~macrodebug#variable",
+    "class/lib/services/index.js~MacroDebug.html#instance-method-variable",
+    "lib/services/index.js~MacroDebug#variable",
+    "method"
+  ],
+  [
+    "lib/services/index.js~macrodebug.default_deployment_id",
+    "class/lib/services/index.js~MacroDebug.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "lib/services/index.js~MacroDebug.DEFAULT_DEPLOYMENT_ID",
     "member"
   ],
   [
@@ -1161,6 +1191,12 @@ window.esdocSearchIndex = [
     "lib/services/index.js~messaging.default_deployment_id",
     "class/lib/services/index.js~Messaging.html#static-get-DEFAULT_DEPLOYMENT_ID",
     "lib/services/index.js~Messaging.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "lib/services/index.js~notif.default_deployment_id",
+    "class/lib/services/index.js~Notif.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "lib/services/index.js~Notif.DEFAULT_DEPLOYMENT_ID",
     "member"
   ],
   [
@@ -1284,64 +1320,16 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "lib/services/index.js~sendmail#send",
-    "class/lib/services/index.js~Sendmail.html#instance-method-send",
-    "lib/services/index.js~Sendmail#send",
-    "method"
-  ],
-  [
     "lib/services/index.js~sendmail.default_deployment_id",
     "class/lib/services/index.js~Sendmail.html#static-get-DEFAULT_DEPLOYMENT_ID",
     "lib/services/index.js~Sendmail.DEFAULT_DEPLOYMENT_ID",
     "member"
   ],
   [
-    "lib/services/index.js~simple#changepassword",
-    "class/lib/services/index.js~Simple.html#instance-method-changePassword",
-    "lib/services/index.js~Simple#changePassword",
-    "method"
-  ],
-  [
-    "lib/services/index.js~simple#checkuser",
-    "class/lib/services/index.js~Simple.html#instance-method-checkUser",
-    "lib/services/index.js~Simple#checkUser",
-    "method"
-  ],
-  [
-    "lib/services/index.js~simple#createuser",
-    "class/lib/services/index.js~Simple.html#instance-method-createUser",
-    "lib/services/index.js~Simple#createUser",
-    "method"
-  ],
-  [
-    "lib/services/index.js~simple#deleteuser",
-    "class/lib/services/index.js~Simple.html#instance-method-deleteUser",
-    "lib/services/index.js~Simple#deleteUser",
-    "method"
-  ],
-  [
-    "lib/services/index.js~simple#requestreset",
-    "class/lib/services/index.js~Simple.html#instance-method-requestReset",
-    "lib/services/index.js~Simple#requestReset",
-    "method"
-  ],
-  [
-    "lib/services/index.js~simple#updateuser",
-    "class/lib/services/index.js~Simple.html#instance-method-updateUser",
-    "lib/services/index.js~Simple#updateUser",
-    "method"
-  ],
-  [
     "lib/services/index.js~simple.default_deployment_id",
     "class/lib/services/index.js~Simple.html#static-get-DEFAULT_DEPLOYMENT_ID",
     "lib/services/index.js~Simple.DEFAULT_DEPLOYMENT_ID",
     "member"
-  ],
-  [
-    "lib/services/index.js~sms_ovh#send",
-    "class/lib/services/index.js~Sms_ovh.html#instance-method-send",
-    "lib/services/index.js~Sms_ovh#send",
-    "method"
   ],
   [
     "lib/services/index.js~sms_ovh.default_deployment_id",
@@ -1458,12 +1446,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "lib/services/index.js~zpfs_hdfs#freeuploadurl",
-    "class/lib/services/index.js~Zpfs_hdfs.html#instance-method-freeUploadUrl",
-    "lib/services/index.js~Zpfs_hdfs#freeUploadUrl",
-    "method"
-  ],
-  [
     "lib/services/index.js~zpfs_hdfs#link",
     "class/lib/services/index.js~Zpfs_hdfs.html#instance-method-link",
     "lib/services/index.js~Zpfs_hdfs#link",
@@ -1533,12 +1515,6 @@ window.esdocSearchIndex = [
     "lib/services/index.js~zpfs_s3#du",
     "class/lib/services/index.js~Zpfs_s3.html#instance-method-du",
     "lib/services/index.js~Zpfs_s3#du",
-    "method"
-  ],
-  [
-    "lib/services/index.js~zpfs_s3#freeuploadurl",
-    "class/lib/services/index.js~Zpfs_s3.html#instance-method-freeUploadUrl",
-    "lib/services/index.js~Zpfs_s3#freeUploadUrl",
     "method"
   ],
   [
@@ -1614,12 +1590,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "lib/services/index.js~zpfs_s3compat#freeuploadurl",
-    "class/lib/services/index.js~Zpfs_s3compat.html#instance-method-freeUploadUrl",
-    "lib/services/index.js~Zpfs_s3compat#freeUploadUrl",
-    "method"
-  ],
-  [
     "lib/services/index.js~zpfs_s3compat#link",
     "class/lib/services/index.js~Zpfs_s3compat.html#instance-method-link",
     "lib/services/index.js~Zpfs_s3compat#link",
@@ -1680,15 +1650,75 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "lib/smart-client.js",
+    "file/lib/smart-client.js.html",
+    "lib/smart-client.js",
+    "file"
+  ],
+  [
+    "lib/smart-client.js~smartclient#constructor",
+    "class/lib/smart-client.js~SmartClient.html#instance-constructor-constructor",
+    "lib/smart-client.js~SmartClient#constructor",
+    "method"
+  ],
+  [
+    "lib/smart-client.js~smartclient#disconnect",
+    "class/lib/smart-client.js~SmartClient.html#instance-method-disconnect",
+    "lib/smart-client.js~SmartClient#disconnect",
+    "method"
+  ],
+  [
+    "lib/smart-client.js~smartclient#getcredentials",
+    "class/lib/smart-client.js~SmartClient.html#instance-method-getCredentials",
+    "lib/smart-client.js~SmartClient#getCredentials",
+    "method"
+  ],
+  [
+    "lib/smart-client.js~smartclient#getsession",
+    "class/lib/smart-client.js~SmartClient.html#instance-method-getSession",
+    "lib/smart-client.js~SmartClient#getSession",
+    "method"
+  ],
+  [
+    "lib/smart-client.js~smartclient#hascredentials",
+    "class/lib/smart-client.js~SmartClient.html#instance-method-hasCredentials",
+    "lib/smart-client.js~SmartClient#hasCredentials",
+    "method"
+  ],
+  [
+    "lib/smart-client.js~smartclient#isstronglyauthenticated",
+    "class/lib/smart-client.js~SmartClient.html#instance-method-isStronglyAuthenticated",
+    "lib/smart-client.js~SmartClient#isStronglyAuthenticated",
+    "method"
+  ],
+  [
+    "lib/smart-client.js~smartclient#isweaklyauthenticated",
+    "class/lib/smart-client.js~SmartClient.html#instance-method-isWeaklyAuthenticated",
+    "lib/smart-client.js~SmartClient#isWeaklyAuthenticated",
+    "method"
+  ],
+  [
+    "lib/smart-client.js~smartclient#setcredentials",
+    "class/lib/smart-client.js~SmartClient.html#instance-method-setCredentials",
+    "lib/smart-client.js~SmartClient#setCredentials",
+    "method"
+  ],
+  [
+    "lib/smart-client.js~smartclientconfig",
+    "typedef/index.html#static-typedef-SmartClientConfig",
+    "lib/smart-client.js~SmartClientConfig",
+    "typedef"
+  ],
+  [
     "lib/utils/index.js",
     "file/lib/utils/index.js.html",
     "lib/utils/index.js",
     "file"
   ],
   [
-    "lib/utils/token-persistence.js",
-    "file/lib/utils/token-persistence.js.html",
-    "lib/utils/token-persistence.js",
+    "lib/utils/session-persistence.js",
+    "file/lib/utils/session-persistence.js.html",
+    "lib/utils/session-persistence.js",
     "file"
   ],
   [

@@ -33,9 +33,11 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/weak-client.js~WeakClient.html">WeakClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VERSION">VERSION</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html">AbstractHandshake</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~Authentication.html">Authentication</a></span></span></li>
@@ -54,7 +56,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~GroupManagement.html">GroupManagement</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Httpclient.html">Httpclient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Macro.html">Macro</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~MacroDebug.html">MacroDebug</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Messaging.html">Messaging</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Notif.html">Notif</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Queue.html">Queue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Remoting.html">Remoting</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Search.html">Search</a></span></span></li>
@@ -68,6 +72,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_hdfs.html">Zpfs_hdfs</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_s3.html">Zpfs_s3</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_s3compat.html">Zpfs_s3compat</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">utils</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ZETAPUSH_SESSION_KEY">ZETAPUSH_SESSION_KEY</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -77,7 +82,13 @@
  * Match unsecure pattern web
  * @type {RegExp}
  */
-const UNSECURE_PATTERN = /^http:\/\/|^\/\//
+const HTTP_PATTERN = /^http:\/\/|^\/\//
+
+/**
+ * Https protocol
+ * @type {string}
+ */
+const HTTPS_PROTOCOL = &apos;https:&apos;
 
 /**
 * Default ZetaPush API URL
@@ -102,7 +113,7 @@ export const shuffle = (list) =&gt; {
  * @return {string}
  */
 export const getSecureUrl = (url, forceHttps) =&gt; {
-  return forceHttps ? url.replace(UNSECURE_PATTERN, &apos;https://&apos;) : url
+  return forceHttps ? url.replace(HTTP_PATTERN, &apos;https://&apos;) : url
 }
 
 /**
@@ -130,7 +141,7 @@ export const getServers = ({ apiUrl, sandboxId, forceHttps }) =&gt; {
  * @return {boolean}
  */
 export const isHttpsProtocol = () =&gt; {
-  return &apos;https:&apos; === location.protocol
+  return location.protocol === HTTPS_PROTOCOL
 }
 
 /**
@@ -151,7 +162,7 @@ export const isPrototypeOf = (derived, parent) =&gt; {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

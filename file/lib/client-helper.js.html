@@ -33,9 +33,11 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/weak-client.js~WeakClient.html">WeakClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VERSION">VERSION</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html">AbstractHandshake</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~Authentication.html">Authentication</a></span></span></li>
@@ -54,7 +56,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~GroupManagement.html">GroupManagement</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Httpclient.html">Httpclient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Macro.html">Macro</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~MacroDebug.html">MacroDebug</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Messaging.html">Messaging</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Notif.html">Notif</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Queue.html">Queue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Remoting.html">Remoting</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Search.html">Search</a></span></span></li>
@@ -68,6 +72,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_hdfs.html">Zpfs_hdfs</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_s3.html">Zpfs_s3</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_s3compat.html">Zpfs_s3compat</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">utils</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ZETAPUSH_SESSION_KEY">ZETAPUSH_SESSION_KEY</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -81,6 +86,7 @@ import { getServers, shuffle, isPrototypeOf } from &apos;./utils/index&apos;
 
 /**
  * CometD Messages enumeration
+ * @type {Object}
  */
 const Message = {
   RECONNECT_HANDSHAKE_VALUE: &apos;handshake&apos;,
@@ -90,8 +96,15 @@ const Message = {
 
 /**
  * Get all transport types
+ * @type {Object[]}
  */
 const AllTransports = Object.values(TransportTypes)
+
+/**
+ * Delay to update server url
+ * @type {integer}
+ */
+const UPDATE_SERVER_URL_DELAY = 250
 
 /**
  * Provide utilities and abstraction on CometD Transport layer
@@ -101,7 +114,7 @@ export class ClientHelper {
   /**
    * Create a new ZetaPush client helper
    */
-  constructor({ apiUrl, sandboxId, forceHttps = false, credentials, resource = null, transports = AllTransports }) {
+  constructor({ apiUrl, sandboxId, forceHttps = false, authentication, resource = null, transports = AllTransports }) {
     /**
      * @access private
      * @type {string}
@@ -111,7 +124,7 @@ export class ClientHelper {
      * @access private
      * @type {function():AbstractHandshake}
      */
-    this.credentials = credentials
+    this.authentication = authentication
     /**
      * @access private
      * @type {string}
@@ -179,8 +192,7 @@ export class ClientHelper {
       if (successful) {
         const { authentication = null } = ext
         this.initialized(authentication)
-      }
-      else {
+      } else {
         this.handshakeFailure(error)
       }
     })
@@ -189,13 +201,12 @@ export class ClientHelper {
       this.cometd._debug(&apos;ClientHelper::/meta/handshake&apos;, { ext, successful, advice, error })
       // AuthNegotiation
       if (!successful) {
-        if (&apos;undefined&apos; === typeof advice) {
+        if (typeof advice === &apos;undefined&apos;) {
           return
         }
         if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {
           this.authenticationFailed(error)
-        }
-        else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {
+        } else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {
           this.negotiate(ext)
         }
       }
@@ -208,8 +219,7 @@ export class ClientHelper {
         this.connected = false
         // Notify connection will close
         this.connectionWillClose()
-      }
-      else {
+      } else {
         this.wasConnected = this.connected
         this.connected = successful
         if (!this.wasConnected &amp;&amp; this.connected) {
@@ -221,8 +231,7 @@ export class ClientHelper {
           })
           // Notify connection is established
           this.connectionEstablished()
-        }
-        else if (this.wasConnected &amp;&amp; !this.connected) {
+        } else if (this.wasConnected &amp;&amp; !this.connected) {
           // Notify connection is broken
           this.connectionBroken()
         }
@@ -239,11 +248,27 @@ export class ClientHelper {
     })
   }
   /**
-   * Is client connected to ZetaPush
-   * @return boolean
+   * Add a connection listener to handle life cycle connection events
+   * @param {ConnectionStatusListener} listener
+   * @return {number} handler
    */
-  isConnected() {
-    return !this.cometd.isDisconnected()
+  addConnectionStatusListener(listener) {
+    this.connectionListeners.push({
+      enabled: true,
+      listener: Object.assign(new ConnectionStatusListener(), listener)
+    })
+    return this.connectionListeners.length - 1
+  }
+  /**
+   * Notify listeners when handshake step succeed
+   */
+  authenticationFailed(error) {
+    this.userId = null
+    this.connectionListeners
+      .filter(({ enabled }) =&gt; enabled)
+      .forEach(({ listener }) =&gt; {
+        listener.onFailedHandshake(error)
+      })
   }
   /**
    * Connect client using CometD Transport
@@ -263,16 +288,6 @@ export class ClientHelper {
     })
   }
   /**
-   * Notify listeners when connection is established
-   */
-  connectionEstablished() {
-    this.connectionListeners
-      .filter(({ enabled }) =&gt; enabled)
-      .forEach(({ listener }) =&gt; {
-        listener.onConnectionEstablished()
-      })
-  }
-  /**
    * Notify listeners when connection is broken
    */
   connectionBroken() {
@@ -280,26 +295,6 @@ export class ClientHelper {
       .filter(({ enabled }) =&gt; enabled)
       .forEach(({ listener }) =&gt; {
         listener.onConnectionBroken()
-      })
-  }
-  /**
-   * Notify listeners when a message is lost
-   */
-  messageLost(channel, data) {
-    this.connectionListeners
-      .filter(({ enabled }) =&gt; enabled)
-      .forEach(({ listener }) =&gt; {
-        listener.onMessageLost(channel, data)
-      })
-  }
-  /**
-   * Notify listeners when connection will close
-   */
-  connectionWillClose() {
-    this.connectionListeners
-      .filter(({ enabled }) =&gt; enabled)
-      .forEach(({ listener }) =&gt; {
-        listener.onConnectionWillClose()
       })
   }
   /**
@@ -316,61 +311,35 @@ export class ClientHelper {
   /**
    * Notify listeners when connection is established
    */
-  initialized(authentication) {
-    if (authentication) {
-      this.userId = authentication.userId
-    }
+  connectionEstablished() {
     this.connectionListeners
       .filter(({ enabled }) =&gt; enabled)
       .forEach(({ listener }) =&gt; {
-        listener.onSuccessfulHandshake(authentication)
+        listener.onConnectionEstablished()
       })
   }
   /**
-   * Notify listeners when handshake step succeed
+   * Notify listeners when connection will close
    */
-  authenticationFailed(error) {
-    this.userId = null
+  connectionWillClose() {
     this.connectionListeners
       .filter(({ enabled }) =&gt; enabled)
       .forEach(({ listener }) =&gt; {
-        listener.onFailedHandshake(error)
+        listener.onConnectionWillClose()
       })
   }
   /**
-   * Manage handshake failure case
+   * @param {{deploymentId: string, listener: Object, Type: class}} parameters
+   * @return {Object} service
    */
-  handshakeFailure() {
-    this.userId = null
-  }
-  /**
-  * Remove current server url from the server list and shuffle for another one
-  */
-  updateServerUrl() {
-    this.servers.then((servers) =&gt; {
-      const index = servers.indexOf(this.serverUrl)
-      if (index &gt; -1) {
-        servers.splice(index, 1)
-      }
-      if (servers.length === 0) {
-        // No more server available
-      }
-      else {
-        this.serverUrl = shuffle(servers)
-        this.cometd.configure({
-          url: `${this.serverUrl}/strd`
-        })
-        setTimeout(() =&gt; {
-          this.cometd.handshake(this.getHandshakeFields())
-        }, 250)
-      }
-    })
-  }
-  /**
-   * Negociate authentication
-   */
-  negotiate(ext) {
-    this.cometd._debug(&apos;ClientHelper::negotiate&apos;, ext)
+  createService({ deploymentId, listener, Type }) {
+    const isMacroType = isPrototypeOf(Type, Macro)
+    const prefix = `/service/${this.getSandboxId()}/${deploymentId}`
+    const $publish = isMacroType ? this.getMacroPublisher(prefix) : this.getServicePublisher(prefix)
+    const service = new Type({ $publish })
+    // Store subscription in service instance
+    service.$subscriptions = this.subscribe(prefix, listener)
+    return service
   }
   /**
    * Disconnect CometD client
@@ -383,22 +352,35 @@ export class ClientHelper {
    * @return {Object}
    */
   getHandshakeFields() {
-    const handshake = this.credentials()
+    const handshake = this.authentication()
     return handshake.getHandshakeFields(this)
   }
   /**
-   * Set a new handshake factory methods
-   * @param {function():AbstractHandshake} credentials
+   * Get a publisher for a macro service
+   * @param {string} prefix - Channel prefix
+   * @return {Function} publisher
    */
-  setCredentials(credentials) {
-    this.credentials = credentials
+  getMacroPublisher(prefix) {
+    return (name, parameters, hardFail = true, debug = 1) =&gt; {
+      const channel = `${prefix}/call`
+      this.publish(channel, {
+        name,
+        parameters,
+        hardFail,
+        debug
+      })
+    }
   }
   /**
-   * Get sandbox id
-   * @return {string}
+   * Get queued subscription index
+   * @return {Object} index
    */
-  getSandboxId() {
-    return this.sandboxId
+  getQueuedSubscription(subscriptions = {}) {
+    const index = this.subscribeQueue.findIndex((element) =&gt; subscriptions === element.subscriptions)
+    return {
+      index,
+      queued: index &gt; -1
+    }
   }
   /**
    * Get resource
@@ -408,11 +390,104 @@ export class ClientHelper {
     return this.resource
   }
   /**
+   * Get sandbox id
+   * @return {string}
+   */
+  getSandboxId() {
+    return this.sandboxId
+  }
+  /**
+   * Get a publisher for a service
+   * @param {string} prefix - Channel prefix
+   * @return {Function} publisher
+   */
+  getServicePublisher(prefix) {
+    return (method, parameters) =&gt; {
+      const channel = `${prefix}/${method}`
+      this.publish(channel, parameters)
+    }
+  }
+  /**
    * Get user id
    * @return {string}
    */
   getUserId() {
     return this.userId
+  }
+  /**
+   * Manage handshake failure case
+   */
+  handshakeFailure() {
+    this.userId = null
+  }
+  /**
+   * Notify listeners when connection is established
+   */
+  initialized(authentication) {
+    if (authentication) {
+      this.userId = authentication.userId
+    }
+    this.connectionListeners
+      .filter(({ enabled }) =&gt; enabled)
+      .forEach(({ listener }) =&gt; {
+        listener.onSuccessfulHandshake(authentication)
+      })
+  }
+  /**
+   * Is client connected to ZetaPush
+   * @return boolean
+   */
+  isConnected() {
+    return !this.cometd.isDisconnected()
+  }
+  /**
+   * Notify listeners when a message is lost
+   */
+  messageLost(channel, data) {
+    this.connectionListeners
+      .filter(({ enabled }) =&gt; enabled)
+      .forEach(({ listener }) =&gt; {
+        listener.onMessageLost(channel, data)
+      })
+  }
+  /**
+   * Negociate authentication
+   */
+  negotiate(ext) {
+    this.cometd._debug(&apos;ClientHelper::negotiate&apos;, ext)
+  }
+  /**
+   * Wrap CometdD publish method
+   * @param {String} channel
+   * @param {Object} parameters
+   */
+  publish(channel, parameters = {}) {
+    this.cometd.publish(channel, parameters)
+  }
+  /**
+   * Remove a connection status listener
+   */
+  removeConnectionStatusListener(handler) {
+    const listener = this.connectionListeners[handler]
+    if (listener) {
+      listener.enabled = false
+    }
+  }
+  /**
+   * Set a new authentication methods
+   * @param {function():AbstractHandshake} authentication
+   */
+  setAuthentication(authentication) {
+    this.authentication = authentication
+  }
+  /**
+   * Set logging level for CometD client
+   * Valid values are the strings &apos;error&apos;, &apos;warn&apos;, &apos;info&apos; and &apos;debug&apos;, from
+   * less verbose to more verbose.
+   * @param {string} level
+   */
+  setLogLevel(level) {
+    this.cometd.setLogLevel(level)
   }
   /**
    * Subsribe all methods defined in the listener for the given prefixed channel
@@ -439,6 +514,28 @@ export class ClientHelper {
     return subscriptions
   }
   /**
+  * Remove current server url from the server list and shuffle for another one
+  */
+  updateServerUrl() {
+    this.servers.then((servers) =&gt; {
+      const index = servers.indexOf(this.serverUrl)
+      if (index &gt; -1) {
+        servers.splice(index, 1)
+      }
+      if (servers.length === 0) {
+        // No more server available
+      } else {
+        this.serverUrl = shuffle(servers)
+        this.cometd.configure({
+          url: `${this.serverUrl}/strd`
+        })
+        window.setTimeout(() =&gt; {
+          this.cometd.handshake(this.getHandshakeFields())
+        }, UPDATE_SERVER_URL_DELAY)
+      }
+    })
+  }
+  /**
    * Remove all subscriptions
    * @param {Object} subscriptions
    */
@@ -452,109 +549,9 @@ export class ClientHelper {
     }
     // Remove subscription from queue
     const { index, queued } = this.getQueuedSubscription(subscriptions)
-    if (queued)  {
+    if (queued) {
       this.subscribeQueue.splice(index, 1)
     }
-  }
-  /**
-   * Get queued subscription index
-   * @return {Object} index
-   */
-  getQueuedSubscription(subscriptions = {}) {
-    const index = this.subscribeQueue.findIndex((element) =&gt; subscriptions === element.subscriptions)
-    return {
-      index,
-      queued: -1 &lt; index
-    }
-  }
-  /**
-   * Get a publisher for a macro service
-   * @param {string} prefix - Channel prefix
-   * @return {Function} publisher
-   */
-  getMacroPublisher(prefix) {
-    return (name, parameters, hardFail = true, debug = 1) =&gt; {
-      const channel = `${prefix}/call`
-      this.publish(channel, {
-        name,
-        parameters,
-        hardFail,
-        debug
-      })
-    }
-  }
-  /**
-   * Get a publisher for a service
-   * @param {string} prefix - Channel prefix
-   * @return {Function} publisher
-   */
-  getServicePublisher(prefix) {
-    return (method, parameters) =&gt; {
-      const channel = `${prefix}/${method}`
-      this.publish(channel, parameters)
-    }
-  }
-  /**
-   * @param {{deploymentId: string, listener: Object, type: class}} parameters
-   * @return {Object} service
-   */
-  createService({ deploymentId, listener, type }) {
-    const isMacroType = isPrototypeOf(type, Macro)
-    const prefix = `/service/${this.getSandboxId()}/${deploymentId}`
-    const $publish = isMacroType ? this.getMacroPublisher(prefix) : this.getServicePublisher(prefix)
-    const service = new type({ $publish })
-    // Store subscription in service instance
-    service.$subscriptions = this.subscribe(prefix, listener)
-    return service
-  }
-  /**
-   * Unsubcribe all subscriptions defined in given subscriptions object
-   * @param {Object} subscriptions
-   */
-  unsubscribe(subscriptions) {
-    for (let method in subscriptions) {
-      if (subscriptions.hasOwnProperty(method)) {
-        this.cometd.unsubscribe(subscriptions[method])
-      }
-    }
-  }
-  /**
-   * Add a connection listener to handle life cycle connection events
-   * @param {ConnectionStatusListener} listener
-   * @return {number} handler
-   */
-  addConnectionStatusListener(listener) {
-    this.connectionListeners.push({
-      enabled: true,
-      listener: Object.assign(new ConnectionStatusListener(), listener)
-    })
-    return this.connectionListeners.length - 1
-  }
-  /**
-   * Remove a connection status listener
-   */
-  removeConnectionStatusListener(handler) {
-    const listener = this.connectionListeners[handler]
-    if (listener) {
-      listener.enabled = false
-    }
-  }
-  /**
-   * Wrap CometdD publish method
-   * @param {String} channel
-   * @param {Object} parameters
-   */
-  publish(channel, parameters = {}) {
-    this.cometd.publish(channel, parameters)
-  }
-  /**
-   * Set logging level for CometD client
-   * Valid values are the strings &apos;error&apos;, &apos;warn&apos;, &apos;info&apos; and &apos;debug&apos;, from
-   * less verbose to more verbose.
-   * @param {string} level
-   */
-  setLogLevel(level) {
-    this.cometd.setLogLevel(level)
   }
 }
 </code></pre>
@@ -562,7 +559,7 @@ export class ClientHelper {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

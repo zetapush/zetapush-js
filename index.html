@@ -33,9 +33,11 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/smart-client.js~SmartClient.html">SmartClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/weak-client.js~WeakClient.html">WeakClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VERSION">VERSION</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">authentication</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html">AbstractHandshake</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/authentication/handshake.js~Authentication.html">Authentication</a></span></span></li>
@@ -54,7 +56,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~GroupManagement.html">GroupManagement</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Httpclient.html">Httpclient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Macro.html">Macro</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~MacroDebug.html">MacroDebug</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Messaging.html">Messaging</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Notif.html">Notif</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Queue.html">Queue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Remoting.html">Remoting</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Search.html">Search</a></span></span></li>
@@ -68,12 +72,14 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_hdfs.html">Zpfs_hdfs</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_s3.html">Zpfs_s3</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/services/index.js~Zpfs_s3compat.html">Zpfs_s3compat</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">utils</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ZETAPUSH_SESSION_KEY">ZETAPUSH_SESSION_KEY</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><p><a href="https://npmjs.org/package/zetapush-js"><img src="http://img.shields.io/npm/v/zetapush-js.svg?style=flat-square" alt="NPM version"></a>
-<a href="http://zetapush.github.io/zetapush-js/"><img src="http://zetapush.github.io/zetapush-js/badge.svg?t=0" alt="Document"></a></p>
+<a href="http://zetapush.github.io/zetapush-js/"><img src="http://zetapush.github.io/zetapush-js/badge.svg?t=0" alt="Document"></a>
+<a href="http://travis-ci.org/zetapush/zetapush-js"><img src="http://img.shields.io/travis/zetapush/zetapush-js.svg?style=flat" alt="Build Status"></a></p>
 <h1 id="zetapush-javascript-sdk">ZetaPush JavaScript SDK</h1>
 <h2 id="install">Install</h2>
 <p>From bower</p>
@@ -86,8 +92,8 @@
 </code></pre>
 <pre><code class="lang-js"><code class="source-code prettyprint">import { Client, Authentication, services } from &apos;zetapush-js&apos;</code>
 </code></pre>
-<p>From CDN (npmcdn recommended)</p>
-<pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;//npmcdn.com/zetapush-js/dist/zetapush.min.js&quot;&gt;&lt;/script&gt;</code>
+<p>From CDN (unpkg recommended)</p>
+<pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;//unpkg.com/zetapush-js/dist/zetapush.min.js&quot;&gt;&lt;/script&gt;</code>
 </code></pre>
 <pre><code class="lang-js"><code class="source-code prettyprint">const { Client, Authentication, services } = ZetaPush</code>
 </code></pre>
@@ -95,7 +101,7 @@
 <pre><code class="lang-js"><code class="source-code prettyprint">// Create new ZetaPush Client
 const client = new Client({
   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
-  credentials() {
+  authentication() {
     return Authentication.weak({
       token: null
     })
@@ -129,7 +135,7 @@ client.connect()</code>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.7)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>
