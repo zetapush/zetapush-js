@@ -18,9 +18,9 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "zetapush-js/lib/client.js~client",
-    "class/lib/client.js~Client.html",
-    "<span>Client</span> <span class=\"search-result-import-path\">zetapush-js/lib/client.js</span>",
+    "zetapush-js/lib/client/basic.js~client",
+    "class/lib/client/basic.js~Client.html",
+    "<span>Client</span> <span class=\"search-result-import-path\">zetapush-js/lib/client/basic.js</span>",
     "class"
   ],
   [
@@ -138,9 +138,9 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "zetapush-js/lib/smart-client.js~smartclient",
-    "class/lib/smart-client.js~SmartClient.html",
-    "<span>SmartClient</span> <span class=\"search-result-import-path\">zetapush-js/lib/smart-client.js</span>",
+    "zetapush-js/lib/client/smart.js~smartclient",
+    "class/lib/client/smart.js~SmartClient.html",
+    "<span>SmartClient</span> <span class=\"search-result-import-path\">zetapush-js/lib/client/smart.js</span>",
     "class"
   ],
   [
@@ -198,9 +198,9 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "zetapush-js/lib/weak-client.js~weakclient",
-    "class/lib/weak-client.js~WeakClient.html",
-    "<span>WeakClient</span> <span class=\"search-result-import-path\">zetapush-js/lib/weak-client.js</span>",
+    "zetapush-js/lib/client/weak.js~weakclient",
+    "class/lib/client/weak.js~WeakClient.html",
+    "<span>WeakClient</span> <span class=\"search-result-import-path\">zetapush-js/lib/client/weak.js</span>",
     "class"
   ],
   [
@@ -630,105 +630,189 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "lib/client-helper.js",
-    "file/lib/client-helper.js.html",
-    "lib/client-helper.js",
+    "lib/client/basic.js",
+    "file/lib/client/basic.js.html",
+    "lib/client/basic.js",
     "file"
   ],
   [
-    "lib/client.js",
-    "file/lib/client.js.html",
-    "lib/client.js",
-    "file"
-  ],
-  [
-    "lib/client.js~client#addconnectionstatuslistener",
-    "class/lib/client.js~Client.html#instance-method-addConnectionStatusListener",
-    "lib/client.js~Client#addConnectionStatusListener",
+    "lib/client/basic.js~client#addconnectionstatuslistener",
+    "class/lib/client/basic.js~Client.html#instance-method-addConnectionStatusListener",
+    "lib/client/basic.js~Client#addConnectionStatusListener",
     "method"
   ],
   [
-    "lib/client.js~client#connect",
-    "class/lib/client.js~Client.html#instance-method-connect",
-    "lib/client.js~Client#connect",
+    "lib/client/basic.js~client#connect",
+    "class/lib/client/basic.js~Client.html#instance-method-connect",
+    "lib/client/basic.js~Client#connect",
     "method"
   ],
   [
-    "lib/client.js~client#constructor",
-    "class/lib/client.js~Client.html#instance-constructor-constructor",
-    "lib/client.js~Client#constructor",
+    "lib/client/basic.js~client#constructor",
+    "class/lib/client/basic.js~Client.html#instance-constructor-constructor",
+    "lib/client/basic.js~Client#constructor",
     "method"
   ],
   [
-    "lib/client.js~client#createservice",
-    "class/lib/client.js~Client.html#instance-method-createService",
-    "lib/client.js~Client#createService",
+    "lib/client/basic.js~client#createservice",
+    "class/lib/client/basic.js~Client.html#instance-method-createService",
+    "lib/client/basic.js~Client#createService",
     "method"
   ],
   [
-    "lib/client.js~client#disconnect",
-    "class/lib/client.js~Client.html#instance-method-disconnect",
-    "lib/client.js~Client#disconnect",
+    "lib/client/basic.js~client#disconnect",
+    "class/lib/client/basic.js~Client.html#instance-method-disconnect",
+    "lib/client/basic.js~Client#disconnect",
     "method"
   ],
   [
-    "lib/client.js~client#getresource",
-    "class/lib/client.js~Client.html#instance-method-getResource",
-    "lib/client.js~Client#getResource",
+    "lib/client/basic.js~client#getresource",
+    "class/lib/client/basic.js~Client.html#instance-method-getResource",
+    "lib/client/basic.js~Client#getResource",
     "method"
   ],
   [
-    "lib/client.js~client#getsandboxid",
-    "class/lib/client.js~Client.html#instance-method-getSandboxId",
-    "lib/client.js~Client#getSandboxId",
+    "lib/client/basic.js~client#getsandboxid",
+    "class/lib/client/basic.js~Client.html#instance-method-getSandboxId",
+    "lib/client/basic.js~Client#getSandboxId",
     "method"
   ],
   [
-    "lib/client.js~client#getuserid",
-    "class/lib/client.js~Client.html#instance-method-getUserId",
-    "lib/client.js~Client#getUserId",
+    "lib/client/basic.js~client#getuserid",
+    "class/lib/client/basic.js~Client.html#instance-method-getUserId",
+    "lib/client/basic.js~Client#getUserId",
     "method"
   ],
   [
-    "lib/client.js~client#isconnected",
-    "class/lib/client.js~Client.html#instance-method-isConnected",
-    "lib/client.js~Client#isConnected",
+    "lib/client/basic.js~client#isconnected",
+    "class/lib/client/basic.js~Client.html#instance-method-isConnected",
+    "lib/client/basic.js~Client#isConnected",
     "method"
   ],
   [
-    "lib/client.js~client#removeconnectionstatuslistener",
-    "class/lib/client.js~Client.html#instance-method-removeConnectionStatusListener",
-    "lib/client.js~Client#removeConnectionStatusListener",
+    "lib/client/basic.js~client#removeconnectionstatuslistener",
+    "class/lib/client/basic.js~Client.html#instance-method-removeConnectionStatusListener",
+    "lib/client/basic.js~Client#removeConnectionStatusListener",
     "method"
   ],
   [
-    "lib/client.js~client#setauthentication",
-    "class/lib/client.js~Client.html#instance-method-setAuthentication",
-    "lib/client.js~Client#setAuthentication",
+    "lib/client/basic.js~client#setauthentication",
+    "class/lib/client/basic.js~Client.html#instance-method-setAuthentication",
+    "lib/client/basic.js~Client#setAuthentication",
     "method"
   ],
   [
-    "lib/client.js~client#setloglevel",
-    "class/lib/client.js~Client.html#instance-method-setLogLevel",
-    "lib/client.js~Client#setLogLevel",
+    "lib/client/basic.js~client#setloglevel",
+    "class/lib/client/basic.js~Client.html#instance-method-setLogLevel",
+    "lib/client/basic.js~Client#setLogLevel",
     "method"
   ],
   [
-    "lib/client.js~client#setresource",
-    "class/lib/client.js~Client.html#instance-method-setResource",
-    "lib/client.js~Client#setResource",
+    "lib/client/basic.js~client#setresource",
+    "class/lib/client/basic.js~Client.html#instance-method-setResource",
+    "lib/client/basic.js~Client#setResource",
     "method"
   ],
   [
-    "lib/client.js~client#unsubscribe",
-    "class/lib/client.js~Client.html#instance-method-unsubscribe",
-    "lib/client.js~Client#unsubscribe",
+    "lib/client/basic.js~client#unsubscribe",
+    "class/lib/client/basic.js~Client.html#instance-method-unsubscribe",
+    "lib/client/basic.js~Client#unsubscribe",
     "method"
   ],
   [
-    "lib/client.js~clientconfig",
+    "lib/client/basic.js~clientconfig",
     "typedef/index.html#static-typedef-ClientConfig",
-    "lib/client.js~ClientConfig",
+    "lib/client/basic.js~ClientConfig",
+    "typedef"
+  ],
+  [
+    "lib/client/helper.js",
+    "file/lib/client/helper.js.html",
+    "lib/client/helper.js",
+    "file"
+  ],
+  [
+    "lib/client/smart.js",
+    "file/lib/client/smart.js.html",
+    "lib/client/smart.js",
+    "file"
+  ],
+  [
+    "lib/client/smart.js~smartclient#constructor",
+    "class/lib/client/smart.js~SmartClient.html#instance-constructor-constructor",
+    "lib/client/smart.js~SmartClient#constructor",
+    "method"
+  ],
+  [
+    "lib/client/smart.js~smartclient#disconnect",
+    "class/lib/client/smart.js~SmartClient.html#instance-method-disconnect",
+    "lib/client/smart.js~SmartClient#disconnect",
+    "method"
+  ],
+  [
+    "lib/client/smart.js~smartclient#getcredentials",
+    "class/lib/client/smart.js~SmartClient.html#instance-method-getCredentials",
+    "lib/client/smart.js~SmartClient#getCredentials",
+    "method"
+  ],
+  [
+    "lib/client/smart.js~smartclient#getsession",
+    "class/lib/client/smart.js~SmartClient.html#instance-method-getSession",
+    "lib/client/smart.js~SmartClient#getSession",
+    "method"
+  ],
+  [
+    "lib/client/smart.js~smartclient#hascredentials",
+    "class/lib/client/smart.js~SmartClient.html#instance-method-hasCredentials",
+    "lib/client/smart.js~SmartClient#hasCredentials",
+    "method"
+  ],
+  [
+    "lib/client/smart.js~smartclient#isstronglyauthenticated",
+    "class/lib/client/smart.js~SmartClient.html#instance-method-isStronglyAuthenticated",
+    "lib/client/smart.js~SmartClient#isStronglyAuthenticated",
+    "method"
+  ],
+  [
+    "lib/client/smart.js~smartclient#isweaklyauthenticated",
+    "class/lib/client/smart.js~SmartClient.html#instance-method-isWeaklyAuthenticated",
+    "lib/client/smart.js~SmartClient#isWeaklyAuthenticated",
+    "method"
+  ],
+  [
+    "lib/client/smart.js~smartclient#setcredentials",
+    "class/lib/client/smart.js~SmartClient.html#instance-method-setCredentials",
+    "lib/client/smart.js~SmartClient#setCredentials",
+    "method"
+  ],
+  [
+    "lib/client/smart.js~smartclientconfig",
+    "typedef/index.html#static-typedef-SmartClientConfig",
+    "lib/client/smart.js~SmartClientConfig",
+    "typedef"
+  ],
+  [
+    "lib/client/weak.js",
+    "file/lib/client/weak.js.html",
+    "lib/client/weak.js",
+    "file"
+  ],
+  [
+    "lib/client/weak.js~weakclient#constructor",
+    "class/lib/client/weak.js~WeakClient.html#instance-constructor-constructor",
+    "lib/client/weak.js~WeakClient#constructor",
+    "method"
+  ],
+  [
+    "lib/client/weak.js~weakclient#gettoken",
+    "class/lib/client/weak.js~WeakClient.html#instance-method-getToken",
+    "lib/client/weak.js~WeakClient#getToken",
+    "method"
+  ],
+  [
+    "lib/client/weak.js~weakclientconfig",
+    "typedef/index.html#static-typedef-WeakClientConfig",
+    "lib/client/weak.js~WeakClientConfig",
     "typedef"
   ],
   [
@@ -1650,66 +1734,6 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "lib/smart-client.js",
-    "file/lib/smart-client.js.html",
-    "lib/smart-client.js",
-    "file"
-  ],
-  [
-    "lib/smart-client.js~smartclient#constructor",
-    "class/lib/smart-client.js~SmartClient.html#instance-constructor-constructor",
-    "lib/smart-client.js~SmartClient#constructor",
-    "method"
-  ],
-  [
-    "lib/smart-client.js~smartclient#disconnect",
-    "class/lib/smart-client.js~SmartClient.html#instance-method-disconnect",
-    "lib/smart-client.js~SmartClient#disconnect",
-    "method"
-  ],
-  [
-    "lib/smart-client.js~smartclient#getcredentials",
-    "class/lib/smart-client.js~SmartClient.html#instance-method-getCredentials",
-    "lib/smart-client.js~SmartClient#getCredentials",
-    "method"
-  ],
-  [
-    "lib/smart-client.js~smartclient#getsession",
-    "class/lib/smart-client.js~SmartClient.html#instance-method-getSession",
-    "lib/smart-client.js~SmartClient#getSession",
-    "method"
-  ],
-  [
-    "lib/smart-client.js~smartclient#hascredentials",
-    "class/lib/smart-client.js~SmartClient.html#instance-method-hasCredentials",
-    "lib/smart-client.js~SmartClient#hasCredentials",
-    "method"
-  ],
-  [
-    "lib/smart-client.js~smartclient#isstronglyauthenticated",
-    "class/lib/smart-client.js~SmartClient.html#instance-method-isStronglyAuthenticated",
-    "lib/smart-client.js~SmartClient#isStronglyAuthenticated",
-    "method"
-  ],
-  [
-    "lib/smart-client.js~smartclient#isweaklyauthenticated",
-    "class/lib/smart-client.js~SmartClient.html#instance-method-isWeaklyAuthenticated",
-    "lib/smart-client.js~SmartClient#isWeaklyAuthenticated",
-    "method"
-  ],
-  [
-    "lib/smart-client.js~smartclient#setcredentials",
-    "class/lib/smart-client.js~SmartClient.html#instance-method-setCredentials",
-    "lib/smart-client.js~SmartClient#setCredentials",
-    "method"
-  ],
-  [
-    "lib/smart-client.js~smartclientconfig",
-    "typedef/index.html#static-typedef-SmartClientConfig",
-    "lib/smart-client.js~SmartClientConfig",
-    "typedef"
-  ],
-  [
     "lib/utils/index.js",
     "file/lib/utils/index.js.html",
     "lib/utils/index.js",
@@ -1720,29 +1744,5 @@ window.esdocSearchIndex = [
     "file/lib/utils/session-persistence.js.html",
     "lib/utils/session-persistence.js",
     "file"
-  ],
-  [
-    "lib/weak-client.js",
-    "file/lib/weak-client.js.html",
-    "lib/weak-client.js",
-    "file"
-  ],
-  [
-    "lib/weak-client.js~weakclient#constructor",
-    "class/lib/weak-client.js~WeakClient.html#instance-constructor-constructor",
-    "lib/weak-client.js~WeakClient#constructor",
-    "method"
-  ],
-  [
-    "lib/weak-client.js~weakclient#gettoken",
-    "class/lib/weak-client.js~WeakClient.html#instance-method-getToken",
-    "lib/weak-client.js~WeakClient#getToken",
-    "method"
-  ],
-  [
-    "lib/weak-client.js~weakclientconfig",
-    "typedef/index.html#static-typedef-WeakClientConfig",
-    "lib/weak-client.js~WeakClientConfig",
-    "typedef"
   ]
 ]

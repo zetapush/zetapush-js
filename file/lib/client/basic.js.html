@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">Sendmail | API Document</title>
+  <title data-ice="title">lib/client/basic.js | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -77,144 +77,244 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Sendmail} from &apos;<span><a href="file/lib/services/index.js.html#lineNumber611">zetapush-js/lib/services/index.js</a></span>&apos;</code></pre></div>
-  <span data-ice="access">public</span>
-  <span data-ice="kind">class</span>
-  
-  
-  
-  <span data-ice="source">| <span><a href="file/lib/services/index.js.html#lineNumber611">source</a></span></span>
-</div>
+<div class="content" data-ice="content"><h1 data-ice="title">lib/client/basic.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { ClientHelper } from &apos;./helper&apos;
+import { API_URL, isHttpsProtocol } from &apos;../utils/index&apos;
+import { ConnectionStatusListener } from &apos;../connection/connection-status&apos;
 
-<div class="self-detail detail">
-  <h1 data-ice="name">Sendmail</h1>
+/**
+ * Client config object.
+ * @typedef {Object} ClientConfig
+ * @property {string} apiUrl - Api Url
+ * @property {string} sandboxId - Sandbox id
+ * @property {boolean} forceHttps - Force end to end HTTPS connection
+ * @property {function():AbstractHandshake} authentication - Return authentication properties
+ * @property {string} resource - Client resource id
+ * @property {Array} transports - Client transports list
+ */
 
-  
+/**
+ * ZetaPush Client to connect
+ * @access public
+ * @example
+ * // Securized client with token based connection
+ * const client = new ZetaPush.Client({
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
+ *   authentication() {
+ *     return ZetaPush.Authentication.weak({
+ *       token: null
+  *    })
+ *   }
+ * })
+ * @example
+ * // Client with authentication based connection
+ * const client = new ZetaPush.Client({
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
+ *   authentication() {
+ *     return ZetaPush.Authentication.simple({
+ *       login: &apos;&lt;USER-LOGIN&gt;&apos;,
+ *       password: &apos;&lt;USER-PASSWORD&gt;&apos;
+  *    })
+ *   }
+ * })
+ * @example
+ * // Explicit deploymentId
+ * const clientSimple = new ZetaPush.Client({
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
+ *   authentication() {
+ *     return ZetaPush.Authentication.simple({
+ *       deploymentId: &apos;&lt;YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
+ *       login: &apos;&lt;USER-LOGIN&gt;&apos;,
+ *       password: &apos;&lt;USER-PASSWORD&gt;&apos;
+ *    })
+ *   }
+ * })
+ * const clientWeak = new ZetaPush.Client({
+ *   sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;,
+ *   authentication() {
+ *     return ZetaPush.Authentication.weak({
+ *       deploymentId: &apos;&lt;YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
+ *       token: &apos;&lt;SESSION-TOKEN&gt;&apos;
+ *    })
+ *   }
+ * })
+ */
+export class Client {
+  /**
+   * Create a new ZetaPush Client
+   * @param {ClientConfig} config
+   */
+  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(), authentication, resource, transports }) {
+    /**
+     * @access private
+     * @type {ClientHelper}
+     */
+    this.helper = new ClientHelper({
+      apiUrl,
+      sandboxId,
+      forceHttps,
+      authentication,
+      resource,
+      transports
+    })
+  }
+  /**
+   * Add a connection listener to handle life cycle connection events
+   * @param {ConnectionStatusListener} listener
+   * @return {number} handler
+   */
+  addConnectionStatusListener(listener) {
+    return this.helper.addConnectionStatusListener(listener)
+  }
+  /**
+   * Safely connect client to ZetaPush
+   */
+  connect() {
+    if (this.isConnected()) {
+      const handler = this.addConnectionStatusListener({
+        onConnectionClosed: () =&gt; {
+          this.removeConnectionStatusListener(handler)
+          this.helper.connect()
+        }
+      })
+      this.disconnect()
+    } else {
+      this.helper.connect()
+    }
+  }
+  /**
+   * Create a publish/subscribe for a service type
+   * @param {{Type: class, deploymentId: string, listener: Object}} parameters
+   * @return {Object} service
+   * @example
+   * const service = client.createService({
+   *   Type: ZetaPush.services.Stack,
+   *   listener: {
+   *     list(message) {
+   *       console.log(&apos;Stack list callback&apos;, message)
+   *     },
+   *     push(message) {
+   *       console.log(&apos;Stack push callback&apos;, message)
+   *     }
+   *   }
+   * })
+   * service.list({
+   *   stack: &apos;&lt;STACK-ID&gt;&apos;
+   * })
+   * @example
+   * // Explicit deploymentId
+   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
+   * const service = client.createService({
+   *   deploymentId: &apos;stack_0&apos;,
+   *   Type: ZetaPush.services.Stack,
+   *   listener: {
+   *     list(message) {
+   *       console.log(&apos;Stack list callback&apos;, message)
+   *     },
+   *     push(message) {
+   *       console.log(&apos;Stack push callback&apos;, message)
+   *     }
+   *   }
+   * })
+   * service.list({
+   *   stack: &apos;&lt;STACK-ID&gt;&apos;
+   * })
+   */
+  createService({ Type, listener, deploymentId = Type.DEFAULT_DEPLOYMENT_ID }) {
+    return this.helper.createService({ deploymentId, listener, Type })
+  }
+  /**
+   * Disonnect client from ZetaPush
+   */
+  disconnect() {
+    if (this.isConnected()) {
+      this.helper.disconnect()
+    }
+  }
+  /**
+   * Is client connected to ZetaPush
+   * @return {boolean}
+   */
+  isConnected() {
+    return this.helper.isConnected()
+  }
+  /**
+   * Get the client sandbox id
+   * @return {string}
+   */
+  getSandboxId() {
+    return this.helper.getSandboxId()
+  }
+  /**
+   * Get the client resource
+   * @return {string}
+   */
+  getResource() {
+    return this.helper.getResource()
+  }
+  /**
+   * Get the client user id
+   * @return {string}
+   */
+  getUserId() {
+    return this.helper.getUserId()
+  }
+  /**
+   * Remove a connection status listener
+   * @param {number} handler
+   */
+  removeConnectionStatusListener(handler) {
+    return this.helper.removeConnectionStatusListener(handler)
+  }
+  /**
+   * Set a new authentication methods
+   * @param {function():AbstractHandshake} authentication
+   */
+  setAuthentication(authentication) {
+    this.helper.setAuthentication(authentication)
+  }
+  /**
+   * Set logging level
+   * Valid values are the strings &apos;error&apos;, &apos;warn&apos;, &apos;info&apos; and &apos;debug&apos;, from
+   * less verbose to more verbose.
+   * @param {string} level
+   */
+  setLogLevel(level) {
+    this.helper.setLogLevel(level)
+  }
+  /**
+   * Set new client resource value
+   * @param {string} resource
+   */
+  setResource(resource) {
+    this.helper.setResource(resource)
+  }
+  /**
+   * Remove all subscriptions
+   * @param {Object} service
+   */
+  unsubscribe(service) {
+    if (!service.$subscriptions) {
+      throw new TypeError(&apos;Missing $subscriptions property in service&apos;)
+    }
+    return this.helper.unsubscribe(service.$subscriptions)
+  }
+}
 
-  
-  
-  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span>lib/services/index.js~Service</span> &#x2192; Sendmail</div></div>
-  
-  
-  
-  
-  
-  
-
-  
-  
-  <div class="description" data-ice="description"><p>Mail service user API</p>
-<p>This service is statically configured with an outgoing SMTP server.
-Users call the API here to actually send emails.</p>
-</div>
-
-  
-
-  
-
-  
-
-  
-</div>
-
-<div data-ice="staticMemberSummary"><h2>Static Member Summary</h2><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Static Public Members</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      <span data-ice="static">static</span>
-      <span class="kind" data-ice="kind">get</span>
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="class/lib/services/index.js~Sendmail.html#static-get-DEFAULT_DEPLOYMENT_ID">DEFAULT_DEPLOYMENT_ID</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Get default deployment id associated to Sendmail service</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
-
-
-
-
-
-
-
-<div data-ice="staticMemberDetails"><h2 data-ice="title">Static Public Members</h2>
-
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="static-get-DEFAULT_DEPLOYMENT_ID">
-    <span class="access" data-ice="access">public</span>
-    <span data-ice="static">static</span>
-    <span class="kind" data-ice="kind">get</span>
-    
-    
-    <span data-ice="name">DEFAULT_DEPLOYMENT_ID</span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/lib/services/index.js.html#lineNumber616">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>Get default deployment id associated to Sendmail service</p>
-</div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tr>
-        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-        
-      </tr>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-</div>
-
-
-
+/**
+ * Add shorthand connection status method
+ */
+Object.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) =&gt; {
+  // Only implements unsupported methods
+  if (!Client.prototype.hasOwnProperty(method)) {
+    Client.prototype[method] = function addListener(listener) {
+      return this.addConnectionStatusListener({
+        [method]: listener
+      })
+    }
+  }
+})
+</code></pre>
 
 </div>
 
