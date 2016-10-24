@@ -1,5 +1,6 @@
 [![NPM version][npm-version-image]][npm-url]
 [![Document][doc-version-image]][doc-url]
+[![Build Status][build-status-image]][build-status-url]
 
 # ZetaPush JavaScript SDK
 
@@ -25,10 +26,10 @@ npm install zetapush-js --save
 import { Client, Authentication, services } from 'zetapush-js'
 ```
 
-From CDN (npmcdn recommended)
+From CDN (unpkg recommended)
 
 ```html
-<script src="//npmcdn.com/zetapush-js/dist/zetapush.min.js"></script>
+<script src="//unpkg.com/zetapush-js/dist/zetapush.min.js"></script>
 ```
 
 ```js
@@ -41,7 +42,7 @@ const { Client, Authentication, services } = ZetaPush
 // Create new ZetaPush Client
 const client = new Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
-  credentials() {
+  authentication() {
     return Authentication.weak({
       token: null
     })
@@ -77,3 +78,6 @@ client.connect()
 
 [doc-version-image]: http://zetapush.github.io/zetapush-js/badge.svg?t=0
 [doc-url]: http://zetapush.github.io/zetapush-js/
+
+[build-status-image]: http://img.shields.io/travis/zetapush/zetapush-js.svg?style=flat
+[build-status-url]: http://travis-ci.org/zetapush/zetapush-js

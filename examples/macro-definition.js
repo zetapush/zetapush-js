@@ -11,7 +11,7 @@ const client = new ZetaPush.WeakClient({
 })
 
 const service = client.createService({
-  type: HelloMacro,
+  Type: HelloMacro,
   listener: {
     error({ data }) {
       console.error('macro error', data)
@@ -24,7 +24,7 @@ const service = client.createService({
 client.onConnectionEstablished(() => {
   console.debug('onConnectionEstablished')
   service.hello({
-    value: 'World'
+    name: 'World'
   })
 })
 // Connect client to ZetaPush BaaS

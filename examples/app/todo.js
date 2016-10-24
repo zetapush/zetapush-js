@@ -25,7 +25,7 @@ function getTodoItemDom(message, wrapper = true) {
 }
 // Create a service publish to interact with remote API
 const service = client.createService({
-  type: ZetaPush.services.Stack,
+  Type: ZetaPush.services.Stack,
   listener: {
     // Triggered when api return list of stack elements
     list({ channel, data }) {

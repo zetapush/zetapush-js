@@ -4,7 +4,7 @@ const client = new ZetaPush.WeakClient({
 })
 // Create a Macro service
 const service = client.createService({
-  type: ZetaPush.services.Macro,
+  Type: ZetaPush.services.Macro,
   listener: {
     error({ data }) {
       console.error('macro error', data)
@@ -27,7 +27,7 @@ document.querySelector('.js-SayHello').addEventListener('click', () => {
   service.call({
     name: 'hello',
     parameters: {
-      value: 'World'
+      name: 'World'
     }
   })
 })
