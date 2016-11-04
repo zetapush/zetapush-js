@@ -6,11 +6,8 @@ const client = new ZetaPush.WeakClient({
 const service = client.createService({
   Type: ZetaPush.services.Macro,
   listener: {
-    error({ data }) {
-      console.error('macro error', data)
-    },
     completed({ data }) {
-      console.log('macro completed', data.result)
+      console.log('macro completed', data)
     }
   }
 })

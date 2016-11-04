@@ -1,3 +1,9 @@
+# 3.1.0-alpha.1 (2016-11-04)
+
+* **client** Add createAsyncMacroService method to provide promise based macro services instance
+
+### Features
+
 # 3.0.0 (2016-10-24)
 
 ### Changes
