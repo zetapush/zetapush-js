@@ -1,3 +1,7 @@
+# 3.1.0-alpha.2 (2016-11-14)
+
+* **internal** Improve code separation to support tree shaking
+
 # 3.1.0-alpha.1 (2016-11-04)
 
 * **client** Add createAsyncMacroService method to provide promise based macro services instance
