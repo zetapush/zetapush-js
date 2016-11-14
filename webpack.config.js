@@ -5,7 +5,10 @@ const { UglifyJsPlugin } = webpack.optimize
 const library = 'ZetaPush'
 
 const plugins = [new UglifyJsPlugin({
-  minimize: true
+  minimize: true,
+  compress: {
+    warnings: false
+  }
 })]
 
 const filename = `${library.toLowerCase()}.min.js`
