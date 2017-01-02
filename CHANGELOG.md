@@ -1,4 +1,8 @@
-# 3.1.0-alpha.2 (2017-01-02)
+# 3.1.0-alpha.4 (2017-01-02)
+
+* **npm** Bump to alpha.4 to avoid npm conflict
+
+# 3.1.0-alpha.3 (2017-01-02)
 
 * **client** Add getServers method to expose server urls
 
