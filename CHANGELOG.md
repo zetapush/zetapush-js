@@ -1,3 +1,7 @@
+# 3.1.0-alpha.2 (2017-01-02)
+
+* **client** Add getServers method to expose server urls
+
 # 3.1.0-alpha.2 (2016-11-14)
 
 * **internal** Improve code separation to support tree shaking
