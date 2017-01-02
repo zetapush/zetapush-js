@@ -1,3 +1,7 @@
+# 3.1.0-alpha.6 (2017-01-02)
+
+* **client** Add new connection callback onNoServerUrlAvailable
+
 # 3.1.0-alpha.5 (2017-01-02)
 
 * **client** Add new connection callback onConnectionToServerFail

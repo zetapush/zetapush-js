@@ -27,4 +27,15 @@ describe('Client', function () {
       client.connect()
     })
   })
+
+  describe('Connection failure', function () {
+    it('Should handle no server available', function (done) {
+      var client = this.client
+      client.onNoServerUrlAvailable(function () {
+        expect(client.isConnected()).toBeFalsy()
+        done()
+      })
+      client.connect()
+    })
+  })
 })
