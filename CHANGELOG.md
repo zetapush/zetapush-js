@@ -1,3 +1,7 @@
+# 3.1.0-alpha.5 (2017-01-02)
+
+* **client** Add new connection callback onConnectionToServerFail
+
 # 3.1.0-alpha.4 (2017-01-02)
 
 * **npm** Bump to alpha.4 to avoid npm conflict
