@@ -1,3 +1,7 @@
+# 3.1.0-alpha.8 (2017-01-09)
+
+* **chore** Upgrade eslint dependency to 3.13.0
+
 # 3.1.0-alpha.7 (2017-01-09)
 
 * **env** Update engines directive to "node": ">=6"
