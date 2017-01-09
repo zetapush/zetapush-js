@@ -1,3 +1,7 @@
+# 3.1.0-alpha.7 (2017-01-09)
+
+* **env** Update engines directive to "node": ">=6"
+
 # 3.1.0-alpha.6 (2017-01-02)
 
 * **client** Add new connection callback onNoServerUrlAvailable
