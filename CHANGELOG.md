@@ -1,3 +1,9 @@
+# 3.0.0 (2017-01-18)
+
+### Fixes
+
+* **persistence** Catch SessionPersistenceStrategy error in private navigation mode
+
 # 3.1.0-alpha.8 (2017-01-09)
 
 * **chore** Upgrade eslint dependency to 3.13.0
