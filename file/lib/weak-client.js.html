@@ -139,7 +139,7 @@ export class WeakClient extends Client {
      * @access private
      * @type {SessionPersistenceStrategy}
      */
-    this.strategy = new SessionPersistenceStrategy()
+    this.strategy = new SessionPersistenceStrategy({ sandboxId })
   }
   /**
    * @return {string} The stored token
