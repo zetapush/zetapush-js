@@ -1,3 +1,9 @@
+# 3.0.0 (2017-01-18)
+
+### Fixes
+
+* **persistence** Catch SessionPersistenceStrategy error in private navigation mode
+
 # 3.0.0 (2016-10-24)
 
 ### Changes
