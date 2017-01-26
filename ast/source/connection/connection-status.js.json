@@ -1,41 +1,101 @@
 {
-  "type": "Program",
-  "body": [
-    {
-      "type": "ExportNamedDeclaration",
-      "declaration": {
-        "type": "ClassDeclaration",
-        "id": {
-          "type": "Identifier",
-          "name": "ConnectionStatusListener",
-          "range": [
-            79,
-            103
-          ],
+  "type": "File",
+  "start": 0,
+  "end": 803,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 37,
+      "column": 0
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 803,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 37,
+        "column": 0
+      }
+    },
+    "sourceType": "module",
+    "body": [
+      {
+        "type": "ExportNamedDeclaration",
+        "start": 66,
+        "end": 802,
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 36,
+            "column": 1
+          }
+        },
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "ClassDeclaration",
+          "start": 73,
+          "end": 802,
           "loc": {
             "start": {
               "line": 5,
-              "column": 13
+              "column": 7
             },
             "end": {
-              "line": 5,
-              "column": 37
+              "line": 36,
+              "column": 1
             }
-          }
-        },
-        "superClass": null,
-        "body": {
-          "type": "ClassBody",
-          "body": [
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "onConnectionBroken",
-                "range": [
-                  166,
-                  184
-                ],
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 79,
+            "end": 103,
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 13
+              },
+              "end": {
+                "line": 5,
+                "column": 37
+              },
+              "identifierName": "ConnectionStatusListener"
+            },
+            "name": "ConnectionStatusListener",
+            "leadingComments": null
+          },
+          "superClass": null,
+          "body": {
+            "type": "ClassBody",
+            "start": 104,
+            "end": 802,
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 38
+              },
+              "end": {
+                "line": 36,
+                "column": 1
+              }
+            },
+            "body": [
+              {
+                "type": "ClassMethod",
+                "start": 166,
+                "end": 189,
                 "loc": {
                   "start": {
                     "line": 9,
@@ -43,21 +103,39 @@
                   },
                   "end": {
                     "line": 9,
-                    "column": 20
+                    "column": 25
                   }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
+                },
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 166,
+                  "end": 184,
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 20
+                    },
+                    "identifierName": "onConnectionBroken"
+                  },
+                  "name": "onConnectionBroken",
+                  "leadingComments": null
+                },
+                "static": false,
+                "kind": "method",
                 "id": null,
+                "generator": false,
+                "expression": false,
+                "async": false,
                 "params": [],
                 "body": {
                   "type": "BlockStatement",
-                  "body": [],
-                  "range": [
-                    187,
-                    189
-                  ],
+                  "start": 187,
+                  "end": 189,
                   "loc": {
                     "start": {
                       "line": 9,
@@ -67,92 +145,53 @@
                       "line": 9,
                       "column": 25
                     }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  184,
-                  189
-                ],
-                "loc": {
-                  "start": {
-                    "line": 9,
-                    "column": 20
                   },
-                  "end": {
-                    "line": 9,
-                    "column": 25
-                  }
-                }
-              },
-              "kind": "method",
-              "computed": false,
-              "range": [
-                166,
-                189
-              ],
-              "loc": {
-                "start": {
-                  "line": 9,
-                  "column": 2
+                  "body": [],
+                  "directives": [],
+                  "leadingComments": null,
+                  "trailingComments": null
                 },
-                "end": {
-                  "line": 9,
-                  "column": 25
-                }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n   * Callback fired when connection is broken\n   ",
-                  "range": [
-                    108,
-                    163
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 6,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 8,
-                      "column": 5
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when connection is broken\n   ",
+                    "start": 108,
+                    "end": 163,
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 8,
+                        "column": 5
+                      }
                     }
                   }
-                }
-              ],
-              "trailingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n   * Callback fired when connection is closed\n   ",
-                  "range": [
-                    192,
-                    247
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 10,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 12,
-                      "column": 5
-                    }
-                  }
-                }
-              ],
-              "static": false
-            },
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "onConnectionClosed",
-                "range": [
-                  250,
-                  268
                 ],
+                "trailingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when connection is closed\n   ",
+                    "start": 192,
+                    "end": 247,
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 12,
+                        "column": 5
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ClassMethod",
+                "start": 250,
+                "end": 273,
                 "loc": {
                   "start": {
                     "line": 13,
@@ -160,21 +199,39 @@
                   },
                   "end": {
                     "line": 13,
-                    "column": 20
+                    "column": 25
                   }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
+                },
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 250,
+                  "end": 268,
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 20
+                    },
+                    "identifierName": "onConnectionClosed"
+                  },
+                  "name": "onConnectionClosed",
+                  "leadingComments": null
+                },
+                "static": false,
+                "kind": "method",
                 "id": null,
+                "generator": false,
+                "expression": false,
+                "async": false,
                 "params": [],
                 "body": {
                   "type": "BlockStatement",
-                  "body": [],
-                  "range": [
-                    271,
-                    273
-                  ],
+                  "start": 271,
+                  "end": 273,
                   "loc": {
                     "start": {
                       "line": 13,
@@ -184,92 +241,53 @@
                       "line": 13,
                       "column": 25
                     }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  268,
-                  273
-                ],
-                "loc": {
-                  "start": {
-                    "line": 13,
-                    "column": 20
                   },
-                  "end": {
-                    "line": 13,
-                    "column": 25
-                  }
-                }
-              },
-              "kind": "method",
-              "computed": false,
-              "range": [
-                250,
-                273
-              ],
-              "loc": {
-                "start": {
-                  "line": 13,
-                  "column": 2
+                  "body": [],
+                  "directives": [],
+                  "leadingComments": null,
+                  "trailingComments": null
                 },
-                "end": {
-                  "line": 13,
-                  "column": 25
-                }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n   * Callback fired when connection is closed\n   ",
-                  "range": [
-                    192,
-                    247
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 10,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 12,
-                      "column": 5
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when connection is closed\n   ",
+                    "start": 192,
+                    "end": 247,
+                    "loc": {
+                      "start": {
+                        "line": 10,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 12,
+                        "column": 5
+                      }
                     }
                   }
-                }
-              ],
-              "trailingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n   * Callback fired when connection is established\n   ",
-                  "range": [
-                    276,
-                    336
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 14,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 16,
-                      "column": 5
-                    }
-                  }
-                }
-              ],
-              "static": false
-            },
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "onConnectionEstablished",
-                "range": [
-                  339,
-                  362
                 ],
+                "trailingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when connection is established\n   ",
+                    "start": 276,
+                    "end": 336,
+                    "loc": {
+                      "start": {
+                        "line": 14,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 16,
+                        "column": 5
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ClassMethod",
+                "start": 339,
+                "end": 367,
                 "loc": {
                   "start": {
                     "line": 17,
@@ -277,21 +295,39 @@
                   },
                   "end": {
                     "line": 17,
-                    "column": 25
+                    "column": 30
                   }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
+                },
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 339,
+                  "end": 362,
+                  "loc": {
+                    "start": {
+                      "line": 17,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 17,
+                      "column": 25
+                    },
+                    "identifierName": "onConnectionEstablished"
+                  },
+                  "name": "onConnectionEstablished",
+                  "leadingComments": null
+                },
+                "static": false,
+                "kind": "method",
                 "id": null,
+                "generator": false,
+                "expression": false,
+                "async": false,
                 "params": [],
                 "body": {
                   "type": "BlockStatement",
-                  "body": [],
-                  "range": [
-                    365,
-                    367
-                  ],
+                  "start": 365,
+                  "end": 367,
                   "loc": {
                     "start": {
                       "line": 17,
@@ -301,92 +337,53 @@
                       "line": 17,
                       "column": 30
                     }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  362,
-                  367
-                ],
-                "loc": {
-                  "start": {
-                    "line": 17,
-                    "column": 25
                   },
-                  "end": {
-                    "line": 17,
-                    "column": 30
-                  }
-                }
-              },
-              "kind": "method",
-              "computed": false,
-              "range": [
-                339,
-                367
-              ],
-              "loc": {
-                "start": {
-                  "line": 17,
-                  "column": 2
+                  "body": [],
+                  "directives": [],
+                  "leadingComments": null,
+                  "trailingComments": null
                 },
-                "end": {
-                  "line": 17,
-                  "column": 30
-                }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n   * Callback fired when connection is established\n   ",
-                  "range": [
-                    276,
-                    336
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 14,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 16,
-                      "column": 5
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when connection is established\n   ",
+                    "start": 276,
+                    "end": 336,
+                    "loc": {
+                      "start": {
+                        "line": 14,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 16,
+                        "column": 5
+                      }
                     }
                   }
-                }
-              ],
-              "trailingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n  * Callback fired when connection will close\n  ",
-                  "range": [
-                    370,
-                    424
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 18,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 20,
-                      "column": 4
-                    }
-                  }
-                }
-              ],
-              "static": false
-            },
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "onConnectionWillClose",
-                "range": [
-                  427,
-                  448
                 ],
+                "trailingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n  * Callback fired when connection will close\n  ",
+                    "start": 370,
+                    "end": 424,
+                    "loc": {
+                      "start": {
+                        "line": 18,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 20,
+                        "column": 4
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ClassMethod",
+                "start": 427,
+                "end": 453,
                 "loc": {
                   "start": {
                     "line": 21,
@@ -394,21 +391,39 @@
                   },
                   "end": {
                     "line": 21,
-                    "column": 23
+                    "column": 28
                   }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
+                },
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 427,
+                  "end": 448,
+                  "loc": {
+                    "start": {
+                      "line": 21,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 21,
+                      "column": 23
+                    },
+                    "identifierName": "onConnectionWillClose"
+                  },
+                  "name": "onConnectionWillClose",
+                  "leadingComments": null
+                },
+                "static": false,
+                "kind": "method",
                 "id": null,
+                "generator": false,
+                "expression": false,
+                "async": false,
                 "params": [],
                 "body": {
                   "type": "BlockStatement",
-                  "body": [],
-                  "range": [
-                    451,
-                    453
-                  ],
+                  "start": 451,
+                  "end": 453,
                   "loc": {
                     "start": {
                       "line": 21,
@@ -418,92 +433,53 @@
                       "line": 21,
                       "column": 28
                     }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  448,
-                  453
-                ],
-                "loc": {
-                  "start": {
-                    "line": 21,
-                    "column": 23
                   },
-                  "end": {
-                    "line": 21,
-                    "column": 28
-                  }
-                }
-              },
-              "kind": "method",
-              "computed": false,
-              "range": [
-                427,
-                453
-              ],
-              "loc": {
-                "start": {
-                  "line": 21,
-                  "column": 2
+                  "body": [],
+                  "directives": [],
+                  "leadingComments": null,
+                  "trailingComments": null
                 },
-                "end": {
-                  "line": 21,
-                  "column": 28
-                }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n  * Callback fired when connection will close\n  ",
-                  "range": [
-                    370,
-                    424
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 18,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 20,
-                      "column": 4
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n  * Callback fired when connection will close\n  ",
+                    "start": 370,
+                    "end": 424,
+                    "loc": {
+                      "start": {
+                        "line": 18,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 20,
+                        "column": 4
+                      }
                     }
                   }
-                }
-              ],
-              "trailingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} failure\n   ",
-                  "range": [
-                    456,
-                    553
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 22,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 25,
-                      "column": 5
-                    }
-                  }
-                }
-              ],
-              "static": false
-            },
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "onFailedHandshake",
-                "range": [
-                  556,
-                  573
                 ],
+                "trailingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} failure\n   ",
+                    "start": 456,
+                    "end": 553,
+                    "loc": {
+                      "start": {
+                        "line": 22,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 25,
+                        "column": 5
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ClassMethod",
+                "start": 556,
+                "end": 585,
                 "loc": {
                   "start": {
                     "line": 26,
@@ -511,21 +487,39 @@
                   },
                   "end": {
                     "line": 26,
-                    "column": 19
+                    "column": 31
                   }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
+                },
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 556,
+                  "end": 573,
+                  "loc": {
+                    "start": {
+                      "line": 26,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 26,
+                      "column": 19
+                    },
+                    "identifierName": "onFailedHandshake"
+                  },
+                  "name": "onFailedHandshake",
+                  "leadingComments": null
+                },
+                "static": false,
+                "kind": "method",
                 "id": null,
+                "generator": false,
+                "expression": false,
+                "async": false,
                 "params": [
                   {
                     "type": "Identifier",
-                    "name": "failure",
-                    "range": [
-                      574,
-                      581
-                    ],
+                    "start": 574,
+                    "end": 581,
                     "loc": {
                       "start": {
                         "line": 26,
@@ -534,17 +528,16 @@
                       "end": {
                         "line": 26,
                         "column": 27
-                      }
-                    }
+                      },
+                      "identifierName": "failure"
+                    },
+                    "name": "failure"
                   }
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "body": [],
-                  "range": [
-                    583,
-                    585
-                  ],
+                  "start": 583,
+                  "end": 585,
                   "loc": {
                     "start": {
                       "line": 26,
@@ -554,92 +547,53 @@
                       "line": 26,
                       "column": 31
                     }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  573,
-                  585
-                ],
-                "loc": {
-                  "start": {
-                    "line": 26,
-                    "column": 19
                   },
-                  "end": {
-                    "line": 26,
-                    "column": 31
-                  }
-                }
-              },
-              "kind": "method",
-              "computed": false,
-              "range": [
-                556,
-                585
-              ],
-              "loc": {
-                "start": {
-                  "line": 26,
-                  "column": 2
+                  "body": [],
+                  "directives": [],
+                  "leadingComments": null,
+                  "trailingComments": null
                 },
-                "end": {
-                  "line": 26,
-                  "column": 31
-                }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} failure\n   ",
-                  "range": [
-                    456,
-                    553
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 22,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 25,
-                      "column": 5
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} failure\n   ",
+                    "start": 456,
+                    "end": 553,
+                    "loc": {
+                      "start": {
+                        "line": 22,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 25,
+                        "column": 5
+                      }
                     }
                   }
-                }
-              ],
-              "trailingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n   * Callback fired when a message is lost\n   ",
-                  "range": [
-                    588,
-                    640
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 27,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 29,
-                      "column": 5
-                    }
-                  }
-                }
-              ],
-              "static": false
-            },
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "onMessageLost",
-                "range": [
-                  643,
-                  656
                 ],
+                "trailingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when a message is lost\n   ",
+                    "start": 588,
+                    "end": 640,
+                    "loc": {
+                      "start": {
+                        "line": 27,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 29,
+                        "column": 5
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ClassMethod",
+                "start": 643,
+                "end": 661,
                 "loc": {
                   "start": {
                     "line": 30,
@@ -647,21 +601,39 @@
                   },
                   "end": {
                     "line": 30,
-                    "column": 15
+                    "column": 20
                   }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
+                },
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 643,
+                  "end": 656,
+                  "loc": {
+                    "start": {
+                      "line": 30,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 30,
+                      "column": 15
+                    },
+                    "identifierName": "onMessageLost"
+                  },
+                  "name": "onMessageLost",
+                  "leadingComments": null
+                },
+                "static": false,
+                "kind": "method",
                 "id": null,
+                "generator": false,
+                "expression": false,
+                "async": false,
                 "params": [],
                 "body": {
                   "type": "BlockStatement",
-                  "body": [],
-                  "range": [
-                    659,
-                    661
-                  ],
+                  "start": 659,
+                  "end": 661,
                   "loc": {
                     "start": {
                       "line": 30,
@@ -671,92 +643,53 @@
                       "line": 30,
                       "column": 20
                     }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  656,
-                  661
-                ],
-                "loc": {
-                  "start": {
-                    "line": 30,
-                    "column": 15
                   },
-                  "end": {
-                    "line": 30,
-                    "column": 20
-                  }
-                }
-              },
-              "kind": "method",
-              "computed": false,
-              "range": [
-                643,
-                661
-              ],
-              "loc": {
-                "start": {
-                  "line": 30,
-                  "column": 2
+                  "body": [],
+                  "directives": [],
+                  "leadingComments": null,
+                  "trailingComments": null
                 },
-                "end": {
-                  "line": 30,
-                  "column": 20
-                }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n   * Callback fired when a message is lost\n   ",
-                  "range": [
-                    588,
-                    640
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 27,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 29,
-                      "column": 5
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when a message is lost\n   ",
+                    "start": 588,
+                    "end": 640,
+                    "loc": {
+                      "start": {
+                        "line": 27,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 29,
+                        "column": 5
+                      }
                     }
                   }
-                }
-              ],
-              "trailingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
-                  "range": [
-                    664,
-                    757
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 31,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 34,
-                      "column": 5
-                    }
-                  }
-                }
-              ],
-              "static": false
-            },
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "onSuccessfulHandshake",
-                "range": [
-                  760,
-                  781
                 ],
+                "trailingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
+                    "start": 664,
+                    "end": 757,
+                    "loc": {
+                      "start": {
+                        "line": 31,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 34,
+                        "column": 5
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ClassMethod",
+                "start": 760,
+                "end": 800,
                 "loc": {
                   "start": {
                     "line": 35,
@@ -764,21 +697,39 @@
                   },
                   "end": {
                     "line": 35,
-                    "column": 23
+                    "column": 42
                   }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
+                },
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 760,
+                  "end": 781,
+                  "loc": {
+                    "start": {
+                      "line": 35,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 35,
+                      "column": 23
+                    },
+                    "identifierName": "onSuccessfulHandshake"
+                  },
+                  "name": "onSuccessfulHandshake",
+                  "leadingComments": null
+                },
+                "static": false,
+                "kind": "method",
                 "id": null,
+                "generator": false,
+                "expression": false,
+                "async": false,
                 "params": [
                   {
                     "type": "Identifier",
-                    "name": "authentication",
-                    "range": [
-                      782,
-                      796
-                    ],
+                    "start": 782,
+                    "end": 796,
                     "loc": {
                       "start": {
                         "line": 35,
@@ -787,17 +738,16 @@
                       "end": {
                         "line": 35,
                         "column": 38
-                      }
-                    }
+                      },
+                      "identifierName": "authentication"
+                    },
+                    "name": "authentication"
                   }
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "body": [],
-                  "range": [
-                    798,
-                    800
-                  ],
+                  "start": 798,
+                  "end": 800,
                   "loc": {
                     "start": {
                       "line": 35,
@@ -807,101 +757,57 @@
                       "line": 35,
                       "column": 42
                     }
-                  }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  781,
-                  800
-                ],
-                "loc": {
-                  "start": {
-                    "line": 35,
-                    "column": 23
                   },
-                  "end": {
-                    "line": 35,
-                    "column": 42
-                  }
-                }
-              },
-              "kind": "method",
-              "computed": false,
-              "range": [
-                760,
-                800
-              ],
-              "loc": {
-                "start": {
-                  "line": 35,
-                  "column": 2
+                  "body": [],
+                  "directives": []
                 },
-                "end": {
-                  "line": 35,
-                  "column": 42
-                }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
-                  "range": [
-                    664,
-                    757
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 31,
-                      "column": 2
-                    },
-                    "end": {
-                      "line": 34,
-                      "column": 5
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
+                    "start": 664,
+                    "end": 757,
+                    "loc": {
+                      "start": {
+                        "line": 31,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 34,
+                        "column": 5
+                      }
                     }
                   }
-                }
-              ],
-              "static": false
-            }
-          ],
-          "range": [
-            104,
-            802
-          ],
-          "loc": {
-            "start": {
-              "line": 5,
-              "column": 38
-            },
-            "end": {
-              "line": 36,
-              "column": 1
-            }
-          }
-        },
-        "range": [
-          73,
-          802
-        ],
-        "loc": {
-          "start": {
-            "line": 5,
-            "column": 7
+                ]
+              }
+            ]
           },
-          "end": {
-            "line": 36,
-            "column": 1
-          }
+          "leadingComments": [
+            {
+              "type": "CommentBlock",
+              "value": "*\n * Define life cycle connection methods\n * @access public\n ",
+              "start": 0,
+              "end": 65,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 0
+                },
+                "end": {
+                  "line": 4,
+                  "column": 3
+                }
+              }
+            }
+          ],
+          "trailingComments": []
         },
         "leadingComments": [
           {
-            "type": "Block",
+            "type": "CommentBlock",
             "value": "*\n * Define life cycle connection methods\n * @access public\n ",
-            "range": [
-              0,
-              65
-            ],
+            "start": 0,
+            "end": 65,
             "loc": {
               "start": {
                 "line": 1,
@@ -913,70 +819,17 @@
               }
             }
           }
-        ],
-        "trailingComments": []
-      },
-      "specifiers": [],
-      "source": null,
-      "range": [
-        66,
-        802
-      ],
-      "loc": {
-        "start": {
-          "line": 5,
-          "column": 0
-        },
-        "end": {
-          "line": 36,
-          "column": 1
-        }
-      },
-      "leadingComments": [
-        {
-          "type": "Block",
-          "value": "*\n * Define life cycle connection methods\n * @access public\n ",
-          "range": [
-            0,
-            65
-          ],
-          "loc": {
-            "start": {
-              "line": 1,
-              "column": 0
-            },
-            "end": {
-              "line": 4,
-              "column": 3
-            }
-          }
-        }
-      ]
-    }
-  ],
-  "sourceType": "module",
-  "range": [
-    66,
-    802
-  ],
-  "loc": {
-    "start": {
-      "line": 5,
-      "column": 0
-    },
-    "end": {
-      "line": 36,
-      "column": 1
-    }
+        ]
+      }
+    ],
+    "directives": []
   },
   "comments": [
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\n * Define life cycle connection methods\n * @access public\n ",
-      "range": [
-        0,
-        65
-      ],
+      "start": 0,
+      "end": 65,
       "loc": {
         "start": {
           "line": 1,
@@ -989,12 +842,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\n   * Callback fired when connection is broken\n   ",
-      "range": [
-        108,
-        163
-      ],
+      "start": 108,
+      "end": 163,
       "loc": {
         "start": {
           "line": 6,
@@ -1007,12 +858,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\n   * Callback fired when connection is closed\n   ",
-      "range": [
-        192,
-        247
-      ],
+      "start": 192,
+      "end": 247,
       "loc": {
         "start": {
           "line": 10,
@@ -1025,12 +874,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\n   * Callback fired when connection is established\n   ",
-      "range": [
-        276,
-        336
-      ],
+      "start": 276,
+      "end": 336,
       "loc": {
         "start": {
           "line": 14,
@@ -1043,12 +890,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\n  * Callback fired when connection will close\n  ",
-      "range": [
-        370,
-        424
-      ],
+      "start": 370,
+      "end": 424,
       "loc": {
         "start": {
           "line": 18,
@@ -1061,12 +906,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} failure\n   ",
-      "range": [
-        456,
-        553
-      ],
+      "start": 456,
+      "end": 553,
       "loc": {
         "start": {
           "line": 22,
@@ -1079,12 +922,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\n   * Callback fired when a message is lost\n   ",
-      "range": [
-        588,
-        640
-      ],
+      "start": 588,
+      "end": 640,
       "loc": {
         "start": {
           "line": 27,
@@ -1097,12 +938,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
-      "range": [
-        664,
-        757
-      ],
+      "start": 664,
+      "end": 757,
       "loc": {
         "start": {
           "line": 31,
@@ -1111,6 +950,1228 @@
         "end": {
           "line": 34,
           "column": 5
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "CommentBlock",
+      "value": "*\n * Define life cycle connection methods\n * @access public\n ",
+      "start": 0,
+      "end": 65,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "export",
+        "keyword": "export",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "export",
+      "start": 66,
+      "end": 72,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "class",
+        "keyword": "class",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "class",
+      "start": 73,
+      "end": 78,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 7
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "ConnectionStatusListener",
+      "start": 79,
+      "end": 103,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 104,
+      "end": 105,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 38
+        },
+        "end": {
+          "line": 5,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n   * Callback fired when connection is broken\n   ",
+      "start": 108,
+      "end": 163,
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "onConnectionBroken",
+      "start": 166,
+      "end": 184,
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 2
+        },
+        "end": {
+          "line": 9,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 184,
+      "end": 185,
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 20
+        },
+        "end": {
+          "line": 9,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 185,
+      "end": 186,
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 21
+        },
+        "end": {
+          "line": 9,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 187,
+      "end": 188,
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 23
+        },
+        "end": {
+          "line": 9,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 188,
+      "end": 189,
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 24
+        },
+        "end": {
+          "line": 9,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n   * Callback fired when connection is closed\n   ",
+      "start": 192,
+      "end": 247,
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "onConnectionClosed",
+      "start": 250,
+      "end": 268,
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 13,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 268,
+      "end": 269,
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 20
+        },
+        "end": {
+          "line": 13,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 269,
+      "end": 270,
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 21
+        },
+        "end": {
+          "line": 13,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 271,
+      "end": 272,
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 23
+        },
+        "end": {
+          "line": 13,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 272,
+      "end": 273,
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 24
+        },
+        "end": {
+          "line": 13,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n   * Callback fired when connection is established\n   ",
+      "start": 276,
+      "end": 336,
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 2
+        },
+        "end": {
+          "line": 16,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "onConnectionEstablished",
+      "start": 339,
+      "end": 362,
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 2
+        },
+        "end": {
+          "line": 17,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 362,
+      "end": 363,
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 25
+        },
+        "end": {
+          "line": 17,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 363,
+      "end": 364,
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 26
+        },
+        "end": {
+          "line": 17,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 365,
+      "end": 366,
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 28
+        },
+        "end": {
+          "line": 17,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 366,
+      "end": 367,
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 29
+        },
+        "end": {
+          "line": 17,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n  * Callback fired when connection will close\n  ",
+      "start": 370,
+      "end": 424,
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 2
+        },
+        "end": {
+          "line": 20,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "onConnectionWillClose",
+      "start": 427,
+      "end": 448,
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 2
+        },
+        "end": {
+          "line": 21,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 448,
+      "end": 449,
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 23
+        },
+        "end": {
+          "line": 21,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 449,
+      "end": 450,
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 24
+        },
+        "end": {
+          "line": 21,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 451,
+      "end": 452,
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 26
+        },
+        "end": {
+          "line": 21,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 452,
+      "end": 453,
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 27
+        },
+        "end": {
+          "line": 21,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} failure\n   ",
+      "start": 456,
+      "end": 553,
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 2
+        },
+        "end": {
+          "line": 25,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "onFailedHandshake",
+      "start": 556,
+      "end": 573,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 2
+        },
+        "end": {
+          "line": 26,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 573,
+      "end": 574,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 19
+        },
+        "end": {
+          "line": 26,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "failure",
+      "start": 574,
+      "end": 581,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 20
+        },
+        "end": {
+          "line": 26,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 581,
+      "end": 582,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 27
+        },
+        "end": {
+          "line": 26,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 583,
+      "end": 584,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 29
+        },
+        "end": {
+          "line": 26,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 584,
+      "end": 585,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 30
+        },
+        "end": {
+          "line": 26,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n   * Callback fired when a message is lost\n   ",
+      "start": 588,
+      "end": 640,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 2
+        },
+        "end": {
+          "line": 29,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "onMessageLost",
+      "start": 643,
+      "end": 656,
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 2
+        },
+        "end": {
+          "line": 30,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 656,
+      "end": 657,
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 15
+        },
+        "end": {
+          "line": 30,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 657,
+      "end": 658,
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 16
+        },
+        "end": {
+          "line": 30,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 659,
+      "end": 660,
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 18
+        },
+        "end": {
+          "line": 30,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 660,
+      "end": 661,
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 19
+        },
+        "end": {
+          "line": 30,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
+      "start": 664,
+      "end": 757,
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 2
+        },
+        "end": {
+          "line": 34,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "onSuccessfulHandshake",
+      "start": 760,
+      "end": 781,
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 2
+        },
+        "end": {
+          "line": 35,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 781,
+      "end": 782,
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 23
+        },
+        "end": {
+          "line": 35,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "authentication",
+      "start": 782,
+      "end": 796,
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 24
+        },
+        "end": {
+          "line": 35,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 796,
+      "end": 797,
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 38
+        },
+        "end": {
+          "line": 35,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 798,
+      "end": 799,
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 40
+        },
+        "end": {
+          "line": 35,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 799,
+      "end": 800,
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 41
+        },
+        "end": {
+          "line": 35,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 801,
+      "end": 802,
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 0
+        },
+        "end": {
+          "line": 36,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "eof",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 803,
+      "end": 803,
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 0
+        },
+        "end": {
+          "line": 37,
+          "column": 0
         }
       }
     }

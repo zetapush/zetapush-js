@@ -106,6 +106,7 @@
   
   <div class="description" data-ice="description"><p>Provide abstraction over CometD token base handshake data structure</p>
 </div>
+  
 
   
 
@@ -133,7 +134,9 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/lib/authentication/handshake.js~TokenHandshake.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(parameters: {authType: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, deploymentId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, token: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>})</span>
+          
+          
+          <span data-ice="name"><span><a href="class/lib/authentication/handshake.js~TokenHandshake.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(parameters: {authType: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, deploymentId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, token: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>})</span>
         </p>
       </div>
       <div>
@@ -165,7 +168,9 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/lib/authentication/handshake.js~TokenHandshake.html#instance-get-authData">authData</a></span></span><span data-ice="signature">: <span>token: string</span>: <span>*</span></span>
+          
+          
+          <span data-ice="name"><span><a href="class/lib/authentication/handshake.js~TokenHandshake.html#instance-get-authData">authData</a></span></span><span data-ice="signature">: <span>token: string</span>: {&quot;token&quot;: <span>*</span>}</span>
         </p>
       </div>
       <div>
@@ -199,7 +204,9 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html#instance-get-authVersion">authVersion</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+          
+          
+          <span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html#instance-get-authVersion">authVersion</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
@@ -225,7 +232,9 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html#instance-method-getHandshakeFields">getHandshakeFields</a></span></span><span data-ice="signature">(client: <span>ClientHelper</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+          
+          
+          <span data-ice="name"><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html#instance-method-getHandshakeFields">getHandshakeFields</a></span></span><span data-ice="signature">(client: <span>ClientHelper</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
         </p>
       </div>
       <div>
@@ -254,6 +263,7 @@
     
     
     
+    
     <span data-ice="name">constructor</span><span data-ice="signature">(parameters: {authType: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, deploymentId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, token: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>})</span>
     <span class="right-info">
       
@@ -265,7 +275,8 @@
   
   
   
-  
+  <div data-ice="description"><p>Create a new handshake manager</p>
+</div>
 
   <div data-ice="override"><h4>Override:</h4><span><a href="class/lib/authentication/handshake.js~AbstractHandshake.html#instance-constructor-constructor">AbstractHandshake#constructor</a></span></div>
 
@@ -301,6 +312,8 @@
   
 
   
+
+  
   
 </div>
 </div>
@@ -313,7 +326,8 @@
     <span class="kind" data-ice="kind">get</span>
     
     
-    <span data-ice="name">authData</span><span data-ice="signature">: <span>token: string</span>: <span>*</span></span>
+    
+    <span data-ice="name">authData</span><span data-ice="signature">: <span>token: string</span>: {&quot;token&quot;: <span>*</span>}</span>
     <span class="right-info">
       
       
@@ -334,14 +348,18 @@
   <div class="return-params" data-ice="returnParams">
     <h4>Return:</h4>
     <table>
-      <tr>
-        <td class="return-type" data-ice="returnType"><span>token: string</span></td>
-        
-      </tr>
+      <tbody>
+        <tr>
+          <td class="return-type" data-ice="returnType"><span>token: string</span></td>
+          
+        </tr>
+      </tbody>
     </table>
     <div data-ice="returnProperties">
 </div>
   </div>
+
+  
 
   
 
@@ -361,7 +379,7 @@
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
 </footer>
 
 <script src="script/search_index.js"></script>
