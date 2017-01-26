@@ -2,7 +2,7 @@
 
 * **persistence** Catch SessionPersistenceStrategy error in private navigation mode
 
-# 3.0.0 (2017-01-18)
+# 3.0.1 (2017-01-18)
 
 ### Fixes
 
