@@ -1,3 +1,17 @@
+# 3.1.0 (2017-02-21)
+
+### Features
+
+* **client** Add new connection callback onNoServerUrlAvailable
+* **client** Add new connection callback onConnectionToServerFail
+* **client** Add getServers method to expose server urls
+* **client** Add createAsyncMacroService method to provide promise based macro services instance
+* **internal** Improve code separation to support tree shaking
+
+### Fixes
+
+* **persistence** Catch SessionPersistenceStrategy error in private navigation mode
+
 # 3.1.0-alpha.9 (2017-01-18)
 
 * **persistence** Catch SessionPersistenceStrategy error in private navigation mode

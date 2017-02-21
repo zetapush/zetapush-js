@@ -5,11 +5,11 @@ const request = require('request')
 
 const pkg = require('./package')
 
-const REMOTE_DEFINITIONS_URL = 'http://pinte-silver-2/sdks/generated/2.4.8/js/zp_services.js'
+const REMOTE_DEFINITIONS_URL = 'http://pinte-silver-2/sdks/current-js/zp_services.js'
 
 gulp.task('remote', (done) => {
   return request(REMOTE_DEFINITIONS_URL)
-    .pipe(fs.createWriteStream('./lib/services/index.js'))
+    .pipe(fs.createWriteStream('./lib/mapping/services.js'))
 })
 
 gulp.task('deploy:github', () => {
