@@ -1,8 +1,60 @@
+# 3.1.0 (2017-02-21)
+
+### Features
+
+* **client** Add new connection callback onNoServerUrlAvailable
+* **client** Add new connection callback onConnectionToServerFail
+* **client** Add getServers method to expose server urls
+* **client** Add createAsyncMacroService method to provide promise based macro services instance
+* **internal** Improve code separation to support tree shaking
+
+### Fixes
+
+* **persistence** Catch SessionPersistenceStrategy error in private navigation mode
+
+# 3.1.0-alpha.9 (2017-01-18)
+
+* **persistence** Catch SessionPersistenceStrategy error in private navigation mode
+
 # 3.0.1 (2017-01-18)
 
 ### Fixes
 
 * **persistence** Catch SessionPersistenceStrategy error in private navigation mode
+
+# 3.1.0-alpha.8 (2017-01-09)
+
+* **chore** Upgrade eslint dependency to 3.13.0
+
+# 3.1.0-alpha.7 (2017-01-09)
+
+* **env** Update engines directive to "node": ">=6"
+
+# 3.1.0-alpha.6 (2017-01-02)
+
+* **client** Add new connection callback onNoServerUrlAvailable
+
+# 3.1.0-alpha.5 (2017-01-02)
+
+* **client** Add new connection callback onConnectionToServerFail
+
+# 3.1.0-alpha.4 (2017-01-02)
+
+* **npm** Bump to alpha.4 to avoid npm conflict
+
+# 3.1.0-alpha.3 (2017-01-02)
+
+* **client** Add getServers method to expose server urls
+
+# 3.1.0-alpha.2 (2016-11-14)
+
+* **internal** Improve code separation to support tree shaking
+
+# 3.1.0-alpha.1 (2016-11-04)
+
+* **client** Add createAsyncMacroService method to provide promise based macro services instance
+
+### Features
 
 # 3.0.0 (2016-10-24)
 

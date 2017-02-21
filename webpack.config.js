@@ -5,7 +5,10 @@ const { UglifyJsPlugin } = webpack.optimize
 const library = 'ZetaPush'
 
 const plugins = [new UglifyJsPlugin({
-  minimize: true
+  minimize: true,
+  compress: {
+    warnings: false
+  }
 })]
 
 const filename = `${library.toLowerCase()}.min.js`
@@ -21,20 +24,16 @@ module.exports = {
     umdNamedDefine: true
   },
   module: {
-    preLoaders: [{
+    rules: [{
+      enforce: 'pre',
       test: /\.js$/,
-      loader: 'eslint',
+      loader: 'eslint-loader',
       exclude: /node_modules/
-    }],
-    loaders: [{
+    }, {
       test: /\.js$/,
-      loader: 'babel',
+      loader: 'babel-loader',
       exclude: /node_modules/
     }]
-  },
-  resolve: {
-    root: path.resolve('./lib'),
-    extensions: ['', '.js']
   },
   plugins
 }

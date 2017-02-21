@@ -1,7 +1,7 @@
 class WelcomeMacro extends ZetaPush.services.Macro {
-  welcome({ message }) {
-    return this.$publish('welcome', {
-      message
+  hello({ name }) {
+    return this.$publish('hello', {
+      name
     })
   }
 }
@@ -9,19 +9,17 @@ class WelcomeMacro extends ZetaPush.services.Macro {
 const client = new ZetaPush.WeakClient({
   sandboxId: 'Y1k3xBDc'
 })
-
-const service = client.createService({
-  Type: WelcomeMacro,
-  listener: {
-    welcome({ data }) {
-      console.log('macro welcome', data)
-    }
-  }
+// Create async macro service
+const service = client.createAsyncMacroService({
+  Type: WelcomeMacro
 })
+// Handle connection established
 client.onConnectionEstablished(() => {
   console.debug('onConnectionEstablished')
-  service.welcome({
+  service.hello({
     message: 'Test'
+  }).then((result) => {
+    console.log('macro hello promise', result)
   })
 })
 // Connect client to ZetaPush BaaS
