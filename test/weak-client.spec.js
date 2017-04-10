@@ -2,7 +2,7 @@ describe('WeakClient', function () {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
 
   var apiUrl = 'http://api.zpush.io/'
-  var sandboxId = 'Y1k3xBDc'
+  var sandboxId = 'bcu1JtRb'
 
   beforeEach(function () {
     this.client = new ZetaPush.WeakClient({

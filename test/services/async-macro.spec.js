@@ -11,7 +11,7 @@ describe('AsyncMacro', function () {
   }
 
   var apiUrl = 'http://api.zpush.io/'
-  var sandboxId = 'Y1k3xBDc'
+  var sandboxId = 'bcu1JtRb'
 
   beforeEach(function () {
     this.client = new ZetaPush.WeakClient({
