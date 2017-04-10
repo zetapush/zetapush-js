@@ -1,3 +1,9 @@
+# 3.1.1 (2017-04-10)
+
+### Features
+
+* **client** Normalize apiUrl
+
 # 3.1.0 (2017-02-21)
 
 ### Features
