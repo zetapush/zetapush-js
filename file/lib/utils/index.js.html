@@ -103,6 +103,17 @@ export const API_URL = &apos;https://api.zpush.io/&apos;
 
 /**
  * @access private
+ * @param {string} apiUrl
+ * @return {string}
+ */
+const normalizeApiUrl = (apiUrl) =&gt; {
+  const last = apiUrl.charAt(apiUrl.length - 1)
+  const SLASH = &apos;/&apos;
+  return last === SLASH ? apiUrl : apiUrl + SLASH
+}
+
+/**
+ * @access private
  * @param {Array&lt;Object&gt;} list
  * @return {Object}
  */
@@ -127,8 +138,8 @@ export const getSecureUrl = (url, forceHttps) =&gt; {
  * @return {Promise}
  */
 export const getServers = ({ apiUrl, sandboxId, forceHttps }) =&gt; {
-  const secureApiUrl = getSecureUrl(apiUrl, forceHttps)
-  const url = `${secureApiUrl}${sandboxId}`
+  const normalizedSecuresApiUrl = normalizeApiUrl(getSecureUrl(apiUrl, forceHttps))
+  const url = `${normalizedSecuresApiUrl}${sandboxId}`
   return fetch(url)
     .then((response) =&gt; response.json())
     // TODO: Replace by a server side implementation when available

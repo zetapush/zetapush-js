@@ -141,7 +141,6 @@ class AbstractHandshake {
   get authVersion() {
     return &apos;none&apos;
   }
-
 }
 
 /**
@@ -170,7 +169,6 @@ class TokenHandshake extends AbstractHandshake {
       token
     }
   }
-
 }
 
 /**
@@ -179,7 +177,6 @@ class TokenHandshake extends AbstractHandshake {
  * @extends {AbstractHandshake}
  */
 class CredentialsHandshake extends AbstractHandshake {
-
   /**
    * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
    */
@@ -206,7 +203,6 @@ class CredentialsHandshake extends AbstractHandshake {
       login, password
     }
   }
-
 }
 
 /**
@@ -282,7 +278,6 @@ export class Authentication {
     }
     return new CredentialsHandshake({ authType, deploymentId, login, password })
   }
-
 }
 </code></pre>
 

@@ -3,7 +3,7 @@
     "__docId__": 0,
     "kind": "file",
     "name": "lib/authentication/handshake.js",
-    "content": "import { Delegating, Simple, Weak } from '../mapping/authentications'\n\n/**\n * ZetaPush deployables names\n */\nconst DeployableNames = {\n  AUTH_SIMPLE: 'simple',\n  AUTH_WEAK: 'weak',\n  AUTH_DELEGATING: 'delegating'\n}\n\n/**\n * Provide abstraction over CometD handshake data structure\n * @access protected\n */\nclass AbstractHandshake {\n  /**\n   * Create a new handshake manager\n   * @param {{authType: string, sandboxId: string, deploymentId: string}} parameters\n   */\n  constructor({ authType, sandboxId, deploymentId }) {\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.authType = authType\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.sandboxId = sandboxId\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.deploymentId = deploymentId\n  }\n  /**\n   * @param {ClientHelper} client\n   * @return {Object}\n   */\n  getHandshakeFields(client) {\n    const authentication = {\n      data: this.authData,\n      type: `${client.getSandboxId()}.${this.deploymentId}.${this.authType}`,\n      version: this.authVersion\n    }\n    if (client.getResource()) {\n      authentication.resource = client.getResource()\n    }\n    return {\n      ext: {\n        authentication\n      }\n    }\n  }\n  /**\n   * Get auth version\n   * @return {string}\n   */\n  get authVersion() {\n    return 'none'\n  }\n\n}\n\n/**\n * Provide abstraction over CometD token base handshake data structure\n * @access protected\n * @extends {AbstractHandshake}\n */\nclass TokenHandshake extends AbstractHandshake {\n  /**\n   * @param {{authType: string, deploymentId: string, token: string}} parameters\n   */\n  constructor({ authType, deploymentId, token }) {\n    super({ deploymentId, authType })\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.token = token\n  }\n  /**\n   * @return {token: string}\n   */\n  get authData() {\n    const { token } = this\n    return {\n      token\n    }\n  }\n\n}\n\n/**\n * Provide abstraction over CometD credentials based handshake data structure\n * @access protected\n * @extends {AbstractHandshake}\n */\nclass CredentialsHandshake extends AbstractHandshake {\n\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   */\n  constructor({ authType, deploymentId, login, password }) {\n    super({ authType, deploymentId })\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.login = login\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.password = password\n  }\n  /**\n   * Get auth data\n   * @return {login: string, password: string}\n   */\n  get authData() {\n    const { login, password } = this\n    return {\n      login, password\n    }\n  }\n\n}\n\n/**\n * Factory to create handshake\n * @access public\n */\nexport class Authentication {\n  /**\n   * @param {{deploymentId: string, login: string, password: string}} parameters\n   * @return {CredentialsHandshake}\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * Authentication.delegating({\n   *   deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n   *   login: <USER-LOGIN>,\n   *   password: '<USER-PASSWORD>'\n   * })\n   */\n  static simple({ deploymentId = Simple.DEFAULT_DEPLOYMENT_ID, login, password }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_SIMPLE,\n      deploymentId,\n      login,\n      password\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshake}\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * Authentication.delegating({\n   *   deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n   *   token: null\n   * })\n   */\n  static weak({ deploymentId = Weak.DEFAULT_DEPLOYMENT_ID, token }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_WEAK,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshake}\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * Authentication.delegating({\n   *   deploymentId: '<YOUR-DELEGATING-AUTHENTICATION-DEPLOYMENT-ID>',\n   *   token: null\n   * })\n   */\n  static delegating({ deploymentId = Delegating.DEFAULT_DEPLOYMENT_ID, token }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_DELEGATING,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   * @return {TokenHandshake|CredentialsHandshake}\n   */\n  static create({ authType, deploymentId, login, password }) {\n    if (password === null) {\n      return new TokenHandshake({ authType, deploymentId, token: login })\n    }\n    return new CredentialsHandshake({ authType, deploymentId, login, password })\n  }\n\n}\n",
+    "content": "import { Delegating, Simple, Weak } from '../mapping/authentications'\n\n/**\n * ZetaPush deployables names\n */\nconst DeployableNames = {\n  AUTH_SIMPLE: 'simple',\n  AUTH_WEAK: 'weak',\n  AUTH_DELEGATING: 'delegating'\n}\n\n/**\n * Provide abstraction over CometD handshake data structure\n * @access protected\n */\nclass AbstractHandshake {\n  /**\n   * Create a new handshake manager\n   * @param {{authType: string, sandboxId: string, deploymentId: string}} parameters\n   */\n  constructor({ authType, sandboxId, deploymentId }) {\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.authType = authType\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.sandboxId = sandboxId\n    /**\n     * @access protected\n     * @type {string}\n     */\n    this.deploymentId = deploymentId\n  }\n  /**\n   * @param {ClientHelper} client\n   * @return {Object}\n   */\n  getHandshakeFields(client) {\n    const authentication = {\n      data: this.authData,\n      type: `${client.getSandboxId()}.${this.deploymentId}.${this.authType}`,\n      version: this.authVersion\n    }\n    if (client.getResource()) {\n      authentication.resource = client.getResource()\n    }\n    return {\n      ext: {\n        authentication\n      }\n    }\n  }\n  /**\n   * Get auth version\n   * @return {string}\n   */\n  get authVersion() {\n    return 'none'\n  }\n}\n\n/**\n * Provide abstraction over CometD token base handshake data structure\n * @access protected\n * @extends {AbstractHandshake}\n */\nclass TokenHandshake extends AbstractHandshake {\n  /**\n   * @param {{authType: string, deploymentId: string, token: string}} parameters\n   */\n  constructor({ authType, deploymentId, token }) {\n    super({ deploymentId, authType })\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.token = token\n  }\n  /**\n   * @return {token: string}\n   */\n  get authData() {\n    const { token } = this\n    return {\n      token\n    }\n  }\n}\n\n/**\n * Provide abstraction over CometD credentials based handshake data structure\n * @access protected\n * @extends {AbstractHandshake}\n */\nclass CredentialsHandshake extends AbstractHandshake {\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   */\n  constructor({ authType, deploymentId, login, password }) {\n    super({ authType, deploymentId })\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.login = login\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.password = password\n  }\n  /**\n   * Get auth data\n   * @return {login: string, password: string}\n   */\n  get authData() {\n    const { login, password } = this\n    return {\n      login, password\n    }\n  }\n}\n\n/**\n * Factory to create handshake\n * @access public\n */\nexport class Authentication {\n  /**\n   * @param {{deploymentId: string, login: string, password: string}} parameters\n   * @return {CredentialsHandshake}\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * Authentication.delegating({\n   *   deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n   *   login: <USER-LOGIN>,\n   *   password: '<USER-PASSWORD>'\n   * })\n   */\n  static simple({ deploymentId = Simple.DEFAULT_DEPLOYMENT_ID, login, password }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_SIMPLE,\n      deploymentId,\n      login,\n      password\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshake}\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * Authentication.delegating({\n   *   deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n   *   token: null\n   * })\n   */\n  static weak({ deploymentId = Weak.DEFAULT_DEPLOYMENT_ID, token }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_WEAK,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{deploymentId: string, token: string}} parameters\n   * @return {TokenHandshake}\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * Authentication.delegating({\n   *   deploymentId: '<YOUR-DELEGATING-AUTHENTICATION-DEPLOYMENT-ID>',\n   *   token: null\n   * })\n   */\n  static delegating({ deploymentId = Delegating.DEFAULT_DEPLOYMENT_ID, token }) {\n    return Authentication.create({\n      authType: DeployableNames.AUTH_DELEGATING,\n      deploymentId,\n      login: token,\n      password: null\n    })\n  }\n  /**\n   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters\n   * @return {TokenHandshake|CredentialsHandshake}\n   */\n  static create({ authType, deploymentId, login, password }) {\n    if (password === null) {\n      return new TokenHandshake({ authType, deploymentId, token: login })\n    }\n    return new CredentialsHandshake({ authType, deploymentId, login, password })\n  }\n}\n",
     "static": true,
     "longname": "lib/authentication/handshake.js",
     "access": null,
@@ -197,7 +197,7 @@
     "importPath": "zetapush-js/lib/authentication/handshake.js",
     "importStyle": null,
     "description": "Provide abstraction over CometD token base handshake data structure",
-    "lineNumber": 72,
+    "lineNumber": 71,
     "interface": false,
     "extends": [
       "AbstractHandshake"
@@ -214,7 +214,7 @@
     "longname": "lib/authentication/handshake.js~TokenHandshake#constructor",
     "access": null,
     "description": "",
-    "lineNumber": 76,
+    "lineNumber": 75,
     "params": [
       {
         "nullable": null,
@@ -237,7 +237,7 @@
     "longname": "lib/authentication/handshake.js~TokenHandshake#token",
     "access": "private",
     "description": "",
-    "lineNumber": 82,
+    "lineNumber": 81,
     "type": {
       "nullable": null,
       "types": [
@@ -258,7 +258,7 @@
     "longname": "lib/authentication/handshake.js~TokenHandshake#authData",
     "access": null,
     "description": "",
-    "lineNumber": 87,
+    "lineNumber": 86,
     "return": {
       "nullable": null,
       "types": [
@@ -285,7 +285,7 @@
     "importPath": "zetapush-js/lib/authentication/handshake.js",
     "importStyle": null,
     "description": "Provide abstraction over CometD credentials based handshake data structure",
-    "lineNumber": 101,
+    "lineNumber": 99,
     "interface": false,
     "extends": [
       "AbstractHandshake"
@@ -302,7 +302,7 @@
     "longname": "lib/authentication/handshake.js~CredentialsHandshake#constructor",
     "access": null,
     "description": "",
-    "lineNumber": 106,
+    "lineNumber": 103,
     "params": [
       {
         "nullable": null,
@@ -325,7 +325,7 @@
     "longname": "lib/authentication/handshake.js~CredentialsHandshake#login",
     "access": "private",
     "description": "",
-    "lineNumber": 112,
+    "lineNumber": 109,
     "type": {
       "nullable": null,
       "types": [
@@ -344,7 +344,7 @@
     "longname": "lib/authentication/handshake.js~CredentialsHandshake#password",
     "access": "private",
     "description": "",
-    "lineNumber": 117,
+    "lineNumber": 114,
     "type": {
       "nullable": null,
       "types": [
@@ -365,7 +365,7 @@
     "longname": "lib/authentication/handshake.js~CredentialsHandshake#authData",
     "access": null,
     "description": "Get auth data",
-    "lineNumber": 123,
+    "lineNumber": 120,
     "return": {
       "nullable": null,
       "types": [
@@ -392,7 +392,7 @@
     "importPath": "zetapush-js/lib/authentication/handshake.js",
     "importStyle": "{Authentication}",
     "description": "Factory to create handshake",
-    "lineNumber": 136,
+    "lineNumber": 132,
     "interface": false
   },
   {
@@ -409,7 +409,7 @@
     "examples": [
       "// Explicit deploymentId\n// Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\nAuthentication.delegating({\n  deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n  login: <USER-LOGIN>,\n  password: '<USER-PASSWORD>'\n})"
     ],
-    "lineNumber": 149,
+    "lineNumber": 145,
     "params": [
       {
         "nullable": null,
@@ -445,7 +445,7 @@
     "examples": [
       "// Explicit deploymentId\n// Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\nAuthentication.delegating({\n  deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n  token: null\n})"
     ],
-    "lineNumber": 168,
+    "lineNumber": 164,
     "params": [
       {
         "nullable": null,
@@ -481,7 +481,7 @@
     "examples": [
       "// Explicit deploymentId\n// Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\nAuthentication.delegating({\n  deploymentId: '<YOUR-DELEGATING-AUTHENTICATION-DEPLOYMENT-ID>',\n  token: null\n})"
     ],
-    "lineNumber": 187,
+    "lineNumber": 183,
     "params": [
       {
         "nullable": null,
@@ -514,7 +514,7 @@
     "longname": "lib/authentication/handshake.js~Authentication.create",
     "access": null,
     "description": "",
-    "lineNumber": 199,
+    "lineNumber": 195,
     "params": [
       {
         "nullable": null,
@@ -541,7 +541,7 @@
     "__docId__": 23,
     "kind": "file",
     "name": "lib/client/basic.js",
-    "content": "import { ClientHelper } from './helper'\nimport { API_URL, isHttpsProtocol } from '../utils/index'\nimport { ConnectionStatusListener } from '../connection/connection-status'\n\n/**\n * Client config object.\n * @typedef {Object} ClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {function():AbstractHandshake} authentication - Return authentication properties\n * @property {string} resource - Client resource id\n * @property {Array} transports - Client transports list\n */\n\n/**\n * ZetaPush Client to connect\n * @access public\n * @example\n * // Securized client with token based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   authentication() {\n *     return ZetaPush.Authentication.weak({\n *       token: null\n  *    })\n *   }\n * })\n * @example\n * // Client with authentication based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   authentication() {\n *     return ZetaPush.Authentication.simple({\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n  *    })\n *   }\n * })\n * @example\n * // Explicit deploymentId\n * const clientSimple = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   authentication() {\n *     return ZetaPush.Authentication.simple({\n *       deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n *    })\n *   }\n * })\n * const clientWeak = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   authentication() {\n *     return ZetaPush.Authentication.weak({\n *       deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n *       token: '<SESSION-TOKEN>'\n *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   * Create a new ZetaPush Client\n   * @param {ClientConfig} config\n   */\n  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(), authentication, resource, transports }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.helper = new ClientHelper({\n      apiUrl,\n      sandboxId,\n      forceHttps,\n      authentication,\n      resource,\n      transports\n    })\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    return this.helper.addConnectionStatusListener(listener)\n  }\n  /**\n   * Safely connect client to ZetaPush\n   */\n  connect() {\n    if (this.isConnected()) {\n      const handler = this.addConnectionStatusListener({\n        onConnectionClosed: () => {\n          this.removeConnectionStatusListener(handler)\n          this.helper.connect()\n        }\n      })\n      this.disconnect()\n    } else {\n      this.helper.connect()\n    }\n  }\n  /**\n   * Create a promise based service instance\n   * @experimental\n   * @param {{listener: Object, Type: class, deploymentId: string}} parameters\n   * @return {Object} service\n   * @example\n   * const api = client.createAsyncMacroService({\n   *   Type: WelcomeMacro\n   * })\n   * api.welcome({\n   *   message: Hello'\n   * }).then(({ message }) => {\n   *   console.log(message)\n   * })\n   */\n  createAsyncMacroService({ deploymentId, listener, Type }) {\n    return this.helper.createAsyncMacroService({ deploymentId, listener, Type })\n  }\n  /**\n   * Create a publish/subscribe for a service type\n   * @param {{listener: Object, Type: class, deploymentId: string}} parameters\n   * @return {Object} service\n   * @example\n   * const service = client.createService({\n   *   listener: {\n   *     list(message) {\n   *       console.log('Stack list callback', message)\n   *     },\n   *     push(message) {\n   *       console.log('Stack push callback', message)\n   *     }\n   *   },\n   *   Type: ZetaPush.services.Stack\n   * })\n   * service.list({\n   *   stack: '<STACK-ID>'\n   * })\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * const service = client.createService({\n   *   deploymentId: 'stack_0'\n   *   listener: {\n   *     list(message) {\n   *       console.log('Stack list callback', message)\n   *     },\n   *     push(message) {\n   *       console.log('Stack push callback', message)\n   *     }\n   *   },\n   *   Type: ZetaPush.services.Stack\n   * })\n   * service.list({\n   *   stack: '<STACK-ID>'\n   * })\n   */\n  createService({ deploymentId, listener, Type }) {\n    return this.helper.createService({ deploymentId, listener, Type })\n  }\n  /**\n   * Disonnect client from ZetaPush\n   */\n  disconnect() {\n    if (this.isConnected()) {\n      this.helper.disconnect()\n    }\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return {boolean}\n   */\n  isConnected() {\n    return this.helper.isConnected()\n  }\n  /**\n   * Get the client sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.helper.getSandboxId()\n  }\n  /**\n   * Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.helper.getResource()\n  }\n  /**\n   * Get server urls list\n   * @return {Promise} servers\n   */\n  getServers() {\n    return this.helper.getServers()\n  }\n  /**\n   * Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.helper.getUserId()\n  }\n  /**\n   * Remove a connection status listener\n   * @param {number} handler\n   */\n  removeConnectionStatusListener(handler) {\n    return this.helper.removeConnectionStatusListener(handler)\n  }\n  /**\n   * Set a new authentication methods\n   * @param {function():AbstractHandshake} authentication\n   */\n  setAuthentication(authentication) {\n    this.helper.setAuthentication(authentication)\n  }\n  /**\n   * Set logging level\n   * Valid values are the strings 'error', 'warn', 'info' and 'debug', from\n   * less verbose to more verbose.\n   * @param {string} level\n   */\n  setLogLevel(level) {\n    this.helper.setLogLevel(level)\n  }\n  /**\n   * Set new client resource value\n   * @param {string} resource\n   */\n  setResource(resource) {\n    this.helper.setResource(resource)\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} service\n   */\n  unsubscribe(service) {\n    if (!service.$subscriptions) {\n      throw new TypeError('Missing $subscriptions property in service')\n    }\n    return this.helper.unsubscribe(service.$subscriptions)\n  }\n}\n\n/**\n * Add shorthand connection status method\n */\nObject.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) => {\n  // Only implements unsupported methods\n  if (!Client.prototype.hasOwnProperty(method)) {\n    Client.prototype[method] = function addListener(listener) {\n      return this.addConnectionStatusListener({\n        [method]: listener\n      })\n    }\n  }\n})\n",
+    "content": "import { ClientHelper } from './helper'\nimport { API_URL, isHttpsProtocol } from '../utils/index'\nimport { ConnectionStatusListener } from '../connection/connection-status'\n\n/**\n * Client config object.\n * @typedef {Object} ClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {function():AbstractHandshake} authentication - Return authentication properties\n * @property {string} resource - Client resource id\n * @property {Array} transports - Client transports list\n */\n\n/**\n * ZetaPush Client to connect\n * @access public\n * @example\n * // Securized client with token based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   authentication() {\n *     return ZetaPush.Authentication.weak({\n *       token: null\n  *    })\n *   }\n * })\n * @example\n * // Client with authentication based connection\n * const client = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   authentication() {\n *     return ZetaPush.Authentication.simple({\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n  *    })\n *   }\n * })\n * @example\n * // Explicit deploymentId\n * const clientSimple = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   authentication() {\n *     return ZetaPush.Authentication.simple({\n *       deploymentId: '<YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID>',\n *       login: '<USER-LOGIN>',\n *       password: '<USER-PASSWORD>'\n *    })\n *   }\n * })\n * const clientWeak = new ZetaPush.Client({\n *   sandboxId: '<YOUR-SANDBOX-ID>',\n *   authentication() {\n *     return ZetaPush.Authentication.weak({\n *       deploymentId: '<YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID>',\n *       token: '<SESSION-TOKEN>'\n *    })\n *   }\n * })\n */\nexport class Client {\n  /**\n   * Create a new ZetaPush Client\n   * @param {ClientConfig} config\n   */\n  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(), authentication, resource, transports }) {\n    /**\n     * @access private\n     * @type {ClientHelper}\n     */\n    this.helper = new ClientHelper({\n      apiUrl,\n      sandboxId,\n      forceHttps,\n      authentication,\n      resource,\n      transports\n    })\n  }\n  /**\n   * Add a connection listener to handle life cycle connection events\n   * @param {ConnectionStatusListener} listener\n   * @return {number} handler\n   */\n  addConnectionStatusListener(listener) {\n    return this.helper.addConnectionStatusListener(listener)\n  }\n  /**\n   * Safely connect client to ZetaPush\n   */\n  connect() {\n    if (this.isConnected()) {\n      const handler = this.addConnectionStatusListener({\n        onConnectionClosed: () => {\n          this.removeConnectionStatusListener(handler)\n          this.helper.connect()\n        }\n      })\n      this.disconnect()\n    } else {\n      this.helper.connect()\n    }\n  }\n  /**\n   * Create a promise based service instance\n   * @param {{listener: Object, Type: class, deploymentId: string}} parameters\n   * @return {Object} service\n   * @example\n   * const api = client.createAsyncMacroService({\n   *   Type: WelcomeMacro\n   * })\n   * api.welcome({\n   *   message: Hello'\n   * }).then(({ message }) => {\n   *   console.log(message)\n   * })\n   */\n  createAsyncMacroService({ deploymentId, listener, Type }) {\n    return this.helper.createAsyncMacroService({ deploymentId, listener, Type })\n  }\n  /**\n   * Create a publish/subscribe for a service type\n   * @param {{listener: Object, Type: class, deploymentId: string}} parameters\n   * @return {Object} service\n   * @example\n   * const service = client.createService({\n   *   listener: {\n   *     list(message) {\n   *       console.log('Stack list callback', message)\n   *     },\n   *     push(message) {\n   *       console.log('Stack push callback', message)\n   *     }\n   *   },\n   *   Type: ZetaPush.services.Stack\n   * })\n   * service.list({\n   *   stack: '<STACK-ID>'\n   * })\n   * @example\n   * // Explicit deploymentId\n   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n   * const service = client.createService({\n   *   deploymentId: 'stack_0'\n   *   listener: {\n   *     list(message) {\n   *       console.log('Stack list callback', message)\n   *     },\n   *     push(message) {\n   *       console.log('Stack push callback', message)\n   *     }\n   *   },\n   *   Type: ZetaPush.services.Stack\n   * })\n   * service.list({\n   *   stack: '<STACK-ID>'\n   * })\n   */\n  createService({ deploymentId, listener, Type }) {\n    return this.helper.createService({ deploymentId, listener, Type })\n  }\n  /**\n   * Disonnect client from ZetaPush\n   */\n  disconnect() {\n    if (this.isConnected()) {\n      this.helper.disconnect()\n    }\n  }\n  /**\n   * Is client connected to ZetaPush\n   * @return {boolean}\n   */\n  isConnected() {\n    return this.helper.isConnected()\n  }\n  /**\n   * Get the client sandbox id\n   * @return {string}\n   */\n  getSandboxId() {\n    return this.helper.getSandboxId()\n  }\n  /**\n   * Get the client resource\n   * @return {string}\n   */\n  getResource() {\n    return this.helper.getResource()\n  }\n  /**\n   * Get server urls list\n   * @return {Promise} servers\n   */\n  getServers() {\n    return this.helper.getServers()\n  }\n  /**\n   * Get the client user id\n   * @return {string}\n   */\n  getUserId() {\n    return this.helper.getUserId()\n  }\n  /**\n   * Remove a connection status listener\n   * @param {number} handler\n   */\n  removeConnectionStatusListener(handler) {\n    return this.helper.removeConnectionStatusListener(handler)\n  }\n  /**\n   * Set a new authentication methods\n   * @param {function():AbstractHandshake} authentication\n   */\n  setAuthentication(authentication) {\n    this.helper.setAuthentication(authentication)\n  }\n  /**\n   * Set logging level\n   * Valid values are the strings 'error', 'warn', 'info' and 'debug', from\n   * less verbose to more verbose.\n   * @param {string} level\n   */\n  setLogLevel(level) {\n    this.helper.setLogLevel(level)\n  }\n  /**\n   * Set new client resource value\n   * @param {string} resource\n   */\n  setResource(resource) {\n    this.helper.setResource(resource)\n  }\n  /**\n   * Remove all subscriptions\n   * @param {Object} service\n   */\n  unsubscribe(service) {\n    if (!service.$subscriptions) {\n      throw new TypeError('Missing $subscriptions property in service')\n    }\n    return this.helper.unsubscribe(service.$subscriptions)\n  }\n}\n\n/**\n * Add shorthand connection status method\n */\nObject.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) => {\n  // Only implements unsupported methods\n  if (!Client.prototype.hasOwnProperty(method)) {\n    Client.prototype[method] = function addListener(listener) {\n      return this.addConnectionStatusListener({\n        [method]: listener\n      })\n    }\n  }\n})\n",
     "static": true,
     "longname": "lib/client/basic.js",
     "access": null,
@@ -752,8 +752,7 @@
     "examples": [
       "const api = client.createAsyncMacroService({\n  Type: WelcomeMacro\n})\napi.welcome({\n  message: Hello'\n}).then(({ message }) => {\n  console.log(message)\n})"
     ],
-    "lineNumber": 120,
-    "experimental": true,
+    "lineNumber": 119,
     "params": [
       {
         "nullable": null,
@@ -790,7 +789,7 @@
       "const service = client.createService({\n  listener: {\n    list(message) {\n      console.log('Stack list callback', message)\n    },\n    push(message) {\n      console.log('Stack push callback', message)\n    }\n  },\n  Type: ZetaPush.services.Stack\n})\nservice.list({\n  stack: '<STACK-ID>'\n})",
       "// Explicit deploymentId\n// Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\nconst service = client.createService({\n  deploymentId: 'stack_0'\n  listener: {\n    list(message) {\n      console.log('Stack list callback', message)\n    },\n    push(message) {\n      console.log('Stack push callback', message)\n    }\n  },\n  Type: ZetaPush.services.Stack\n})\nservice.list({\n  stack: '<STACK-ID>'\n})"
     ],
-    "lineNumber": 161,
+    "lineNumber": 160,
     "params": [
       {
         "nullable": null,
@@ -823,7 +822,7 @@
     "longname": "lib/client/basic.js~Client#disconnect",
     "access": null,
     "description": "Disonnect client from ZetaPush",
-    "lineNumber": 167,
+    "lineNumber": 166,
     "params": []
   },
   {
@@ -837,7 +836,7 @@
     "longname": "lib/client/basic.js~Client#isConnected",
     "access": null,
     "description": "Is client connected to ZetaPush",
-    "lineNumber": 176,
+    "lineNumber": 175,
     "params": [],
     "return": {
       "nullable": null,
@@ -859,7 +858,7 @@
     "longname": "lib/client/basic.js~Client#getSandboxId",
     "access": null,
     "description": "Get the client sandbox id",
-    "lineNumber": 183,
+    "lineNumber": 182,
     "params": [],
     "return": {
       "nullable": null,
@@ -881,7 +880,7 @@
     "longname": "lib/client/basic.js~Client#getResource",
     "access": null,
     "description": "Get the client resource",
-    "lineNumber": 190,
+    "lineNumber": 189,
     "params": [],
     "return": {
       "nullable": null,
@@ -903,7 +902,7 @@
     "longname": "lib/client/basic.js~Client#getServers",
     "access": null,
     "description": "Get server urls list",
-    "lineNumber": 197,
+    "lineNumber": 196,
     "params": [],
     "return": {
       "nullable": null,
@@ -925,7 +924,7 @@
     "longname": "lib/client/basic.js~Client#getUserId",
     "access": null,
     "description": "Get the client user id",
-    "lineNumber": 204,
+    "lineNumber": 203,
     "params": [],
     "return": {
       "nullable": null,
@@ -947,7 +946,7 @@
     "longname": "lib/client/basic.js~Client#removeConnectionStatusListener",
     "access": null,
     "description": "Remove a connection status listener",
-    "lineNumber": 211,
+    "lineNumber": 210,
     "params": [
       {
         "nullable": null,
@@ -977,7 +976,7 @@
     "longname": "lib/client/basic.js~Client#setAuthentication",
     "access": null,
     "description": "Set a new authentication methods",
-    "lineNumber": 218,
+    "lineNumber": 217,
     "params": [
       {
         "nullable": null,
@@ -1002,7 +1001,7 @@
     "longname": "lib/client/basic.js~Client#setLogLevel",
     "access": null,
     "description": "Set logging level\nValid values are the strings 'error', 'warn', 'info' and 'debug', from\nless verbose to more verbose.",
-    "lineNumber": 227,
+    "lineNumber": 226,
     "params": [
       {
         "nullable": null,
@@ -1027,7 +1026,7 @@
     "longname": "lib/client/basic.js~Client#setResource",
     "access": null,
     "description": "Set new client resource value",
-    "lineNumber": 234,
+    "lineNumber": 233,
     "params": [
       {
         "nullable": null,
@@ -1052,7 +1051,7 @@
     "longname": "lib/client/basic.js~Client#unsubscribe",
     "access": null,
     "description": "Remove all subscriptions",
-    "lineNumber": 241,
+    "lineNumber": 240,
     "params": [
       {
         "nullable": null,
@@ -3416,7 +3415,7 @@
     "__docId__": 147,
     "kind": "file",
     "name": "lib/index.js",
-    "content": "export { Authentication } from './authentication/handshake'\nexport { ConnectionStatusListener } from './connection/connection-status'\nexport { TransportTypes } from './connection/cometd'\n\nexport { Client } from './client/basic'\nexport { SmartClient } from './client/smart'\nexport { WeakClient } from './client/weak'\n\nexport { services } from './mapping'\n\n/**\n * SDK Version\n * @type {string}\n */\nexport const VERSION = '3.1.0'\n",
+    "content": "export { Authentication } from './authentication/handshake'\nexport { ConnectionStatusListener } from './connection/connection-status'\nexport { TransportTypes } from './connection/cometd'\n\nexport { Client } from './client/basic'\nexport { SmartClient } from './client/smart'\nexport { WeakClient } from './client/weak'\n\nexport { services } from './mapping'\n\n/**\n * SDK Version\n * @type {string}\n */\nexport const VERSION = '3.1.1'\n",
     "static": true,
     "longname": "lib/index.js",
     "access": null,
@@ -8578,7 +8577,7 @@
     "__docId__": 331,
     "kind": "file",
     "name": "lib/utils/index.js",
-    "content": "/**\n * Match unsecure pattern web\n * @type {RegExp}\n */\nconst HTTP_PATTERN = /^http:\\/\\/|^\\/\\//\n\n/**\n * Https protocol\n * @type {string}\n */\nconst HTTPS_PROTOCOL = 'https:'\n\n/**\n * Alpha numeric dictionary\n */\nconst DICTIONARY = 'abcdefghijklmnopqrstuvwxyz0123456789'\n\n/**\n* Default ZetaPush API URL\n* @access private\n*/\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @param {boolean} forceHttps\n * @return {string}\n */\nexport const getSecureUrl = (url, forceHttps) => {\n  return forceHttps ? url.replace(HTTP_PATTERN, 'https://') : url\n}\n\n/**\n * @access private\n * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean}} parameters\n * @return {Promise}\n */\nexport const getServers = ({ apiUrl, sandboxId, forceHttps }) => {\n  const secureApiUrl = getSecureUrl(apiUrl, forceHttps)\n  const url = `${secureApiUrl}${sandboxId}`\n  return fetch(url)\n    .then((response) => response.json())\n    // TODO: Replace by a server side implementation when available\n    .then(({ servers }) => servers.map((server) => getSecureUrl(server, forceHttps)))\n}\n\n/**\n * @access private\n * @return {boolean}\n */\nexport const isHttpsProtocol = () => {\n  return location.protocol === HTTPS_PROTOCOL\n}\n\n/**\n * @access private\n * @param Class Derived\n * @param Class Parent\n * @return {boolean}\n */\nexport const isDerivedOf = (Derived, Parent) => {\n  let prototype = Object.getPrototypeOf(Derived)\n  let is = false\n  while (!(is || prototype === null)) {\n    is = prototype === Parent\n    prototype = Object.getPrototypeOf(prototype)\n  }\n  return is\n}\n\n/**\n * Get random id\n * @return {string}\n */\nexport const uuid = (entropy = 7, dictionary = DICTIONARY) => Array.from(Array(entropy)).reduce((previous) => {\n  const next = dictionary.charAt(Math.floor(Math.random() * dictionary.length))\n  return `${previous}${next}`\n}, '')\n",
+    "content": "/**\n * Match unsecure pattern web\n * @type {RegExp}\n */\nconst HTTP_PATTERN = /^http:\\/\\/|^\\/\\//\n\n/**\n * Https protocol\n * @type {string}\n */\nconst HTTPS_PROTOCOL = 'https:'\n\n/**\n * Alpha numeric dictionary\n */\nconst DICTIONARY = 'abcdefghijklmnopqrstuvwxyz0123456789'\n\n/**\n* Default ZetaPush API URL\n* @access private\n*/\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * @access private\n * @param {string} apiUrl\n * @return {string}\n */\nconst normalizeApiUrl = (apiUrl) => {\n  const last = apiUrl.charAt(apiUrl.length - 1)\n  const SLASH = '/'\n  return last === SLASH ? apiUrl : apiUrl + SLASH\n}\n\n/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @param {boolean} forceHttps\n * @return {string}\n */\nexport const getSecureUrl = (url, forceHttps) => {\n  return forceHttps ? url.replace(HTTP_PATTERN, 'https://') : url\n}\n\n/**\n * @access private\n * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean}} parameters\n * @return {Promise}\n */\nexport const getServers = ({ apiUrl, sandboxId, forceHttps }) => {\n  const normalizedSecuresApiUrl = normalizeApiUrl(getSecureUrl(apiUrl, forceHttps))\n  const url = `${normalizedSecuresApiUrl}${sandboxId}`\n  return fetch(url)\n    .then((response) => response.json())\n    // TODO: Replace by a server side implementation when available\n    .then(({ servers }) => servers.map((server) => getSecureUrl(server, forceHttps)))\n}\n\n/**\n * @access private\n * @return {boolean}\n */\nexport const isHttpsProtocol = () => {\n  return location.protocol === HTTPS_PROTOCOL\n}\n\n/**\n * @access private\n * @param Class Derived\n * @param Class Parent\n * @return {boolean}\n */\nexport const isDerivedOf = (Derived, Parent) => {\n  let prototype = Object.getPrototypeOf(Derived)\n  let is = false\n  while (!(is || prototype === null)) {\n    is = prototype === Parent\n    prototype = Object.getPrototypeOf(prototype)\n  }\n  return is\n}\n\n/**\n * Get random id\n * @return {string}\n */\nexport const uuid = (entropy = 7, dictionary = DICTIONARY) => Array.from(Array(entropy)).reduce((previous) => {\n  const next = dictionary.charAt(Math.floor(Math.random() * dictionary.length))\n  return `${previous}${next}`\n}, '')\n",
     "static": true,
     "longname": "lib/utils/index.js",
     "access": null,
@@ -8670,6 +8669,42 @@
   {
     "__docId__": 336,
     "kind": "function",
+    "name": "normalizeApiUrl",
+    "memberof": "lib/utils/index.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "lib/utils/index.js~normalizeApiUrl",
+    "access": "private",
+    "export": false,
+    "importPath": "zetapush-js/lib/utils/index.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 29,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "apiUrl",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 337,
+    "kind": "function",
     "name": "shuffle",
     "memberof": "lib/utils/index.js",
     "generator": false,
@@ -8681,7 +8716,7 @@
     "importPath": "zetapush-js/lib/utils/index.js",
     "importStyle": "{shuffle}",
     "description": "",
-    "lineNumber": 29,
+    "lineNumber": 40,
     "params": [
       {
         "nullable": null,
@@ -8704,7 +8739,7 @@
     }
   },
   {
-    "__docId__": 337,
+    "__docId__": 338,
     "kind": "function",
     "name": "getSecureUrl",
     "memberof": "lib/utils/index.js",
@@ -8717,7 +8752,7 @@
     "importPath": "zetapush-js/lib/utils/index.js",
     "importStyle": "{getSecureUrl}",
     "description": "",
-    "lineNumber": 40,
+    "lineNumber": 51,
     "params": [
       {
         "nullable": null,
@@ -8750,7 +8785,7 @@
     }
   },
   {
-    "__docId__": 338,
+    "__docId__": 339,
     "kind": "function",
     "name": "getServers",
     "memberof": "lib/utils/index.js",
@@ -8763,7 +8798,7 @@
     "importPath": "zetapush-js/lib/utils/index.js",
     "importStyle": "{getServers}",
     "description": "",
-    "lineNumber": 49,
+    "lineNumber": 60,
     "params": [
       {
         "nullable": null,
@@ -8786,7 +8821,7 @@
     }
   },
   {
-    "__docId__": 339,
+    "__docId__": 340,
     "kind": "function",
     "name": "isHttpsProtocol",
     "memberof": "lib/utils/index.js",
@@ -8799,7 +8834,7 @@
     "importPath": "zetapush-js/lib/utils/index.js",
     "importStyle": "{isHttpsProtocol}",
     "description": "",
-    "lineNumber": 62,
+    "lineNumber": 73,
     "params": [],
     "return": {
       "nullable": null,
@@ -8811,7 +8846,7 @@
     }
   },
   {
-    "__docId__": 340,
+    "__docId__": 341,
     "kind": "function",
     "name": "isDerivedOf",
     "memberof": "lib/utils/index.js",
@@ -8824,7 +8859,7 @@
     "importPath": "zetapush-js/lib/utils/index.js",
     "importStyle": "{isDerivedOf}",
     "description": "",
-    "lineNumber": 72,
+    "lineNumber": 83,
     "params": [
       {
         "nullable": null,
@@ -8857,7 +8892,7 @@
     }
   },
   {
-    "__docId__": 341,
+    "__docId__": 342,
     "kind": "function",
     "name": "uuid",
     "memberof": "lib/utils/index.js",
@@ -8870,7 +8905,7 @@
     "importPath": "zetapush-js/lib/utils/index.js",
     "importStyle": "{uuid}",
     "description": "Get random id",
-    "lineNumber": 86,
+    "lineNumber": 97,
     "params": [
       {
         "name": "entropy",
@@ -8901,7 +8936,7 @@
     }
   },
   {
-    "__docId__": 342,
+    "__docId__": 343,
     "kind": "file",
     "name": "lib/utils/session-persistence.js",
     "content": "/**\n * @type {string}\n */\nexport const ZETAPUSH_SESSION_KEY = 'zetapush.token'\n\n/**\n * Provide abstraction for token persistence\n * @access protected\n */\nexport class SessionPersistenceStrategy {\n  /**\n   * @param {{sandboxId: string, storage: DOMStorage}} parameters\n   */\n  constructor({ sandboxId, storage = window.localStorage } = {}) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.key = `${ZETAPUSH_SESSION_KEY}.${sandboxId}`\n    /**\n     * @access private\n     * @type {DOMStorage}\n     */\n    this.storage = storage\n  }\n  /**\n   * @return {string} session The stored session\n   */\n  get() {\n    const { key, storage } = this\n    const json = storage.getItem(key) || '{}'\n    let session = {}\n    try {\n      session = JSON.parse(json)\n    } catch (e) { }\n    return session\n  }\n  /**\n   * @param {Object} session The session to store\n   */\n  set(session = {}) {\n    const { key, storage } = this\n    const json = JSON.stringify(session)\n    try {\n      storage.setItem(key, json)\n    } catch (e) { }\n    return session\n  }\n}\n",
@@ -8912,7 +8947,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 343,
+    "__docId__": 344,
     "kind": "variable",
     "name": "ZETAPUSH_SESSION_KEY",
     "memberof": "lib/utils/session-persistence.js",
@@ -8934,7 +8969,7 @@
     }
   },
   {
-    "__docId__": 344,
+    "__docId__": 345,
     "kind": "class",
     "name": "SessionPersistenceStrategy",
     "memberof": "lib/utils/session-persistence.js",
@@ -8949,7 +8984,7 @@
     "interface": false
   },
   {
-    "__docId__": 345,
+    "__docId__": 346,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "lib/utils/session-persistence.js~SessionPersistenceStrategy",
@@ -8974,7 +9009,7 @@
     ]
   },
   {
-    "__docId__": 346,
+    "__docId__": 347,
     "kind": "member",
     "name": "key",
     "memberof": "lib/utils/session-persistence.js~SessionPersistenceStrategy",
@@ -8993,7 +9028,7 @@
     }
   },
   {
-    "__docId__": 347,
+    "__docId__": 348,
     "kind": "member",
     "name": "storage",
     "memberof": "lib/utils/session-persistence.js~SessionPersistenceStrategy",
@@ -9012,7 +9047,7 @@
     }
   },
   {
-    "__docId__": 348,
+    "__docId__": 349,
     "kind": "method",
     "name": "get",
     "memberof": "lib/utils/session-persistence.js~SessionPersistenceStrategy",
@@ -9034,7 +9069,7 @@
     }
   },
   {
-    "__docId__": 349,
+    "__docId__": 350,
     "kind": "method",
     "name": "set",
     "memberof": "lib/utils/session-persistence.js~SessionPersistenceStrategy",
@@ -9064,7 +9099,7 @@
     }
   },
   {
-    "__docId__": 351,
+    "__docId__": 352,
     "kind": "external",
     "name": "Infinity",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
@@ -9076,7 +9111,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 352,
+    "__docId__": 353,
     "kind": "external",
     "name": "NaN",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
@@ -9088,7 +9123,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 353,
+    "__docId__": 354,
     "kind": "external",
     "name": "undefined",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
@@ -9100,7 +9135,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 354,
+    "__docId__": 355,
     "kind": "external",
     "name": "null",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
@@ -9112,7 +9147,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 355,
+    "__docId__": 356,
     "kind": "external",
     "name": "Object",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
@@ -9124,7 +9159,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 356,
+    "__docId__": 357,
     "kind": "external",
     "name": "object",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
@@ -9136,7 +9171,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 357,
+    "__docId__": 358,
     "kind": "external",
     "name": "Function",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
@@ -9148,7 +9183,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 358,
+    "__docId__": 359,
     "kind": "external",
     "name": "function",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
@@ -9160,7 +9195,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 359,
+    "__docId__": 360,
     "kind": "external",
     "name": "Boolean",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
@@ -9172,7 +9207,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 360,
+    "__docId__": 361,
     "kind": "external",
     "name": "boolean",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
@@ -9184,7 +9219,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 361,
+    "__docId__": 362,
     "kind": "external",
     "name": "Symbol",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
@@ -9196,7 +9231,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 362,
+    "__docId__": 363,
     "kind": "external",
     "name": "Error",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
@@ -9208,7 +9243,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 363,
+    "__docId__": 364,
     "kind": "external",
     "name": "EvalError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
@@ -9220,7 +9255,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 364,
+    "__docId__": 365,
     "kind": "external",
     "name": "InternalError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
@@ -9232,7 +9267,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 365,
+    "__docId__": 366,
     "kind": "external",
     "name": "RangeError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
@@ -9244,7 +9279,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 366,
+    "__docId__": 367,
     "kind": "external",
     "name": "ReferenceError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
@@ -9256,7 +9291,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 367,
+    "__docId__": 368,
     "kind": "external",
     "name": "SyntaxError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
@@ -9268,7 +9303,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 368,
+    "__docId__": 369,
     "kind": "external",
     "name": "TypeError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
@@ -9280,7 +9315,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 369,
+    "__docId__": 370,
     "kind": "external",
     "name": "URIError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
@@ -9292,7 +9327,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 370,
+    "__docId__": 371,
     "kind": "external",
     "name": "Number",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
@@ -9304,7 +9339,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 371,
+    "__docId__": 372,
     "kind": "external",
     "name": "number",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
@@ -9316,7 +9351,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 372,
+    "__docId__": 373,
     "kind": "external",
     "name": "Date",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
@@ -9328,7 +9363,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 373,
+    "__docId__": 374,
     "kind": "external",
     "name": "String",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
@@ -9340,7 +9375,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 374,
+    "__docId__": 375,
     "kind": "external",
     "name": "string",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
@@ -9352,7 +9387,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 375,
+    "__docId__": 376,
     "kind": "external",
     "name": "RegExp",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
@@ -9364,7 +9399,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 376,
+    "__docId__": 377,
     "kind": "external",
     "name": "Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
@@ -9376,7 +9411,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 377,
+    "__docId__": 378,
     "kind": "external",
     "name": "Int8Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
@@ -9388,7 +9423,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 378,
+    "__docId__": 379,
     "kind": "external",
     "name": "Uint8Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
@@ -9400,7 +9435,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 379,
+    "__docId__": 380,
     "kind": "external",
     "name": "Uint8ClampedArray",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
@@ -9412,7 +9447,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 380,
+    "__docId__": 381,
     "kind": "external",
     "name": "Int16Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
@@ -9424,7 +9459,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 381,
+    "__docId__": 382,
     "kind": "external",
     "name": "Uint16Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
@@ -9436,7 +9471,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 382,
+    "__docId__": 383,
     "kind": "external",
     "name": "Int32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
@@ -9448,7 +9483,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 383,
+    "__docId__": 384,
     "kind": "external",
     "name": "Uint32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
@@ -9460,7 +9495,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 384,
+    "__docId__": 385,
     "kind": "external",
     "name": "Float32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
@@ -9472,7 +9507,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 385,
+    "__docId__": 386,
     "kind": "external",
     "name": "Float64Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
@@ -9484,7 +9519,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 386,
+    "__docId__": 387,
     "kind": "external",
     "name": "Map",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
@@ -9496,7 +9531,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 387,
+    "__docId__": 388,
     "kind": "external",
     "name": "Set",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
@@ -9508,7 +9543,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 388,
+    "__docId__": 389,
     "kind": "external",
     "name": "WeakMap",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
@@ -9520,7 +9555,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 389,
+    "__docId__": 390,
     "kind": "external",
     "name": "WeakSet",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
@@ -9532,7 +9567,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 390,
+    "__docId__": 391,
     "kind": "external",
     "name": "ArrayBuffer",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
@@ -9544,7 +9579,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 391,
+    "__docId__": 392,
     "kind": "external",
     "name": "DataView",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
@@ -9556,7 +9591,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 392,
+    "__docId__": 393,
     "kind": "external",
     "name": "JSON",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
@@ -9568,7 +9603,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 393,
+    "__docId__": 394,
     "kind": "external",
     "name": "Promise",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
@@ -9580,7 +9615,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 394,
+    "__docId__": 395,
     "kind": "external",
     "name": "Generator",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
@@ -9592,7 +9627,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 395,
+    "__docId__": 396,
     "kind": "external",
     "name": "GeneratorFunction",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
@@ -9604,7 +9639,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 396,
+    "__docId__": 397,
     "kind": "external",
     "name": "Reflect",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
@@ -9616,7 +9651,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 397,
+    "__docId__": 398,
     "kind": "external",
     "name": "Proxy",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
@@ -9629,7 +9664,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 399,
+    "__docId__": 400,
     "kind": "external",
     "name": "CanvasRenderingContext2D",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
@@ -9641,7 +9676,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 400,
+    "__docId__": 401,
     "kind": "external",
     "name": "DocumentFragment",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
@@ -9653,7 +9688,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 401,
+    "__docId__": 402,
     "kind": "external",
     "name": "Element",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
@@ -9665,7 +9700,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 402,
+    "__docId__": 403,
     "kind": "external",
     "name": "Event",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
@@ -9677,7 +9712,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 403,
+    "__docId__": 404,
     "kind": "external",
     "name": "Node",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
@@ -9689,7 +9724,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 404,
+    "__docId__": 405,
     "kind": "external",
     "name": "NodeList",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
@@ -9701,7 +9736,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 405,
+    "__docId__": 406,
     "kind": "external",
     "name": "XMLHttpRequest",
     "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
@@ -9713,7 +9748,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 406,
+    "__docId__": 407,
     "kind": "external",
     "name": "AudioContext",
     "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
