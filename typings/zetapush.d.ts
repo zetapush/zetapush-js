@@ -67,12 +67,11 @@ interface Options {
 
 interface Service {
   DEFAULT_DEPLOYMENT_ID: string;
-  $publish: ServicePublisher;
 }
 
 interface ServiceDeclaration {
   deploymentId?: string;
-  listener: any;
+  listener?: any;
   Type: Service;
 }
 
@@ -125,7 +124,7 @@ export class Client {
   addConnectionStatusListener(listener: ConnectionStatusListener): ConnectionStatusHandler;
   connect(): void;
   createService(declaration: ServiceDeclaration): Service;
-  createAsyncMacroService(declaration: ServiceDeclaration): AsyncMacroService;
+  createAsyncMacroService(declaration: ServiceDeclaration): services.Macro;
   disconnect(): void;
   isConnected(): boolean;
   getSandboxId(): string;
@@ -163,10 +162,11 @@ export class WeakClient extends Client {
 }
 
 export namespace services {
-  class Macro extends Service {
+  class Macro implements Service {
     DEFAULT_DEPLOYMENT_ID: string;
-    $publish: MacroServicePublisher | AsyncMacroServicePublisher;
-    constructor($publish: MacroServicePublisher | AsyncMacroServicePublisher);
+    static DEFAULT_DEPLOYMENT_ID: string;
+    $publish: AsyncMacroServicePublisher;
+    constructor($publish: AsyncMacroServicePublisher);
   }
 }
 
