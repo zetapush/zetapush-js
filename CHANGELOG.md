@@ -1,3 +1,9 @@
+# 3.1.3 (2017-04-13)
+
+### Fix
+
+* **typescript** Fix TypeScript issues
+
 # 3.1.2 (2017-04-13)
 
 ### Features
