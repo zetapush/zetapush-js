@@ -1,6 +1,10 @@
 # Frequently Asked Questions
 
-## How to use [ES2015 features](https://babeljs.io/docs/learn-es2015/) (const, class, arrow functions, ...) on my project today
+## Can I use zetapush-js with TypeScript?
+
+Yes, since 3.1.2 zetapush-js include typings definition.
+
+## How to use [ES2015 features](https://babeljs.io/docs/learn-es2015/) (const, class, arrow functions, ...) on my project today ?
 
 ZetaPush source code and examples are written in plain [ES2015](http://kangax.github.io/compat-table/es6/), you can use [Babel to transpile your code](https://babeljs.io/docs/learn-es2015/)
 

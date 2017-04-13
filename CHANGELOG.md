@@ -1,3 +1,9 @@
+# 3.1.2 (2017-04-13)
+
+### Features
+
+* **typescript** Add TypeScript support
+
 # 3.1.1 (2017-04-10)
 
 ### Features
