@@ -1,6 +1,6 @@
 {
   "name": "zetapush-js",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "JavaScript SDK for ZetaPush",
   "main": "dist/zetapush.min.js",
   "homepage": "http://zetapush.com",
@@ -28,6 +28,7 @@
     "serve": "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001",
     "test": "karma start karma.conf.js"
   },
+  "typings": "typings/zetapush.d.ts",
   "dependencies": {
     "zetapush-cometd": "^3.0.13"
   },
@@ -57,6 +58,7 @@
     "lr-http-server": "^0.1.4",
     "phantomjs-prebuilt": "^2.1.14",
     "request": "^2.81.0",
+    "typescript": "^2.2.2",
     "webpack": "^2.3.3",
     "whatwg-fetch": "^2.0.3"
   },
