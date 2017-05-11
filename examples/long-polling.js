@@ -1,6 +1,6 @@
 // Create new ZetaPush Client with restricted transports
 const client = new ZetaPush.WeakClient({
-  sandboxId: 'Y1k3xBDc',
+  sandboxId: 'bcu1JtRb',
   transports: [ZetaPush.TransportTypes.LONG_POLLING]
 })
 // Create a Macro service
