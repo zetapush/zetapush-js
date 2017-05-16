@@ -30,7 +30,8 @@
   },
   "typings": "typings/zetapush.d.ts",
   "dependencies": {
-    "zetapush-cometd": "^3.0.13"
+    "isomorphic-fetch": "^2.2.1",
+    "zetapush-cometd": "file:../zetapush-cometd"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -59,8 +60,7 @@
     "phantomjs-prebuilt": "^2.1.14",
     "request": "^2.81.0",
     "typescript": "^2.3.2",
-    "webpack": "^2.5.1",
-    "whatwg-fetch": "^2.0.3"
+    "webpack": "^2.5.1"
   },
   "engines": {
     "node": ">=6"

@@ -14,8 +14,18 @@ const plugins = [new UglifyJsPlugin({
 const filename = `${library.toLowerCase()}.min.js`
 
 module.exports = {
-  entry: ['whatwg-fetch', path.join(__dirname, 'lib/index.js')],
+  entry: ['isomorphic-fetch', path.join(__dirname, 'lib/index.js')],
   devtool: 'source-map',
+  externals: [
+    {
+      'isomorphic-fetch': {
+        root: 'isomorphic-fetch',
+        commonjs2: 'isomorphic-fetch',
+        commonjs: 'isomorphic-fetch',
+        amd: 'isomorphic-fetch'
+      }
+    }
+  ],
   output: {
     path: path.join(__dirname, 'dist'),
     filename,
