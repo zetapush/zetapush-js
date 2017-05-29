@@ -1,5 +1,24 @@
 # 3.2.0 (2017-05-26)
 
+### Features
+
+* **node** Support node execution context
+
+```js
+const { WeakClient } = require('zetapush-js')
+const Transports = require('zetapush-cometd/lib/node/Transports')
+// Create new ZetaPush Client
+const client = new WeakClient({
+  transports: Transports,
+  sandboxId: '<YOUR-SANDBOX-ID>'
+})
+// Add connection establised listener
+client.onConnectionEstablished(() => {
+  console.log('onConnectionEstablished')
+})
+client.connect()
+```
+
 ### Changes
 
 * **core** From webpack@2 to rollup
