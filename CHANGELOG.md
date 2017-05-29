@@ -6,10 +6,10 @@
 
 ```js
 const { WeakClient } = require('zetapush-js')
-const Transports = require('zetapush-cometd/lib/node/Transports')
+const NodeJSTransports = require('zetapush-cometd/lib/node/Transports')
 // Create new ZetaPush Client
 const client = new WeakClient({
-  transports: Transports,
+  transports: NodeJSTransports,
   sandboxId: '<YOUR-SANDBOX-ID>'
 })
 // Add connection establised listener

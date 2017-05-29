@@ -1,5 +1,28 @@
 # Frequently Asked Questions
 
+## Can I use zetapush-js in a NodeJS Context?
+
+Yes, you have to install latest version of zetapush-js and zetapush-cometd to enable NodeJS support.
+
+```console
+npm install zetapush-js@next zetapush-cometd@next
+```
+
+```js
+const { WeakClient } = require('zetapush-js')
+const NodeJSTransports = require('zetapush-cometd/lib/node/Transports')
+// Create new ZetaPush Client
+const client = new WeakClient({
+  transports: NodeJSTransports,
+  sandboxId: '<YOUR-SANDBOX-ID>'
+})
+// Add connection establised listener
+client.onConnectionEstablished(() => {
+  console.log('onConnectionEstablished')
+})
+client.connect()
+```
+
 ## Can I use zetapush-js with TypeScript?
 
 Yes, since 3.1.2 zetapush-js include typings definition.
