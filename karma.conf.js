@@ -14,7 +14,7 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       'node_modules/babel-polyfill/dist/polyfill.js',
-      'dist/zetapush.min.js',
+      'dist/zetapush.js',
       'test/**/*.spec.js'
     ],
 
@@ -47,7 +47,7 @@ module.exports = function (config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS_CI'],
+    browsers: ['Chrome'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
@@ -60,10 +60,7 @@ module.exports = function (config) {
     // Custom Launchers
     // configure custom launchers
     customLaunchers: {
-      PhantomJS_CI: {
-        base: 'PhantomJS',
-        flags: ['--debug=true', '--disk-cache=false', '--ssl-protocol=any']
-      }
+
     }
   })
 }

@@ -1,3 +1,11 @@
+# 3.2.0 (2017-05-26)
+
+### Changes
+
+* **core** From webpack@2 to rollup
+* **client** Update TransportLayer implementation
+* **zetapush-cometd** Update TransportLayer implementation
+
 # 3.1.3 (2017-04-13)
 
 ### Fix
