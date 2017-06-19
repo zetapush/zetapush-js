@@ -33,7 +33,7 @@ export const API_URL = 'https://api.zpush.io/'
  * @access private
  * @type boolean
  */
-export const FORCE_HTTPS = typeof location === 'undefined' ? true : location.protocol === HTTPS_PROTOCOL
+export const FORCE_HTTPS = typeof location === 'undefined' ? false : location.protocol === HTTPS_PROTOCOL
 
 /**
  * @access private
