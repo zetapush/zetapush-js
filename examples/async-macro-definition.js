@@ -7,7 +7,7 @@ class WelcomeMacro extends ZetaPush.services.Macro {
 }
 // Create new ZetaPush Client
 const client = new ZetaPush.WeakClient({
-  sandboxId: 'Y1k3xBDc'
+  sandboxId: 'bcu1JtRb'
 })
 // Create async macro service
 const service = client.createAsyncMacroService({

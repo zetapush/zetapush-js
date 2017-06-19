@@ -1,5 +1,3 @@
-/// <reference path="../typings/zetapush.d.ts" />
-
 const { Authentication, Client, services } = ZetaPush
 
 const client = new Client({

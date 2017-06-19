@@ -1,5 +1,4 @@
-import { CometD } from 'zetapush-cometd'
-import { TransportTypes, TransportLayers } from '../connection/cometd'
+import { CometD, Transports } from 'zetapush-cometd'
 import { ConnectionStatusListener } from '../connection/connection-status'
 import { Macro } from '../mapping/services'
 import { getServers, isDerivedOf, shuffle, uuid } from '../utils/index'
@@ -13,12 +12,6 @@ const Message = {
   RECONNECT_NONE_VALUE: 'none',
   RECONNECT_RETRY_VALUE: 'retry'
 }
-
-/**
- * Get all transport types
- * @type {Object[]}
- */
-const AllTransports = Object.values(TransportTypes)
 
 /**
  * Delay to update server url
@@ -40,7 +33,7 @@ export class ClientHelper {
   /**
    * Create a new ZetaPush client helper
    */
-  constructor({ apiUrl, sandboxId, forceHttps = false, authentication, resource = null, transports = AllTransports }) {
+  constructor({ apiUrl, sandboxId, forceHttps = false, authentication, resource = null, transports = Transports }) {
     /**
      * @access private
      * @type {string}
@@ -75,7 +68,7 @@ export class ClientHelper {
      * @access private
      * @type {Promise}
      */
-    this.servers = getServers({ apiUrl, sandboxId, forceHttps }).catch((error) => {
+    this.servers = getServers({ apiUrl, sandboxId, forceHttps, transports }).catch((error) => {
       // Notify error in connection to server step
       this.connectionToServerFail(error)
       // Return empty list
@@ -117,20 +110,16 @@ export class ClientHelper {
      */
     this.cometd = new CometD()
 
-    // Filter transports layers
-    TransportLayers.filter(({ type }) => {
-      return transports.includes(type)
-    }).forEach(({ type, Transport }) => {
+    // Register transports layers
+    transports.ALL.forEach(({ type, Transport }) => {
       this.cometd.registerTransport(type, new Transport())
     })
 
     // Handle transport exception
     this.cometd.onTransportException = (cometd, transport) => {
-      if (TransportTypes.LONG_POLLING === transport) {
-        // Try to find an other available server
-        // Remove the current one from the _serverList array
-        this.updateServerUrl()
-      }
+      // Try to find an other available server
+      // Remove the current one from the _serverList array
+      this.updateServerUrl()
     }
 
     this.cometd.addListener('/meta/handshake', ({ ext, successful, advice, error }) => {
@@ -590,7 +579,7 @@ export class ClientHelper {
         this.cometd.configure({
           url: `${this.serverUrl}/strd`
         })
-        window.setTimeout(() => {
+        setTimeout(() => {
           this.cometd.handshake(this.getHandshakeFields())
         }, UPDATE_SERVER_URL_DELAY)
       }

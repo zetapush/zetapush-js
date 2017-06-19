@@ -86,10 +86,12 @@ export class SmartClient extends Client {
       }
     })
     // Properly disconnect client to avoir ghost connections
+    /*
     window.addEventListener('beforeunload', () => {
       this.removeConnectionStatusListener(this.lifeCycleConnectionHandler)
       super.disconnect()
     })
+    */
   }
   /**
    * Disconnect client from ZetaPush backend

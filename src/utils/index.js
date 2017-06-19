@@ -5,6 +5,12 @@
 const HTTP_PATTERN = /^http:\/\/|^\/\//
 
 /**
+ * Http protocol
+ * @type {string}
+ */
+const HTTP_PROTOCOL = 'http:'
+
+/**
  * Https protocol
  * @type {string}
  */
@@ -16,10 +22,18 @@ const HTTPS_PROTOCOL = 'https:'
 const DICTIONARY = 'abcdefghijklmnopqrstuvwxyz0123456789'
 
 /**
-* Default ZetaPush API URL
-* @access private
-*/
+ * Default ZetaPush API URL
+ * @access private
+ */
 export const API_URL = 'https://api.zpush.io/'
+
+/**
+ * Force ssl based protocol for network echange
+ * Cross Env (Browser/Node) test
+ * @access private
+ * @type boolean
+ */
+export const FORCE_HTTPS = typeof location === 'undefined' ? false : location.protocol === HTTPS_PROTOCOL
 
 /**
  * @access private
@@ -49,29 +63,22 @@ export const shuffle = (list) => {
  * @return {string}
  */
 export const getSecureUrl = (url, forceHttps) => {
-  return forceHttps ? url.replace(HTTP_PATTERN, 'https://') : url
+  return forceHttps ? url.replace(HTTP_PATTERN, `${HTTPS_PROTOCOL}//`) : url
 }
 
 /**
  * @access private
- * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean}} parameters
+ * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean, transports: Transports}} parameters
  * @return {Promise}
  */
-export const getServers = ({ apiUrl, sandboxId, forceHttps }) => {
+export const getServers = ({ apiUrl, sandboxId, forceHttps, transports }) => {
   const normalizedSecuresApiUrl = normalizeApiUrl(getSecureUrl(apiUrl, forceHttps))
   const url = `${normalizedSecuresApiUrl}${sandboxId}`
-  return fetch(url)
+  const options = { protocol: forceHttps ? HTTPS_PROTOCOL : HTTP_PROTOCOL }
+  return transports.fetch(url, options)
     .then((response) => response.json())
     // TODO: Replace by a server side implementation when available
     .then(({ servers }) => servers.map((server) => getSecureUrl(server, forceHttps)))
-}
-
-/**
- * @access private
- * @return {boolean}
- */
-export const isHttpsProtocol = () => {
-  return location.protocol === HTTPS_PROTOCOL
 }
 
 /**

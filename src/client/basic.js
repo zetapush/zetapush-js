@@ -1,5 +1,5 @@
 import { ClientHelper } from './helper'
-import { API_URL, isHttpsProtocol } from '../utils/index'
+import { API_URL, FORCE_HTTPS } from '../utils/index'
 import { ConnectionStatusListener } from '../connection/connection-status'
 
 /**
@@ -10,7 +10,7 @@ import { ConnectionStatusListener } from '../connection/connection-status'
  * @property {boolean} forceHttps - Force end to end HTTPS connection
  * @property {function():AbstractHandshake} authentication - Return authentication properties
  * @property {string} resource - Client resource id
- * @property {Array} transports - Client transports list
+ * @property {Transports} transports - Client transports implementation
  */
 
 /**
@@ -23,7 +23,7 @@ import { ConnectionStatusListener } from '../connection/connection-status'
  *   authentication() {
  *     return ZetaPush.Authentication.weak({
  *       token: null
-  *    })
+ *    })
  *   }
  * })
  * @example
@@ -34,7 +34,7 @@ import { ConnectionStatusListener } from '../connection/connection-status'
  *     return ZetaPush.Authentication.simple({
  *       login: '<USER-LOGIN>',
  *       password: '<USER-PASSWORD>'
-  *    })
+ *    })
  *   }
  * })
  * @example
@@ -64,7 +64,7 @@ export class Client {
    * Create a new ZetaPush Client
    * @param {ClientConfig} config
    */
-  constructor({ apiUrl = API_URL, sandboxId, forceHttps = isHttpsProtocol(), authentication, resource, transports }) {
+  constructor({ apiUrl = API_URL, sandboxId, forceHttps = FORCE_HTTPS, authentication, resource, transports }) {
     /**
      * @access private
      * @type {ClientHelper}

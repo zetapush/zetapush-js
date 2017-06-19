@@ -1,3 +1,5 @@
+import { platformStorage } from './storage'
+
 /**
  * @type {string}
  */
@@ -11,7 +13,7 @@ export class SessionPersistenceStrategy {
   /**
    * @param {{sandboxId: string, storage: DOMStorage}} parameters
    */
-  constructor({ sandboxId, storage = window.localStorage } = {}) {
+  constructor({ sandboxId, storage = platformStorage } = {}) {
     /**
      * @access private
      * @type {string}

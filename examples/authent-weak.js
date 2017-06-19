@@ -1,11 +1,15 @@
 // Create new ZetaPush Client
 const client = new ZetaPush.Client({
-  sandboxId: 'Y1k3xBDc',
+  sandboxId: 'bcu1JtRb',
   authentication() {
     return ZetaPush.Authentication.weak({
       token: null
     })
   }
+})
+// Add fail to connect to server listener
+client.onConnectionToServerFail((failure) => {
+  console.debug('onConnectionToServerFail', failure)
 })
 // Add successful handshake listener
 client.onSuccessfulHandshake((authentication) => {
