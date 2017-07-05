@@ -1,4 +1,4 @@
-describe('AsyncMacro', function () {
+describe('AsyncMacro', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
 
   function HelloMacro() {
@@ -10,10 +10,10 @@ describe('AsyncMacro', function () {
     return this.$publish('hello', parameters)
   }
 
-  var apiUrl = 'http://api.zpush.io/'
-  var sandboxId = 'bcu1JtRb'
+  const apiUrl = 'http://api.zpush.io/'
+  const sandboxId = 'bcu1JtRb'
 
-  beforeEach(function () {
+  beforeEach(() => {
     this.client = new ZetaPush.WeakClient({
       apiUrl: apiUrl,
       sandboxId: sandboxId
@@ -23,19 +23,19 @@ describe('AsyncMacro', function () {
     })
   })
 
-  it('Should correctly create a service Macro object', function () {
-    var service = this.service
+  it('Should correctly create a service Macro object', () => {
+    const service = this.service
     expect(typeof service).toBe('object')
     expect(typeof service.call).toBe('function')
     expect(service instanceof HelloMacro).toBeTruthy()
   })
 
-  it('Should correctly respond when call hello macro', function (done) {
-    // var name = 'World'
-    var client = this.client
-    var service = this.service
+  it('Should correctly respond when call hello macro', (done) => {
+    // const name = 'World'
+    const client = this.client
+    const service = this.service
 
-    client.onConnectionEstablished(function () {
+    client.onConnectionEstablished(() => {
       service.hello({
         name: name
       }).then(function (result) {

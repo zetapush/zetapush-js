@@ -1,14 +1,14 @@
-describe('Client', function () {
+describe('Client', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
 
-  var apiUrl = 'http://api.zpush.io/'
-  var sandboxId = 'bcu1JtRb'
+  const apiUrl = 'http://api.zpush.io/'
+  const sandboxId = 'bcu1JtRb'
 
-  beforeEach(function () {
+  beforeEach(() => {
     this.client = new ZetaPush.Client({
-      apiUrl: apiUrl,
-      sandboxId: sandboxId,
-      authentication: function () {
+      apiUrl,
+      sandboxId,
+      authentication: () => {
         return ZetaPush.Authentication.simple({
           login: 'test',
           password: 'test'
@@ -17,33 +17,57 @@ describe('Client', function () {
     })
   })
 
-  describe('Initial State', function () {
-    it('Should correctly create a Client object', function () {
+  describe('Initial State', () => {
+    it('Should correctly create a Client object', () => {
       expect(typeof this.client).toBe('object')
       expect(this.client instanceof ZetaPush.Client).toBeTruthy()
     })
 
-    it('Should not be connected', function () {
+    it('Should not be connected', () => {
       expect(this.client.isConnected()).toBeFalsy()
     })
 
-    it('Should have a nul userId', function () {
+    it('Should have a null userId', () => {
       expect(this.client.getUserId()).toBeNull()
     })
 
-    it('Should have a correct sandboxId', function () {
+    it('Should have a null userInfo', () => {
+      expect(this.client.getUserInfo()).toBeNull()
+    })
+
+    it('Should have a correct sandboxId', () => {
       expect(this.client.getSandboxId()).toBe(sandboxId)
     })
   })
 
-  describe('Connection', function () {
-    it('Should connect', function (done) {
-      var client = this.client
-      client.onConnectionEstablished(function () {
+  describe('Connection', () => {
+    it('Should be connected', (done) => {
+      const client = this.client
+      client.onConnectionEstablished(() => {
         expect(client.isConnected()).toBeTruthy()
         done()
       })
       expect(client.isConnected()).toBeFalsy()
+      client.connect()
+    })
+
+    it('Should have a valid userId', (done) => {
+      const client = this.client
+      client.onConnectionEstablished(() => {
+        expect(client.getUserId()).toBeTruthy()
+        done()
+      })
+      expect(client.getUserId()).toBeNull()
+      client.connect()
+    })
+
+    it('Should have a valid userInfo', (done) => {
+      const client = this.client
+      client.onConnectionEstablished(() => {
+        expect(client.getUserInfo()).toBeUndefined()
+        done()
+      })
+      expect(client.getUserInfo()).toBeNull()
       client.connect()
     })
   })
