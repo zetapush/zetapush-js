@@ -3,7 +3,6 @@ sudo: required
 language: node_js
 node_js: stable
 cache:
-  yarn: true
   directories:
     - node_modules
 addons:
@@ -13,7 +12,7 @@ addons:
       packages:
          - google-chrome-stable
 before_script:
-  - yarn
+  - npm install
 script:
   - google-chrome --version
-  - yarn run test
+  - npm run test:ci
