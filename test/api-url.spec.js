@@ -1,5 +1,5 @@
 describe('Client', () => {
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
 
   const sandboxId = 'bcu1JtRb'
   const apiUrl = 'http://zbo.zpush.io/zbo/pub/business/'
