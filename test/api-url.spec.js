@@ -1,21 +1,22 @@
-describe('Client', function () {
+describe('Client', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
 
-  var sandboxId = 'bcu1JtRb'
+  const sandboxId = 'bcu1JtRb'
+  const apiUrl = 'http://zbo.zpush.io/zbo/pub/business/'
 
-  describe('Correct API Url', function () {
-    var client = new ZetaPush.Client({
-      apiUrl: 'http://zbo.zpush.io/zbo/pub/business/',
-      sandboxId: sandboxId,
-      authentication: function () {
+  describe('Correct API Url', () => {
+    const client = new ZetaPush.Client({
+      apiUrl,
+      sandboxId,
+      authentication: () => {
         return ZetaPush.Authentication.simple({
           login: 'test',
           password: 'test'
         })
       }
     })
-    it('Should connect', function (done) {
-      client.onConnectionEstablished(function () {
+    it('Should connect', (done) => {
+      client.onConnectionEstablished(() => {
         expect(client.isConnected()).toBeTruthy()
         done()
       })
@@ -24,19 +25,19 @@ describe('Client', function () {
     })
   })
 
-  describe('Incorrect API Url', function () {
-    var client = new ZetaPush.Client({
-      apiUrl: 'http://zbo.zpush.io/zbo/pub/business',
-      sandboxId: sandboxId,
-      authentication: function () {
+  describe('Incorrect API Url', () => {
+    const client = new ZetaPush.Client({
+      apiUrl,
+      sandboxId,
+      authentication: () => {
         return ZetaPush.Authentication.simple({
           login: 'test',
           password: 'test'
         })
       }
     })
-    it('Should connect', function (done) {
-      client.onConnectionEstablished(function () {
+    it('Should connect', (done) => {
+      client.onConnectionEstablished(() => {
         expect(client.isConnected()).toBeTruthy()
         done()
       })

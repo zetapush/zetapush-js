@@ -1,19 +1,11 @@
 dist: trusty
-sudo: required
+addons:
+  chrome: stable
 language: node_js
 node_js: stable
 cache:
-  yarn: true
   directories:
     - node_modules
-addons:
-   apt:
-      sources:
-         - google-chrome
-      packages:
-         - google-chrome-stable
-before_script:
-  - yarn
 script:
-  - google-chrome --version
-  - yarn run test
+  - google-chrome-stable --version
+  - yarn

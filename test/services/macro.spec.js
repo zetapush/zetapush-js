@@ -1,18 +1,18 @@
-describe('Macro', function () {
+describe('Macro', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
 
-  var apiUrl = 'http://api.zpush.io/'
-  var sandboxId = 'bcu1JtRb'
+  const apiUrl = 'http://api.zpush.io/'
+  const sandboxId = 'bcu1JtRb'
 
-  beforeEach(function () {
+  beforeEach(() => {
     this.client = new ZetaPush.WeakClient({
       apiUrl: apiUrl,
       sandboxId: sandboxId
     })
   })
 
-  it('Should correctly create a service Macro object', function () {
-    var service = this.client.createService({
+  it('Should correctly create a service Macro object', () => {
+    const service = this.client.createService({
       Type: ZetaPush.services.Macro,
       listener: {}
     })
@@ -21,10 +21,10 @@ describe('Macro', function () {
     expect(service instanceof ZetaPush.services.Macro).toBeTruthy()
   })
 
-  it('Should correctly respond when call hello macro', function (done) {
-    var name = 'World'
-    var client = this.client
-    var service = client.createService({
+  it('Should correctly respond when call hello macro', (done) => {
+    const name = 'World'
+    const client = this.client
+    const service = client.createService({
       Type: ZetaPush.services.Macro,
       listener: {
         hello: function (message) {
@@ -33,7 +33,7 @@ describe('Macro', function () {
         }
       }
     })
-    client.onConnectionEstablished(function () {
+    client.onConnectionEstablished(() => {
       service.call({
         name: 'hello',
         parameters: {
