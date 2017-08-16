@@ -21,6 +21,7 @@ client.connect()
 
 ### Changes
 
+* **core** Reduce bundle size
 * **core** From webpack@2 to rollup
 * **client** Update TransportLayer implementation
 * **zetapush-cometd** Update TransportLayer implementation
