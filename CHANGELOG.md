@@ -2,6 +2,27 @@
 
 ### Features
 
+* **client** Add new getUserInfo() method to retreive user public info
+
+```js
+const { Authentication, Client } = require('zetapush-js')
+// Create new ZetaPush Client
+const client = new Client({
+  sandboxId: '<YOUR-SANDBOX-ID>',
+  authentication: () => Authentication.simple({
+    login: '<YOUR-USER-LOGIN>',
+    password: '<YOUR-USER-PASSWORD>'
+  })
+})
+// Add connection establised listener
+client.onConnectionEstablished(() => {
+  console.log('onConnectionEstablished')
+  const profile = client.getUserInfo()
+  console.log('Your profile', profile)
+})
+client.connect()
+```
+
 * **node** Support node execution context
 
 ```js

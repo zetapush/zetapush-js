@@ -206,6 +206,22 @@ export class Client {
   /*
    * Get the client user info
    * @return {Object}
+   * @example
+   * // Create new ZetaPush Client
+   * const client = new Client({
+   *   sandboxId: '<YOUR-SANDBOX-ID>',
+   *   authentication: () => Authentication.simple({
+   *     login: '<YOUR-USER-LOGIN>',
+   *     password: '<YOUR-USER-PASSWORD>'
+   *   })
+   * })
+   * // Add connection establised listener
+   * client.onConnectionEstablished(() => {
+   *   console.log('onConnectionEstablished')
+   *   const profile = client.getUserInfo()
+   *   console.log('Your profile', profile)
+   * })
+   * client.connect()
    */
   getUserInfo() {
     return this.helper.getUserInfo()
