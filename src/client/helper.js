@@ -61,6 +61,11 @@ export class ClientHelper {
     this.userId = null
     /**
      * @access private
+     * @type {Object}
+     */
+    this.userInfo = null
+    /**
+     * @access private
      * @type {string}
      */
     this.uniqId = uuid()
@@ -199,6 +204,7 @@ export class ClientHelper {
    */
   authenticationFailed(error) {
     this.userId = null
+    this.userInfo = null
     this.connectionListeners
       .filter(({ enabled }) => enabled)
       .forEach(({ listener }) => {
@@ -243,6 +249,7 @@ export class ClientHelper {
    */
   connectionClosed() {
     this.userId = null
+    this.userInfo = null
     this.connectionListeners
       .filter(({ enabled }) => enabled)
       .forEach(({ listener }) => {
@@ -452,10 +459,18 @@ export class ClientHelper {
     return this.userId
   }
   /**
+   * Get user info
+   * @return {Objet}
+   */
+  getUserInfo() {
+    return this.userInfo
+  }
+  /**
    * Manage handshake failure case
    */
   handshakeFailure() {
     this.userId = null
+    this.userInfo = null
   }
   /**
    * Notify listeners when connection is established
@@ -463,6 +478,7 @@ export class ClientHelper {
   initialized(authentication) {
     if (authentication) {
       this.userId = authentication.userId
+      this.userInfo = authentication.userInfo
     }
     this.connectionListeners
       .filter(({ enabled }) => enabled)

@@ -203,6 +203,13 @@ export class Client {
   getUserId() {
     return this.helper.getUserId()
   }
+  /*
+   * Get the client user info
+   * @return {Object}
+   */
+  getUserInfo() {
+    return this.helper.getUserInfo()
+  }
   /**
    * Remove a connection status listener
    * @param {number} handler
