@@ -1,5 +1,5 @@
 describe('Macro', () => {
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
 
   const apiUrl = 'http://api.zpush.io/'
   const sandboxId = 'bcu1JtRb'

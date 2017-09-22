@@ -1,5 +1,5 @@
 describe('AsyncMacro', () => {
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
 
   function HelloMacro() {
     ZetaPush.services.Macro.apply(this, arguments)
