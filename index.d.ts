@@ -29,6 +29,13 @@ interface AbstractHandshake {
   getHandshakeFields(client: Client): HandshakeFields;
 }
 
+interface AbstractAuthData {
+  authType: string;
+  deploymentId: string;
+  login: string;
+  password?: string;
+}
+
 interface CredentialsAuthData {
   login: string;
   password: string;
@@ -101,9 +108,12 @@ export interface WeakClientOptions extends Options {
 }
 
 export class Authentication {
-  static delegating({ token }: TokenAuthData): TokenHandshake;
-  static simple({ login, password }: CredentialsAuthData): CredentialsHandshake;
-  static weak({ token }: TokenAuthData): TokenHandshake;
+  static delegating(authData: TokenAuthData): TokenHandshake;
+  static simple(authData: CredentialsAuthData): CredentialsHandshake;
+  static weak(authData: TokenAuthData): TokenHandshake;
+  static create(
+    authData: AbstractAuthData
+  ): CredentialsHandshake | TokenHandshake;
 }
 
 export interface ConnectionStatusListener {
