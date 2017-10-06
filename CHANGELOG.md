@@ -40,6 +40,8 @@ client.onConnectionEstablished(() => {
 client.connect()
 ```
 
+* **client** Add new lifecycle handler onNegotiationFailed
+
 ### Changes
 
 * **core** Reduce bundle size
