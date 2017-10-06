@@ -124,6 +124,7 @@ export interface ConnectionStatusListener {
   onConnectionWillClose(): void;
   onFailedHandshake(failure: any): void;
   onMessageLost(): void;
+  onNegotiationFailed(failure: any): void;
   onNoServerUrlAvailable(): void;
   onSuccessfulHandshake(authentication: any): void;
 }
@@ -153,6 +154,7 @@ export class Client {
   onConnectionWillClose(handler: () => void): ConnectionStatusHandler;
   onFailedHandshake(handler: (failure: any) => void): ConnectionStatusHandler;
   onMessageLost(handler: () => void): ConnectionStatusHandler;
+  onNegotiationFailed(handler: (failure: any) => void): ConnectionStatusHandler;
   onNoServerUrlAvailable(handler: () => void): ConnectionStatusHandler;
   onSuccessfulHandshake(handler: (authentication: any) => void): ConnectionStatusHandler;
 }

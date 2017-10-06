@@ -147,7 +147,7 @@ export class ClientHelper {
         if (Message.RECONNECT_NONE_VALUE === advice.reconnect) {
           this.authenticationFailed(error)
         } else if (Message.RECONNECT_HANDSHAKE_VALUE === advice.reconnect) {
-          this.negotiate(ext)
+          this.negotiationFailed(error)
         }
       }
     })
@@ -505,9 +505,14 @@ export class ClientHelper {
   }
   /**
    * Negociate authentication
+   * @param {error} error
    */
-  negotiate(ext) {
-    this.cometd._debug('ClientHelper::negotiate', ext)
+  negotiationFailed(error) {
+    this.connectionListeners
+      .filter(({ enabled }) => enabled)
+      .forEach(({ listener }) => {
+        listener.onNegotiationFailed(error)
+      })
   }
   /**
    * Notify listeners when no server url available

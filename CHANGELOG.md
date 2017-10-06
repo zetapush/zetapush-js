@@ -1,4 +1,4 @@
-# 3.2.0 (2017-05-26)
+# 3.2.0 (2017-10-06)
 
 ### Features
 
@@ -39,6 +39,8 @@ client.onConnectionEstablished(() => {
 })
 client.connect()
 ```
+
+* **client** Add new lifecycle handler onNegotiationFailed
 
 ### Changes
 

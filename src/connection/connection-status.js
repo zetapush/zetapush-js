@@ -21,6 +21,11 @@ export class ConnectionStatusListener {
    */
   onConnectionToServerFail(failure) {}
   /**
+   * Callback fired when negociation with server failed
+   * @param {Object} failure
+   */
+  onNegotiationFailed(failure) {}
+  /**
    * Callback no server url avaibale
    */
   onNoServerUrlAvailable() {}
