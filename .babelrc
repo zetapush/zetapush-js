@@ -2,12 +2,19 @@
   "env": {
     "umd": {
       "presets": [
-        "es2015-rollup"
+        ["env", {
+          "modules": false
+        }]
+      ],
+      "plugins": [
+        "external-helpers"
       ]
     },
     "commonjs": {
       "presets": [
-        "es2015"
+        ["env", {
+          "modules": false
+        }]
       ],
       "plugins": [
         ["transform-es2015-modules-commonjs", { "loose": true }]
@@ -15,15 +22,13 @@
     },
     "es": {
       "presets": [
-        [
-          "es2015",
-          {
-            "modules": false
+        ["env", {
+          "targets": {
+            "node": "current"
           }
-        ]
+        }]
       ],
-      "plugins":[
-      ]
+      "plugins": []
     }
   }
 }
