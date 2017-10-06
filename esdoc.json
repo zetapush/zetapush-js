@@ -1,10 +1,24 @@
 {
-  "source": "./lib",
+  "source": "./src",
   "destination": "./.esdoc",
-  "access": ["public"],
-  "manual": {
-    "changelog": ["./CHANGELOG.md"],
-    "faq": ["./docs/FAQ.md"],
-    "migration": ["./docs/MIGRATION.md"]
-  }
+  "plugins": [{
+    "name": "esdoc-standard-plugin",
+    "option": {
+      "accessor": {"access": ["public"], "autoPrivate": true},
+      "coverage": {"enable": true},
+      "lint": {"enable": false},
+      "typeInference": {"enable": true},
+      "undocumentIdentifier": {"enable": true},
+      "unexportedIdentifier": {"enable": true},
+      "manual": {
+        "index": "./docs/index.md",
+        "globalIndex": false,
+        "files": [
+          "./CHANGELOG.md",
+          "./docs/FAQ.md",
+          "./docs/MIGRATION.md"
+        ]
+      }
+    }
+  }]
 }
