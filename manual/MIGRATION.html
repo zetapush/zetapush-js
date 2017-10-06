@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Manual | zetapush-js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="JavaScript SDK for ZetaPush"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="zetapush-js"><meta property="twitter:description" content="JavaScript SDK for ZetaPush"></head>
+<body class="layout-container manual-root" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/zetapush/zetapush-js"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
+  
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-2-0--2017-10-06-" data-ice="link">3.2.0 (2017-10-06)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-3--2017-04-13-" data-ice="link">3.1.3 (2017-04-13)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-2--2017-04-13-" data-ice="link">3.1.2 (2017-04-13)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-1--2017-04-10-" data-ice="link">3.1.1 (2017-04-10)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0--2017-02-21-" data-ice="link">3.1.0 (2017-02-21)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-9--2017-01-18-" data-ice="link">3.1.0-alpha.9 (2017-01-18)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-0-1--2017-01-18-" data-ice="link">3.0.1 (2017-01-18)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-8--2017-01-09-" data-ice="link">3.1.0-alpha.8 (2017-01-09)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-7--2017-01-09-" data-ice="link">3.1.0-alpha.7 (2017-01-09)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-6--2017-01-02-" data-ice="link">3.1.0-alpha.6 (2017-01-02)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-5--2017-01-02-" data-ice="link">3.1.0-alpha.5 (2017-01-02)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-4--2017-01-02-" data-ice="link">3.1.0-alpha.4 (2017-01-02)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-3--2017-01-02-" data-ice="link">3.1.0-alpha.3 (2017-01-02)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-2--2016-11-14-" data-ice="link">3.1.0-alpha.2 (2016-11-14)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-1--2016-11-04-" data-ice="link">3.1.0-alpha.1 (2016-11-04)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-0-0--2016-10-24-" data-ice="link">3.0.0 (2016-10-24)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-0-0-alpha-3--2016-09-16-" data-ice="link">3.0.0-alpha.3 (2016-09-16)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-0-0-alpha-2--2016-09-06-" data-ice="link">3.0.0-alpha.2 (2016-09-06)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-0-0-alpha-1--2016-08-19-" data-ice="link">3.0.0-alpha.1 (2016-08-19)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-1--2016-07-26-" data-ice="link">2.0.1 (2016-07-26)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0--2016-07-25-" data-ice="link">2.0.0 (2016-07-25)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-rc-3--2016-07-15-" data-ice="link">2.0.0-rc.3 (2016-07-15)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-rc-2--2016-07-13-" data-ice="link">2.0.0-rc.2 (2016-07-13)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-rc-1--2016-07-12-" data-ice="link">2.0.0-rc.1 (2016-07-12)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-23--2016-07-08-" data-ice="link">2.0.0-beta.23 (2016-07-08)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-22--2016-07-07-" data-ice="link">2.0.0-beta.22 (2016-07-07)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-21--2016-07-05-" data-ice="link">2.0.0-beta.21 (2016-07-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-20--2016-07-05-" data-ice="link">2.0.0-beta.20 (2016-07-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-19--2016-07-04-" data-ice="link">2.0.0-beta.19 (2016-07-04)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-18--2016-06-21-" data-ice="link">2.0.0-beta.18 (2016-06-21)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-17--2016-06-20-" data-ice="link">2.0.0-beta.17 (2016-06-20)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-16--2016-06-06-" data-ice="link">2.0.0-beta.16 (2016-06-06)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-15--2016-06-03-" data-ice="link">2.0.0-beta.15 (2016-06-03)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-14--2016-06-01-" data-ice="link">2.0.0-beta.14 (2016-06-01)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-13--2016-06-01-" data-ice="link">2.0.0-beta.13 (2016-06-01)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-12--2016-06-01-" data-ice="link">2.0.0-beta.12 (2016-06-01)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-11--2016-06-01-" data-ice="link">2.0.0-beta.11 (2016-06-01)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-10--2016-06-01-" data-ice="link">2.0.0-beta.10 (2016-06-01)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-9" data-ice="link">2.0.0-beta.9</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-8--2016-05-23-" data-ice="link">2.0.0-beta.8 (2016-05-23)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-7--2016-05-23-" data-ice="link">2.0.0-beta.7 (2016-05-23)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-6--2016-05-20-" data-ice="link">2.0.0-beta.6 (2016-05-20)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-4--2016-05-20-" data-ice="link">2.0.0-beta.4 (2016-05-20)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-3--2016-05-17-" data-ice="link">2.0.0-beta.3 (2016-05-17)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-2--2016-05-09-" data-ice="link">2.0.0-beta.2 (2016-05-09)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-1--2016-05-09-" data-ice="link">2.0.0-beta.1 (2016-05-09)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-0--2016-05-09-" data-ice="link">2.0.0-beta.0 (2016-05-09)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-6--2016-05-02-" data-ice="link">2.0.0-alpha.6 (2016-05-02)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-5--2016-04-29-" data-ice="link">2.0.0-alpha.5 (2016-04-29)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-4--2016-04-28-" data-ice="link">2.0.0-alpha.4 (2016-04-28)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-3--2016-04-28-" data-ice="link">2.0.0-alpha.3 (2016-04-28)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-2--2016-04-25-" data-ice="link">2.0.0-alpha.2 (2016-04-25)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-1--2016-04-05-" data-ice="link">2.0.0-alpha.1 (2016-04-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/FAQ.html"><a href="manual/FAQ.html" data-ice="link">Frequently Asked Questions</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#can-i-use-zetapush-js-in-a-nodejs-context-" data-ice="link">Can I use zetapush-js in a NodeJS Context?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#can-i-use-zetapush-js-with-typescript-" data-ice="link">Can I use zetapush-js with TypeScript?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-use--a-href--https---babeljs-io-docs-learn-es2015---es2015-features--a---const--class--arrow-functions-------on-my-project-today--" data-ice="link">How to use ES2015 features (const, class, arrow functions, ...) on my project today ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-subscribe-and-publish-to-a-zetapush-service--" data-ice="link">How to subscribe and publish to a ZetaPush service ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-force-zetapush-sdk-to-use--strong-https--strong--instead--strong-http--strong---" data-ice="link">How force ZetaPush SDK to use https instead http ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-use-zetapush-with-my-on-premise-backend--" data-ice="link">How to use ZetaPush with my on-premise backend ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-know-my-zetapush-sdk-version--" data-ice="link">How to know my ZetaPush SDK version ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-change-log-level--" data-ice="link">How to change log level ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-force-long-polling-instead-of-websocket--" data-ice="link">How to force long polling instead of websocket ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-zetapush-client-call-my-service-without-explicit-deployment-id--" data-ice="link">How ZetaPush client call my service without explicit deployment id ?</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/MIGRATION.html"><a href="manual/MIGRATION.html" data-ice="link">Migrating from ZetaPush 1 to 2</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/MIGRATION.html"><a href="manual/MIGRATION.html#configuration" data-ice="link">Configuration</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/MIGRATION.html"><a href="manual/MIGRATION.html#authentication" data-ice="link">Authentication</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/MIGRATION.html"><a href="manual/MIGRATION.html#publish-subscribe" data-ice="link">Publish/Subscribe</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/MIGRATION.html"><a href="manual/MIGRATION.html#optional-deployment-id" data-ice="link">Optional deployment id</a></li>
+</ul>
+  </div>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="migrating-from-zetapush-1-to-2">Migrating from ZetaPush 1 to 2</h1><p>ZetaPush 2 is a ground-up rewrite of ZetaPush. This new version of ZetaPush had three basic goals:</p>
+<ol>
+<li>Similar API to other language implementations (Java, Swift, ...)</li>
+<li>Better maintenance</li>
+<li>Full CommonJS support</li>
+</ol>
+<h2 id="configuration">Configuration</h2><p><code>ZetaPush 1</code></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">zp.init(&apos;&lt;YOUR-SANDBOX-ID&gt;&apos;)</code>
+</code></pre>
+<p><code>ZetaPush 2</code></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const client = new ZetaPush.Client({
+  sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;
+})</code>
+</code></pre>
+<h2 id="authentication">Authentication</h2><p><code>ZetaPush 1</code></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">zp.init(&apos;&lt;YOUR-SANDBOX-ID&gt;&apos;)
+const authent = new zp.authent.Simple(&apos;&lt;YOUR-SIMPLE-DEPLOYMENT-ID&gt;&apos;)
+zp.onHandshake((message) =&gt; {    
+  console.log(&apos;ZetaPush_Hanshake_Successful&apos;, message)
+})
+zp.onConnected((message) =&gt; {
+  if (message.successful) {
+    console.log(&apos;You are connected&apos;)
+  }
+})
+zp.connect(authent.getConnectionData(&apos;login&apos;, &apos;password&apos;, &apos;resource&apos;))</code>
+</code></pre>
+<p><code>ZetaPush 2</code></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const client = new ZetaPush.Client({
+  credentials() {
+    return ZetaPush.Authentication.simple({
+      deploymentId: &apos;&lt;YOUR-SIMPLE-DEPLOYMENT-ID&gt;&apos;,
+      login: &apos;login&apos;,
+      password: &apos;password&apos;
+    })
+  },
+  resource: &apos;resource&apos;,
+  sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;
+})
+zp.onSuccessfulHandshake((message) =&gt; {
+  console.log(&apos;ZetaPush_Hanshake_Successful&apos;, message)
+})
+client.onConnectionEstablished(() =&gt; {
+  console.log(&apos;You are connected&apos;)
+})
+client.connect()</code>
+</code></pre>
+<h2 id="publish-subscribe">Publish/Subscribe</h2><p><code>ZetaPush 1</code></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const service = new zp.service.Generic(&apos;&lt;YOUR-STACK-DEPLOYMENT-ID&gt;&apos;)
+service.onError((message) =&gt; {
+  console.error(&apos;on stack error&apos;, message)
+})
+service.on(&apos;list&apos;, (message) =&gt; {
+  console.log(&apos;on stack list&apos;, message)
+})
+service.send(&apos;list&apos;, {
+  stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
+})</code>
+</code></pre>
+<p><code>ZetaPush 2</code></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const service = client.createService({
+  deploymentId: &apos;&lt;YOUR-STACK-DEPLOYMENT-ID&gt;&apos;
+  type: ZetaPush.services.Stack,
+  listener: {
+    error(message) {
+      console.error(&apos;on stack error&apos;, message)
+    },
+    list(message) {
+      console.log(&apos;on stack list&apos;, message)
+    }
+  }
+})
+service.list({
+  stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
+})</code>
+</code></pre>
+<h2 id="optional-deployment-id">Optional deployment id</h2><p><code>ZetaPush 2</code> provide optional deployment id, according to the following convention <code>${ServiceType.toLowerCase()_0}</code></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">// Create service with implicit service deployment id
+const service = client.createService({
+  type: ZetaPush.services.Stack,
+  listener: {
+    list(message) {
+      console.log(&apos;on stack list&apos;, message)
+    }
+  }
+})
+service.list({
+  stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
+})</code>
+</code></pre>
+<p>In the previous example, deployment id is <code>stack_0</code></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">// Create service with explicit service deployment id
+const service = client.createService({
+  deploymentId: &apos;stack_0&apos;,
+  type: ZetaPush.services.Stack,
+  listener: {
+    list(message) {
+      console.log(&apos;on stack list&apos;, message)
+    }
+  }
+})
+service.list({
+  stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
+})</code>
+</code></pre>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

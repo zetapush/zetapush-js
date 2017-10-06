@@ -3,14 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../">
-  <title data-ice="title">Manual</title>
+  <title data-ice="title">Manual | zetapush-js</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
-  
-  
   <script src="script/manual.js"></script>
-</head>
+<meta name="description" content="JavaScript SDK for ZetaPush"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="zetapush-js"><meta property="twitter:description" content="JavaScript SDK for ZetaPush"></head>
 <body class="layout-container manual-root manual-index" data-ice="rootContainer">
 
 <header>
@@ -19,7 +17,6 @@
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
-  <a data-ice="repoURL" href="https://github.com/zetapush/zetapush-js" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
     <img src="./image/search.png">
@@ -27,1336 +24,181 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-</header>
+<a style="position:relative; top:3px;" href="https://github.com/zetapush/zetapush-js"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div class="manual-toc-root">
   
-<div data-ice="manual" data-toc-name="reference">
+<div data-ice="manual">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-reference" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="identifiers.html"><a href="identifiers.html" data-ice="link">Reference</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="identifiers.html"><a href="identifiers.html#class" data-ice="link">Class</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="identifiers.html"><a href="identifiers.html#function" data-ice="link">Function</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="identifiers.html"><a href="identifiers.html#variable" data-ice="link">Variable</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="identifiers.html"><a href="identifiers.html#typedef" data-ice="link">Typedef</a></li>
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-2-0--2017-10-06-" data-ice="link">3.2.0 (2017-10-06)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-3--2017-04-13-" data-ice="link">3.1.3 (2017-04-13)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-2--2017-04-13-" data-ice="link">3.1.2 (2017-04-13)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-1--2017-04-10-" data-ice="link">3.1.1 (2017-04-10)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0--2017-02-21-" data-ice="link">3.1.0 (2017-02-21)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-9--2017-01-18-" data-ice="link">3.1.0-alpha.9 (2017-01-18)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-0-1--2017-01-18-" data-ice="link">3.0.1 (2017-01-18)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-8--2017-01-09-" data-ice="link">3.1.0-alpha.8 (2017-01-09)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-7--2017-01-09-" data-ice="link">3.1.0-alpha.7 (2017-01-09)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-6--2017-01-02-" data-ice="link">3.1.0-alpha.6 (2017-01-02)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-5--2017-01-02-" data-ice="link">3.1.0-alpha.5 (2017-01-02)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-4--2017-01-02-" data-ice="link">3.1.0-alpha.4 (2017-01-02)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-3--2017-01-02-" data-ice="link">3.1.0-alpha.3 (2017-01-02)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-2--2016-11-14-" data-ice="link">3.1.0-alpha.2 (2016-11-14)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-1-0-alpha-1--2016-11-04-" data-ice="link">3.1.0-alpha.1 (2016-11-04)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-0-0--2016-10-24-" data-ice="link">3.0.0 (2016-10-24)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-0-0-alpha-3--2016-09-16-" data-ice="link">3.0.0-alpha.3 (2016-09-16)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-0-0-alpha-2--2016-09-06-" data-ice="link">3.0.0-alpha.2 (2016-09-06)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#3-0-0-alpha-1--2016-08-19-" data-ice="link">3.0.0-alpha.1 (2016-08-19)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-1--2016-07-26-" data-ice="link">2.0.1 (2016-07-26)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0--2016-07-25-" data-ice="link">2.0.0 (2016-07-25)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-rc-3--2016-07-15-" data-ice="link">2.0.0-rc.3 (2016-07-15)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-rc-2--2016-07-13-" data-ice="link">2.0.0-rc.2 (2016-07-13)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-rc-1--2016-07-12-" data-ice="link">2.0.0-rc.1 (2016-07-12)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-23--2016-07-08-" data-ice="link">2.0.0-beta.23 (2016-07-08)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-22--2016-07-07-" data-ice="link">2.0.0-beta.22 (2016-07-07)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-21--2016-07-05-" data-ice="link">2.0.0-beta.21 (2016-07-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-20--2016-07-05-" data-ice="link">2.0.0-beta.20 (2016-07-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-19--2016-07-04-" data-ice="link">2.0.0-beta.19 (2016-07-04)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-18--2016-06-21-" data-ice="link">2.0.0-beta.18 (2016-06-21)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-17--2016-06-20-" data-ice="link">2.0.0-beta.17 (2016-06-20)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-16--2016-06-06-" data-ice="link">2.0.0-beta.16 (2016-06-06)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-15--2016-06-03-" data-ice="link">2.0.0-beta.15 (2016-06-03)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-14--2016-06-01-" data-ice="link">2.0.0-beta.14 (2016-06-01)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-13--2016-06-01-" data-ice="link">2.0.0-beta.13 (2016-06-01)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-12--2016-06-01-" data-ice="link">2.0.0-beta.12 (2016-06-01)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-11--2016-06-01-" data-ice="link">2.0.0-beta.11 (2016-06-01)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-10--2016-06-01-" data-ice="link">2.0.0-beta.10 (2016-06-01)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-9" data-ice="link">2.0.0-beta.9</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-8--2016-05-23-" data-ice="link">2.0.0-beta.8 (2016-05-23)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-7--2016-05-23-" data-ice="link">2.0.0-beta.7 (2016-05-23)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-6--2016-05-20-" data-ice="link">2.0.0-beta.6 (2016-05-20)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-4--2016-05-20-" data-ice="link">2.0.0-beta.4 (2016-05-20)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-3--2016-05-17-" data-ice="link">2.0.0-beta.3 (2016-05-17)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-2--2016-05-09-" data-ice="link">2.0.0-beta.2 (2016-05-09)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-1--2016-05-09-" data-ice="link">2.0.0-beta.1 (2016-05-09)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-beta-0--2016-05-09-" data-ice="link">2.0.0-beta.0 (2016-05-09)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-6--2016-05-02-" data-ice="link">2.0.0-alpha.6 (2016-05-02)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-5--2016-04-29-" data-ice="link">2.0.0-alpha.5 (2016-04-29)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-4--2016-04-28-" data-ice="link">2.0.0-alpha.4 (2016-04-28)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-3--2016-04-28-" data-ice="link">2.0.0-alpha.3 (2016-04-28)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-2--2016-04-25-" data-ice="link">2.0.0-alpha.2 (2016-04-25)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#2-0-0-alpha-1--2016-04-05-" data-ice="link">2.0.0-alpha.1 (2016-04-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
 </ul>
   </div>
-<div data-ice="manual" data-toc-name="faq">
+<div data-ice="manual">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-faq" data-section-count="&#x25A0;&#x25A0;&#x25A0;" data-link="manual/faq/FAQ.html"><a href="manual/faq/FAQ.html" data-ice="link">Frequently Asked Questions</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/faq/FAQ.html"><a href="manual/faq/FAQ.html#can-i-use-zetapush-js-with-typescript-" data-ice="link">Can I use zetapush-js with TypeScript?</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/faq/FAQ.html"><a href="manual/faq/FAQ.html#how-to-use-es2015-features-https-babeljs-io-docs-learn-es2015-const-class-arrow-functions-on-my-project-today-" data-ice="link">How to use ES2015 features (const, class, arrow functions, ...) on my project today ?</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/faq/FAQ.html"><a href="manual/faq/FAQ.html#how-to-subscribe-and-publish-to-a-zetapush-service-" data-ice="link">How to subscribe and publish to a ZetaPush service ?</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/faq/FAQ.html"><a href="manual/faq/FAQ.html#how-force-zetapush-sdk-to-use-https-instead-http-" data-ice="link">How force ZetaPush SDK to use https instead http ?</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/faq/FAQ.html"><a href="manual/faq/FAQ.html#how-to-use-zetapush-with-my-on-premise-backend-" data-ice="link">How to use ZetaPush with my on-premise backend ?</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/faq/FAQ.html"><a href="manual/faq/FAQ.html#how-to-know-my-zetapush-sdk-version-" data-ice="link">How to know my ZetaPush SDK version ?</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/faq/FAQ.html"><a href="manual/faq/FAQ.html#how-to-change-log-level-" data-ice="link">How to change log level ?</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/faq/FAQ.html"><a href="manual/faq/FAQ.html#how-to-force-long-polling-instead-of-websocket-" data-ice="link">How to force long polling instead of websocket ?</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/faq/FAQ.html"><a href="manual/faq/FAQ.html#how-zetapush-client-call-my-service-without-explicit-deployment-id-" data-ice="link">How ZetaPush client call my service without explicit deployment id ?</a></li>
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/FAQ.html"><a href="manual/FAQ.html" data-ice="link">Frequently Asked Questions</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#can-i-use-zetapush-js-in-a-nodejs-context-" data-ice="link">Can I use zetapush-js in a NodeJS Context?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#can-i-use-zetapush-js-with-typescript-" data-ice="link">Can I use zetapush-js with TypeScript?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-use--a-href--https---babeljs-io-docs-learn-es2015---es2015-features--a---const--class--arrow-functions-------on-my-project-today--" data-ice="link">How to use ES2015 features (const, class, arrow functions, ...) on my project today ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-subscribe-and-publish-to-a-zetapush-service--" data-ice="link">How to subscribe and publish to a ZetaPush service ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-force-zetapush-sdk-to-use--strong-https--strong--instead--strong-http--strong---" data-ice="link">How force ZetaPush SDK to use https instead http ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-use-zetapush-with-my-on-premise-backend--" data-ice="link">How to use ZetaPush with my on-premise backend ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-know-my-zetapush-sdk-version--" data-ice="link">How to know my ZetaPush SDK version ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-change-log-level--" data-ice="link">How to change log level ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-to-force-long-polling-instead-of-websocket--" data-ice="link">How to force long polling instead of websocket ?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/FAQ.html"><a href="manual/FAQ.html#how-zetapush-client-call-my-service-without-explicit-deployment-id--" data-ice="link">How ZetaPush client call my service without explicit deployment id ?</a></li>
 </ul>
   </div>
-<div data-ice="manual" data-toc-name="changelog">
+<div data-ice="manual">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-2-2017-04-13-" data-ice="link">3.1.2 (2017-04-13)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-1-2017-04-10-" data-ice="link">3.1.1 (2017-04-10)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-0-2017-02-21-" data-ice="link">3.1.0 (2017-02-21)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-0-alpha-9-2017-01-18-" data-ice="link">3.1.0-alpha.9 (2017-01-18)</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-0-1-2017-01-18-" data-ice="link">3.0.1 (2017-01-18)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-0-alpha-8-2017-01-09-" data-ice="link">3.1.0-alpha.8 (2017-01-09)</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-0-alpha-7-2017-01-09-" data-ice="link">3.1.0-alpha.7 (2017-01-09)</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-0-alpha-6-2017-01-02-" data-ice="link">3.1.0-alpha.6 (2017-01-02)</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-0-alpha-5-2017-01-02-" data-ice="link">3.1.0-alpha.5 (2017-01-02)</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-0-alpha-4-2017-01-02-" data-ice="link">3.1.0-alpha.4 (2017-01-02)</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-0-alpha-3-2017-01-02-" data-ice="link">3.1.0-alpha.3 (2017-01-02)</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-0-alpha-2-2016-11-14-" data-ice="link">3.1.0-alpha.2 (2016-11-14)</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-1-0-alpha-1-2016-11-04-" data-ice="link">3.1.0-alpha.1 (2016-11-04)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-0-0-2016-10-24-" data-ice="link">3.0.0 (2016-10-24)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-0-0-alpha-3-2016-09-16-" data-ice="link">3.0.0-alpha.3 (2016-09-16)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-0-0-alpha-2-2016-09-06-" data-ice="link">3.0.0-alpha.2 (2016-09-06)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#3-0-0-alpha-1-2016-08-19-" data-ice="link">3.0.0-alpha.1 (2016-08-19)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-1-2016-07-26-" data-ice="link">2.0.1 (2016-07-26)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-2016-07-25-" data-ice="link">2.0.0 (2016-07-25)</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-rc-3-2016-07-15-" data-ice="link">2.0.0-rc.3 (2016-07-15)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-rc-2-2016-07-13-" data-ice="link">2.0.0-rc.2 (2016-07-13)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-rc-1-2016-07-12-" data-ice="link">2.0.0-rc.1 (2016-07-12)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-23-2016-07-08-" data-ice="link">2.0.0-beta.23 (2016-07-08)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-22-2016-07-07-" data-ice="link">2.0.0-beta.22 (2016-07-07)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-21-2016-07-05-" data-ice="link">2.0.0-beta.21 (2016-07-05)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-20-2016-07-05-" data-ice="link">2.0.0-beta.20 (2016-07-05)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-19-2016-07-04-" data-ice="link">2.0.0-beta.19 (2016-07-04)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-18-2016-06-21-" data-ice="link">2.0.0-beta.18 (2016-06-21)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-17-2016-06-20-" data-ice="link">2.0.0-beta.17 (2016-06-20)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-16-2016-06-06-" data-ice="link">2.0.0-beta.16 (2016-06-06)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-15-2016-06-03-" data-ice="link">2.0.0-beta.15 (2016-06-03)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-14-2016-06-01-" data-ice="link">2.0.0-beta.14 (2016-06-01)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-13-2016-06-01-" data-ice="link">2.0.0-beta.13 (2016-06-01)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-12-2016-06-01-" data-ice="link">2.0.0-beta.12 (2016-06-01)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-11-2016-06-01-" data-ice="link">2.0.0-beta.11 (2016-06-01)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-10-2016-06-01-" data-ice="link">2.0.0-beta.10 (2016-06-01)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-9" data-ice="link">2.0.0-beta.9</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-8-2016-05-23-" data-ice="link">2.0.0-beta.8 (2016-05-23)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-7-2016-05-23-" data-ice="link">2.0.0-beta.7 (2016-05-23)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-6-2016-05-20-" data-ice="link">2.0.0-beta.6 (2016-05-20)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-4-2016-05-20-" data-ice="link">2.0.0-beta.4 (2016-05-20)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-3-2016-05-17-" data-ice="link">2.0.0-beta.3 (2016-05-17)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-2-2016-05-09-" data-ice="link">2.0.0-beta.2 (2016-05-09)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-1-2016-05-09-" data-ice="link">2.0.0-beta.1 (2016-05-09)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fix" data-ice="link">Fix</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-beta-0-2016-05-09-" data-ice="link">2.0.0-beta.0 (2016-05-09)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-alpha-6-2016-05-02-" data-ice="link">2.0.0-alpha.6 (2016-05-02)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-alpha-5-2016-04-29-" data-ice="link">2.0.0-alpha.5 (2016-04-29)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#changes" data-ice="link">Changes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-alpha-4-2016-04-28-" data-ice="link">2.0.0-alpha.4 (2016-04-28)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#fixes" data-ice="link">Fixes</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-alpha-3-2016-04-28-" data-ice="link">2.0.0-alpha.3 (2016-04-28)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-alpha-2-2016-04-25-" data-ice="link">2.0.0-alpha.2 (2016-04-25)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
-<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#2-0-0-alpha-1-2016-04-05-" data-ice="link">2.0.0-alpha.1 (2016-04-05)</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/MIGRATION.html"><a href="manual/MIGRATION.html" data-ice="link">Migrating from ZetaPush 1 to 2</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/MIGRATION.html"><a href="manual/MIGRATION.html#configuration" data-ice="link">Configuration</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/MIGRATION.html"><a href="manual/MIGRATION.html#authentication" data-ice="link">Authentication</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/MIGRATION.html"><a href="manual/MIGRATION.html#publish-subscribe" data-ice="link">Publish/Subscribe</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/MIGRATION.html"><a href="manual/MIGRATION.html#optional-deployment-id" data-ice="link">Optional deployment id</a></li>
 </ul>
   </div>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="github-markdown">
-  
+  <div class="manual-user-index" data-ice="manualUserIndex"><h1 id="zetapush-js">zetapush-js</h1></div>
 
-  <p class="manual-badge" data-ice="manualBadge"><img src="./manual-badge.svg"></p>
+  
 
   <div class="manual-cards">
     
   <div class="manual-card-wrap" data-ice="cards">
-      <h1 data-ice="label" class="manual-color manual-color-reference" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;"><span data-ice="label-inner">References</span></h1>
       <div class="manual-card">
-        <div data-ice="card"><h1>References</h1>
-<div data-ice="classSummary"><h2 id="class">Class Summary</h2><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Static Public Class Summary</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Aggreg.html">Aggreg</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for item aggregation</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/authentication/handshake.js~Authentication.html">Authentication</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Factory to create handshake</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/client/basic.js~Client.html">Client</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>ZetaPush Client to connect</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Define life cycle connection methods</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Cron.html">Cron</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for the Scheduler</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/authentications.js~Delegating.html">Delegating</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>End-user API for the delegating authentication</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Echo.html">Echo</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Echo service</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Game.html">Game</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for games</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~GameEngine.html">GameEngine</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Game Engine API</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Gda.html">Gda</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>GDA User API</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~GroupManagement.html">GroupManagement</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for groups and rights.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Httpclient.html">Httpclient</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for http requests</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Macro.html">Macro</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for macro execution</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~MacroDebug.html">MacroDebug</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for macro debugging</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Messaging.html">Messaging</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Messaging service</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Notif.html">Notif</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Notification User API</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Queue.html">Queue</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Producer / consumer real-time API</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Rdbms.html">Rdbms</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>RDBMS User API</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Remoting.html">Remoting</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for remote control</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Search.html">Search</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>ElasticSearch Service</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Sendmail.html">Sendmail</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Mail service user API</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/authentications.js~Simple.html">Simple</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>End-user API for the simple local authentication</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/client/smart.js~SmartClient.html">SmartClient</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Sms_ovh.html">Sms_ovh</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>SMS service</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Stack.html">Stack</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Data stack user API</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Template.html">Template</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for templates</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Trigger.html">Trigger</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Trigger service</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Userdir.html">Userdir</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for user information</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/authentications.js~Weak.html">Weak</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for weak devices control</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/client/weak.js~WeakClient.html">WeakClient</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Zpfs_hdfs.html">Zpfs_hdfs</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for local file management</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Zpfs_s3.html">Zpfs_s3</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for file management</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="class/lib/mapping/services.js~Zpfs_s3compat.html">Zpfs_s3compat</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>User API for file management</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
-
-<div data-ice="functionSummary"><h2 id="function">Function Summary</h2><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Static Public Function Summary</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="function/index.html#static-function-uuid">uuid</a></span></span><span data-ice="signature">(entropy: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, dictionary: <span>*</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Get random id</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
-<div data-ice="variableSummary"><h2 id="variable">Variable Summary</h2><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Static Public Variable Summary</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="variable/index.html#static-variable-TransportLayers">TransportLayers</a></span></span><span data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span><span>[]</span></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>CometD Transports Layers map</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="variable/index.html#static-variable-TransportTypes">TransportTypes</a></span></span><span data-ice="signature">: {&quot;LONG_POLLING&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, &quot;WEBSOCKET&quot;: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>}</span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>CometD Transports enumeration</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="variable/index.html#static-variable-VERSION">VERSION</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>SDK Version</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="variable/index.html#static-variable-ZETAPUSH_SESSION_KEY">ZETAPUSH_SESSION_KEY</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
-<div data-ice="typedefSummary"><h2 id="typedef">Typedef Summary</h2><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Static Public Typedef Summary</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Client config object.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>SmartClient config object.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          <span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>WeakClient config object.</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
-
-</div>
-        <a data-ice="link" href="identifiers.html"></a>
+        <div data-ice="card"><h1>2.0.0-alpha.1 (2016-04-05)</h1><h3>Features</h3><ul>
+<li><strong>core:</strong> Complete API rewrite</li>
+</ul><h3>BREAKING CHANGES</h3><ul>
+<li>2.x API is no longer compatible with 1.X</li>
+</ul></div>
+        <a data-ice="link" href="manual/CHANGELOG.html#2-0-0-alpha-1--2016-04-05-"></a>
       </div>
     </div>
 <div class="manual-card-wrap" data-ice="cards">
-      <h1 data-ice="label" class="manual-color manual-color-faq" data-section-count="&#x25A0;&#x25A0;&#x25A0;"><span data-ice="label-inner">Frequently Asked Questions</span></h1>
       <div class="manual-card">
-        <div data-ice="card"><h1>Frequently Asked Questions</h1><h2>Can I use zetapush-js with TypeScript?</h2><p>Yes, since 3.1.2 zetapush-js include typings definition.</p><h2>How to use <a href="https://babeljs.io/docs/learn-es2015/">ES2015 features</a> (const, class, arrow functions, ...) on my project today ?</h2><p>ZetaPush source code and examples are written in plain <a href="http://kangax.github.io/compat-table/es6/">ES2015</a>, you can use <a href="https://babeljs.io/docs/learn-es2015/">Babel to transpile your code</a></p><h2>How to subscribe and publish to a ZetaPush service ?</h2><p>ZetaPush Client provide a function <strong>createService({ type, listener })</strong></p><pre><code class="lang-js"><code class="source-code prettyprint">const client = new ZetaPush.Client({ ... })
+        <div data-ice="card"><h1>Frequently Asked Questions</h1><h2>Can I use zetapush-js in a NodeJS Context?</h2><p>Yes, you have to install latest version of zetapush-js and zetapush-cometd to enable NodeJS support.</p><pre><code class="lang-console"><code class="source-code prettyprint">npm install zetapush-js@next zetapush-cometd@next</code>
+</code></pre><pre><code class="lang-js"><code class="source-code prettyprint">const { WeakClient } = require(&apos;zetapush-js&apos;)
+const NodeJSTransports = require(&apos;zetapush-cometd/lib/node/Transports&apos;)
+// Create new ZetaPush Client
+const client = new WeakClient({
+  transports: NodeJSTransports,
+  sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;
+})
+// Add connection establised listener
+client.onConnectionEstablished(() =&gt; {
+  console.log(&apos;onConnectionEstablished&apos;)
+})
+client.connect()</code>
+</code></pre><h2>Can I use zetapush-js with TypeScript?</h2><p>Yes, since 3.1.2 zetapush-js include typings definition.</p><h2>How to use <a href="https://babeljs.io/docs/learn-es2015/">ES2015 features</a> (const, class, arrow functions, ...) on my project today ?</h2><p>ZetaPush source code and examples are written in plain <a href="http://kangax.github.io/compat-table/es6/">ES2015</a>, you can use <a href="https://babeljs.io/docs/learn-es2015/">Babel to transpile your code</a></p><h2>How to subscribe and publish to a ZetaPush service ?</h2><p>ZetaPush Client provide a function <strong>createService({ type, listener })</strong></p><pre><code class="lang-js"><code class="source-code prettyprint">const client = new ZetaPush.Client({ ... })
 // Create a service publisher mapping Stack service
 const service = client.createService({
   type: ZetaPush.services.Stack,
@@ -1414,18 +256,100 @@ service.list({
   stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
 })</code>
 </code></pre></div>
-        <a data-ice="link" href="manual/faq/FAQ.html"></a>
+        <a data-ice="link" href="manual/FAQ.html"></a>
       </div>
     </div>
 <div class="manual-card-wrap" data-ice="cards">
-      <h1 data-ice="label" class="manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;"><span data-ice="label-inner">2.0.0-alpha.1 (2016-04-05)</span></h1>
       <div class="manual-card">
-        <div data-ice="card"><h1>2.0.0-alpha.1 (2016-04-05)</h1><h3>Features</h3><ul>
-<li><strong>core:</strong> Complete API rewrite</li>
-</ul><h3>BREAKING CHANGES</h3><ul>
-<li>2.x API is no longer compatible with 1.X</li>
-</ul></div>
-        <a data-ice="link" href="manual/changelog/CHANGELOG.html#2-0-0-alpha-1-2016-04-05-"></a>
+        <div data-ice="card"><h1>Migrating from ZetaPush 1 to 2</h1><p>ZetaPush 2 is a ground-up rewrite of ZetaPush. This new version of ZetaPush had three basic goals:</p><ol>
+<li>Similar API to other language implementations (Java, Swift, ...)</li>
+<li>Better maintenance</li>
+<li>Full CommonJS support</li>
+</ol><h2>Configuration</h2><p><code>ZetaPush 1</code></p><pre><code class="lang-js"><code class="source-code prettyprint">zp.init(&apos;&lt;YOUR-SANDBOX-ID&gt;&apos;)</code>
+</code></pre><p><code>ZetaPush 2</code></p><pre><code class="lang-js"><code class="source-code prettyprint">const client = new ZetaPush.Client({
+  sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;
+})</code>
+</code></pre><h2>Authentication</h2><p><code>ZetaPush 1</code></p><pre><code class="lang-js"><code class="source-code prettyprint">zp.init(&apos;&lt;YOUR-SANDBOX-ID&gt;&apos;)
+const authent = new zp.authent.Simple(&apos;&lt;YOUR-SIMPLE-DEPLOYMENT-ID&gt;&apos;)
+zp.onHandshake((message) =&gt; {    
+  console.log(&apos;ZetaPush_Hanshake_Successful&apos;, message)
+})
+zp.onConnected((message) =&gt; {
+  if (message.successful) {
+    console.log(&apos;You are connected&apos;)
+  }
+})
+zp.connect(authent.getConnectionData(&apos;login&apos;, &apos;password&apos;, &apos;resource&apos;))</code>
+</code></pre><p><code>ZetaPush 2</code></p><pre><code class="lang-js"><code class="source-code prettyprint">const client = new ZetaPush.Client({
+  credentials() {
+    return ZetaPush.Authentication.simple({
+      deploymentId: &apos;&lt;YOUR-SIMPLE-DEPLOYMENT-ID&gt;&apos;,
+      login: &apos;login&apos;,
+      password: &apos;password&apos;
+    })
+  },
+  resource: &apos;resource&apos;,
+  sandboxId: &apos;&lt;YOUR-SANDBOX-ID&gt;&apos;
+})
+zp.onSuccessfulHandshake((message) =&gt; {
+  console.log(&apos;ZetaPush_Hanshake_Successful&apos;, message)
+})
+client.onConnectionEstablished(() =&gt; {
+  console.log(&apos;You are connected&apos;)
+})
+client.connect()</code>
+</code></pre><h2>Publish/Subscribe</h2><p><code>ZetaPush 1</code></p><pre><code class="lang-js"><code class="source-code prettyprint">const service = new zp.service.Generic(&apos;&lt;YOUR-STACK-DEPLOYMENT-ID&gt;&apos;)
+service.onError((message) =&gt; {
+  console.error(&apos;on stack error&apos;, message)
+})
+service.on(&apos;list&apos;, (message) =&gt; {
+  console.log(&apos;on stack list&apos;, message)
+})
+service.send(&apos;list&apos;, {
+  stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
+})</code>
+</code></pre><p><code>ZetaPush 2</code></p><pre><code class="lang-js"><code class="source-code prettyprint">const service = client.createService({
+  deploymentId: &apos;&lt;YOUR-STACK-DEPLOYMENT-ID&gt;&apos;
+  type: ZetaPush.services.Stack,
+  listener: {
+    error(message) {
+      console.error(&apos;on stack error&apos;, message)
+    },
+    list(message) {
+      console.log(&apos;on stack list&apos;, message)
+    }
+  }
+})
+service.list({
+  stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
+})</code>
+</code></pre><h2>Optional deployment id</h2><p><code>ZetaPush 2</code> provide optional deployment id, according to the following convention <code>${ServiceType.toLowerCase()_0}</code></p><pre><code class="lang-js"><code class="source-code prettyprint">// Create service with implicit service deployment id
+const service = client.createService({
+  type: ZetaPush.services.Stack,
+  listener: {
+    list(message) {
+      console.log(&apos;on stack list&apos;, message)
+    }
+  }
+})
+service.list({
+  stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
+})</code>
+</code></pre><p>In the previous example, deployment id is <code>stack_0</code></p><pre><code class="lang-js"><code class="source-code prettyprint">// Create service with explicit service deployment id
+const service = client.createService({
+  deploymentId: &apos;stack_0&apos;,
+  type: ZetaPush.services.Stack,
+  listener: {
+    list(message) {
+      console.log(&apos;on stack list&apos;, message)
+    }
+  }
+})
+service.list({
+  stack: &apos;&lt;YOUR-STACK-ID&gt;&apos;
+})</code>
+</code></pre></div>
+        <a data-ice="link" href="manual/MIGRATION.html"></a>
       </div>
     </div>
 </div>
@@ -1433,7 +357,7 @@ service.list({
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
 </footer>
 
 <script src="script/search_index.js"></script>

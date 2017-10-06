@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/authentication/handshake.js | zetapush-js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="JavaScript SDK for ZetaPush"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="zetapush-js"><meta property="twitter:description" content="JavaScript SDK for ZetaPush"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/zetapush/zetapush-js"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VERSION">VERSION</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#authentication">authentication</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/authentication/handshake.js~Authentication.html">Authentication</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DeployableNames">DeployableNames</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#client">client</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client/basic.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client/smart.js~SmartClient.html">SmartClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client/weak.js~WeakClient.html">WeakClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DEFAULT_MACRO_CHANNEL">DEFAULT_MACRO_CHANNEL</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Message">Message</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-UPDATE_SERVER_URL_DELAY">UPDATE_SERVER_URL_DELAY</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#connection">connection</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mapping">mapping</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/authentications.js~Delegating.html">Delegating</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/authentications.js~Simple.html">Simple</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/authentications.js~Weak.html">Weak</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Aggreg.html">Aggreg</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Cron.html">Cron</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Echo.html">Echo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Game.html">Game</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~GameEngine.html">GameEngine</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Gda.html">Gda</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~GroupManagement.html">GroupManagement</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Httpclient.html">Httpclient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Macro.html">Macro</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~MacroDebug.html">MacroDebug</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Messaging.html">Messaging</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Notif.html">Notif</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Queue.html">Queue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Rdbms.html">Rdbms</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Remoting.html">Remoting</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Search.html">Search</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Sendmail.html">Sendmail</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Sms_ovh.html">Sms_ovh</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Stack.html">Stack</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Template.html">Template</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Trigger.html">Trigger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Userdir.html">Userdir</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Zpfs_hdfs.html">Zpfs_hdfs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Zpfs_s3.html">Zpfs_s3</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/services.js~Zpfs_s3compat.html">Zpfs_s3compat</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-uuid">uuid</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DICTIONARY">DICTIONARY</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-HTTPS_PROTOCOL">HTTPS_PROTOCOL</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-HTTP_PATTERN">HTTP_PATTERN</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-HTTP_PROTOCOL">HTTP_PROTOCOL</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ZETAPUSH_SESSION_KEY">ZETAPUSH_SESSION_KEY</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/authentication/handshake.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Delegating, Simple, Weak } from &apos;../mapping/authentications&apos;
+
+/**
+ * ZetaPush deployables names
+ */
+const DeployableNames = {
+  AUTH_SIMPLE: &apos;simple&apos;,
+  AUTH_WEAK: &apos;weak&apos;,
+  AUTH_DELEGATING: &apos;delegating&apos;
+}
+
+/**
+ * Provide abstraction over CometD handshake data structure
+ * @access protected
+ */
+class AbstractHandshake {
+  /**
+   * Create a new handshake manager
+   * @param {{authType: string, sandboxId: string, deploymentId: string}} parameters
+   */
+  constructor({ authType, sandboxId, deploymentId }) {
+    /**
+     * @access protected
+     * @type {string}
+     */
+    this.authType = authType
+    /**
+     * @access protected
+     * @type {string}
+     */
+    this.sandboxId = sandboxId
+    /**
+     * @access protected
+     * @type {string}
+     */
+    this.deploymentId = deploymentId
+  }
+  /**
+   * @param {ClientHelper} client
+   * @return {Object}
+   */
+  getHandshakeFields(client) {
+    const authentication = {
+      data: this.authData,
+      type: `${client.getSandboxId()}.${this.deploymentId}.${this.authType}`,
+      version: this.authVersion
+    }
+    if (client.getResource()) {
+      authentication.resource = client.getResource()
+    }
+    return {
+      ext: {
+        authentication
+      }
+    }
+  }
+  /**
+   * Get auth version
+   * @return {string}
+   */
+  get authVersion() {
+    return &apos;none&apos;
+  }
+}
+
+/**
+ * Provide abstraction over CometD token base handshake data structure
+ * @access protected
+ * @extends {AbstractHandshake}
+ */
+class TokenHandshake extends AbstractHandshake {
+  /**
+   * @param {{authType: string, deploymentId: string, token: string}} parameters
+   */
+  constructor({ authType, deploymentId, token }) {
+    super({ deploymentId, authType })
+    /**
+     * @access private
+     * @type {string}
+     */
+    this.token = token
+  }
+  /**
+   * @return {token: string}
+   */
+  get authData() {
+    const { token } = this
+    return {
+      token
+    }
+  }
+}
+
+/**
+ * Provide abstraction over CometD credentials based handshake data structure
+ * @access protected
+ * @extends {AbstractHandshake}
+ */
+class CredentialsHandshake extends AbstractHandshake {
+  /**
+   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
+   */
+  constructor({ authType, deploymentId, login, password }) {
+    super({ authType, deploymentId })
+    /**
+     * @access private
+     * @type {string}
+     */
+    this.login = login
+    /**
+     * @access private
+     * @type {string}
+     */
+    this.password = password
+  }
+  /**
+   * Get auth data
+   * @return {login: string, password: string}
+   */
+  get authData() {
+    const { login, password } = this
+    return {
+      login, password
+    }
+  }
+}
+
+/**
+ * Factory to create handshake
+ * @access public
+ */
+export class Authentication {
+  /**
+   * @param {{deploymentId: string, login: string, password: string}} parameters
+   * @return {CredentialsHandshake}
+   * @example
+   * // Explicit deploymentId
+   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
+   * Authentication.delegating({
+   *   deploymentId: &apos;&lt;YOUR-SIMPLE-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
+   *   login: &lt;USER-LOGIN&gt;,
+   *   password: &apos;&lt;USER-PASSWORD&gt;&apos;
+   * })
+   */
+  static simple({ deploymentId = Simple.DEFAULT_DEPLOYMENT_ID, login, password }) {
+    return Authentication.create({
+      authType: DeployableNames.AUTH_SIMPLE,
+      deploymentId,
+      login,
+      password
+    })
+  }
+  /**
+   * @param {{deploymentId: string, token: string}} parameters
+   * @return {TokenHandshake}
+   * @example
+   * // Explicit deploymentId
+   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
+   * Authentication.delegating({
+   *   deploymentId: &apos;&lt;YOUR-WEAK-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
+   *   token: null
+   * })
+   */
+  static weak({ deploymentId = Weak.DEFAULT_DEPLOYMENT_ID, token }) {
+    return Authentication.create({
+      authType: DeployableNames.AUTH_WEAK,
+      deploymentId,
+      login: token,
+      password: null
+    })
+  }
+  /**
+   * @param {{deploymentId: string, token: string}} parameters
+   * @return {TokenHandshake}
+   * @example
+   * // Explicit deploymentId
+   * // Authentication provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`
+   * Authentication.delegating({
+   *   deploymentId: &apos;&lt;YOUR-DELEGATING-AUTHENTICATION-DEPLOYMENT-ID&gt;&apos;,
+   *   token: null
+   * })
+   */
+  static delegating({ deploymentId = Delegating.DEFAULT_DEPLOYMENT_ID, token }) {
+    return Authentication.create({
+      authType: DeployableNames.AUTH_DELEGATING,
+      deploymentId,
+      login: token,
+      password: null
+    })
+  }
+  /**
+   * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
+   * @return {TokenHandshake|CredentialsHandshake}
+   */
+  static create({ authType, deploymentId, login, password }) {
+    if (password === null) {
+      return new TokenHandshake({ authType, deploymentId, token: login })
+    }
+    return new CredentialsHandshake({ authType, deploymentId, login, password })
+  }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

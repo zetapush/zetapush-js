@@ -1,1778 +1,1778 @@
 window.esdocSearchIndex = [
   [
-    "zetapush-js/lib/mapping/services.js~aggreg",
-    "class/lib/mapping/services.js~Aggreg.html",
-    "<span>Aggreg</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
+    "zetapush-js/src/mapping/services.js~aggreg",
+    "class/src/mapping/services.js~Aggreg.html",
+    "<span>Aggreg</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/authentication/handshake.js~authentication",
-    "class/lib/authentication/handshake.js~Authentication.html",
-    "<span>Authentication</span> <span class=\"search-result-import-path\">zetapush-js/lib/authentication/handshake.js</span>",
+    "zetapush-js/src/authentication/handshake.js~authentication",
+    "class/src/authentication/handshake.js~Authentication.html",
+    "<span>Authentication</span> <span class=\"search-result-import-path\">zetapush-js/src/authentication/handshake.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/client/basic.js~client",
-    "class/lib/client/basic.js~Client.html",
-    "<span>Client</span> <span class=\"search-result-import-path\">zetapush-js/lib/client/basic.js</span>",
+    "zetapush-js/src/client/basic.js~client",
+    "class/src/client/basic.js~Client.html",
+    "<span>Client</span> <span class=\"search-result-import-path\">zetapush-js/src/client/basic.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/connection/connection-status.js~connectionstatuslistener",
-    "class/lib/connection/connection-status.js~ConnectionStatusListener.html",
-    "<span>ConnectionStatusListener</span> <span class=\"search-result-import-path\">zetapush-js/lib/connection/connection-status.js</span>",
+    "zetapush-js/src/connection/connection-status.js~connectionstatuslistener",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html",
+    "<span>ConnectionStatusListener</span> <span class=\"search-result-import-path\">zetapush-js/src/connection/connection-status.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/mapping/services.js~cron",
-    "class/lib/mapping/services.js~Cron.html",
-    "<span>Cron</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
+    "zetapush-js/src/mapping/services.js~cron",
+    "class/src/mapping/services.js~Cron.html",
+    "<span>Cron</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/mapping/authentications.js~delegating",
-    "class/lib/mapping/authentications.js~Delegating.html",
-    "<span>Delegating</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/authentications.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~echo",
-    "class/lib/mapping/services.js~Echo.html",
-    "<span>Echo</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~game",
-    "class/lib/mapping/services.js~Game.html",
-    "<span>Game</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~gameengine",
-    "class/lib/mapping/services.js~GameEngine.html",
-    "<span>GameEngine</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~gda",
-    "class/lib/mapping/services.js~Gda.html",
-    "<span>Gda</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~groupmanagement",
-    "class/lib/mapping/services.js~GroupManagement.html",
-    "<span>GroupManagement</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~httpclient",
-    "class/lib/mapping/services.js~Httpclient.html",
-    "<span>Httpclient</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~macro",
-    "class/lib/mapping/services.js~Macro.html",
-    "<span>Macro</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~macrodebug",
-    "class/lib/mapping/services.js~MacroDebug.html",
-    "<span>MacroDebug</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~messaging",
-    "class/lib/mapping/services.js~Messaging.html",
-    "<span>Messaging</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~notif",
-    "class/lib/mapping/services.js~Notif.html",
-    "<span>Notif</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~queue",
-    "class/lib/mapping/services.js~Queue.html",
-    "<span>Queue</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~rdbms",
-    "class/lib/mapping/services.js~Rdbms.html",
-    "<span>Rdbms</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~remoting",
-    "class/lib/mapping/services.js~Remoting.html",
-    "<span>Remoting</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~search",
-    "class/lib/mapping/services.js~Search.html",
-    "<span>Search</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~sendmail",
-    "class/lib/mapping/services.js~Sendmail.html",
-    "<span>Sendmail</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/authentications.js~simple",
-    "class/lib/mapping/authentications.js~Simple.html",
-    "<span>Simple</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/authentications.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/client/smart.js~smartclient",
-    "class/lib/client/smart.js~SmartClient.html",
-    "<span>SmartClient</span> <span class=\"search-result-import-path\">zetapush-js/lib/client/smart.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~sms_ovh",
-    "class/lib/mapping/services.js~Sms_ovh.html",
-    "<span>Sms_ovh</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~stack",
-    "class/lib/mapping/services.js~Stack.html",
-    "<span>Stack</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/mapping/services.js~template",
-    "class/lib/mapping/services.js~Template.html",
-    "<span>Template</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
-    "class"
-  ],
-  [
-    "zetapush-js/lib/connection/cometd.js~transportlayers",
-    "variable/index.html#static-variable-TransportLayers",
-    "<span>TransportLayers</span> <span class=\"search-result-import-path\">zetapush-js/lib/connection/cometd.js</span>",
+    "zetapush-js/src/client/helper.js~default_macro_channel",
+    "variable/index.html#static-variable-DEFAULT_MACRO_CHANNEL",
+    "<span>DEFAULT_MACRO_CHANNEL</span> <span class=\"search-result-import-path\">zetapush-js/src/client/helper.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/lib/connection/cometd.js~transporttypes",
-    "variable/index.html#static-variable-TransportTypes",
-    "<span>TransportTypes</span> <span class=\"search-result-import-path\">zetapush-js/lib/connection/cometd.js</span>",
+    "zetapush-js/src/utils/index.js~dictionary",
+    "variable/index.html#static-variable-DICTIONARY",
+    "<span>DICTIONARY</span> <span class=\"search-result-import-path\">zetapush-js/src/utils/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/lib/mapping/services.js~trigger",
-    "class/lib/mapping/services.js~Trigger.html",
-    "<span>Trigger</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
+    "zetapush-js/src/mapping/authentications.js~delegating",
+    "class/src/mapping/authentications.js~Delegating.html",
+    "<span>Delegating</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/authentications.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/mapping/services.js~userdir",
-    "class/lib/mapping/services.js~Userdir.html",
-    "<span>Userdir</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
+    "zetapush-js/src/authentication/handshake.js~deployablenames",
+    "variable/index.html#static-variable-DeployableNames",
+    "<span>DeployableNames</span> <span class=\"search-result-import-path\">zetapush-js/src/authentication/handshake.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~echo",
+    "class/src/mapping/services.js~Echo.html",
+    "<span>Echo</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/index.js~version",
+    "zetapush-js/src/mapping/services.js~game",
+    "class/src/mapping/services.js~Game.html",
+    "<span>Game</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~gameengine",
+    "class/src/mapping/services.js~GameEngine.html",
+    "<span>GameEngine</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~gda",
+    "class/src/mapping/services.js~Gda.html",
+    "<span>Gda</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~groupmanagement",
+    "class/src/mapping/services.js~GroupManagement.html",
+    "<span>GroupManagement</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/utils/index.js~https_protocol",
+    "variable/index.html#static-variable-HTTPS_PROTOCOL",
+    "<span>HTTPS_PROTOCOL</span> <span class=\"search-result-import-path\">zetapush-js/src/utils/index.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/utils/index.js~http_pattern",
+    "variable/index.html#static-variable-HTTP_PATTERN",
+    "<span>HTTP_PATTERN</span> <span class=\"search-result-import-path\">zetapush-js/src/utils/index.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/utils/index.js~http_protocol",
+    "variable/index.html#static-variable-HTTP_PROTOCOL",
+    "<span>HTTP_PROTOCOL</span> <span class=\"search-result-import-path\">zetapush-js/src/utils/index.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~httpclient",
+    "class/src/mapping/services.js~Httpclient.html",
+    "<span>Httpclient</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~macro",
+    "class/src/mapping/services.js~Macro.html",
+    "<span>Macro</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~macrodebug",
+    "class/src/mapping/services.js~MacroDebug.html",
+    "<span>MacroDebug</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/client/helper.js~message",
+    "variable/index.html#static-variable-Message",
+    "<span>Message</span> <span class=\"search-result-import-path\">zetapush-js/src/client/helper.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~messaging",
+    "class/src/mapping/services.js~Messaging.html",
+    "<span>Messaging</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~notif",
+    "class/src/mapping/services.js~Notif.html",
+    "<span>Notif</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~queue",
+    "class/src/mapping/services.js~Queue.html",
+    "<span>Queue</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~rdbms",
+    "class/src/mapping/services.js~Rdbms.html",
+    "<span>Rdbms</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~remoting",
+    "class/src/mapping/services.js~Remoting.html",
+    "<span>Remoting</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~search",
+    "class/src/mapping/services.js~Search.html",
+    "<span>Search</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~sendmail",
+    "class/src/mapping/services.js~Sendmail.html",
+    "<span>Sendmail</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/authentications.js~simple",
+    "class/src/mapping/authentications.js~Simple.html",
+    "<span>Simple</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/authentications.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/client/smart.js~smartclient",
+    "class/src/client/smart.js~SmartClient.html",
+    "<span>SmartClient</span> <span class=\"search-result-import-path\">zetapush-js/src/client/smart.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~sms_ovh",
+    "class/src/mapping/services.js~Sms_ovh.html",
+    "<span>Sms_ovh</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~stack",
+    "class/src/mapping/services.js~Stack.html",
+    "<span>Stack</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~template",
+    "class/src/mapping/services.js~Template.html",
+    "<span>Template</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~trigger",
+    "class/src/mapping/services.js~Trigger.html",
+    "<span>Trigger</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/client/helper.js~update_server_url_delay",
+    "variable/index.html#static-variable-UPDATE_SERVER_URL_DELAY",
+    "<span>UPDATE_SERVER_URL_DELAY</span> <span class=\"search-result-import-path\">zetapush-js/src/client/helper.js</span>",
+    "variable"
+  ],
+  [
+    "zetapush-js/src/mapping/services.js~userdir",
+    "class/src/mapping/services.js~Userdir.html",
+    "<span>Userdir</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
+    "class"
+  ],
+  [
+    "zetapush-js/src/index.js~version",
     "variable/index.html#static-variable-VERSION",
-    "<span>VERSION</span> <span class=\"search-result-import-path\">zetapush-js/lib/index.js</span>",
+    "<span>VERSION</span> <span class=\"search-result-import-path\">zetapush-js/src/index.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/lib/mapping/authentications.js~weak",
-    "class/lib/mapping/authentications.js~Weak.html",
-    "<span>Weak</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/authentications.js</span>",
+    "zetapush-js/src/mapping/authentications.js~weak",
+    "class/src/mapping/authentications.js~Weak.html",
+    "<span>Weak</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/authentications.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/client/weak.js~weakclient",
-    "class/lib/client/weak.js~WeakClient.html",
-    "<span>WeakClient</span> <span class=\"search-result-import-path\">zetapush-js/lib/client/weak.js</span>",
+    "zetapush-js/src/client/weak.js~weakclient",
+    "class/src/client/weak.js~WeakClient.html",
+    "<span>WeakClient</span> <span class=\"search-result-import-path\">zetapush-js/src/client/weak.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/utils/session-persistence.js~zetapush_session_key",
+    "zetapush-js/src/utils/session-persistence.js~zetapush_session_key",
     "variable/index.html#static-variable-ZETAPUSH_SESSION_KEY",
-    "<span>ZETAPUSH_SESSION_KEY</span> <span class=\"search-result-import-path\">zetapush-js/lib/utils/session-persistence.js</span>",
+    "<span>ZETAPUSH_SESSION_KEY</span> <span class=\"search-result-import-path\">zetapush-js/src/utils/session-persistence.js</span>",
     "variable"
   ],
   [
-    "zetapush-js/lib/mapping/services.js~zpfs_hdfs",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html",
-    "<span>Zpfs_hdfs</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
+    "zetapush-js/src/mapping/services.js~zpfs_hdfs",
+    "class/src/mapping/services.js~Zpfs_hdfs.html",
+    "<span>Zpfs_hdfs</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/mapping/services.js~zpfs_s3",
-    "class/lib/mapping/services.js~Zpfs_s3.html",
-    "<span>Zpfs_s3</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
+    "zetapush-js/src/mapping/services.js~zpfs_s3",
+    "class/src/mapping/services.js~Zpfs_s3.html",
+    "<span>Zpfs_s3</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/mapping/services.js~zpfs_s3compat",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html",
-    "<span>Zpfs_s3compat</span> <span class=\"search-result-import-path\">zetapush-js/lib/mapping/services.js</span>",
+    "zetapush-js/src/mapping/services.js~zpfs_s3compat",
+    "class/src/mapping/services.js~Zpfs_s3compat.html",
+    "<span>Zpfs_s3compat</span> <span class=\"search-result-import-path\">zetapush-js/src/mapping/services.js</span>",
     "class"
   ],
   [
-    "zetapush-js/lib/utils/index.js~uuid",
+    "zetapush-js/src/utils/index.js~uuid",
     "function/index.html#static-function-uuid",
-    "<span>uuid</span> <span class=\"search-result-import-path\">zetapush-js/lib/utils/index.js</span>",
+    "<span>uuid</span> <span class=\"search-result-import-path\">zetapush-js/src/utils/index.js</span>",
     "function"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~array",
+    "src/.external-ecmascript.js~array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
-    "BuiltinExternal/ECMAScriptExternal.js~Array",
+    "src/.external-ecmascript.js~Array",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~arraybuffer",
+    "src/.external-ecmascript.js~arraybuffer",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
-    "BuiltinExternal/ECMAScriptExternal.js~ArrayBuffer",
+    "src/.external-ecmascript.js~ArrayBuffer",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~boolean",
+    "src/.external-ecmascript.js~boolean",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
-    "BuiltinExternal/ECMAScriptExternal.js~Boolean",
+    "src/.external-ecmascript.js~Boolean",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~dataview",
+    "src/.external-ecmascript.js~dataview",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
-    "BuiltinExternal/ECMAScriptExternal.js~DataView",
+    "src/.external-ecmascript.js~DataView",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~date",
+    "src/.external-ecmascript.js~date",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
-    "BuiltinExternal/ECMAScriptExternal.js~Date",
+    "src/.external-ecmascript.js~Date",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~error",
+    "src/.external-ecmascript.js~error",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
-    "BuiltinExternal/ECMAScriptExternal.js~Error",
+    "src/.external-ecmascript.js~Error",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~evalerror",
+    "src/.external-ecmascript.js~evalerror",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
-    "BuiltinExternal/ECMAScriptExternal.js~EvalError",
+    "src/.external-ecmascript.js~EvalError",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~float32array",
+    "src/.external-ecmascript.js~float32array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
-    "BuiltinExternal/ECMAScriptExternal.js~Float32Array",
+    "src/.external-ecmascript.js~Float32Array",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~float64array",
+    "src/.external-ecmascript.js~float64array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
-    "BuiltinExternal/ECMAScriptExternal.js~Float64Array",
+    "src/.external-ecmascript.js~Float64Array",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~function",
+    "src/.external-ecmascript.js~function",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
-    "BuiltinExternal/ECMAScriptExternal.js~Function",
+    "src/.external-ecmascript.js~Function",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~generator",
+    "src/.external-ecmascript.js~generator",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
-    "BuiltinExternal/ECMAScriptExternal.js~Generator",
+    "src/.external-ecmascript.js~Generator",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~generatorfunction",
+    "src/.external-ecmascript.js~generatorfunction",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
-    "BuiltinExternal/ECMAScriptExternal.js~GeneratorFunction",
+    "src/.external-ecmascript.js~GeneratorFunction",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~infinity",
+    "src/.external-ecmascript.js~infinity",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
-    "BuiltinExternal/ECMAScriptExternal.js~Infinity",
+    "src/.external-ecmascript.js~Infinity",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~int16array",
+    "src/.external-ecmascript.js~int16array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
-    "BuiltinExternal/ECMAScriptExternal.js~Int16Array",
+    "src/.external-ecmascript.js~Int16Array",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~int32array",
+    "src/.external-ecmascript.js~int32array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
-    "BuiltinExternal/ECMAScriptExternal.js~Int32Array",
+    "src/.external-ecmascript.js~Int32Array",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~int8array",
+    "src/.external-ecmascript.js~int8array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
-    "BuiltinExternal/ECMAScriptExternal.js~Int8Array",
+    "src/.external-ecmascript.js~Int8Array",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~internalerror",
+    "src/.external-ecmascript.js~internalerror",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
-    "BuiltinExternal/ECMAScriptExternal.js~InternalError",
+    "src/.external-ecmascript.js~InternalError",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~json",
+    "src/.external-ecmascript.js~json",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
-    "BuiltinExternal/ECMAScriptExternal.js~JSON",
+    "src/.external-ecmascript.js~JSON",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~map",
+    "src/.external-ecmascript.js~map",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
-    "BuiltinExternal/ECMAScriptExternal.js~Map",
+    "src/.external-ecmascript.js~Map",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~nan",
+    "src/.external-ecmascript.js~nan",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
-    "BuiltinExternal/ECMAScriptExternal.js~NaN",
+    "src/.external-ecmascript.js~NaN",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~number",
+    "src/.external-ecmascript.js~number",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
-    "BuiltinExternal/ECMAScriptExternal.js~Number",
+    "src/.external-ecmascript.js~Number",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~object",
+    "src/.external-ecmascript.js~object",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
-    "BuiltinExternal/ECMAScriptExternal.js~Object",
+    "src/.external-ecmascript.js~Object",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~promise",
+    "src/.external-ecmascript.js~promise",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
-    "BuiltinExternal/ECMAScriptExternal.js~Promise",
+    "src/.external-ecmascript.js~Promise",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~proxy",
+    "src/.external-ecmascript.js~proxy",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
-    "BuiltinExternal/ECMAScriptExternal.js~Proxy",
+    "src/.external-ecmascript.js~Proxy",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~rangeerror",
+    "src/.external-ecmascript.js~rangeerror",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
-    "BuiltinExternal/ECMAScriptExternal.js~RangeError",
+    "src/.external-ecmascript.js~RangeError",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~referenceerror",
+    "src/.external-ecmascript.js~referenceerror",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
-    "BuiltinExternal/ECMAScriptExternal.js~ReferenceError",
+    "src/.external-ecmascript.js~ReferenceError",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~reflect",
+    "src/.external-ecmascript.js~reflect",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
-    "BuiltinExternal/ECMAScriptExternal.js~Reflect",
+    "src/.external-ecmascript.js~Reflect",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~regexp",
+    "src/.external-ecmascript.js~regexp",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
-    "BuiltinExternal/ECMAScriptExternal.js~RegExp",
+    "src/.external-ecmascript.js~RegExp",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~set",
+    "src/.external-ecmascript.js~set",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
-    "BuiltinExternal/ECMAScriptExternal.js~Set",
+    "src/.external-ecmascript.js~Set",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~string",
+    "src/.external-ecmascript.js~string",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
-    "BuiltinExternal/ECMAScriptExternal.js~String",
+    "src/.external-ecmascript.js~String",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~symbol",
+    "src/.external-ecmascript.js~symbol",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
-    "BuiltinExternal/ECMAScriptExternal.js~Symbol",
+    "src/.external-ecmascript.js~Symbol",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~syntaxerror",
+    "src/.external-ecmascript.js~syntaxerror",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
-    "BuiltinExternal/ECMAScriptExternal.js~SyntaxError",
+    "src/.external-ecmascript.js~SyntaxError",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~typeerror",
+    "src/.external-ecmascript.js~typeerror",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
-    "BuiltinExternal/ECMAScriptExternal.js~TypeError",
+    "src/.external-ecmascript.js~TypeError",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~urierror",
+    "src/.external-ecmascript.js~urierror",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
-    "BuiltinExternal/ECMAScriptExternal.js~URIError",
+    "src/.external-ecmascript.js~URIError",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~uint16array",
+    "src/.external-ecmascript.js~uint16array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
-    "BuiltinExternal/ECMAScriptExternal.js~Uint16Array",
+    "src/.external-ecmascript.js~Uint16Array",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~uint32array",
+    "src/.external-ecmascript.js~uint32array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
-    "BuiltinExternal/ECMAScriptExternal.js~Uint32Array",
+    "src/.external-ecmascript.js~Uint32Array",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~uint8array",
+    "src/.external-ecmascript.js~uint8array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
-    "BuiltinExternal/ECMAScriptExternal.js~Uint8Array",
+    "src/.external-ecmascript.js~Uint8Array",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~uint8clampedarray",
+    "src/.external-ecmascript.js~uint8clampedarray",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
-    "BuiltinExternal/ECMAScriptExternal.js~Uint8ClampedArray",
+    "src/.external-ecmascript.js~Uint8ClampedArray",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~weakmap",
+    "src/.external-ecmascript.js~weakmap",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
-    "BuiltinExternal/ECMAScriptExternal.js~WeakMap",
+    "src/.external-ecmascript.js~WeakMap",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~weakset",
+    "src/.external-ecmascript.js~weakset",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
-    "BuiltinExternal/ECMAScriptExternal.js~WeakSet",
+    "src/.external-ecmascript.js~WeakSet",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~boolean",
+    "src/.external-ecmascript.js~boolean",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
-    "BuiltinExternal/ECMAScriptExternal.js~boolean",
+    "src/.external-ecmascript.js~boolean",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~function",
+    "src/.external-ecmascript.js~function",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
-    "BuiltinExternal/ECMAScriptExternal.js~function",
+    "src/.external-ecmascript.js~function",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~null",
+    "src/.external-ecmascript.js~null",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
-    "BuiltinExternal/ECMAScriptExternal.js~null",
+    "src/.external-ecmascript.js~null",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~number",
+    "src/.external-ecmascript.js~number",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
-    "BuiltinExternal/ECMAScriptExternal.js~number",
+    "src/.external-ecmascript.js~number",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~object",
+    "src/.external-ecmascript.js~object",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
-    "BuiltinExternal/ECMAScriptExternal.js~object",
+    "src/.external-ecmascript.js~object",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~string",
+    "src/.external-ecmascript.js~string",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
-    "BuiltinExternal/ECMAScriptExternal.js~string",
+    "src/.external-ecmascript.js~string",
     "external"
   ],
   [
-    "builtinexternal/ecmascriptexternal.js~undefined",
+    "src/.external-ecmascript.js~undefined",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
-    "BuiltinExternal/ECMAScriptExternal.js~undefined",
+    "src/.external-ecmascript.js~undefined",
     "external"
   ],
   [
-    "builtinexternal/webapiexternal.js~audiocontext",
-    "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
-    "BuiltinExternal/WebAPIExternal.js~AudioContext",
-    "external"
-  ],
-  [
-    "builtinexternal/webapiexternal.js~canvasrenderingcontext2d",
-    "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
-    "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
-    "external"
-  ],
-  [
-    "builtinexternal/webapiexternal.js~documentfragment",
-    "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
-    "BuiltinExternal/WebAPIExternal.js~DocumentFragment",
-    "external"
-  ],
-  [
-    "builtinexternal/webapiexternal.js~element",
-    "https://developer.mozilla.org/en-US/docs/Web/API/Element",
-    "BuiltinExternal/WebAPIExternal.js~Element",
-    "external"
-  ],
-  [
-    "builtinexternal/webapiexternal.js~event",
-    "https://developer.mozilla.org/en-US/docs/Web/API/Event",
-    "BuiltinExternal/WebAPIExternal.js~Event",
-    "external"
-  ],
-  [
-    "builtinexternal/webapiexternal.js~node",
-    "https://developer.mozilla.org/en-US/docs/Web/API/Node",
-    "BuiltinExternal/WebAPIExternal.js~Node",
-    "external"
-  ],
-  [
-    "builtinexternal/webapiexternal.js~nodelist",
-    "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
-    "BuiltinExternal/WebAPIExternal.js~NodeList",
-    "external"
-  ],
-  [
-    "builtinexternal/webapiexternal.js~xmlhttprequest",
-    "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
-    "BuiltinExternal/WebAPIExternal.js~XMLHttpRequest",
-    "external"
-  ],
-  [
-    "lib/authentication/handshake.js",
-    "file/lib/authentication/handshake.js.html",
-    "lib/authentication/handshake.js",
+    "src/authentication/handshake.js",
+    "file/src/authentication/handshake.js.html",
+    "src/authentication/handshake.js",
     "file"
   ],
   [
-    "lib/authentication/handshake.js~authentication.create",
-    "class/lib/authentication/handshake.js~Authentication.html#static-method-create",
-    "lib/authentication/handshake.js~Authentication.create",
+    "src/authentication/handshake.js~authentication.create",
+    "class/src/authentication/handshake.js~Authentication.html#static-method-create",
+    "src/authentication/handshake.js~Authentication.create",
     "method"
   ],
   [
-    "lib/authentication/handshake.js~authentication.delegating",
-    "class/lib/authentication/handshake.js~Authentication.html#static-method-delegating",
-    "lib/authentication/handshake.js~Authentication.delegating",
+    "src/authentication/handshake.js~authentication.delegating",
+    "class/src/authentication/handshake.js~Authentication.html#static-method-delegating",
+    "src/authentication/handshake.js~Authentication.delegating",
     "method"
   ],
   [
-    "lib/authentication/handshake.js~authentication.simple",
-    "class/lib/authentication/handshake.js~Authentication.html#static-method-simple",
-    "lib/authentication/handshake.js~Authentication.simple",
+    "src/authentication/handshake.js~authentication.simple",
+    "class/src/authentication/handshake.js~Authentication.html#static-method-simple",
+    "src/authentication/handshake.js~Authentication.simple",
     "method"
   ],
   [
-    "lib/authentication/handshake.js~authentication.weak",
-    "class/lib/authentication/handshake.js~Authentication.html#static-method-weak",
-    "lib/authentication/handshake.js~Authentication.weak",
+    "src/authentication/handshake.js~authentication.weak",
+    "class/src/authentication/handshake.js~Authentication.html#static-method-weak",
+    "src/authentication/handshake.js~Authentication.weak",
     "method"
   ],
   [
-    "lib/client/basic.js",
-    "file/lib/client/basic.js.html",
-    "lib/client/basic.js",
+    "src/client/basic.js",
+    "file/src/client/basic.js.html",
+    "src/client/basic.js",
     "file"
   ],
   [
-    "lib/client/basic.js~client#addconnectionstatuslistener",
-    "class/lib/client/basic.js~Client.html#instance-method-addConnectionStatusListener",
-    "lib/client/basic.js~Client#addConnectionStatusListener",
+    "src/client/basic.js~client#addconnectionstatuslistener",
+    "class/src/client/basic.js~Client.html#instance-method-addConnectionStatusListener",
+    "src/client/basic.js~Client#addConnectionStatusListener",
     "method"
   ],
   [
-    "lib/client/basic.js~client#connect",
-    "class/lib/client/basic.js~Client.html#instance-method-connect",
-    "lib/client/basic.js~Client#connect",
+    "src/client/basic.js~client#connect",
+    "class/src/client/basic.js~Client.html#instance-method-connect",
+    "src/client/basic.js~Client#connect",
     "method"
   ],
   [
-    "lib/client/basic.js~client#constructor",
-    "class/lib/client/basic.js~Client.html#instance-constructor-constructor",
-    "lib/client/basic.js~Client#constructor",
+    "src/client/basic.js~client#constructor",
+    "class/src/client/basic.js~Client.html#instance-constructor-constructor",
+    "src/client/basic.js~Client#constructor",
     "method"
   ],
   [
-    "lib/client/basic.js~client#createasyncmacroservice",
-    "class/lib/client/basic.js~Client.html#instance-method-createAsyncMacroService",
-    "lib/client/basic.js~Client#createAsyncMacroService",
+    "src/client/basic.js~client#createasyncmacroservice",
+    "class/src/client/basic.js~Client.html#instance-method-createAsyncMacroService",
+    "src/client/basic.js~Client#createAsyncMacroService",
     "method"
   ],
   [
-    "lib/client/basic.js~client#createservice",
-    "class/lib/client/basic.js~Client.html#instance-method-createService",
-    "lib/client/basic.js~Client#createService",
+    "src/client/basic.js~client#createservice",
+    "class/src/client/basic.js~Client.html#instance-method-createService",
+    "src/client/basic.js~Client#createService",
     "method"
   ],
   [
-    "lib/client/basic.js~client#disconnect",
-    "class/lib/client/basic.js~Client.html#instance-method-disconnect",
-    "lib/client/basic.js~Client#disconnect",
+    "src/client/basic.js~client#disconnect",
+    "class/src/client/basic.js~Client.html#instance-method-disconnect",
+    "src/client/basic.js~Client#disconnect",
     "method"
   ],
   [
-    "lib/client/basic.js~client#getresource",
-    "class/lib/client/basic.js~Client.html#instance-method-getResource",
-    "lib/client/basic.js~Client#getResource",
+    "src/client/basic.js~client#getresource",
+    "class/src/client/basic.js~Client.html#instance-method-getResource",
+    "src/client/basic.js~Client#getResource",
     "method"
   ],
   [
-    "lib/client/basic.js~client#getsandboxid",
-    "class/lib/client/basic.js~Client.html#instance-method-getSandboxId",
-    "lib/client/basic.js~Client#getSandboxId",
+    "src/client/basic.js~client#getsandboxid",
+    "class/src/client/basic.js~Client.html#instance-method-getSandboxId",
+    "src/client/basic.js~Client#getSandboxId",
     "method"
   ],
   [
-    "lib/client/basic.js~client#getservers",
-    "class/lib/client/basic.js~Client.html#instance-method-getServers",
-    "lib/client/basic.js~Client#getServers",
+    "src/client/basic.js~client#getservers",
+    "class/src/client/basic.js~Client.html#instance-method-getServers",
+    "src/client/basic.js~Client#getServers",
     "method"
   ],
   [
-    "lib/client/basic.js~client#getuserid",
-    "class/lib/client/basic.js~Client.html#instance-method-getUserId",
-    "lib/client/basic.js~Client#getUserId",
+    "src/client/basic.js~client#getuserid",
+    "class/src/client/basic.js~Client.html#instance-method-getUserId",
+    "src/client/basic.js~Client#getUserId",
     "method"
   ],
   [
-    "lib/client/basic.js~client#isconnected",
-    "class/lib/client/basic.js~Client.html#instance-method-isConnected",
-    "lib/client/basic.js~Client#isConnected",
+    "src/client/basic.js~client#getuserinfo",
+    "class/src/client/basic.js~Client.html#instance-method-getUserInfo",
+    "src/client/basic.js~Client#getUserInfo",
     "method"
   ],
   [
-    "lib/client/basic.js~client#removeconnectionstatuslistener",
-    "class/lib/client/basic.js~Client.html#instance-method-removeConnectionStatusListener",
-    "lib/client/basic.js~Client#removeConnectionStatusListener",
+    "src/client/basic.js~client#isconnected",
+    "class/src/client/basic.js~Client.html#instance-method-isConnected",
+    "src/client/basic.js~Client#isConnected",
     "method"
   ],
   [
-    "lib/client/basic.js~client#setauthentication",
-    "class/lib/client/basic.js~Client.html#instance-method-setAuthentication",
-    "lib/client/basic.js~Client#setAuthentication",
+    "src/client/basic.js~client#removeconnectionstatuslistener",
+    "class/src/client/basic.js~Client.html#instance-method-removeConnectionStatusListener",
+    "src/client/basic.js~Client#removeConnectionStatusListener",
     "method"
   ],
   [
-    "lib/client/basic.js~client#setloglevel",
-    "class/lib/client/basic.js~Client.html#instance-method-setLogLevel",
-    "lib/client/basic.js~Client#setLogLevel",
+    "src/client/basic.js~client#setauthentication",
+    "class/src/client/basic.js~Client.html#instance-method-setAuthentication",
+    "src/client/basic.js~Client#setAuthentication",
     "method"
   ],
   [
-    "lib/client/basic.js~client#setresource",
-    "class/lib/client/basic.js~Client.html#instance-method-setResource",
-    "lib/client/basic.js~Client#setResource",
+    "src/client/basic.js~client#setloglevel",
+    "class/src/client/basic.js~Client.html#instance-method-setLogLevel",
+    "src/client/basic.js~Client#setLogLevel",
     "method"
   ],
   [
-    "lib/client/basic.js~client#unsubscribe",
-    "class/lib/client/basic.js~Client.html#instance-method-unsubscribe",
-    "lib/client/basic.js~Client#unsubscribe",
+    "src/client/basic.js~client#setresource",
+    "class/src/client/basic.js~Client.html#instance-method-setResource",
+    "src/client/basic.js~Client#setResource",
     "method"
   ],
   [
-    "lib/client/basic.js~clientconfig",
+    "src/client/basic.js~client#unsubscribe",
+    "class/src/client/basic.js~Client.html#instance-method-unsubscribe",
+    "src/client/basic.js~Client#unsubscribe",
+    "method"
+  ],
+  [
+    "src/client/basic.js~clientconfig",
     "typedef/index.html#static-typedef-ClientConfig",
-    "lib/client/basic.js~ClientConfig",
+    "src/client/basic.js~ClientConfig",
     "typedef"
   ],
   [
-    "lib/client/helper.js",
-    "file/lib/client/helper.js.html",
-    "lib/client/helper.js",
+    "src/client/helper.js",
+    "file/src/client/helper.js.html",
+    "src/client/helper.js",
     "file"
   ],
   [
-    "lib/client/smart.js",
-    "file/lib/client/smart.js.html",
-    "lib/client/smart.js",
+    "src/client/smart.js",
+    "file/src/client/smart.js.html",
+    "src/client/smart.js",
     "file"
   ],
   [
-    "lib/client/smart.js~smartclient#constructor",
-    "class/lib/client/smart.js~SmartClient.html#instance-constructor-constructor",
-    "lib/client/smart.js~SmartClient#constructor",
+    "src/client/smart.js~smartclient#constructor",
+    "class/src/client/smart.js~SmartClient.html#instance-constructor-constructor",
+    "src/client/smart.js~SmartClient#constructor",
     "method"
   ],
   [
-    "lib/client/smart.js~smartclient#disconnect",
-    "class/lib/client/smart.js~SmartClient.html#instance-method-disconnect",
-    "lib/client/smart.js~SmartClient#disconnect",
+    "src/client/smart.js~smartclient#disconnect",
+    "class/src/client/smart.js~SmartClient.html#instance-method-disconnect",
+    "src/client/smart.js~SmartClient#disconnect",
     "method"
   ],
   [
-    "lib/client/smart.js~smartclient#getcredentials",
-    "class/lib/client/smart.js~SmartClient.html#instance-method-getCredentials",
-    "lib/client/smart.js~SmartClient#getCredentials",
+    "src/client/smart.js~smartclient#getcredentials",
+    "class/src/client/smart.js~SmartClient.html#instance-method-getCredentials",
+    "src/client/smart.js~SmartClient#getCredentials",
     "method"
   ],
   [
-    "lib/client/smart.js~smartclient#getsession",
-    "class/lib/client/smart.js~SmartClient.html#instance-method-getSession",
-    "lib/client/smart.js~SmartClient#getSession",
+    "src/client/smart.js~smartclient#getsession",
+    "class/src/client/smart.js~SmartClient.html#instance-method-getSession",
+    "src/client/smart.js~SmartClient#getSession",
     "method"
   ],
   [
-    "lib/client/smart.js~smartclient#hascredentials",
-    "class/lib/client/smart.js~SmartClient.html#instance-method-hasCredentials",
-    "lib/client/smart.js~SmartClient#hasCredentials",
+    "src/client/smart.js~smartclient#hascredentials",
+    "class/src/client/smart.js~SmartClient.html#instance-method-hasCredentials",
+    "src/client/smart.js~SmartClient#hasCredentials",
     "method"
   ],
   [
-    "lib/client/smart.js~smartclient#isstronglyauthenticated",
-    "class/lib/client/smart.js~SmartClient.html#instance-method-isStronglyAuthenticated",
-    "lib/client/smart.js~SmartClient#isStronglyAuthenticated",
+    "src/client/smart.js~smartclient#isstronglyauthenticated",
+    "class/src/client/smart.js~SmartClient.html#instance-method-isStronglyAuthenticated",
+    "src/client/smart.js~SmartClient#isStronglyAuthenticated",
     "method"
   ],
   [
-    "lib/client/smart.js~smartclient#isweaklyauthenticated",
-    "class/lib/client/smart.js~SmartClient.html#instance-method-isWeaklyAuthenticated",
-    "lib/client/smart.js~SmartClient#isWeaklyAuthenticated",
+    "src/client/smart.js~smartclient#isweaklyauthenticated",
+    "class/src/client/smart.js~SmartClient.html#instance-method-isWeaklyAuthenticated",
+    "src/client/smart.js~SmartClient#isWeaklyAuthenticated",
     "method"
   ],
   [
-    "lib/client/smart.js~smartclient#setcredentials",
-    "class/lib/client/smart.js~SmartClient.html#instance-method-setCredentials",
-    "lib/client/smart.js~SmartClient#setCredentials",
+    "src/client/smart.js~smartclient#setcredentials",
+    "class/src/client/smart.js~SmartClient.html#instance-method-setCredentials",
+    "src/client/smart.js~SmartClient#setCredentials",
     "method"
   ],
   [
-    "lib/client/smart.js~smartclientconfig",
+    "src/client/smart.js~smartclientconfig",
     "typedef/index.html#static-typedef-SmartClientConfig",
-    "lib/client/smart.js~SmartClientConfig",
+    "src/client/smart.js~SmartClientConfig",
     "typedef"
   ],
   [
-    "lib/client/weak.js",
-    "file/lib/client/weak.js.html",
-    "lib/client/weak.js",
+    "src/client/weak.js",
+    "file/src/client/weak.js.html",
+    "src/client/weak.js",
     "file"
   ],
   [
-    "lib/client/weak.js~weakclient#constructor",
-    "class/lib/client/weak.js~WeakClient.html#instance-constructor-constructor",
-    "lib/client/weak.js~WeakClient#constructor",
+    "src/client/weak.js~weakclient#constructor",
+    "class/src/client/weak.js~WeakClient.html#instance-constructor-constructor",
+    "src/client/weak.js~WeakClient#constructor",
     "method"
   ],
   [
-    "lib/client/weak.js~weakclient#gettoken",
-    "class/lib/client/weak.js~WeakClient.html#instance-method-getToken",
-    "lib/client/weak.js~WeakClient#getToken",
+    "src/client/weak.js~weakclient#gettoken",
+    "class/src/client/weak.js~WeakClient.html#instance-method-getToken",
+    "src/client/weak.js~WeakClient#getToken",
     "method"
   ],
   [
-    "lib/client/weak.js~weakclientconfig",
+    "src/client/weak.js~weakclientconfig",
     "typedef/index.html#static-typedef-WeakClientConfig",
-    "lib/client/weak.js~WeakClientConfig",
+    "src/client/weak.js~WeakClientConfig",
     "typedef"
   ],
   [
-    "lib/connection/cometd.js",
-    "file/lib/connection/cometd.js.html",
-    "lib/connection/cometd.js",
+    "src/connection/connection-status.js",
+    "file/src/connection/connection-status.js.html",
+    "src/connection/connection-status.js",
     "file"
   ],
   [
-    "lib/connection/connection-status.js",
-    "file/lib/connection/connection-status.js.html",
-    "lib/connection/connection-status.js",
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionbroken",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionBroken",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionBroken",
+    "method"
+  ],
+  [
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionclosed",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionClosed",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionClosed",
+    "method"
+  ],
+  [
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionestablished",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionEstablished",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionEstablished",
+    "method"
+  ],
+  [
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectiontoserverfail",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionToServerFail",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionToServerFail",
+    "method"
+  ],
+  [
+    "src/connection/connection-status.js~connectionstatuslistener#onconnectionwillclose",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionWillClose",
+    "src/connection/connection-status.js~ConnectionStatusListener#onConnectionWillClose",
+    "method"
+  ],
+  [
+    "src/connection/connection-status.js~connectionstatuslistener#onfailedhandshake",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onFailedHandshake",
+    "src/connection/connection-status.js~ConnectionStatusListener#onFailedHandshake",
+    "method"
+  ],
+  [
+    "src/connection/connection-status.js~connectionstatuslistener#onmessagelost",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onMessageLost",
+    "src/connection/connection-status.js~ConnectionStatusListener#onMessageLost",
+    "method"
+  ],
+  [
+    "src/connection/connection-status.js~connectionstatuslistener#onnegotiationfailed",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onNegotiationFailed",
+    "src/connection/connection-status.js~ConnectionStatusListener#onNegotiationFailed",
+    "method"
+  ],
+  [
+    "src/connection/connection-status.js~connectionstatuslistener#onnoserverurlavailable",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onNoServerUrlAvailable",
+    "src/connection/connection-status.js~ConnectionStatusListener#onNoServerUrlAvailable",
+    "method"
+  ],
+  [
+    "src/connection/connection-status.js~connectionstatuslistener#onsuccessfulhandshake",
+    "class/src/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onSuccessfulHandshake",
+    "src/connection/connection-status.js~ConnectionStatusListener#onSuccessfulHandshake",
+    "method"
+  ],
+  [
+    "src/index.js",
+    "file/src/index.js.html",
+    "src/index.js",
     "file"
   ],
   [
-    "lib/connection/connection-status.js~connectionstatuslistener#onconnectionbroken",
-    "class/lib/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionBroken",
-    "lib/connection/connection-status.js~ConnectionStatusListener#onConnectionBroken",
-    "method"
-  ],
-  [
-    "lib/connection/connection-status.js~connectionstatuslistener#onconnectionclosed",
-    "class/lib/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionClosed",
-    "lib/connection/connection-status.js~ConnectionStatusListener#onConnectionClosed",
-    "method"
-  ],
-  [
-    "lib/connection/connection-status.js~connectionstatuslistener#onconnectionestablished",
-    "class/lib/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionEstablished",
-    "lib/connection/connection-status.js~ConnectionStatusListener#onConnectionEstablished",
-    "method"
-  ],
-  [
-    "lib/connection/connection-status.js~connectionstatuslistener#onconnectiontoserverfail",
-    "class/lib/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionToServerFail",
-    "lib/connection/connection-status.js~ConnectionStatusListener#onConnectionToServerFail",
-    "method"
-  ],
-  [
-    "lib/connection/connection-status.js~connectionstatuslistener#onconnectionwillclose",
-    "class/lib/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onConnectionWillClose",
-    "lib/connection/connection-status.js~ConnectionStatusListener#onConnectionWillClose",
-    "method"
-  ],
-  [
-    "lib/connection/connection-status.js~connectionstatuslistener#onfailedhandshake",
-    "class/lib/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onFailedHandshake",
-    "lib/connection/connection-status.js~ConnectionStatusListener#onFailedHandshake",
-    "method"
-  ],
-  [
-    "lib/connection/connection-status.js~connectionstatuslistener#onmessagelost",
-    "class/lib/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onMessageLost",
-    "lib/connection/connection-status.js~ConnectionStatusListener#onMessageLost",
-    "method"
-  ],
-  [
-    "lib/connection/connection-status.js~connectionstatuslistener#onnoserverurlavailable",
-    "class/lib/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onNoServerUrlAvailable",
-    "lib/connection/connection-status.js~ConnectionStatusListener#onNoServerUrlAvailable",
-    "method"
-  ],
-  [
-    "lib/connection/connection-status.js~connectionstatuslistener#onsuccessfulhandshake",
-    "class/lib/connection/connection-status.js~ConnectionStatusListener.html#instance-method-onSuccessfulHandshake",
-    "lib/connection/connection-status.js~ConnectionStatusListener#onSuccessfulHandshake",
-    "method"
-  ],
-  [
-    "lib/index.js",
-    "file/lib/index.js.html",
-    "lib/index.js",
+    "src/mapping/authentications.js",
+    "file/src/mapping/authentications.js.html",
+    "src/mapping/authentications.js",
     "file"
   ],
   [
-    "lib/mapping/authentications.js",
-    "file/lib/mapping/authentications.js.html",
-    "lib/mapping/authentications.js",
+    "src/mapping/authentications.js~delegating.default_deployment_id",
+    "class/src/mapping/authentications.js~Delegating.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/authentications.js~Delegating.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/authentications.js~simple.default_deployment_id",
+    "class/src/mapping/authentications.js~Simple.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/authentications.js~Simple.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/authentications.js~weak#control",
+    "class/src/mapping/authentications.js~Weak.html#instance-method-control",
+    "src/mapping/authentications.js~Weak#control",
+    "method"
+  ],
+  [
+    "src/mapping/authentications.js~weak#gettoken",
+    "class/src/mapping/authentications.js~Weak.html#instance-method-getToken",
+    "src/mapping/authentications.js~Weak#getToken",
+    "method"
+  ],
+  [
+    "src/mapping/authentications.js~weak#release",
+    "class/src/mapping/authentications.js~Weak.html#instance-method-release",
+    "src/mapping/authentications.js~Weak#release",
+    "method"
+  ],
+  [
+    "src/mapping/authentications.js~weak.default_deployment_id",
+    "class/src/mapping/authentications.js~Weak.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/authentications.js~Weak.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/core.js",
+    "file/src/mapping/core.js.html",
+    "src/mapping/core.js",
     "file"
   ],
   [
-    "lib/mapping/authentications.js~delegating.default_deployment_id",
-    "class/lib/mapping/authentications.js~Delegating.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/authentications.js~Delegating.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/authentications.js~simple.default_deployment_id",
-    "class/lib/mapping/authentications.js~Simple.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/authentications.js~Simple.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/authentications.js~weak#control",
-    "class/lib/mapping/authentications.js~Weak.html#instance-method-control",
-    "lib/mapping/authentications.js~Weak#control",
-    "method"
-  ],
-  [
-    "lib/mapping/authentications.js~weak#gettoken",
-    "class/lib/mapping/authentications.js~Weak.html#instance-method-getToken",
-    "lib/mapping/authentications.js~Weak#getToken",
-    "method"
-  ],
-  [
-    "lib/mapping/authentications.js~weak#release",
-    "class/lib/mapping/authentications.js~Weak.html#instance-method-release",
-    "lib/mapping/authentications.js~Weak#release",
-    "method"
-  ],
-  [
-    "lib/mapping/authentications.js~weak.default_deployment_id",
-    "class/lib/mapping/authentications.js~Weak.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/authentications.js~Weak.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/core.js",
-    "file/lib/mapping/core.js.html",
-    "lib/mapping/core.js",
+    "src/mapping/index.js",
+    "file/src/mapping/index.js.html",
+    "src/mapping/index.js",
     "file"
   ],
   [
-    "lib/mapping/index.js",
-    "file/lib/mapping/index.js.html",
-    "lib/mapping/index.js",
+    "src/mapping/services.js",
+    "file/src/mapping/services.js.html",
+    "src/mapping/services.js",
     "file"
   ],
   [
-    "lib/mapping/services.js",
-    "file/lib/mapping/services.js.html",
-    "lib/mapping/services.js",
+    "src/mapping/services.js~aggreg#push",
+    "class/src/mapping/services.js~Aggreg.html#instance-method-push",
+    "src/mapping/services.js~Aggreg#push",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~aggreg.default_deployment_id",
+    "class/src/mapping/services.js~Aggreg.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Aggreg.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~cron#list",
+    "class/src/mapping/services.js~Cron.html#instance-method-list",
+    "src/mapping/services.js~Cron#list",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~cron.default_deployment_id",
+    "class/src/mapping/services.js~Cron.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Cron.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~echo#echo",
+    "class/src/mapping/services.js~Echo.html#instance-method-echo",
+    "src/mapping/services.js~Echo#echo",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~echo.default_deployment_id",
+    "class/src/mapping/services.js~Echo.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Echo.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~game#available",
+    "class/src/mapping/services.js~Game.html#instance-method-available",
+    "src/mapping/services.js~Game#available",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~game#join",
+    "class/src/mapping/services.js~Game.html#instance-method-join",
+    "src/mapping/services.js~Game#join",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~game#organize",
+    "class/src/mapping/services.js~Game.html#instance-method-organize",
+    "src/mapping/services.js~Game#organize",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~game#play",
+    "class/src/mapping/services.js~Game.html#instance-method-play",
+    "src/mapping/services.js~Game#play",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~game#start",
+    "class/src/mapping/services.js~Game.html#instance-method-start",
+    "src/mapping/services.js~Game#start",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~game#unjoin",
+    "class/src/mapping/services.js~Game.html#instance-method-unjoin",
+    "src/mapping/services.js~Game#unjoin",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~game.default_deployment_id",
+    "class/src/mapping/services.js~Game.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Game.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~gameengine#join_result",
+    "class/src/mapping/services.js~GameEngine.html#instance-method-join_result",
+    "src/mapping/services.js~GameEngine#join_result",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gameengine#organize_result",
+    "class/src/mapping/services.js~GameEngine.html#instance-method-organize_result",
+    "src/mapping/services.js~GameEngine#organize_result",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gameengine#register",
+    "class/src/mapping/services.js~GameEngine.html#instance-method-register",
+    "src/mapping/services.js~GameEngine#register",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gameengine#start_result",
+    "class/src/mapping/services.js~GameEngine.html#instance-method-start_result",
+    "src/mapping/services.js~GameEngine#start_result",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gameengine#state",
+    "class/src/mapping/services.js~GameEngine.html#instance-method-state",
+    "src/mapping/services.js~GameEngine#state",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gameengine#unjoin_result",
+    "class/src/mapping/services.js~GameEngine.html#instance-method-unjoin_result",
+    "src/mapping/services.js~GameEngine#unjoin_result",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gameengine.default_deployment_id",
+    "class/src/mapping/services.js~GameEngine.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~GameEngine.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~gda#get",
+    "class/src/mapping/services.js~Gda.html#instance-method-get",
+    "src/mapping/services.js~Gda#get",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gda#getcells",
+    "class/src/mapping/services.js~Gda.html#instance-method-getCells",
+    "src/mapping/services.js~Gda#getCells",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gda#inc",
+    "class/src/mapping/services.js~Gda.html#instance-method-inc",
+    "src/mapping/services.js~Gda#inc",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gda#list",
+    "class/src/mapping/services.js~Gda.html#instance-method-list",
+    "src/mapping/services.js~Gda#list",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gda#put",
+    "class/src/mapping/services.js~Gda.html#instance-method-put",
+    "src/mapping/services.js~Gda#put",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gda#puts",
+    "class/src/mapping/services.js~Gda.html#instance-method-puts",
+    "src/mapping/services.js~Gda#puts",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gda#range",
+    "class/src/mapping/services.js~Gda.html#instance-method-range",
+    "src/mapping/services.js~Gda#range",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gda#removecell",
+    "class/src/mapping/services.js~Gda.html#instance-method-removeCell",
+    "src/mapping/services.js~Gda#removeCell",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gda#removecolumn",
+    "class/src/mapping/services.js~Gda.html#instance-method-removeColumn",
+    "src/mapping/services.js~Gda#removeColumn",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gda#removerange",
+    "class/src/mapping/services.js~Gda.html#instance-method-removeRange",
+    "src/mapping/services.js~Gda#removeRange",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gda#removerow",
+    "class/src/mapping/services.js~Gda.html#instance-method-removeRow",
+    "src/mapping/services.js~Gda#removeRow",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~gda.default_deployment_id",
+    "class/src/mapping/services.js~Gda.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Gda.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#addme",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-addMe",
+    "src/mapping/services.js~GroupManagement#addMe",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#adduser",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-addUser",
+    "src/mapping/services.js~GroupManagement#addUser",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#addusers",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-addUsers",
+    "src/mapping/services.js~GroupManagement#addUsers",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#allgroups",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-allGroups",
+    "src/mapping/services.js~GroupManagement#allGroups",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#creategroup",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-createGroup",
+    "src/mapping/services.js~GroupManagement#createGroup",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#delgroup",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-delGroup",
+    "src/mapping/services.js~GroupManagement#delGroup",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#deluser",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-delUser",
+    "src/mapping/services.js~GroupManagement#delUser",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#delusers",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-delUsers",
+    "src/mapping/services.js~GroupManagement#delUsers",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#exists",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-exists",
+    "src/mapping/services.js~GroupManagement#exists",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#grant",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-grant",
+    "src/mapping/services.js~GroupManagement#grant",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#groupusers",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-groupUsers",
+    "src/mapping/services.js~GroupManagement#groupUsers",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#groups",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-groups",
+    "src/mapping/services.js~GroupManagement#groups",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#listgrants",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-listGrants",
+    "src/mapping/services.js~GroupManagement#listGrants",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#listpresences",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-listPresences",
+    "src/mapping/services.js~GroupManagement#listPresences",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#memberof",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-memberOf",
+    "src/mapping/services.js~GroupManagement#memberOf",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#mgrant",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-mgrant",
+    "src/mapping/services.js~GroupManagement#mgrant",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#mrevoke",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-mrevoke",
+    "src/mapping/services.js~GroupManagement#mrevoke",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#mygroups",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-myGroups",
+    "src/mapping/services.js~GroupManagement#myGroups",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement#revoke",
+    "class/src/mapping/services.js~GroupManagement.html#instance-method-revoke",
+    "src/mapping/services.js~GroupManagement#revoke",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~groupmanagement.default_deployment_id",
+    "class/src/mapping/services.js~GroupManagement.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~GroupManagement.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~httpclient#call",
+    "class/src/mapping/services.js~Httpclient.html#instance-method-call",
+    "src/mapping/services.js~Httpclient#call",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~httpclient.default_deployment_id",
+    "class/src/mapping/services.js~Httpclient.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Httpclient.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~macro#call",
+    "class/src/mapping/services.js~Macro.html#instance-method-call",
+    "src/mapping/services.js~Macro#call",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~macro.default_deployment_id",
+    "class/src/mapping/services.js~Macro.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Macro.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~macrodebug#breakpoint",
+    "class/src/mapping/services.js~MacroDebug.html#instance-method-breakpoint",
+    "src/mapping/services.js~MacroDebug#breakpoint",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~macrodebug#info",
+    "class/src/mapping/services.js~MacroDebug.html#instance-method-info",
+    "src/mapping/services.js~MacroDebug#info",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~macrodebug#livedebug",
+    "class/src/mapping/services.js~MacroDebug.html#instance-method-livedebug",
+    "src/mapping/services.js~MacroDebug#livedebug",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~macrodebug#resume",
+    "class/src/mapping/services.js~MacroDebug.html#instance-method-resume",
+    "src/mapping/services.js~MacroDebug#resume",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~macrodebug#variable",
+    "class/src/mapping/services.js~MacroDebug.html#instance-method-variable",
+    "src/mapping/services.js~MacroDebug#variable",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~macrodebug.default_deployment_id",
+    "class/src/mapping/services.js~MacroDebug.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~MacroDebug.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~messaging#send",
+    "class/src/mapping/services.js~Messaging.html#instance-method-send",
+    "src/mapping/services.js~Messaging#send",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~messaging.default_deployment_id",
+    "class/src/mapping/services.js~Messaging.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Messaging.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~notif.default_deployment_id",
+    "class/src/mapping/services.js~Notif.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Notif.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~queue#call",
+    "class/src/mapping/services.js~Queue.html#instance-method-call",
+    "src/mapping/services.js~Queue#call",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~queue#done",
+    "class/src/mapping/services.js~Queue.html#instance-method-done",
+    "src/mapping/services.js~Queue#done",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~queue#register",
+    "class/src/mapping/services.js~Queue.html#instance-method-register",
+    "src/mapping/services.js~Queue#register",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~queue#submit",
+    "class/src/mapping/services.js~Queue.html#instance-method-submit",
+    "src/mapping/services.js~Queue#submit",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~queue#unregister",
+    "class/src/mapping/services.js~Queue.html#instance-method-unregister",
+    "src/mapping/services.js~Queue#unregister",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~queue.default_deployment_id",
+    "class/src/mapping/services.js~Queue.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Queue.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~rdbms.default_deployment_id",
+    "class/src/mapping/services.js~Rdbms.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Rdbms.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~remoting#addlistener",
+    "class/src/mapping/services.js~Remoting.html#instance-method-addListener",
+    "src/mapping/services.js~Remoting#addListener",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~remoting#capabilities",
+    "class/src/mapping/services.js~Remoting.html#instance-method-capabilities",
+    "src/mapping/services.js~Remoting#capabilities",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~remoting#execute",
+    "class/src/mapping/services.js~Remoting.html#instance-method-execute",
+    "src/mapping/services.js~Remoting#execute",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~remoting#getcapabilities",
+    "class/src/mapping/services.js~Remoting.html#instance-method-getCapabilities",
+    "src/mapping/services.js~Remoting#getCapabilities",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~remoting#notify",
+    "class/src/mapping/services.js~Remoting.html#instance-method-notify",
+    "src/mapping/services.js~Remoting#notify",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~remoting#ping",
+    "class/src/mapping/services.js~Remoting.html#instance-method-ping",
+    "src/mapping/services.js~Remoting#ping",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~remoting#pong",
+    "class/src/mapping/services.js~Remoting.html#instance-method-pong",
+    "src/mapping/services.js~Remoting#pong",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~remoting#removelistener",
+    "class/src/mapping/services.js~Remoting.html#instance-method-removeListener",
+    "src/mapping/services.js~Remoting#removeListener",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~remoting.default_deployment_id",
+    "class/src/mapping/services.js~Remoting.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Remoting.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~search#delete",
+    "class/src/mapping/services.js~Search.html#instance-method-delete",
+    "src/mapping/services.js~Search#delete",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~search#get",
+    "class/src/mapping/services.js~Search.html#instance-method-get",
+    "src/mapping/services.js~Search#get",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~search#index",
+    "class/src/mapping/services.js~Search.html#instance-method-index",
+    "src/mapping/services.js~Search#index",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~search#search",
+    "class/src/mapping/services.js~Search.html#instance-method-search",
+    "src/mapping/services.js~Search#search",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~search.default_deployment_id",
+    "class/src/mapping/services.js~Search.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Search.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~sendmail.default_deployment_id",
+    "class/src/mapping/services.js~Sendmail.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Sendmail.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~sms_ovh.default_deployment_id",
+    "class/src/mapping/services.js~Sms_ovh.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Sms_ovh.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~stack#getlisteners",
+    "class/src/mapping/services.js~Stack.html#instance-method-getListeners",
+    "src/mapping/services.js~Stack#getListeners",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~stack#list",
+    "class/src/mapping/services.js~Stack.html#instance-method-list",
+    "src/mapping/services.js~Stack#list",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~stack#purge",
+    "class/src/mapping/services.js~Stack.html#instance-method-purge",
+    "src/mapping/services.js~Stack#purge",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~stack#push",
+    "class/src/mapping/services.js~Stack.html#instance-method-push",
+    "src/mapping/services.js~Stack#push",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~stack#remove",
+    "class/src/mapping/services.js~Stack.html#instance-method-remove",
+    "src/mapping/services.js~Stack#remove",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~stack#setlisteners",
+    "class/src/mapping/services.js~Stack.html#instance-method-setListeners",
+    "src/mapping/services.js~Stack#setListeners",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~stack#update",
+    "class/src/mapping/services.js~Stack.html#instance-method-update",
+    "src/mapping/services.js~Stack#update",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~stack.default_deployment_id",
+    "class/src/mapping/services.js~Stack.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Stack.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~template#evaluate",
+    "class/src/mapping/services.js~Template.html#instance-method-evaluate",
+    "src/mapping/services.js~Template#evaluate",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~template.default_deployment_id",
+    "class/src/mapping/services.js~Template.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Template.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~trigger.default_deployment_id",
+    "class/src/mapping/services.js~Trigger.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Trigger.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~userdir#search",
+    "class/src/mapping/services.js~Userdir.html#instance-method-search",
+    "src/mapping/services.js~Userdir#search",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~userdir#userinfo",
+    "class/src/mapping/services.js~Userdir.html#instance-method-userInfo",
+    "src/mapping/services.js~Userdir#userInfo",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~userdir.default_deployment_id",
+    "class/src/mapping/services.js~Userdir.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Userdir.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#cp",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-cp",
+    "src/mapping/services.js~Zpfs_hdfs#cp",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#du",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-du",
+    "src/mapping/services.js~Zpfs_hdfs#du",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#link",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-link",
+    "src/mapping/services.js~Zpfs_hdfs#link",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#ls",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-ls",
+    "src/mapping/services.js~Zpfs_hdfs#ls",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#mkdir",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-mkdir",
+    "src/mapping/services.js~Zpfs_hdfs#mkdir",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#mv",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-mv",
+    "src/mapping/services.js~Zpfs_hdfs#mv",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#newfile",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-newFile",
+    "src/mapping/services.js~Zpfs_hdfs#newFile",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#newuploadurl",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-newUploadUrl",
+    "src/mapping/services.js~Zpfs_hdfs#newUploadUrl",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#rm",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-rm",
+    "src/mapping/services.js~Zpfs_hdfs#rm",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#snapshot",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-snapshot",
+    "src/mapping/services.js~Zpfs_hdfs#snapshot",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#stat",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-stat",
+    "src/mapping/services.js~Zpfs_hdfs#stat",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs#updatemeta",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#instance-method-updateMeta",
+    "src/mapping/services.js~Zpfs_hdfs#updateMeta",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_hdfs.default_deployment_id",
+    "class/src/mapping/services.js~Zpfs_hdfs.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Zpfs_hdfs.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#cp",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-cp",
+    "src/mapping/services.js~Zpfs_s3#cp",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#du",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-du",
+    "src/mapping/services.js~Zpfs_s3#du",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#link",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-link",
+    "src/mapping/services.js~Zpfs_s3#link",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#ls",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-ls",
+    "src/mapping/services.js~Zpfs_s3#ls",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#mkdir",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-mkdir",
+    "src/mapping/services.js~Zpfs_s3#mkdir",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#mv",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-mv",
+    "src/mapping/services.js~Zpfs_s3#mv",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#newfile",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-newFile",
+    "src/mapping/services.js~Zpfs_s3#newFile",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#newuploadurl",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-newUploadUrl",
+    "src/mapping/services.js~Zpfs_s3#newUploadUrl",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#rm",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-rm",
+    "src/mapping/services.js~Zpfs_s3#rm",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#snapshot",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-snapshot",
+    "src/mapping/services.js~Zpfs_s3#snapshot",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#stat",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-stat",
+    "src/mapping/services.js~Zpfs_s3#stat",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3#updatemeta",
+    "class/src/mapping/services.js~Zpfs_s3.html#instance-method-updateMeta",
+    "src/mapping/services.js~Zpfs_s3#updateMeta",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3.default_deployment_id",
+    "class/src/mapping/services.js~Zpfs_s3.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Zpfs_s3.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#cp",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-cp",
+    "src/mapping/services.js~Zpfs_s3compat#cp",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#du",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-du",
+    "src/mapping/services.js~Zpfs_s3compat#du",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#link",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-link",
+    "src/mapping/services.js~Zpfs_s3compat#link",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#ls",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-ls",
+    "src/mapping/services.js~Zpfs_s3compat#ls",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#mkdir",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-mkdir",
+    "src/mapping/services.js~Zpfs_s3compat#mkdir",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#mv",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-mv",
+    "src/mapping/services.js~Zpfs_s3compat#mv",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#newfile",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-newFile",
+    "src/mapping/services.js~Zpfs_s3compat#newFile",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#newuploadurl",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-newUploadUrl",
+    "src/mapping/services.js~Zpfs_s3compat#newUploadUrl",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#rm",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-rm",
+    "src/mapping/services.js~Zpfs_s3compat#rm",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#snapshot",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-snapshot",
+    "src/mapping/services.js~Zpfs_s3compat#snapshot",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#stat",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-stat",
+    "src/mapping/services.js~Zpfs_s3compat#stat",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat#updatemeta",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#instance-method-updateMeta",
+    "src/mapping/services.js~Zpfs_s3compat#updateMeta",
+    "method"
+  ],
+  [
+    "src/mapping/services.js~zpfs_s3compat.default_deployment_id",
+    "class/src/mapping/services.js~Zpfs_s3compat.html#static-get-DEFAULT_DEPLOYMENT_ID",
+    "src/mapping/services.js~Zpfs_s3compat.DEFAULT_DEPLOYMENT_ID",
+    "member"
+  ],
+  [
+    "src/utils/index.js",
+    "file/src/utils/index.js.html",
+    "src/utils/index.js",
     "file"
   ],
   [
-    "lib/mapping/services.js~aggreg#push",
-    "class/lib/mapping/services.js~Aggreg.html#instance-method-push",
-    "lib/mapping/services.js~Aggreg#push",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~aggreg.default_deployment_id",
-    "class/lib/mapping/services.js~Aggreg.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Aggreg.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~cron#list",
-    "class/lib/mapping/services.js~Cron.html#instance-method-list",
-    "lib/mapping/services.js~Cron#list",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~cron.default_deployment_id",
-    "class/lib/mapping/services.js~Cron.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Cron.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~echo#echo",
-    "class/lib/mapping/services.js~Echo.html#instance-method-echo",
-    "lib/mapping/services.js~Echo#echo",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~echo.default_deployment_id",
-    "class/lib/mapping/services.js~Echo.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Echo.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~game#available",
-    "class/lib/mapping/services.js~Game.html#instance-method-available",
-    "lib/mapping/services.js~Game#available",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~game#join",
-    "class/lib/mapping/services.js~Game.html#instance-method-join",
-    "lib/mapping/services.js~Game#join",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~game#organize",
-    "class/lib/mapping/services.js~Game.html#instance-method-organize",
-    "lib/mapping/services.js~Game#organize",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~game#play",
-    "class/lib/mapping/services.js~Game.html#instance-method-play",
-    "lib/mapping/services.js~Game#play",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~game#start",
-    "class/lib/mapping/services.js~Game.html#instance-method-start",
-    "lib/mapping/services.js~Game#start",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~game#unjoin",
-    "class/lib/mapping/services.js~Game.html#instance-method-unjoin",
-    "lib/mapping/services.js~Game#unjoin",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~game.default_deployment_id",
-    "class/lib/mapping/services.js~Game.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Game.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~gameengine#join_result",
-    "class/lib/mapping/services.js~GameEngine.html#instance-method-join_result",
-    "lib/mapping/services.js~GameEngine#join_result",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gameengine#organize_result",
-    "class/lib/mapping/services.js~GameEngine.html#instance-method-organize_result",
-    "lib/mapping/services.js~GameEngine#organize_result",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gameengine#register",
-    "class/lib/mapping/services.js~GameEngine.html#instance-method-register",
-    "lib/mapping/services.js~GameEngine#register",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gameengine#start_result",
-    "class/lib/mapping/services.js~GameEngine.html#instance-method-start_result",
-    "lib/mapping/services.js~GameEngine#start_result",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gameengine#state",
-    "class/lib/mapping/services.js~GameEngine.html#instance-method-state",
-    "lib/mapping/services.js~GameEngine#state",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gameengine#unjoin_result",
-    "class/lib/mapping/services.js~GameEngine.html#instance-method-unjoin_result",
-    "lib/mapping/services.js~GameEngine#unjoin_result",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gameengine.default_deployment_id",
-    "class/lib/mapping/services.js~GameEngine.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~GameEngine.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~gda#get",
-    "class/lib/mapping/services.js~Gda.html#instance-method-get",
-    "lib/mapping/services.js~Gda#get",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gda#getcells",
-    "class/lib/mapping/services.js~Gda.html#instance-method-getCells",
-    "lib/mapping/services.js~Gda#getCells",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gda#inc",
-    "class/lib/mapping/services.js~Gda.html#instance-method-inc",
-    "lib/mapping/services.js~Gda#inc",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gda#list",
-    "class/lib/mapping/services.js~Gda.html#instance-method-list",
-    "lib/mapping/services.js~Gda#list",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gda#put",
-    "class/lib/mapping/services.js~Gda.html#instance-method-put",
-    "lib/mapping/services.js~Gda#put",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gda#puts",
-    "class/lib/mapping/services.js~Gda.html#instance-method-puts",
-    "lib/mapping/services.js~Gda#puts",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gda#range",
-    "class/lib/mapping/services.js~Gda.html#instance-method-range",
-    "lib/mapping/services.js~Gda#range",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gda#removecell",
-    "class/lib/mapping/services.js~Gda.html#instance-method-removeCell",
-    "lib/mapping/services.js~Gda#removeCell",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gda#removecolumn",
-    "class/lib/mapping/services.js~Gda.html#instance-method-removeColumn",
-    "lib/mapping/services.js~Gda#removeColumn",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gda#removerange",
-    "class/lib/mapping/services.js~Gda.html#instance-method-removeRange",
-    "lib/mapping/services.js~Gda#removeRange",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gda#removerow",
-    "class/lib/mapping/services.js~Gda.html#instance-method-removeRow",
-    "lib/mapping/services.js~Gda#removeRow",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~gda.default_deployment_id",
-    "class/lib/mapping/services.js~Gda.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Gda.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#addme",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-addMe",
-    "lib/mapping/services.js~GroupManagement#addMe",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#adduser",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-addUser",
-    "lib/mapping/services.js~GroupManagement#addUser",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#addusers",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-addUsers",
-    "lib/mapping/services.js~GroupManagement#addUsers",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#allgroups",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-allGroups",
-    "lib/mapping/services.js~GroupManagement#allGroups",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#creategroup",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-createGroup",
-    "lib/mapping/services.js~GroupManagement#createGroup",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#delgroup",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-delGroup",
-    "lib/mapping/services.js~GroupManagement#delGroup",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#deluser",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-delUser",
-    "lib/mapping/services.js~GroupManagement#delUser",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#delusers",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-delUsers",
-    "lib/mapping/services.js~GroupManagement#delUsers",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#exists",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-exists",
-    "lib/mapping/services.js~GroupManagement#exists",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#grant",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-grant",
-    "lib/mapping/services.js~GroupManagement#grant",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#groupusers",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-groupUsers",
-    "lib/mapping/services.js~GroupManagement#groupUsers",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#groups",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-groups",
-    "lib/mapping/services.js~GroupManagement#groups",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#listgrants",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-listGrants",
-    "lib/mapping/services.js~GroupManagement#listGrants",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#listpresences",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-listPresences",
-    "lib/mapping/services.js~GroupManagement#listPresences",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#memberof",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-memberOf",
-    "lib/mapping/services.js~GroupManagement#memberOf",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#mgrant",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-mgrant",
-    "lib/mapping/services.js~GroupManagement#mgrant",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#mrevoke",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-mrevoke",
-    "lib/mapping/services.js~GroupManagement#mrevoke",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#mygroups",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-myGroups",
-    "lib/mapping/services.js~GroupManagement#myGroups",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement#revoke",
-    "class/lib/mapping/services.js~GroupManagement.html#instance-method-revoke",
-    "lib/mapping/services.js~GroupManagement#revoke",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~groupmanagement.default_deployment_id",
-    "class/lib/mapping/services.js~GroupManagement.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~GroupManagement.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~httpclient#call",
-    "class/lib/mapping/services.js~Httpclient.html#instance-method-call",
-    "lib/mapping/services.js~Httpclient#call",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~httpclient.default_deployment_id",
-    "class/lib/mapping/services.js~Httpclient.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Httpclient.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~macro#call",
-    "class/lib/mapping/services.js~Macro.html#instance-method-call",
-    "lib/mapping/services.js~Macro#call",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~macro.default_deployment_id",
-    "class/lib/mapping/services.js~Macro.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Macro.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~macrodebug#breakpoint",
-    "class/lib/mapping/services.js~MacroDebug.html#instance-method-breakpoint",
-    "lib/mapping/services.js~MacroDebug#breakpoint",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~macrodebug#info",
-    "class/lib/mapping/services.js~MacroDebug.html#instance-method-info",
-    "lib/mapping/services.js~MacroDebug#info",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~macrodebug#livedebug",
-    "class/lib/mapping/services.js~MacroDebug.html#instance-method-livedebug",
-    "lib/mapping/services.js~MacroDebug#livedebug",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~macrodebug#resume",
-    "class/lib/mapping/services.js~MacroDebug.html#instance-method-resume",
-    "lib/mapping/services.js~MacroDebug#resume",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~macrodebug#variable",
-    "class/lib/mapping/services.js~MacroDebug.html#instance-method-variable",
-    "lib/mapping/services.js~MacroDebug#variable",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~macrodebug.default_deployment_id",
-    "class/lib/mapping/services.js~MacroDebug.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~MacroDebug.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~messaging#send",
-    "class/lib/mapping/services.js~Messaging.html#instance-method-send",
-    "lib/mapping/services.js~Messaging#send",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~messaging.default_deployment_id",
-    "class/lib/mapping/services.js~Messaging.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Messaging.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~notif.default_deployment_id",
-    "class/lib/mapping/services.js~Notif.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Notif.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~queue#call",
-    "class/lib/mapping/services.js~Queue.html#instance-method-call",
-    "lib/mapping/services.js~Queue#call",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~queue#done",
-    "class/lib/mapping/services.js~Queue.html#instance-method-done",
-    "lib/mapping/services.js~Queue#done",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~queue#register",
-    "class/lib/mapping/services.js~Queue.html#instance-method-register",
-    "lib/mapping/services.js~Queue#register",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~queue#submit",
-    "class/lib/mapping/services.js~Queue.html#instance-method-submit",
-    "lib/mapping/services.js~Queue#submit",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~queue#unregister",
-    "class/lib/mapping/services.js~Queue.html#instance-method-unregister",
-    "lib/mapping/services.js~Queue#unregister",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~queue.default_deployment_id",
-    "class/lib/mapping/services.js~Queue.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Queue.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~rdbms.default_deployment_id",
-    "class/lib/mapping/services.js~Rdbms.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Rdbms.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~remoting#addlistener",
-    "class/lib/mapping/services.js~Remoting.html#instance-method-addListener",
-    "lib/mapping/services.js~Remoting#addListener",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~remoting#capabilities",
-    "class/lib/mapping/services.js~Remoting.html#instance-method-capabilities",
-    "lib/mapping/services.js~Remoting#capabilities",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~remoting#execute",
-    "class/lib/mapping/services.js~Remoting.html#instance-method-execute",
-    "lib/mapping/services.js~Remoting#execute",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~remoting#getcapabilities",
-    "class/lib/mapping/services.js~Remoting.html#instance-method-getCapabilities",
-    "lib/mapping/services.js~Remoting#getCapabilities",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~remoting#notify",
-    "class/lib/mapping/services.js~Remoting.html#instance-method-notify",
-    "lib/mapping/services.js~Remoting#notify",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~remoting#ping",
-    "class/lib/mapping/services.js~Remoting.html#instance-method-ping",
-    "lib/mapping/services.js~Remoting#ping",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~remoting#pong",
-    "class/lib/mapping/services.js~Remoting.html#instance-method-pong",
-    "lib/mapping/services.js~Remoting#pong",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~remoting#removelistener",
-    "class/lib/mapping/services.js~Remoting.html#instance-method-removeListener",
-    "lib/mapping/services.js~Remoting#removeListener",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~remoting.default_deployment_id",
-    "class/lib/mapping/services.js~Remoting.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Remoting.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~search#delete",
-    "class/lib/mapping/services.js~Search.html#instance-method-delete",
-    "lib/mapping/services.js~Search#delete",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~search#get",
-    "class/lib/mapping/services.js~Search.html#instance-method-get",
-    "lib/mapping/services.js~Search#get",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~search#index",
-    "class/lib/mapping/services.js~Search.html#instance-method-index",
-    "lib/mapping/services.js~Search#index",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~search#search",
-    "class/lib/mapping/services.js~Search.html#instance-method-search",
-    "lib/mapping/services.js~Search#search",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~search.default_deployment_id",
-    "class/lib/mapping/services.js~Search.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Search.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~sendmail.default_deployment_id",
-    "class/lib/mapping/services.js~Sendmail.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Sendmail.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~sms_ovh.default_deployment_id",
-    "class/lib/mapping/services.js~Sms_ovh.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Sms_ovh.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~stack#getlisteners",
-    "class/lib/mapping/services.js~Stack.html#instance-method-getListeners",
-    "lib/mapping/services.js~Stack#getListeners",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~stack#list",
-    "class/lib/mapping/services.js~Stack.html#instance-method-list",
-    "lib/mapping/services.js~Stack#list",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~stack#purge",
-    "class/lib/mapping/services.js~Stack.html#instance-method-purge",
-    "lib/mapping/services.js~Stack#purge",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~stack#push",
-    "class/lib/mapping/services.js~Stack.html#instance-method-push",
-    "lib/mapping/services.js~Stack#push",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~stack#remove",
-    "class/lib/mapping/services.js~Stack.html#instance-method-remove",
-    "lib/mapping/services.js~Stack#remove",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~stack#setlisteners",
-    "class/lib/mapping/services.js~Stack.html#instance-method-setListeners",
-    "lib/mapping/services.js~Stack#setListeners",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~stack#update",
-    "class/lib/mapping/services.js~Stack.html#instance-method-update",
-    "lib/mapping/services.js~Stack#update",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~stack.default_deployment_id",
-    "class/lib/mapping/services.js~Stack.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Stack.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~template#evaluate",
-    "class/lib/mapping/services.js~Template.html#instance-method-evaluate",
-    "lib/mapping/services.js~Template#evaluate",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~template.default_deployment_id",
-    "class/lib/mapping/services.js~Template.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Template.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~trigger.default_deployment_id",
-    "class/lib/mapping/services.js~Trigger.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Trigger.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~userdir#search",
-    "class/lib/mapping/services.js~Userdir.html#instance-method-search",
-    "lib/mapping/services.js~Userdir#search",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~userdir#userinfo",
-    "class/lib/mapping/services.js~Userdir.html#instance-method-userInfo",
-    "lib/mapping/services.js~Userdir#userInfo",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~userdir.default_deployment_id",
-    "class/lib/mapping/services.js~Userdir.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Userdir.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#cp",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-cp",
-    "lib/mapping/services.js~Zpfs_hdfs#cp",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#du",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-du",
-    "lib/mapping/services.js~Zpfs_hdfs#du",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#link",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-link",
-    "lib/mapping/services.js~Zpfs_hdfs#link",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#ls",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-ls",
-    "lib/mapping/services.js~Zpfs_hdfs#ls",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#mkdir",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-mkdir",
-    "lib/mapping/services.js~Zpfs_hdfs#mkdir",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#mv",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-mv",
-    "lib/mapping/services.js~Zpfs_hdfs#mv",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#newfile",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-newFile",
-    "lib/mapping/services.js~Zpfs_hdfs#newFile",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#newuploadurl",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-newUploadUrl",
-    "lib/mapping/services.js~Zpfs_hdfs#newUploadUrl",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#rm",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-rm",
-    "lib/mapping/services.js~Zpfs_hdfs#rm",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#snapshot",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-snapshot",
-    "lib/mapping/services.js~Zpfs_hdfs#snapshot",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#stat",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-stat",
-    "lib/mapping/services.js~Zpfs_hdfs#stat",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs#updatemeta",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#instance-method-updateMeta",
-    "lib/mapping/services.js~Zpfs_hdfs#updateMeta",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_hdfs.default_deployment_id",
-    "class/lib/mapping/services.js~Zpfs_hdfs.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Zpfs_hdfs.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#cp",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-cp",
-    "lib/mapping/services.js~Zpfs_s3#cp",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#du",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-du",
-    "lib/mapping/services.js~Zpfs_s3#du",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#link",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-link",
-    "lib/mapping/services.js~Zpfs_s3#link",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#ls",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-ls",
-    "lib/mapping/services.js~Zpfs_s3#ls",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#mkdir",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-mkdir",
-    "lib/mapping/services.js~Zpfs_s3#mkdir",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#mv",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-mv",
-    "lib/mapping/services.js~Zpfs_s3#mv",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#newfile",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-newFile",
-    "lib/mapping/services.js~Zpfs_s3#newFile",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#newuploadurl",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-newUploadUrl",
-    "lib/mapping/services.js~Zpfs_s3#newUploadUrl",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#rm",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-rm",
-    "lib/mapping/services.js~Zpfs_s3#rm",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#snapshot",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-snapshot",
-    "lib/mapping/services.js~Zpfs_s3#snapshot",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#stat",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-stat",
-    "lib/mapping/services.js~Zpfs_s3#stat",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3#updatemeta",
-    "class/lib/mapping/services.js~Zpfs_s3.html#instance-method-updateMeta",
-    "lib/mapping/services.js~Zpfs_s3#updateMeta",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3.default_deployment_id",
-    "class/lib/mapping/services.js~Zpfs_s3.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Zpfs_s3.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#cp",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-cp",
-    "lib/mapping/services.js~Zpfs_s3compat#cp",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#du",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-du",
-    "lib/mapping/services.js~Zpfs_s3compat#du",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#link",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-link",
-    "lib/mapping/services.js~Zpfs_s3compat#link",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#ls",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-ls",
-    "lib/mapping/services.js~Zpfs_s3compat#ls",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#mkdir",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-mkdir",
-    "lib/mapping/services.js~Zpfs_s3compat#mkdir",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#mv",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-mv",
-    "lib/mapping/services.js~Zpfs_s3compat#mv",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#newfile",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-newFile",
-    "lib/mapping/services.js~Zpfs_s3compat#newFile",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#newuploadurl",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-newUploadUrl",
-    "lib/mapping/services.js~Zpfs_s3compat#newUploadUrl",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#rm",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-rm",
-    "lib/mapping/services.js~Zpfs_s3compat#rm",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#snapshot",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-snapshot",
-    "lib/mapping/services.js~Zpfs_s3compat#snapshot",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#stat",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-stat",
-    "lib/mapping/services.js~Zpfs_s3compat#stat",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat#updatemeta",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#instance-method-updateMeta",
-    "lib/mapping/services.js~Zpfs_s3compat#updateMeta",
-    "method"
-  ],
-  [
-    "lib/mapping/services.js~zpfs_s3compat.default_deployment_id",
-    "class/lib/mapping/services.js~Zpfs_s3compat.html#static-get-DEFAULT_DEPLOYMENT_ID",
-    "lib/mapping/services.js~Zpfs_s3compat.DEFAULT_DEPLOYMENT_ID",
-    "member"
-  ],
-  [
-    "lib/utils/index.js",
-    "file/lib/utils/index.js.html",
-    "lib/utils/index.js",
+    "src/utils/session-persistence.js",
+    "file/src/utils/session-persistence.js.html",
+    "src/utils/session-persistence.js",
     "file"
   ],
   [
-    "lib/utils/session-persistence.js",
-    "file/lib/utils/session-persistence.js.html",
-    "lib/utils/session-persistence.js",
+    "src/utils/storage.js",
+    "file/src/utils/storage.js.html",
+    "src/utils/storage.js",
     "file"
   ]
 ]

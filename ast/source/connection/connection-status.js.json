@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 1032,
+  "end": 1163,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 46,
+      "line": 51,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 1032,
+    "end": 1163,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 46,
+        "line": 51,
         "column": 0
       }
     },
@@ -31,14 +31,14 @@
       {
         "type": "ExportNamedDeclaration",
         "start": 66,
-        "end": 1031,
+        "end": 1162,
         "loc": {
           "start": {
             "line": 5,
             "column": 0
           },
           "end": {
-            "line": 45,
+            "line": 50,
             "column": 1
           }
         },
@@ -47,14 +47,14 @@
         "declaration": {
           "type": "ClassDeclaration",
           "start": 73,
-          "end": 1031,
+          "end": 1162,
           "loc": {
             "start": {
               "line": 5,
               "column": 7
             },
             "end": {
-              "line": 45,
+              "line": 50,
               "column": 1
             }
           },
@@ -80,14 +80,14 @@
           "body": {
             "type": "ClassBody",
             "start": 104,
-            "end": 1031,
+            "end": 1162,
             "loc": {
               "start": {
                 "line": 5,
                 "column": 38
               },
               "end": {
-                "line": 45,
+                "line": 50,
                 "column": 1
               }
             },
@@ -478,16 +478,16 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Callback no server url avaibale\n   ",
+                    "value": "*\n   * Callback fired when negociation with server failed\n   * @param {Object} failure\n   ",
                     "start": 520,
-                    "end": 566,
+                    "end": 614,
                     "loc": {
                       "start": {
                         "line": 23,
                         "column": 2
                       },
                       "end": {
-                        "line": 25,
+                        "line": 26,
                         "column": 5
                       }
                     }
@@ -496,30 +496,144 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 569,
-                "end": 596,
+                "start": 617,
+                "end": 648,
                 "loc": {
                   "start": {
-                    "line": 26,
+                    "line": 27,
                     "column": 2
                   },
                   "end": {
-                    "line": 26,
+                    "line": 27,
+                    "column": 33
+                  }
+                },
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 617,
+                  "end": 636,
+                  "loc": {
+                    "start": {
+                      "line": 27,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 27,
+                      "column": 21
+                    },
+                    "identifierName": "onNegotiationFailed"
+                  },
+                  "name": "onNegotiationFailed",
+                  "leadingComments": null
+                },
+                "static": false,
+                "kind": "method",
+                "id": null,
+                "generator": false,
+                "expression": false,
+                "async": false,
+                "params": [
+                  {
+                    "type": "Identifier",
+                    "start": 637,
+                    "end": 644,
+                    "loc": {
+                      "start": {
+                        "line": 27,
+                        "column": 22
+                      },
+                      "end": {
+                        "line": 27,
+                        "column": 29
+                      },
+                      "identifierName": "failure"
+                    },
+                    "name": "failure"
+                  }
+                ],
+                "body": {
+                  "type": "BlockStatement",
+                  "start": 646,
+                  "end": 648,
+                  "loc": {
+                    "start": {
+                      "line": 27,
+                      "column": 31
+                    },
+                    "end": {
+                      "line": 27,
+                      "column": 33
+                    }
+                  },
+                  "body": [],
+                  "directives": [],
+                  "leadingComments": null,
+                  "trailingComments": null
+                },
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback fired when negociation with server failed\n   * @param {Object} failure\n   ",
+                    "start": 520,
+                    "end": 614,
+                    "loc": {
+                      "start": {
+                        "line": 23,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 26,
+                        "column": 5
+                      }
+                    }
+                  }
+                ],
+                "trailingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\n   * Callback no server url avaibale\n   ",
+                    "start": 651,
+                    "end": 697,
+                    "loc": {
+                      "start": {
+                        "line": 28,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 30,
+                        "column": 5
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ClassMethod",
+                "start": 700,
+                "end": 727,
+                "loc": {
+                  "start": {
+                    "line": 31,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 31,
                     "column": 29
                   }
                 },
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 569,
-                  "end": 591,
+                  "start": 700,
+                  "end": 722,
                   "loc": {
                     "start": {
-                      "line": 26,
+                      "line": 31,
                       "column": 2
                     },
                     "end": {
-                      "line": 26,
+                      "line": 31,
                       "column": 24
                     },
                     "identifierName": "onNoServerUrlAvailable"
@@ -536,15 +650,15 @@
                 "params": [],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 594,
-                  "end": 596,
+                  "start": 725,
+                  "end": 727,
                   "loc": {
                     "start": {
-                      "line": 26,
+                      "line": 31,
                       "column": 27
                     },
                     "end": {
-                      "line": 26,
+                      "line": 31,
                       "column": 29
                     }
                   },
@@ -557,15 +671,15 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * Callback no server url avaibale\n   ",
-                    "start": 520,
-                    "end": 566,
+                    "start": 651,
+                    "end": 697,
                     "loc": {
                       "start": {
-                        "line": 23,
+                        "line": 28,
                         "column": 2
                       },
                       "end": {
-                        "line": 25,
+                        "line": 30,
                         "column": 5
                       }
                     }
@@ -575,15 +689,15 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n  * Callback fired when connection will close\n  ",
-                    "start": 599,
-                    "end": 653,
+                    "start": 730,
+                    "end": 784,
                     "loc": {
                       "start": {
-                        "line": 27,
+                        "line": 32,
                         "column": 2
                       },
                       "end": {
-                        "line": 29,
+                        "line": 34,
                         "column": 4
                       }
                     }
@@ -592,30 +706,30 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 656,
-                "end": 682,
+                "start": 787,
+                "end": 813,
                 "loc": {
                   "start": {
-                    "line": 30,
+                    "line": 35,
                     "column": 2
                   },
                   "end": {
-                    "line": 30,
+                    "line": 35,
                     "column": 28
                   }
                 },
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 656,
-                  "end": 677,
+                  "start": 787,
+                  "end": 808,
                   "loc": {
                     "start": {
-                      "line": 30,
+                      "line": 35,
                       "column": 2
                     },
                     "end": {
-                      "line": 30,
+                      "line": 35,
                       "column": 23
                     },
                     "identifierName": "onConnectionWillClose"
@@ -632,15 +746,15 @@
                 "params": [],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 680,
-                  "end": 682,
+                  "start": 811,
+                  "end": 813,
                   "loc": {
                     "start": {
-                      "line": 30,
+                      "line": 35,
                       "column": 26
                     },
                     "end": {
-                      "line": 30,
+                      "line": 35,
                       "column": 28
                     }
                   },
@@ -653,15 +767,15 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n  * Callback fired when connection will close\n  ",
-                    "start": 599,
-                    "end": 653,
+                    "start": 730,
+                    "end": 784,
                     "loc": {
                       "start": {
-                        "line": 27,
+                        "line": 32,
                         "column": 2
                       },
                       "end": {
-                        "line": 29,
+                        "line": 34,
                         "column": 4
                       }
                     }
@@ -671,15 +785,15 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} failure\n   ",
-                    "start": 685,
-                    "end": 782,
+                    "start": 816,
+                    "end": 913,
                     "loc": {
                       "start": {
-                        "line": 31,
+                        "line": 36,
                         "column": 2
                       },
                       "end": {
-                        "line": 34,
+                        "line": 39,
                         "column": 5
                       }
                     }
@@ -688,30 +802,30 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 785,
-                "end": 814,
+                "start": 916,
+                "end": 945,
                 "loc": {
                   "start": {
-                    "line": 35,
+                    "line": 40,
                     "column": 2
                   },
                   "end": {
-                    "line": 35,
+                    "line": 40,
                     "column": 31
                   }
                 },
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 785,
-                  "end": 802,
+                  "start": 916,
+                  "end": 933,
                   "loc": {
                     "start": {
-                      "line": 35,
+                      "line": 40,
                       "column": 2
                     },
                     "end": {
-                      "line": 35,
+                      "line": 40,
                       "column": 19
                     },
                     "identifierName": "onFailedHandshake"
@@ -728,15 +842,15 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 803,
-                    "end": 810,
+                    "start": 934,
+                    "end": 941,
                     "loc": {
                       "start": {
-                        "line": 35,
+                        "line": 40,
                         "column": 20
                       },
                       "end": {
-                        "line": 35,
+                        "line": 40,
                         "column": 27
                       },
                       "identifierName": "failure"
@@ -746,15 +860,15 @@
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 812,
-                  "end": 814,
+                  "start": 943,
+                  "end": 945,
                   "loc": {
                     "start": {
-                      "line": 35,
+                      "line": 40,
                       "column": 29
                     },
                     "end": {
-                      "line": 35,
+                      "line": 40,
                       "column": 31
                     }
                   },
@@ -767,15 +881,15 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} failure\n   ",
-                    "start": 685,
-                    "end": 782,
+                    "start": 816,
+                    "end": 913,
                     "loc": {
                       "start": {
-                        "line": 31,
+                        "line": 36,
                         "column": 2
                       },
                       "end": {
-                        "line": 34,
+                        "line": 39,
                         "column": 5
                       }
                     }
@@ -785,15 +899,15 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * Callback fired when a message is lost\n   ",
-                    "start": 817,
-                    "end": 869,
+                    "start": 948,
+                    "end": 1000,
                     "loc": {
                       "start": {
-                        "line": 36,
+                        "line": 41,
                         "column": 2
                       },
                       "end": {
-                        "line": 38,
+                        "line": 43,
                         "column": 5
                       }
                     }
@@ -802,30 +916,30 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 872,
-                "end": 890,
+                "start": 1003,
+                "end": 1021,
                 "loc": {
                   "start": {
-                    "line": 39,
+                    "line": 44,
                     "column": 2
                   },
                   "end": {
-                    "line": 39,
+                    "line": 44,
                     "column": 20
                   }
                 },
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 872,
-                  "end": 885,
+                  "start": 1003,
+                  "end": 1016,
                   "loc": {
                     "start": {
-                      "line": 39,
+                      "line": 44,
                       "column": 2
                     },
                     "end": {
-                      "line": 39,
+                      "line": 44,
                       "column": 15
                     },
                     "identifierName": "onMessageLost"
@@ -842,15 +956,15 @@
                 "params": [],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 888,
-                  "end": 890,
+                  "start": 1019,
+                  "end": 1021,
                   "loc": {
                     "start": {
-                      "line": 39,
+                      "line": 44,
                       "column": 18
                     },
                     "end": {
-                      "line": 39,
+                      "line": 44,
                       "column": 20
                     }
                   },
@@ -863,15 +977,15 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * Callback fired when a message is lost\n   ",
-                    "start": 817,
-                    "end": 869,
+                    "start": 948,
+                    "end": 1000,
                     "loc": {
                       "start": {
-                        "line": 36,
+                        "line": 41,
                         "column": 2
                       },
                       "end": {
-                        "line": 38,
+                        "line": 43,
                         "column": 5
                       }
                     }
@@ -881,15 +995,15 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
-                    "start": 893,
-                    "end": 986,
+                    "start": 1024,
+                    "end": 1117,
                     "loc": {
                       "start": {
-                        "line": 40,
+                        "line": 45,
                         "column": 2
                       },
                       "end": {
-                        "line": 43,
+                        "line": 48,
                         "column": 5
                       }
                     }
@@ -898,30 +1012,30 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 989,
-                "end": 1029,
+                "start": 1120,
+                "end": 1160,
                 "loc": {
                   "start": {
-                    "line": 44,
+                    "line": 49,
                     "column": 2
                   },
                   "end": {
-                    "line": 44,
+                    "line": 49,
                     "column": 42
                   }
                 },
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 989,
-                  "end": 1010,
+                  "start": 1120,
+                  "end": 1141,
                   "loc": {
                     "start": {
-                      "line": 44,
+                      "line": 49,
                       "column": 2
                     },
                     "end": {
-                      "line": 44,
+                      "line": 49,
                       "column": 23
                     },
                     "identifierName": "onSuccessfulHandshake"
@@ -938,15 +1052,15 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 1011,
-                    "end": 1025,
+                    "start": 1142,
+                    "end": 1156,
                     "loc": {
                       "start": {
-                        "line": 44,
+                        "line": 49,
                         "column": 24
                       },
                       "end": {
-                        "line": 44,
+                        "line": 49,
                         "column": 38
                       },
                       "identifierName": "authentication"
@@ -956,15 +1070,15 @@
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 1027,
-                  "end": 1029,
+                  "start": 1158,
+                  "end": 1160,
                   "loc": {
                     "start": {
-                      "line": 44,
+                      "line": 49,
                       "column": 40
                     },
                     "end": {
-                      "line": 44,
+                      "line": 49,
                       "column": 42
                     }
                   },
@@ -975,15 +1089,15 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
-                    "start": 893,
-                    "end": 986,
+                    "start": 1024,
+                    "end": 1117,
                     "loc": {
                       "start": {
-                        "line": 40,
+                        "line": 45,
                         "column": 2
                       },
                       "end": {
-                        "line": 43,
+                        "line": 48,
                         "column": 5
                       }
                     }
@@ -1117,16 +1231,32 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Callback no server url avaibale\n   ",
+      "value": "*\n   * Callback fired when negociation with server failed\n   * @param {Object} failure\n   ",
       "start": 520,
-      "end": 566,
+      "end": 614,
       "loc": {
         "start": {
           "line": 23,
           "column": 2
         },
         "end": {
-          "line": 25,
+          "line": 26,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n   * Callback no server url avaibale\n   ",
+      "start": 651,
+      "end": 697,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 2
+        },
+        "end": {
+          "line": 30,
           "column": 5
         }
       }
@@ -1134,15 +1264,15 @@
     {
       "type": "CommentBlock",
       "value": "*\n  * Callback fired when connection will close\n  ",
-      "start": 599,
-      "end": 653,
+      "start": 730,
+      "end": 784,
       "loc": {
         "start": {
-          "line": 27,
+          "line": 32,
           "column": 2
         },
         "end": {
-          "line": 29,
+          "line": 34,
           "column": 4
         }
       }
@@ -1150,15 +1280,15 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} failure\n   ",
-      "start": 685,
-      "end": 782,
+      "start": 816,
+      "end": 913,
       "loc": {
         "start": {
-          "line": 31,
+          "line": 36,
           "column": 2
         },
         "end": {
-          "line": 34,
+          "line": 39,
           "column": 5
         }
       }
@@ -1166,15 +1296,15 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * Callback fired when a message is lost\n   ",
-      "start": 817,
-      "end": 869,
+      "start": 948,
+      "end": 1000,
       "loc": {
         "start": {
-          "line": 36,
+          "line": 41,
           "column": 2
         },
         "end": {
-          "line": 38,
+          "line": 43,
           "column": 5
         }
       }
@@ -1182,15 +1312,15 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
-      "start": 893,
-      "end": 986,
+      "start": 1024,
+      "end": 1117,
       "loc": {
         "start": {
-          "line": 40,
+          "line": 45,
           "column": 2
         },
         "end": {
-          "line": 43,
+          "line": 48,
           "column": 5
         }
       }
@@ -1916,16 +2046,184 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Callback no server url avaibale\n   ",
+      "value": "*\n   * Callback fired when negociation with server failed\n   * @param {Object} failure\n   ",
       "start": 520,
-      "end": 566,
+      "end": 614,
       "loc": {
         "start": {
           "line": 23,
           "column": 2
         },
         "end": {
-          "line": 25,
+          "line": 26,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "onNegotiationFailed",
+      "start": 617,
+      "end": 636,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 2
+        },
+        "end": {
+          "line": 27,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 636,
+      "end": 637,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 21
+        },
+        "end": {
+          "line": 27,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "failure",
+      "start": 637,
+      "end": 644,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 22
+        },
+        "end": {
+          "line": 27,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 644,
+      "end": 645,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 29
+        },
+        "end": {
+          "line": 27,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 646,
+      "end": 647,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 31
+        },
+        "end": {
+          "line": 27,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 647,
+      "end": 648,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 32
+        },
+        "end": {
+          "line": 27,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n   * Callback no server url avaibale\n   ",
+      "start": 651,
+      "end": 697,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 2
+        },
+        "end": {
+          "line": 30,
           "column": 5
         }
       }
@@ -1943,15 +2241,15 @@
         "binop": null
       },
       "value": "onNoServerUrlAvailable",
-      "start": 569,
-      "end": 591,
+      "start": 700,
+      "end": 722,
       "loc": {
         "start": {
-          "line": 26,
+          "line": 31,
           "column": 2
         },
         "end": {
-          "line": 26,
+          "line": 31,
           "column": 24
         }
       }
@@ -1968,15 +2266,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 591,
-      "end": 592,
+      "start": 722,
+      "end": 723,
       "loc": {
         "start": {
-          "line": 26,
+          "line": 31,
           "column": 24
         },
         "end": {
-          "line": 26,
+          "line": 31,
           "column": 25
         }
       }
@@ -1993,15 +2291,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 592,
-      "end": 593,
+      "start": 723,
+      "end": 724,
       "loc": {
         "start": {
-          "line": 26,
+          "line": 31,
           "column": 25
         },
         "end": {
-          "line": 26,
+          "line": 31,
           "column": 26
         }
       }
@@ -2018,15 +2316,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 594,
-      "end": 595,
+      "start": 725,
+      "end": 726,
       "loc": {
         "start": {
-          "line": 26,
+          "line": 31,
           "column": 27
         },
         "end": {
-          "line": 26,
+          "line": 31,
           "column": 28
         }
       }
@@ -2043,15 +2341,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 595,
-      "end": 596,
+      "start": 726,
+      "end": 727,
       "loc": {
         "start": {
-          "line": 26,
+          "line": 31,
           "column": 28
         },
         "end": {
-          "line": 26,
+          "line": 31,
           "column": 29
         }
       }
@@ -2059,15 +2357,15 @@
     {
       "type": "CommentBlock",
       "value": "*\n  * Callback fired when connection will close\n  ",
-      "start": 599,
-      "end": 653,
+      "start": 730,
+      "end": 784,
       "loc": {
         "start": {
-          "line": 27,
+          "line": 32,
           "column": 2
         },
         "end": {
-          "line": 29,
+          "line": 34,
           "column": 4
         }
       }
@@ -2085,15 +2383,15 @@
         "binop": null
       },
       "value": "onConnectionWillClose",
-      "start": 656,
-      "end": 677,
+      "start": 787,
+      "end": 808,
       "loc": {
         "start": {
-          "line": 30,
+          "line": 35,
           "column": 2
         },
         "end": {
-          "line": 30,
+          "line": 35,
           "column": 23
         }
       }
@@ -2110,15 +2408,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 677,
-      "end": 678,
+      "start": 808,
+      "end": 809,
       "loc": {
         "start": {
-          "line": 30,
+          "line": 35,
           "column": 23
         },
         "end": {
-          "line": 30,
+          "line": 35,
           "column": 24
         }
       }
@@ -2135,15 +2433,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 678,
-      "end": 679,
+      "start": 809,
+      "end": 810,
       "loc": {
         "start": {
-          "line": 30,
+          "line": 35,
           "column": 24
         },
         "end": {
-          "line": 30,
+          "line": 35,
           "column": 25
         }
       }
@@ -2160,15 +2458,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 680,
-      "end": 681,
+      "start": 811,
+      "end": 812,
       "loc": {
         "start": {
-          "line": 30,
+          "line": 35,
           "column": 26
         },
         "end": {
-          "line": 30,
+          "line": 35,
           "column": 27
         }
       }
@@ -2185,15 +2483,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 681,
-      "end": 682,
+      "start": 812,
+      "end": 813,
       "loc": {
         "start": {
-          "line": 30,
+          "line": 35,
           "column": 27
         },
         "end": {
-          "line": 30,
+          "line": 35,
           "column": 28
         }
       }
@@ -2201,15 +2499,15 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} failure\n   ",
-      "start": 685,
-      "end": 782,
+      "start": 816,
+      "end": 913,
       "loc": {
         "start": {
-          "line": 31,
+          "line": 36,
           "column": 2
         },
         "end": {
-          "line": 34,
+          "line": 39,
           "column": 5
         }
       }
@@ -2227,15 +2525,15 @@
         "binop": null
       },
       "value": "onFailedHandshake",
-      "start": 785,
-      "end": 802,
+      "start": 916,
+      "end": 933,
       "loc": {
         "start": {
-          "line": 35,
+          "line": 40,
           "column": 2
         },
         "end": {
-          "line": 35,
+          "line": 40,
           "column": 19
         }
       }
@@ -2252,15 +2550,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 802,
-      "end": 803,
+      "start": 933,
+      "end": 934,
       "loc": {
         "start": {
-          "line": 35,
+          "line": 40,
           "column": 19
         },
         "end": {
-          "line": 35,
+          "line": 40,
           "column": 20
         }
       }
@@ -2278,15 +2576,15 @@
         "binop": null
       },
       "value": "failure",
-      "start": 803,
-      "end": 810,
+      "start": 934,
+      "end": 941,
       "loc": {
         "start": {
-          "line": 35,
+          "line": 40,
           "column": 20
         },
         "end": {
-          "line": 35,
+          "line": 40,
           "column": 27
         }
       }
@@ -2303,15 +2601,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 810,
-      "end": 811,
+      "start": 941,
+      "end": 942,
       "loc": {
         "start": {
-          "line": 35,
+          "line": 40,
           "column": 27
         },
         "end": {
-          "line": 35,
+          "line": 40,
           "column": 28
         }
       }
@@ -2328,15 +2626,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 812,
-      "end": 813,
+      "start": 943,
+      "end": 944,
       "loc": {
         "start": {
-          "line": 35,
+          "line": 40,
           "column": 29
         },
         "end": {
-          "line": 35,
+          "line": 40,
           "column": 30
         }
       }
@@ -2353,15 +2651,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 813,
-      "end": 814,
+      "start": 944,
+      "end": 945,
       "loc": {
         "start": {
-          "line": 35,
+          "line": 40,
           "column": 30
         },
         "end": {
-          "line": 35,
+          "line": 40,
           "column": 31
         }
       }
@@ -2369,153 +2667,11 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * Callback fired when a message is lost\n   ",
-      "start": 817,
-      "end": 869,
+      "start": 948,
+      "end": 1000,
       "loc": {
         "start": {
-          "line": 36,
-          "column": 2
-        },
-        "end": {
-          "line": 38,
-          "column": 5
-        }
-      }
-    },
-    {
-      "type": {
-        "label": "name",
-        "beforeExpr": false,
-        "startsExpr": true,
-        "rightAssociative": false,
-        "isLoop": false,
-        "isAssign": false,
-        "prefix": false,
-        "postfix": false,
-        "binop": null
-      },
-      "value": "onMessageLost",
-      "start": 872,
-      "end": 885,
-      "loc": {
-        "start": {
-          "line": 39,
-          "column": 2
-        },
-        "end": {
-          "line": 39,
-          "column": 15
-        }
-      }
-    },
-    {
-      "type": {
-        "label": "(",
-        "beforeExpr": true,
-        "startsExpr": true,
-        "rightAssociative": false,
-        "isLoop": false,
-        "isAssign": false,
-        "prefix": false,
-        "postfix": false,
-        "binop": null
-      },
-      "start": 885,
-      "end": 886,
-      "loc": {
-        "start": {
-          "line": 39,
-          "column": 15
-        },
-        "end": {
-          "line": 39,
-          "column": 16
-        }
-      }
-    },
-    {
-      "type": {
-        "label": ")",
-        "beforeExpr": false,
-        "startsExpr": false,
-        "rightAssociative": false,
-        "isLoop": false,
-        "isAssign": false,
-        "prefix": false,
-        "postfix": false,
-        "binop": null
-      },
-      "start": 886,
-      "end": 887,
-      "loc": {
-        "start": {
-          "line": 39,
-          "column": 16
-        },
-        "end": {
-          "line": 39,
-          "column": 17
-        }
-      }
-    },
-    {
-      "type": {
-        "label": "{",
-        "beforeExpr": true,
-        "startsExpr": true,
-        "rightAssociative": false,
-        "isLoop": false,
-        "isAssign": false,
-        "prefix": false,
-        "postfix": false,
-        "binop": null
-      },
-      "start": 888,
-      "end": 889,
-      "loc": {
-        "start": {
-          "line": 39,
-          "column": 18
-        },
-        "end": {
-          "line": 39,
-          "column": 19
-        }
-      }
-    },
-    {
-      "type": {
-        "label": "}",
-        "beforeExpr": false,
-        "startsExpr": false,
-        "rightAssociative": false,
-        "isLoop": false,
-        "isAssign": false,
-        "prefix": false,
-        "postfix": false,
-        "binop": null
-      },
-      "start": 889,
-      "end": 890,
-      "loc": {
-        "start": {
-          "line": 39,
-          "column": 19
-        },
-        "end": {
-          "line": 39,
-          "column": 20
-        }
-      }
-    },
-    {
-      "type": "CommentBlock",
-      "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
-      "start": 893,
-      "end": 986,
-      "loc": {
-        "start": {
-          "line": 40,
+          "line": 41,
           "column": 2
         },
         "end": {
@@ -2536,9 +2692,9 @@
         "postfix": false,
         "binop": null
       },
-      "value": "onSuccessfulHandshake",
-      "start": 989,
-      "end": 1010,
+      "value": "onMessageLost",
+      "start": 1003,
+      "end": 1016,
       "loc": {
         "start": {
           "line": 44,
@@ -2546,6 +2702,148 @@
         },
         "end": {
           "line": 44,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1016,
+      "end": 1017,
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 15
+        },
+        "end": {
+          "line": 44,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1017,
+      "end": 1018,
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 16
+        },
+        "end": {
+          "line": 44,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1019,
+      "end": 1020,
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 18
+        },
+        "end": {
+          "line": 44,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1020,
+      "end": 1021,
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 19
+        },
+        "end": {
+          "line": 44,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   ",
+      "start": 1024,
+      "end": 1117,
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 2
+        },
+        "end": {
+          "line": 48,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "onSuccessfulHandshake",
+      "start": 1120,
+      "end": 1141,
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 2
+        },
+        "end": {
+          "line": 49,
           "column": 23
         }
       }
@@ -2562,15 +2860,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 1010,
-      "end": 1011,
+      "start": 1141,
+      "end": 1142,
       "loc": {
         "start": {
-          "line": 44,
+          "line": 49,
           "column": 23
         },
         "end": {
-          "line": 44,
+          "line": 49,
           "column": 24
         }
       }
@@ -2588,15 +2886,15 @@
         "binop": null
       },
       "value": "authentication",
-      "start": 1011,
-      "end": 1025,
+      "start": 1142,
+      "end": 1156,
       "loc": {
         "start": {
-          "line": 44,
+          "line": 49,
           "column": 24
         },
         "end": {
-          "line": 44,
+          "line": 49,
           "column": 38
         }
       }
@@ -2613,15 +2911,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 1025,
-      "end": 1026,
+      "start": 1156,
+      "end": 1157,
       "loc": {
         "start": {
-          "line": 44,
+          "line": 49,
           "column": 38
         },
         "end": {
-          "line": 44,
+          "line": 49,
           "column": 39
         }
       }
@@ -2638,15 +2936,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 1027,
-      "end": 1028,
+      "start": 1158,
+      "end": 1159,
       "loc": {
         "start": {
-          "line": 44,
+          "line": 49,
           "column": 40
         },
         "end": {
-          "line": 44,
+          "line": 49,
           "column": 41
         }
       }
@@ -2663,15 +2961,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 1028,
-      "end": 1029,
+      "start": 1159,
+      "end": 1160,
       "loc": {
         "start": {
-          "line": 44,
+          "line": 49,
           "column": 41
         },
         "end": {
-          "line": 44,
+          "line": 49,
           "column": 42
         }
       }
@@ -2688,15 +2986,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 1030,
-      "end": 1031,
+      "start": 1161,
+      "end": 1162,
       "loc": {
         "start": {
-          "line": 45,
+          "line": 50,
           "column": 0
         },
         "end": {
-          "line": 45,
+          "line": 50,
           "column": 1
         }
       }
@@ -2714,15 +3012,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 1032,
-      "end": 1032,
+      "start": 1163,
+      "end": 1163,
       "loc": {
         "start": {
-          "line": 46,
+          "line": 51,
           "column": 0
         },
         "end": {
-          "line": 46,
+          "line": 51,
           "column": 0
         }
       }
