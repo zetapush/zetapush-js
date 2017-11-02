@@ -2,11 +2,7 @@
 
 ## Can I use zetapush-js in a NodeJS Context?
 
-Yes, you have to install latest version of zetapush-js and zetapush-cometd to enable NodeJS support.
-
-```console
-npm install zetapush-js@next zetapush-cometd@next
-```
+Yes, you have to install ~latest~ (>=3.2.0) version of zetapush-js enable NodeJS support.
 
 ```js
 const { WeakClient } = require('zetapush-js')
