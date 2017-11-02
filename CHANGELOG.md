@@ -1,3 +1,9 @@
+# 3.2.1 (2017-11-02)
+
+### Features
+
+* **client** Update TS definition to support optionnal parameters in publish method
+
 # 3.2.0 (2017-10-06)
 
 ### Features
