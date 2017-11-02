@@ -1,3 +1,7 @@
+# 3.2.2 (2017-11-02)
+
+> Fix issus on previously published version
+
 # 3.2.1 (2017-11-02)
 
 ### Features
