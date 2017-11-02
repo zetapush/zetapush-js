@@ -1,3 +1,9 @@
+# 3.3.0 (2017-11-02)
+
+### Features
+
+* **bower** Remove bower support
+
 # 3.2.2 (2017-11-02)
 
 > Fix issus on previously published version

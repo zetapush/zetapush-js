@@ -1,6 +1,6 @@
 {
   "name": "zetapush-js",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "description": "JavaScript SDK for ZetaPush",
   "browser": "dist/zetapush.js",
   "main": "lib/index.js",
@@ -34,7 +34,7 @@
   },
   "scripts": {
     "lint": "eslint src",
-    "clean": "rimraf lib dist es",
+    "clean": "rimraf lib dist es .deploy .esdoc",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
     "build:umd": "cross-env BABEL_ENV=umd NODE_ENV=development rollup -c -i src/index.js -o dist/zetapush.js",

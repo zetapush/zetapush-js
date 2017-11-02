@@ -6,20 +6,16 @@
 
 ## Install
 
-From bower
-
-```console
-bower install zetapush-js --save
-```
-
-```html
-<script src="/bower_components/zetapush-js/dist/zetapush.min.js"></script>
-```
-
 From npm
 
 ```console
 npm install zetapush-js --save
+```
+
+From yarn
+
+```console
+yarn add zetapush-js
 ```
 
 ```js
