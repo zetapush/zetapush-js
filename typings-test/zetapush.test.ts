@@ -19,6 +19,9 @@ class Api extends services.Macro {
   hello() {
     return Promise.resolve('world')
   }
+  async world() {
+    return this.$publish('world')
+  }
 }
 
 const service = client.createAsyncMacroService({
