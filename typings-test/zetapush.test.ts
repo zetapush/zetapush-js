@@ -1,4 +1,4 @@
-const { Authentication, Client, services } = ZetaPush
+const { Authentication, Client, SmartClient, WeakClient, services } = ZetaPush
 
 const client = new Client({
   apiUrl: '',
@@ -31,3 +31,19 @@ const service = client.createAsyncMacroService({
 service.hello().then((message) => {
   console.log(message);
 })
+
+const smart = new SmartClient({
+  sandboxId: '',
+  deployment: {
+    simple: ''
+  }
+})
+
+smart.connect()
+
+
+const weak = new WeakClient({
+  sandboxId: ''
+})
+
+weak.connect()

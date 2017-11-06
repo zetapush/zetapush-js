@@ -101,6 +101,11 @@ interface ClientHelper {
   getUniqRequestId(): string;
 }
 
+interface SmartClientDeployment {
+  simple?: string;
+  weak?: string;
+}
+
 type ConnectionStatusHandler = number;
 
 export interface ClientOptions extends Options {
@@ -109,6 +114,10 @@ export interface ClientOptions extends Options {
 
 export interface WeakClientOptions extends Options {
   deploymentId?: string;
+}
+
+export interface SmartClientOptions extends Options {
+  deployment?: SmartClientDeployment
 }
 
 export class Authentication {
@@ -164,6 +173,7 @@ export class Client {
 }
 
 export class SmartClient extends Client {
+  constructor(options: SmartClientOptions)
   getCredentials(): any;
   getSession(): any;
   hasCredentials(): boolean;
