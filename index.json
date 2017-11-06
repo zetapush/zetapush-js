@@ -2993,7 +2993,7 @@
     "__docId__": 165,
     "kind": "file",
     "name": "src/client/smart.js",
-    "content": "import { Client } from './basic'\nimport { Authentication } from '../authentication/handshake'\nimport { SessionPersistenceStrategy } from '../utils/session-persistence'\n\n/**\n * SmartClient config object.\n * @typedef {Object} SmartClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n * @property {Array} transports - Client transports list\n */\n\n/**\n * @access public\n * @extends {Client}\n * @example\n * // Create a new WeakClient\n * const client = new ZetaPush.SmartClient({\n *   sandboxId: '<YOUR-SANDBOX-ID>'\n * })\n */\nexport class SmartClient extends Client {\n  /**\n   * Create a new ZetaPush SmartClient\n   * @param {SmartClientConfig} config\n   */\n  constructor({ apiUrl, sandboxId, forceHttps, resource, transports }) {\n    const persistence = new SessionPersistenceStrategy({ sandboxId })\n\n    /**\n     * @return {AbstractHandshakeManager}\n     */\n    const authentication = () => {\n      const session = persistence.get()\n      const { token } = session\n\n      if (this.hasCredentials()) {\n        const { login, password } = this.getCredentials()\n        this.setCredentials({})\n        return Authentication.simple({\n          login,\n          password\n        })\n      } else {\n        if (this.isStronglyAuthenticated(session)) {\n          return Authentication.simple({\n            login: token,\n            password: null\n          })\n        } else {\n          return Authentication.weak({\n            token\n          })\n        }\n      }\n    }\n    // Initialize base client\n    super({\n      apiUrl, sandboxId, authentication, forceHttps, resource, transports\n    })\n    /**\n     * @access protected\n     * @type {SessionPersistenceStrategy}\n     */\n    this.persistence = persistence\n    /**\n     * @access protected\n     * @type {Object}\n     */\n    this.credentials = {}\n    /**\n     * Handle connection lifecycle events\n     * @access protected\n     * @type {Object}\n     */\n    this.lifeCycleConnectionHandler = this.addConnectionStatusListener({\n      onConnectionClosed() {\n        persistence.set({})\n      },\n      onSuccessfulHandshake(session) {\n        if (session.token) {\n          persistence.set(session)\n        }\n      }\n    })\n    // Properly disconnect client to avoir ghost connections\n    /*\n    window.addEventListener('beforeunload', () => {\n      this.removeConnectionStatusListener(this.lifeCycleConnectionHandler)\n      super.disconnect()\n    })\n    */\n  }\n  /**\n   * Disconnect client from ZetaPush backend\n   */\n  disconnect() {\n    super.disconnect()\n  }\n  /**\n   * @return {Object}\n   */\n  getCredentials() {\n    return this.credentials\n  }\n  /**\n   * @return {Object}\n   */\n  getSession() {\n    return this.persistence.get()\n  }\n  /**\n   * @return {boolean}\n   */\n  hasCredentials() {\n    const { login, password } = this.getCredentials()\n    return login && password\n  }\n  /**\n   * @return {boolean}\n   */\n  isStronglyAuthenticated(session = this.persistence.get()) {\n    return !this.isWeaklyAuthenticated(session) && typeof session.token === 'string'\n  }\n  /**\n   * @return {boolean}\n   */\n  isWeaklyAuthenticated(session = this.persistence.get()) {\n    return typeof session.publicToken === 'string'\n  }\n  /**\n   * @param {{login: string, password: string}} parameters\n   */\n  setCredentials({ login, password }) {\n    this.credentials = { login, password }\n  }\n}\n",
+    "content": "import { Client } from './basic'\nimport { Authentication } from '../authentication/handshake'\nimport { SessionPersistenceStrategy } from '../utils/session-persistence'\n\n/**\n * SmartClient deployment infos.\n * @typedef {Object} SmartClientDeployment\n * @property {string} simple - Simple deployment id\n * @property {string} weak - Weak deployment id\n */\n\n/**\n * SmartClient config object.\n * @typedef {Object} SmartClientConfig\n * @property {string} apiUrl - Api Url\n * @property {SmartClientDeployment} deployment - Deployment infos\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n * @property {Array} transports - Client transports list\n */\n\n/**\n * @access public\n * @extends {Client}\n * @example\n * // Create a new WeakClient\n * const client = new ZetaPush.SmartClient({\n *   sandboxId: '<YOUR-SANDBOX-ID>'\n * })\n */\nexport class SmartClient extends Client {\n  /**\n   * Create a new ZetaPush SmartClient\n   * @param {SmartClientConfig} config\n   */\n  constructor({ apiUrl, deployment, sandboxId, forceHttps, resource, transports }) {\n    const persistence = new SessionPersistenceStrategy({ sandboxId })\n\n    /**\n     * @return {AbstractHandshakeManager}\n     */\n    const authentication = () => {\n      const session = persistence.get()\n      const { token } = session\n\n      if (this.hasCredentials()) {\n        const { login, password } = this.getCredentials()\n        this.setCredentials({})\n        return Authentication.simple({\n          login,\n          password,\n          deploymentId: deployment && deployment.simple\n        })\n      } else {\n        if (this.isStronglyAuthenticated(session)) {\n          return Authentication.simple({\n            login: token,\n            password: null,\n            deploymentId: deployment && deployment.simple\n          })\n        } else {\n          return Authentication.weak({\n            token,\n            deploymentId: deployment && deployment.weak\n          })\n        }\n      }\n    }\n    // Initialize base client\n    super({\n      apiUrl, sandboxId, authentication, forceHttps, resource, transports\n    })\n    /**\n     * @access protected\n     * @type {SessionPersistenceStrategy}\n     */\n    this.persistence = persistence\n    /**\n     * @access protected\n     * @type {Object}\n     */\n    this.credentials = {}\n    /**\n     * Handle connection lifecycle events\n     * @access protected\n     * @type {Object}\n     */\n    this.lifeCycleConnectionHandler = this.addConnectionStatusListener({\n      onConnectionClosed() {\n        persistence.set({})\n      },\n      onSuccessfulHandshake(session) {\n        if (session.token) {\n          persistence.set(session)\n        }\n      }\n    })\n    // Properly disconnect client to avoir ghost connections\n    /*\n    window.addEventListener('beforeunload', () => {\n      this.removeConnectionStatusListener(this.lifeCycleConnectionHandler)\n      super.disconnect()\n    })\n    */\n  }\n  /**\n   * Disconnect client from ZetaPush backend\n   */\n  disconnect() {\n    super.disconnect()\n  }\n  /**\n   * @return {Object}\n   */\n  getCredentials() {\n    return this.credentials\n  }\n  /**\n   * @return {Object}\n   */\n  getSession() {\n    return this.persistence.get()\n  }\n  /**\n   * @return {boolean}\n   */\n  hasCredentials() {\n    const { login, password } = this.getCredentials()\n    return login && password\n  }\n  /**\n   * @return {boolean}\n   */\n  isStronglyAuthenticated(session = this.persistence.get()) {\n    return !this.isWeaklyAuthenticated(session) && typeof session.token === 'string'\n  }\n  /**\n   * @return {boolean}\n   */\n  isWeaklyAuthenticated(session = this.persistence.get()) {\n    return typeof session.publicToken === 'string'\n  }\n  /**\n   * @param {{login: string, password: string}} parameters\n   */\n  setCredentials({ login, password }) {\n    this.credentials = { login, password }\n  }\n}\n",
     "static": true,
     "longname": "/Users/ghoullier/GitHub/zetapush/zetapush-js/src/client/smart.js",
     "access": "public",
@@ -3002,6 +3002,45 @@
   },
   {
     "__docId__": 166,
+    "kind": "typedef",
+    "name": "SmartClientDeployment",
+    "memberof": "src/client/smart.js",
+    "static": true,
+    "longname": "src/client/smart.js~SmartClientDeployment",
+    "access": "public",
+    "description": "SmartClient deployment infos.",
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "simple",
+        "description": "Simple deployment id"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "weak",
+        "description": "Weak deployment id"
+      }
+    ],
+    "type": {
+      "types": [
+        "Object"
+      ],
+      "optional": false,
+      "name": "SmartClientDeployment"
+    }
+  },
+  {
+    "__docId__": 167,
     "kind": "typedef",
     "name": "SmartClientConfig",
     "memberof": "src/client/smart.js",
@@ -3019,6 +3058,16 @@
         "optional": false,
         "name": "apiUrl",
         "description": "Api Url"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SmartClientDeployment"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "deployment",
+        "description": "Deployment infos"
       },
       {
         "nullable": null,
@@ -3070,7 +3119,7 @@
     }
   },
   {
-    "__docId__": 167,
+    "__docId__": 168,
     "kind": "class",
     "name": "SmartClient",
     "memberof": "src/client/smart.js",
@@ -3084,14 +3133,14 @@
     "examples": [
       "// Create a new WeakClient\nconst client = new ZetaPush.SmartClient({\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})"
     ],
-    "lineNumber": 24,
+    "lineNumber": 32,
     "interface": false,
     "extends": [
       "Client"
     ]
   },
   {
-    "__docId__": 168,
+    "__docId__": 169,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/client/smart.js~SmartClient",
@@ -3101,7 +3150,7 @@
     "longname": "src/client/smart.js~SmartClient#constructor",
     "access": "public",
     "description": "Create a new ZetaPush SmartClient",
-    "lineNumber": 29,
+    "lineNumber": 37,
     "params": [
       {
         "nullable": null,
@@ -3116,7 +3165,7 @@
     ]
   },
   {
-    "__docId__": 169,
+    "__docId__": 170,
     "kind": "member",
     "name": "persistence",
     "memberof": "src/client/smart.js~SmartClient",
@@ -3124,7 +3173,7 @@
     "longname": "src/client/smart.js~SmartClient#persistence",
     "access": "protected",
     "description": "",
-    "lineNumber": 67,
+    "lineNumber": 78,
     "type": {
       "nullable": null,
       "types": [
@@ -3136,7 +3185,7 @@
     "ignore": true
   },
   {
-    "__docId__": 170,
+    "__docId__": 171,
     "kind": "member",
     "name": "credentials",
     "memberof": "src/client/smart.js~SmartClient",
@@ -3144,27 +3193,7 @@
     "longname": "src/client/smart.js~SmartClient#credentials",
     "access": "protected",
     "description": "",
-    "lineNumber": 72,
-    "type": {
-      "nullable": null,
-      "types": [
-        "Object"
-      ],
-      "spread": false,
-      "description": null
-    },
-    "ignore": true
-  },
-  {
-    "__docId__": 171,
-    "kind": "member",
-    "name": "lifeCycleConnectionHandler",
-    "memberof": "src/client/smart.js~SmartClient",
-    "static": false,
-    "longname": "src/client/smart.js~SmartClient#lifeCycleConnectionHandler",
-    "access": "protected",
-    "description": "Handle connection lifecycle events",
-    "lineNumber": 78,
+    "lineNumber": 83,
     "type": {
       "nullable": null,
       "types": [
@@ -3177,6 +3206,26 @@
   },
   {
     "__docId__": 172,
+    "kind": "member",
+    "name": "lifeCycleConnectionHandler",
+    "memberof": "src/client/smart.js~SmartClient",
+    "static": false,
+    "longname": "src/client/smart.js~SmartClient#lifeCycleConnectionHandler",
+    "access": "protected",
+    "description": "Handle connection lifecycle events",
+    "lineNumber": 89,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 173,
     "kind": "method",
     "name": "disconnect",
     "memberof": "src/client/smart.js~SmartClient",
@@ -3186,12 +3235,12 @@
     "longname": "src/client/smart.js~SmartClient#disconnect",
     "access": "public",
     "description": "Disconnect client from ZetaPush backend",
-    "lineNumber": 99,
+    "lineNumber": 110,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 173,
+    "__docId__": 174,
     "kind": "method",
     "name": "getCredentials",
     "memberof": "src/client/smart.js~SmartClient",
@@ -3201,29 +3250,7 @@
     "longname": "src/client/smart.js~SmartClient#getCredentials",
     "access": "public",
     "description": "",
-    "lineNumber": 105,
-    "return": {
-      "nullable": null,
-      "types": [
-        "Object"
-      ],
-      "spread": false,
-      "description": ""
-    },
-    "params": []
-  },
-  {
-    "__docId__": 174,
-    "kind": "method",
-    "name": "getSession",
-    "memberof": "src/client/smart.js~SmartClient",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/client/smart.js~SmartClient#getSession",
-    "access": "public",
-    "description": "",
-    "lineNumber": 111,
+    "lineNumber": 116,
     "return": {
       "nullable": null,
       "types": [
@@ -3237,6 +3264,28 @@
   {
     "__docId__": 175,
     "kind": "method",
+    "name": "getSession",
+    "memberof": "src/client/smart.js~SmartClient",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/client/smart.js~SmartClient#getSession",
+    "access": "public",
+    "description": "",
+    "lineNumber": 122,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 176,
+    "kind": "method",
     "name": "hasCredentials",
     "memberof": "src/client/smart.js~SmartClient",
     "generator": false,
@@ -3245,7 +3294,7 @@
     "longname": "src/client/smart.js~SmartClient#hasCredentials",
     "access": "public",
     "description": "",
-    "lineNumber": 117,
+    "lineNumber": 128,
     "return": {
       "nullable": null,
       "types": [
@@ -3257,7 +3306,7 @@
     "params": []
   },
   {
-    "__docId__": 176,
+    "__docId__": 177,
     "kind": "method",
     "name": "isStronglyAuthenticated",
     "memberof": "src/client/smart.js~SmartClient",
@@ -3267,37 +3316,7 @@
     "longname": "src/client/smart.js~SmartClient#isStronglyAuthenticated",
     "access": "public",
     "description": "",
-    "lineNumber": 124,
-    "return": {
-      "nullable": null,
-      "types": [
-        "boolean"
-      ],
-      "spread": false,
-      "description": ""
-    },
-    "params": [
-      {
-        "name": "session",
-        "optional": true,
-        "types": [
-          "*"
-        ]
-      }
-    ]
-  },
-  {
-    "__docId__": 177,
-    "kind": "method",
-    "name": "isWeaklyAuthenticated",
-    "memberof": "src/client/smart.js~SmartClient",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/client/smart.js~SmartClient#isWeaklyAuthenticated",
-    "access": "public",
-    "description": "",
-    "lineNumber": 130,
+    "lineNumber": 135,
     "return": {
       "nullable": null,
       "types": [
@@ -3319,6 +3338,36 @@
   {
     "__docId__": 178,
     "kind": "method",
+    "name": "isWeaklyAuthenticated",
+    "memberof": "src/client/smart.js~SmartClient",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/client/smart.js~SmartClient#isWeaklyAuthenticated",
+    "access": "public",
+    "description": "",
+    "lineNumber": 141,
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": [
+      {
+        "name": "session",
+        "optional": true,
+        "types": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "__docId__": 179,
+    "kind": "method",
     "name": "setCredentials",
     "memberof": "src/client/smart.js~SmartClient",
     "generator": false,
@@ -3327,7 +3376,7 @@
     "longname": "src/client/smart.js~SmartClient#setCredentials",
     "access": "public",
     "description": "",
-    "lineNumber": 136,
+    "lineNumber": 147,
     "params": [
       {
         "nullable": null,
@@ -3343,7 +3392,7 @@
     "return": null
   },
   {
-    "__docId__": 180,
+    "__docId__": 181,
     "kind": "file",
     "name": "src/client/weak.js",
     "content": "import { Client } from './basic'\nimport { Authentication } from '../authentication/handshake'\nimport { SessionPersistenceStrategy } from '../utils/session-persistence'\n\n/**\n * WeakClient config object.\n * @typedef {Object} WeakClientConfig\n * @property {string} apiUrl - Api Url\n * @property {string} deploymentId - Authentication deployment id, default value is 'weak_0'\n * @property {string} sandboxId - Sandbox id\n * @property {boolean} forceHttps - Force end to end HTTPS connection\n * @property {string} resource - Client resource id\n * @property {Array} transports - Client transports list\n */\n\n/**\n * @access public\n * @extends {Client}\n * @example\n * // Create a new WeakClient\n * const client = new ZetaPush.WeakClient({\n *   sandboxId: '<YOUR-SANDBOX-ID>'\n * })\n * @example\n * // Explicit deploymentId\n * // WeakClient provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n * // deploymentId default value is weak_0\n * const client = new ZetaPush.WeakClient({\n *   deploymentId: 'weak_0',\n *   sandboxId: '<YOUR-SANDBOX-ID>'\n * })\n */\nexport class WeakClient extends Client {\n  /**\n   * Create a new ZetaPush WeakClient\n   * @param {WeakClientConfig} config\n   */\n  constructor({ apiUrl, sandboxId, deploymentId, forceHttps, resource, transports }) {\n    const authentication = () => {\n      const token = this.getToken()\n      const handshake = Authentication.weak({\n        deploymentId,\n        token\n      })\n      return handshake\n    }\n    /**\n     * Call Client constructor with specific parameters\n     */\n    super({ apiUrl, sandboxId, forceHttps, authentication, resource, transports })\n    // Handle successful handshake\n    const onSuccessfulHandshake = ({ publicToken, userId, token }) => {\n      if (token) {\n        this.strategy.set({ publicToken, userId, token })\n      }\n    }\n    this.addConnectionStatusListener({ onSuccessfulHandshake })\n    /**\n     * @access private\n     * @type {SessionPersistenceStrategy}\n     */\n    this.strategy = new SessionPersistenceStrategy({ sandboxId })\n  }\n  /**\n   * @return {string} The stored token\n   */\n  getToken() {\n    const { token } = this.strategy.get()\n    return token\n  }\n}\n",
@@ -3354,7 +3403,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 181,
+    "__docId__": 182,
     "kind": "typedef",
     "name": "WeakClientConfig",
     "memberof": "src/client/weak.js",
@@ -3433,7 +3482,7 @@
     }
   },
   {
-    "__docId__": 182,
+    "__docId__": 183,
     "kind": "class",
     "name": "WeakClient",
     "memberof": "src/client/weak.js",
@@ -3455,7 +3504,7 @@
     ]
   },
   {
-    "__docId__": 183,
+    "__docId__": 184,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/client/weak.js~WeakClient",
@@ -3480,7 +3529,7 @@
     ]
   },
   {
-    "__docId__": 184,
+    "__docId__": 185,
     "kind": "member",
     "name": "strategy",
     "memberof": "src/client/weak.js~WeakClient",
@@ -3500,7 +3549,7 @@
     "ignore": true
   },
   {
-    "__docId__": 185,
+    "__docId__": 186,
     "kind": "method",
     "name": "getToken",
     "memberof": "src/client/weak.js~WeakClient",
@@ -3522,7 +3571,7 @@
     "params": []
   },
   {
-    "__docId__": 186,
+    "__docId__": 187,
     "kind": "file",
     "name": "src/connection/connection-status.js",
     "content": "/**\n * Define life cycle connection methods\n * @access public\n */\nexport class ConnectionStatusListener {\n  /**\n   * Callback fired when connection is broken\n   */\n  onConnectionBroken() {}\n  /**\n   * Callback fired when connection is closed\n   */\n  onConnectionClosed() {}\n  /**\n   * Callback fired when connection is established\n   */\n  onConnectionEstablished() {}\n  /**\n   * Callback fired when an error occurs in connection to server step\n   * @param {Object} failure\n   */\n  onConnectionToServerFail(failure) {}\n  /**\n   * Callback fired when negociation with server failed\n   * @param {Object} failure\n   */\n  onNegotiationFailed(failure) {}\n  /**\n   * Callback no server url avaibale\n   */\n  onNoServerUrlAvailable() {}\n  /**\n  * Callback fired when connection will close\n  */\n  onConnectionWillClose() {}\n  /**\n   * Callback fired when an error occurs in handshake step\n   * @param {Object} failure\n   */\n  onFailedHandshake(failure) {}\n  /**\n   * Callback fired when a message is lost\n   */\n  onMessageLost() {}\n  /**\n   * Callback fired when handshake step succeed\n   * @param {Object} authentication\n   */\n  onSuccessfulHandshake(authentication) {}\n}\n",
@@ -3533,7 +3582,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 187,
+    "__docId__": 188,
     "kind": "class",
     "name": "ConnectionStatusListener",
     "memberof": "src/connection/connection-status.js",
@@ -3548,7 +3597,7 @@
     "interface": false
   },
   {
-    "__docId__": 188,
+    "__docId__": 189,
     "kind": "method",
     "name": "onConnectionBroken",
     "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
@@ -3563,7 +3612,7 @@
     "return": null
   },
   {
-    "__docId__": 189,
+    "__docId__": 190,
     "kind": "method",
     "name": "onConnectionClosed",
     "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
@@ -3578,7 +3627,7 @@
     "return": null
   },
   {
-    "__docId__": 190,
+    "__docId__": 191,
     "kind": "method",
     "name": "onConnectionEstablished",
     "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
@@ -3593,7 +3642,7 @@
     "return": null
   },
   {
-    "__docId__": 191,
+    "__docId__": 192,
     "kind": "method",
     "name": "onConnectionToServerFail",
     "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
@@ -3619,7 +3668,7 @@
     "return": null
   },
   {
-    "__docId__": 192,
+    "__docId__": 193,
     "kind": "method",
     "name": "onNegotiationFailed",
     "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
@@ -3645,7 +3694,7 @@
     "return": null
   },
   {
-    "__docId__": 193,
+    "__docId__": 194,
     "kind": "method",
     "name": "onNoServerUrlAvailable",
     "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
@@ -3660,7 +3709,7 @@
     "return": null
   },
   {
-    "__docId__": 194,
+    "__docId__": 195,
     "kind": "method",
     "name": "onConnectionWillClose",
     "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
@@ -3675,7 +3724,7 @@
     "return": null
   },
   {
-    "__docId__": 195,
+    "__docId__": 196,
     "kind": "method",
     "name": "onFailedHandshake",
     "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
@@ -3701,7 +3750,7 @@
     "return": null
   },
   {
-    "__docId__": 196,
+    "__docId__": 197,
     "kind": "method",
     "name": "onMessageLost",
     "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
@@ -3716,7 +3765,7 @@
     "return": null
   },
   {
-    "__docId__": 197,
+    "__docId__": 198,
     "kind": "method",
     "name": "onSuccessfulHandshake",
     "memberof": "src/connection/connection-status.js~ConnectionStatusListener",
@@ -3742,10 +3791,10 @@
     "return": null
   },
   {
-    "__docId__": 198,
+    "__docId__": 199,
     "kind": "file",
     "name": "src/index.js",
-    "content": "export { Authentication } from './authentication/handshake'\nexport { ConnectionStatusListener } from './connection/connection-status'\n\nexport { Client } from './client/basic'\nexport { SmartClient } from './client/smart'\nexport { WeakClient } from './client/weak'\n\nexport { services } from './mapping'\n\n/**\n * SDK Version\n * @type {string}\n */\nexport const VERSION = '3.2.0'\n",
+    "content": "export { Authentication } from './authentication/handshake'\nexport { ConnectionStatusListener } from './connection/connection-status'\n\nexport { Client } from './client/basic'\nexport { SmartClient } from './client/smart'\nexport { WeakClient } from './client/weak'\n\nexport { services } from './mapping'\n\n/**\n * SDK Version\n * @type {string}\n */\nexport const VERSION = '3.3.0'\n",
     "static": true,
     "longname": "/Users/ghoullier/GitHub/zetapush/zetapush-js/src/index.js",
     "access": "public",
@@ -3753,7 +3802,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 199,
+    "__docId__": 200,
     "kind": "variable",
     "name": "VERSION",
     "memberof": "src/index.js",
@@ -3775,7 +3824,7 @@
     }
   },
   {
-    "__docId__": 200,
+    "__docId__": 201,
     "kind": "file",
     "name": "src/mapping/authentications.js",
     "content": "import { Service } from './core'\n/**\n * Delegating authentication\n *\n * This authentication delegates authentication to an external auth provider\n * <br>When a zetapush client handshakes with a delegated authentication, the 'token' field given by the client is sent to the configured remote server as part of the URL\n * <br>The response must be in JSON format\n *  Each key of the response will be considered a user information field name\n * <br>The handshake from the server will return the primary key in a field named 'login' (regardless of the actual key name you might have chosen)\n * */\n/**\n * End-user API for the delegating authentication\n *\n * Provisionning verbs.\n * @access public\n * */\nexport class Delegating extends Service {\n\t/**\n\t * Get default deployment id associated to Delegating service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'delegating_0'\n\t}\n}\n/**\n * Local authentication\n *\n * Zetapush local authentication\n *  The configurer can choose the primary key and mandatory user fields for account creation\n *  The field 'zetapushKey' is generated by the server and MUST not be used : it contains the unique key of the user inside a sandbox (it can be obtained from inside a macro with the <b>__userKey</b> pseudo-constant)\n * */\n/**\n * End-user API for the simple local authentication\n *\n * These API verbs allow end-users to manage their account.\n * @access public\n * */\nexport class Simple extends Service {\n\t/**\n\t * Get default deployment id associated to Simple service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'simple_0'\n\t}\n}\n/**\n * Weak authentication\n *\n * The weak authentication allows for anonymous authentication of devices\n *  Such devices can display a qrcode to allow regular users to take control of them\n * */\n/**\n * User API for weak devices control\n *\n * User API for control and release of weakly authenticated user sessions.\n * @access public\n * */\nexport class Weak extends Service {\n\t/**\n\t * Get default deployment id associated to Weak service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'weak_0'\n\t}\n\t/**\n\t * Controls a session\n\t *\n\t * Takes control of a weak user session, identified by the given public token.\n\t * The public token has been previously made available by the controlled device, for example by displaying a QRCode.\n\t * Upon control notification, the client SDK of the controlled session is expected to re-handshake.\n\t * */\n\tcontrol({publicToken,fullRights}) { return this.$publish('control', {publicToken,fullRights})}\n\t/**\n\t * Returns the current token\n\t *\n\t * Returns your current session's private token. The token field may be null, if you did not log in with this authentication.\n\t * The token can be used to log in as the same weak user another time.\n\t * */\n\tgetToken() { return this.$publish('getToken', {})}\n\t/**\n\t * Releases a session\n\t *\n\t * Releases control of a weak user session, identified by the given public token.\n\t * The weak user session must have been previously controlled by a call to 'control'.\n\t * */\n\trelease({publicToken,fullRights}) { return this.$publish('release', {publicToken,fullRights})}\n}\n",
@@ -3786,7 +3835,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 201,
+    "__docId__": 202,
     "kind": "class",
     "name": "Delegating",
     "memberof": "src/mapping/authentications.js",
@@ -3804,7 +3853,7 @@
     ]
   },
   {
-    "__docId__": 202,
+    "__docId__": 203,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/authentications.js~Delegating",
@@ -3830,7 +3879,7 @@
     }
   },
   {
-    "__docId__": 203,
+    "__docId__": 204,
     "kind": "class",
     "name": "Simple",
     "memberof": "src/mapping/authentications.js",
@@ -3848,7 +3897,7 @@
     ]
   },
   {
-    "__docId__": 204,
+    "__docId__": 205,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/authentications.js~Simple",
@@ -3874,7 +3923,7 @@
     }
   },
   {
-    "__docId__": 205,
+    "__docId__": 206,
     "kind": "class",
     "name": "Weak",
     "memberof": "src/mapping/authentications.js",
@@ -3892,7 +3941,7 @@
     ]
   },
   {
-    "__docId__": 206,
+    "__docId__": 207,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/authentications.js~Weak",
@@ -3918,7 +3967,7 @@
     }
   },
   {
-    "__docId__": 207,
+    "__docId__": 208,
     "kind": "method",
     "name": "control",
     "memberof": "src/mapping/authentications.js~Weak",
@@ -3949,7 +3998,7 @@
     }
   },
   {
-    "__docId__": 208,
+    "__docId__": 209,
     "kind": "method",
     "name": "getToken",
     "memberof": "src/mapping/authentications.js~Weak",
@@ -3968,7 +4017,7 @@
     }
   },
   {
-    "__docId__": 209,
+    "__docId__": 210,
     "kind": "method",
     "name": "release",
     "memberof": "src/mapping/authentications.js~Weak",
@@ -3999,7 +4048,7 @@
     }
   },
   {
-    "__docId__": 210,
+    "__docId__": 211,
     "kind": "file",
     "name": "src/mapping/core.js",
     "content": "/**\n * @access protected\n */\nexport class Service {\n  constructor({ $publish }) {\n    this.$publish = $publish\n  }\n}\n",
@@ -4010,7 +4059,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 211,
+    "__docId__": 212,
     "kind": "class",
     "name": "Service",
     "memberof": "src/mapping/core.js",
@@ -4026,7 +4075,7 @@
     "ignore": true
   },
   {
-    "__docId__": 212,
+    "__docId__": 213,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/mapping/core.js~Service",
@@ -4040,7 +4089,7 @@
     "undocument": true
   },
   {
-    "__docId__": 213,
+    "__docId__": 214,
     "kind": "member",
     "name": "$publish",
     "memberof": "src/mapping/core.js~Service",
@@ -4057,7 +4106,7 @@
     }
   },
   {
-    "__docId__": 214,
+    "__docId__": 215,
     "kind": "file",
     "name": "src/mapping/index.js",
     "content": "import * as authentications from './authentications'\nimport * as services from './services'\n\nexport { authentications, services }\n",
@@ -4068,7 +4117,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 215,
+    "__docId__": 216,
     "kind": "file",
     "name": "src/mapping/services.js",
     "content": "import { Service } from './core'\n/**\n * Data aggregation\n *\n * Provides data aggregation over time and across different items\n *  User devices push items data on developer-defined categories\n *  This service automatically aggregates the data\n * Raw data is not available for reading, only the generated aggregation result\n *\n * */\n/**\n * User API for item aggregation\n *\n * Users can push data and be notified of aggregated data.\n * This service does not allow you to read the data. To achieve that kind of behavior, you could configure a callback to store the data.\n * @access public\n * */\nexport class Aggreg extends Service {\n\t/**\n\t * Get default deployment id associated to Aggreg service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'aggreg_0'\n\t}\n\t/**\n\t * Pushes some data\n\t *\n\t * Pushes the given data.\n\t * All the items are processed according to the defined rules.\n\t * At least one push for a given item is needed during a time period to trigger processing and calling of the corresponding callback verb/macro.\n\t * */\n\tpush({items,owner}) { return this.$publish('push', {items,owner})}\n}\n/**\n * Data stacks\n *\n * Stacks are a per-user named persistent queue of data\n *  An administrator creates a stack service\n *  End-users can push data on an arbitrary number of their own arbitrary named stacks\n * */\n/**\n * Data stack user API\n *\n * Data is stored on a per user basis. However, notifications can be sent to a configurable set of listeners.\n * Stack names are arbitrary and do not need to be explicitly initialized.\n * @access public\n * */\nexport class Stack extends Service {\n\t/**\n\t * Get default deployment id associated to Stack service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'stack_0'\n\t}\n\t/**\n\t * Lists the listeners\n\t *\n\t * Returns the whole list of listeners for the given stack.\n\t * */\n\tgetListeners({stack,owner}) { return this.$publish('getListeners', {stack,owner})}\n\t/**\n\t * Lists content\n\t *\n\t * Returns a paginated list of contents for the given stack.\n\t * Content is sorted according to the statically configured order.\n\t * */\n\tlist({stack,owner,page}) { return this.$publish('list', {stack,owner,page})}\n\t/**\n\t * Empties a stack\n\t *\n\t * Removes all items from the given stack.\n\t * */\n\tpurge({stack,owner}) { return this.$publish('purge', {stack,owner})}\n\t/**\n\t * Pushes an item\n\t *\n\t * Pushes an item onto the given stack.\n\t * The stack does not need to be created.\n\t * */\n\tpush({stack,data,owner}) { return this.$publish('push', {stack,data,owner})}\n\t/**\n\t * Removes items\n\t *\n\t * Removes the item with the given guid from the given stack.\n\t * */\n\tremove({guids,stack,owner}) { return this.$publish('remove', {guids,stack,owner})}\n\t/**\n\t * Sets the listeners\n\t *\n\t * Sets the listeners for the given stack.\n\t * */\n\tsetListeners({listeners,stack,owner}) { return this.$publish('setListeners', {listeners,stack,owner})}\n\t/**\n\t * Updates an item\n\t *\n\t * Updates an existing item of the given stack.\n\t * The item MUST exist prior to the call.\n\t * */\n\tupdate({guid,stack,data,owner}) { return this.$publish('update', {guid,stack,data,owner})}\n}\n/**\n * Echo\n *\n * Echo\n * */\n/**\n * Echo service\n *\n * Simple echo service, for development purposes.\n * @access public\n * */\nexport class Echo extends Service {\n\t/**\n\t * Get default deployment id associated to Echo service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'echo_0'\n\t}\n\t/**\n\t * Echoes an object\n\t *\n\t * Echoes an object: the server will echo that object on channel 'echo' for the current user.\n\t * */\n\techo(parameter) { return this.$publish('echo', parameter)}\n}\n/**\n * Game engine\n *\n * Abstract Game Engine\n *  Concrete game engines are remote cometd clients or internal macros\n * */\n/**\n * User API for games\n *\n * Users can list, start, join games, and play.\n * @access public\n * */\nexport class Game extends Service {\n\t/**\n\t * Get default deployment id associated to Game service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'game_0'\n\t}\n\t/**\n\t * Lists game types\n\t *\n\t * Returns the list of game types supported by the server and the currently registered game engines.\n\t * */\n\tavailable() { return this.$publish('available', {})}\n\t/**A user joins a game*/\n\tjoin({role,gameId,userId,userName}) { return this.$publish('join', {role,gameId,userId,userName})}\n\t/**Organizes a game*/\n\torganize({type,owner,options}) { return this.$publish('organize', {type,owner,options})}\n\t/**Gives some command to the game engine*/\n\tplay({gameId,userId,data}) { return this.$publish('play', {gameId,userId,data})}\n\t/**Starts a game*/\n\tstart({gameId}) { return this.$publish('start', {gameId})}\n\t/**A user cancels joining a game*/\n\tunjoin({role,gameId,userId,userName}) { return this.$publish('unjoin', {role,gameId,userId,userName})}\n}\n/**\n * Game Engine API\n *\n * The Game Engine API is for game engine clients, not end-users.\n * @access public\n * */\nexport class GameEngine extends Service {\n\t/**\n\t * Get default deployment id associated to GameEngine service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'game_0'\n\t}\n\t/**\n\t * Notify the result for a join request\n\t *\n\t * A Game Engine notifies the STR of the result of a join request that it received on join_callback\n\t * */\n\tjoin_result({msgId,payload,error,callerId}) { return this.$publish('join_result', {msgId,payload,error,callerId})}\n\t/**\n\t * Notify the result for an organization request\n\t *\n\t * A Game Engine notifies the STR of the result of an organization request that it received on organize_callback\n\t * */\n\torganize_result({msgId,payload,error,callerId}) { return this.$publish('organize_result', {msgId,payload,error,callerId})}\n\t/**\n\t * Registers a game engine\n\t *\n\t * A client registers itself to the STR as a Game Engine.\n\t * The STR may, from now on, dispatch game of the given game type to said client.\n\t * Unregistration is done automatically on logoff.\n\t * */\n\tregister({maxGames,gameInfo,location}) { return this.$publish('register', {maxGames,gameInfo,location})}\n\t/**\n\t * Notify the result for a start request\n\t *\n\t * A Game Engine notifies the STR of the result of a start request that it received on start_callback\n\t * */\n\tstart_result({gameId}) { return this.$publish('start_result', {gameId})}\n\t/**\n\t * Notify a game event\n\t *\n\t * A Game Engine notifies the STR of some arbitrary game event.\n\t * */\n\tstate({status,gameId,data}) { return this.$publish('state', {status,gameId,data})}\n\t/**\n\t * Notify the result for an unjoin request\n\t *\n\t * A Game Engine notifies the STR of the result of an unjoin request that it received on unjoin_callback\n\t * */\n\tunjoin_result({msgId,payload,error,callerId}) { return this.$publish('unjoin_result', {msgId,payload,error,callerId})}\n}\n/**\n * Generic Data Access\n *\n * Generic Data Access Service : NoSQL storage\n * */\n/**\n * GDA User API\n *\n * User API for Generic Data Access.\n * The data are stored on a per-user basis.\n * Users can put, get, list their data.\n * @access public\n * */\nexport class Gda extends Service {\n\t/**\n\t * Get default deployment id associated to Gda service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'gda_0'\n\t}\n\t/**\n\t * Asks for a data row\n\t *\n\t * Returns a full data row.\n\t * */\n\tget({table,key,owner}) { return this.$publish('get', {table,key,owner})}\n\t/**\n\t * Asks for a data cell\n\t *\n\t * Returns a precise list of cells from a column in a data row.\n\t * */\n\tgetCells({table,key,key2,owner,column}) { return this.$publish('getCells', {table,key,key2,owner,column})}\n\t/**\n\t * Increments an integer value\n\t *\n\t * Increments a cell 64-bit signed integer value and returns the result in the data field.\n\t * The increment is atomic : if you concurrently increment 10 times a value by 1, the final result will be the initial value plus 10. The actual individual resulting values seen by the 10 concurrent callers may vary discontinuously, with duplicates : at least one of them will see the final (+10) result.\n\t * */\n\tinc({table,data,key,key2,owner,column}) { return this.$publish('inc', {table,data,key,key2,owner,column})}\n\t/**\n\t * Asks for a list of rows\n\t *\n\t * Returns a paginated list of rows from the given table.\n\t * */\n\tlist({columns,table,owner,page}) { return this.$publish('list', {columns,table,owner,page})}\n\t/**\n\t * Puts some data into a cell\n\t *\n\t * Creates or replaces the contents of a particular cell.\n\t * */\n\tput({table,data,key,key2,owner,column}) { return this.$publish('put', {table,data,key,key2,owner,column})}\n\t/**\n\t * Puts several rows\n\t *\n\t * Creates or replaces the (maybe partial) contents of a collection of rows.\n\t * This method only creates or replaces cells for non-null input values.\n\t * */\n\tputs({rows,table,owner}) { return this.$publish('puts', {rows,table,owner})}\n\t/**\n\t * Asks for a range of rows\n\t *\n\t * Returns a paginated range of rows from the given table.\n\t * A range consists of consecutive rows from the start key (inclusive) to the stop key (exclusive).\n\t * You can specify partial keys for the start and stop fields.\n\t * */\n\trange({columns,start,table,stop,owner,page}) { return this.$publish('range', {columns,start,table,stop,owner,page})}\n\t/**\n\t * Removes one cell inside a column of a row\n\t *\n\t * Removes only one cell of the given column of the given row from the given table.\n\t * */\n\tremoveCell({table,key,key2,owner,column}) { return this.$publish('removeCell', {table,key,key2,owner,column})}\n\t/**\n\t * Removes one full column of a row\n\t *\n\t * Removes all cells of the given column of the given row from the given table.\n\t * */\n\tremoveColumn({table,key,owner,column}) { return this.$publish('removeColumn', {table,key,owner,column})}\n\t/**\n\t * Removes a range of rows\n\t *\n\t * Removes the specified columns of the given range of rows from the given table.\n\t * */\n\tremoveRange({columns,start,table,stop,owner}) { return this.$publish('removeRange', {columns,start,table,stop,owner})}\n\t/**\n\t * Removes one full row\n\t *\n\t * Removes all columns of the given row from the given table.\n\t * */\n\tremoveRow({table,key,owner}) { return this.$publish('removeRow', {table,key,owner})}\n}\n/**\n * Groups Management\n *\n * Groups management for users, grants on resources, remote commands on devices\n *  This is where you can configure rights for any resource\n *\n * */\n/**\n * User API for remote control\n *\n * @access public\n * */\nexport class Remoting extends Service {\n\t/**\n\t * Get default deployment id associated to Remoting service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'groups_0'\n\t}\n\t/**\n\t * Adds a listener\n\t *\n\t * A user requests notifications from a device owned by anyone who granted him the right authorizations.\n\t * Whenever the device calls 'notify', notifications will be sent to the caller of this verb.\n\t * */\n\taddListener({resource,fromResource,cmd,from,data,owner}) { return this.$publish('addListener', {resource,fromResource,cmd,from,data,owner})}\n\t/**Response to 'getCapabilities'*/\n\tcapabilities({askingResource,capabilities,answeringResource}) { return this.$publish('capabilities', {askingResource,capabilities,answeringResource})}\n\t/**\n\t * Executes a command\n\t *\n\t * A user executes a command on a device owned by anyone who granted him the right authorizations.\n\t * The command is issued on channel 'command'\n\t * */\n\texecute({resource,cmd,data,owner}) { return this.$publish('execute', {resource,cmd,data,owner})}\n\t/**\n\t * Requests capabilities\n\t *\n\t * A user requests all his devices for the whole list of their capabilities.\n\t * Devices are expected to answer on channel 'capabilities'\n\t * */\n\tgetCapabilities() { return this.$publish('getCapabilities', {})}\n\t/**\n\t * Notifies of some event\n\t *\n\t * A device notifies the registered users/devices on this channel.\n\t * The server forwards the notification to said users.\n\t * */\n\tnotify({resource,fromResource,cmd,from,data,owner}) { return this.$publish('notify', {resource,fromResource,cmd,from,data,owner})}\n\t/**\n\t * Pings devices\n\t *\n\t * A user requests all devices (of all owners) on which he has authorizations to respond on channel 'pong'\n\t * */\n\tping({action}) { return this.$publish('ping', {action})}\n\t/**Response to ping*/\n\tpong({user,resource,available,uid,owner,action}) { return this.$publish('pong', {user,resource,available,uid,owner,action})}\n\t/**\n\t * Removes a listener\n\t *\n\t * A user stops requesting notifications from a device owned by anyone who granted him the right authorizations\n\t * */\n\tremoveListener({resource,fromResource,cmd,from,data,owner}) { return this.$publish('removeListener', {resource,fromResource,cmd,from,data,owner})}\n}\n/**\n * User API for groups and rights.\n *\n * Groups are stored per user.\n * This means that two users can own a group with the same identifier. A couple (owner, group) is needed to uniquely identify a group inside a group management service.\n * The triplet (deploymentId, owner, group) is actually needed to fully qualify a group outside of the scope of this service.\n * @access public\n * */\nexport class GroupManagement extends Service {\n\t/**\n\t * Get default deployment id associated to GroupManagement service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'groups_0'\n\t}\n\t/**\n\t * Adds me to a group\n\t *\n\t * Adds me (the caller) to a group.\n\t * This verb exists so that group owners may grant the right to join their groups without granting the right to add other users to those groups.\n\t * The 'user' field is implicitly set to the current user's key.\n\t * */\n\taddMe({group,owner}) { return this.$publish('addMe', {group,owner})}\n\t/**\n\t * Adds a user to a group\n\t *\n\t * Adds the given user to the given group.\n\t * Addition may fail if the given group does not already exist.\n\t * */\n\taddUser({user,group,owner}) { return this.$publish('addUser', {user,group,owner})}\n\t/**Adds users to a group*/\n\taddUsers({users,group,owner}) { return this.$publish('addUsers', {users,group,owner})}\n\t/**\n\t * Lists my owned groups, with details\n\t *\n\t * Returns the whole list of groups owned by the current user, with their members\n\t * */\n\tallGroups({owner}) { return this.$publish('allGroups', {owner})}\n\t/**\n\t * Creates a group\n\t *\n\t * Creates a group owned by the current user.\n\t * Group creation may fail if the group already exists.\n\t * */\n\tcreateGroup({group,groupName,owner}) { return this.$publish('createGroup', {group,groupName,owner})}\n\t/**\n\t * Removes a group\n\t *\n\t * Removes the given group owned by the current user or the given owner.\n\t * Also removes all grants to that group.\n\t * */\n\tdelGroup({group,owner}) { return this.$publish('delGroup', {group,owner})}\n\t/**Removes a user from a group*/\n\tdelUser({user,group,owner}) { return this.$publish('delUser', {user,group,owner})}\n\t/**Removes users from a group*/\n\tdelUsers({users,group,groupName,owner}) { return this.$publish('delUsers', {users,group,groupName,owner})}\n\t/**\n\t * Tests for a group's existence\n\t *\n\t * Returns whether a group exists or not.\n\t * */\n\texists({group,owner}) { return this.$publish('exists', {group,owner})}\n\t/**\n\t * Grants a right to a group\n\t *\n\t * The granting API does not do any check when storing permissions.\n\t * In particular when granting rights on a verb and resource of another API, the existence of said verb and resource is not checked.\n\t * */\n\tgrant({resource,group,owner,action}) { return this.$publish('grant', {resource,group,owner,action})}\n\t/**\n\t * Lists the group users\n\t *\n\t * Returns the whole list of users configured inside the given group.\n\t * */\n\tgroupUsers({group,owner}) { return this.$publish('groupUsers', {group,owner})}\n\t/**\n\t * Lists my owned groups\n\t *\n\t * Returns the whole list of groups owned by the current user\n\t * */\n\tgroups({owner}) { return this.$publish('groups', {owner})}\n\t/**\n\t * Lists rights for a group\n\t *\n\t * This API lists explicitly configured rights.\n\t * Effective rights include configured rights, implicit rights and inherited rights.\n\t * */\n\tlistGrants({group,owner}) { return this.$publish('listGrants', {group,owner})}\n\t/**\n\t * Lists presences for a group\n\t *\n\t * Returns the list of members of the given groups, along with their actual and current presence on the zetapush server.\n\t * The current implementation does not include information about the particular devices users are connected with.\n\t * If a user is connected twice with two different devices, two identical entries will be returned.\n\t * */\n\tlistPresences({group,owner}) { return this.$publish('listPresences', {group,owner})}\n\t/**\n\t * Tests membership\n\t *\n\t * Tests whether I (the caller) am a member of the given group.\n\t * This verb exists so that users can determine if they are part of a group without being granted particular rights.\n\t * The 'user' field is implicitly set to the current user's key.\n\t * */\n\tmemberOf({hardFail,group,owner}) { return this.$publish('memberOf', {hardFail,group,owner})}\n\t/**\n\t * Grants rights to a group\n\t *\n\t * Grant several rights at once.\n\t * */\n\tmgrant({resource,actions,group,owner}) { return this.$publish('mgrant', {resource,actions,group,owner})}\n\t/**Revokes rights for a group*/\n\tmrevoke({resource,actions,group,owner}) { return this.$publish('mrevoke', {resource,actions,group,owner})}\n\t/**\n\t * Lists the groups I am part of\n\t *\n\t * Returns the whole list of groups the current user is part of.\n\t * Groups may be owned by anyone, including the current user.\n\t * */\n\tmyGroups({owner}) { return this.$publish('myGroups', {owner})}\n\t/**Revokes a right for a group*/\n\trevoke({resource,group,owner,action}) { return this.$publish('revoke', {resource,group,owner,action})}\n}\n/**\n * HTTP client\n *\n * Web-service client\n *  An admin records URL templates that can be called by users\n *  Calls are not configurable by end-users\n *  However an admin may leverage the macro service to achieve URL, headers and body configurability\n * */\n/**\n * User API for http requests\n *\n * @access public\n * */\nexport class Httpclient extends Service {\n\t/**\n\t * Get default deployment id associated to Httpclient service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'httpclient_0'\n\t}\n\t/**\n\t * Makes a predefined request\n\t *\n\t * Lookups a predefined request by name, and executes it.\n\t * */\n\tcall({name,requestId}) { return this.$publish('call', {name,requestId})}\n}\n/**\n * Macros\n *\n * Macro-command service\n *  An admin defines macro-commands that can sequentially call any number of other api verbs, loop on collections of data, make decisions, etc\n *\n *\n *  End-users play them, with contextual parameters\n * */\n/**\n * User API for macro debugging\n *\n * Debugger API for macro.\n * These API verbs are not intended for use by most developers.\n * @access public\n * */\nexport class MacroDebug extends Service {\n\t/**\n\t * Get default deployment id associated to MacroDebug service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'macro_0'\n\t}\n\t/**Enables or disables a breakpoint*/\n\tbreakpoint({breakpoint,token,enabled}) { return this.$publish('breakpoint', {breakpoint,token,enabled})}\n\t/**Requests some information*/\n\tinfo({token,path,exp,requestId,frame}) { return this.$publish('info', {token,path,exp,requestId,frame})}\n\t/**\n\t * Debugs a previously recorded macro\n\t *\n\t * The given breakpoints will be honored, causing a suspension of the execution, resumable via 'resume'.\n\t * Only one debug session can be active at any given time.\n\t * */\n\tlivedebug({parameters,token,breakpoints,hardFail,name,requestId,debug}) { return this.$publish('livedebug', {parameters,token,breakpoints,hardFail,name,requestId,debug})}\n\t/**Resumes a paused macro*/\n\tresume({token,type}) { return this.$publish('resume', {token,type})}\n\t/**Sets a variable value*/\n\tvariable({token,name,frame,data}) { return this.$publish('variable', {token,name,frame,data})}\n}\n/**\n * User API for macro execution\n *\n * Simple errors are reported as usual.\n * However, the macro execution verbs treat most errors in a particular way : instead of reporting errors on the usual 'error' channel, errors are put in the returned 'MacroCompletion' result.\n * This behavior can be tuned on a per-call basis with the hardFail parameter.\n * Note that some particular errors will always behave as if hardFail were true, because they are related to programming errors, or prevent processing from ending gracefully : STACK_OVERFLOW, NO_SUCH_FUNCTION, RAM_EXCEEDED, CYCLES_EXCEEDED, TIME_EXCEEDED, QUOTA_EXCEEDED, RATE_EXCEEDED, BAD_COMPARATOR_VALUE\n * @access public\n * */\nexport class Macro extends Service {\n\t/**\n\t * Get default deployment id associated to Macro service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'macro_0'\n\t}\n\t/**\n\t * Plays a previously recorded macro\n\t *\n\t * DO NOT use this verb from inside an enclosing macro when you need the result in order to proceed with the enclosing macro.\n\t * You can override the default notification channel when defining the macro.\n\t * */\n\tcall({parameters,hardFail,name,requestId,debug}) { return this.$publish('call', {parameters,hardFail,name,requestId,debug})}\n}\n/**\n * Mail sender\n *\n * Sends email through SMTP\n * */\n/**\n * Mail service user API\n *\n * This service is statically configured with an outgoing SMTP server.\n * Users call the API here to actually send emails.\n * @access public\n * */\nexport class Sendmail extends Service {\n\t/**\n\t * Get default deployment id associated to Sendmail service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'sendmail_0'\n\t}\n}\n/**\n * Messaging service\n *\n * Messaging service\n * */\n/**\n * Messaging service\n *\n * Simple and flexible user-to-user or user-to-group messaging service.\n * @access public\n * */\nexport class Messaging extends Service {\n\t/**\n\t * Get default deployment id associated to Messaging service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'messaging_0'\n\t}\n\t/**\n\t * Sends a message to a target\n\t *\n\t * Sends the given message to the specified target on the given (optional) channel.\n\t * The administratively given default channel name is used when none is provided in the message itself.\n\t * */\n\tsend({target,channel,data}) { return this.$publish('send', {target,channel,data})}\n}\n/**\n * Producer consumer\n *\n * Producer consumer service\n *  Users can submit tasks and other users consume them\n * */\n/**\n * Producer / consumer real-time API\n *\n * Task producers submits their tasks.\n * The server dispatches the tasks.\n * Consumers process them and report completion back to the server.\n * Tasks are global to the service (i.e. NOT per user).\n * @access public\n * */\nexport class Queue extends Service {\n\t/**\n\t * Get default deployment id associated to Queue service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'queue_0'\n\t}\n\t/**\n\t * Submits a task\n\t *\n\t * Producer API.\n\t * A task producer submits the given task to the server.\n\t * The server will find a tasker with processing capacity and dispatch the task.\n\t * The task result will be returned to the caller.\n\t * When called from inside a macro, the comsumer generated result is available for further use.\n\t * */\n\tcall({description,originBusinessId,originDeploymentId,data,owner}) { return this.$publish('call', {description,originBusinessId,originDeploymentId,data,owner})}\n\t/**\n\t * Notifies completion of a task\n\t *\n\t * Consumer API.\n\t * The tasker notifies completion of the given task to the server.\n\t * The tasker can optionally include a result or an error code.\n\t * */\n\tdone({result,taskId,success}) { return this.$publish('done', {result,taskId,success})}\n\t/**\n\t * Registers a consumer\n\t *\n\t * Consumer API.\n\t * Registers the current user resource as an available task consumer.\n\t * Tasks will be then dispatched to that consumer.\n\t * */\n\tregister({capacity}) { return this.$publish('register', {capacity})}\n\t/**\n\t * Submits a task\n\t *\n\t * Producer API.\n\t * A task producer submits the given task to the server.\n\t * The server will find a tasker with processing capacity and dispatch the task.\n\t * The task result will be ignored : the producer will not receive any notification of any kind, even in case of errors (including capacity exceeded errors).\n\t * This verb will return immediately : you can use this API to asynchronously submit a task.\n\t * */\n\tsubmit({description,originBusinessId,originDeploymentId,data,owner}) { return this.$publish('submit', {description,originBusinessId,originDeploymentId,data,owner})}\n\t/**\n\t * Unregisters a consumer\n\t *\n\t * Consumer API.\n\t * Unregisters the current user resource as an available task consumer.\n\t * All non finished tasks are returned to the server.\n\t * */\n\tunregister() { return this.$publish('unregister', {})}\n}\n/**\n * Push Notifications\n *\n * Native Push Notifications for Android, iOS\n *\n *\n *\n * */\n/**\n * Notification User API\n *\n * User API for notifications.\n * For notifications to work properly, it is imperative that the resource name of a device remain constant over time.\n * @access public\n * */\nexport class Notif extends Service {\n\t/**\n\t * Get default deployment id associated to Notif service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'notif_0'\n\t}\n}\n/**\n * RDBMS\n *\n * Relational Database : SQL storage\n * */\n/**\n * RDBMS User API\n *\n * User API for SQL queries.\n * Contrary to GDA or Stacks, the data are not stored on a per-user basis.\n * Users can store, get, list their data.\n * @access public\n * */\nexport class Rdbms extends Service {\n\t/**\n\t * Get default deployment id associated to Rdbms service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'rdbms_0'\n\t}\n}\n/**\n * SMS via OVH\n *\n * SMS sender, to send text messages to mobile phones\n * This SMS sending service uses the OVH API\n *\n * */\n/**\n * SMS service\n *\n * User API for SMS.\n * @access public\n * */\nexport class Sms_ovh extends Service {\n\t/**\n\t * Get default deployment id associated to Sms_ovh service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'sms_ovh_0'\n\t}\n}\n/**\n * Scheduler\n *\n * Scheduler service\n *  End-users can schedule one-time or repetitive tasks using a classical cron syntax (with the year field) or a timestamp (milliseconds from the epoch)\n * */\n/**\n * User API for the Scheduler\n *\n * User endpoints for scheduling : users can schedule, list and delete tasks.\n * Tasks are stored on a per-user basis: a task will run with the priviledges of the user who stored it.\n * Tasks are run on the server and thus can call api verbs marked as server-only.\n * @access public\n * */\nexport class Cron extends Service {\n\t/**\n\t * Get default deployment id associated to Cron service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'cron_0'\n\t}\n\t/**\n\t * List the configured tasks\n\t *\n\t * Returns a paginated list of the asking user's tasks.\n\t * */\n\tlist({start,stop,owner,page}) { return this.$publish('list', {start,stop,owner,page})}\n}\n/**\n * Search engine\n *\n * ElasticSearch engine, to index and search data\n *  An admin creates indices\n *  Users index and search documents\n *\n * */\n/**\n * ElasticSearch Service\n *\n * This API is a very thin wrapper around ElasticSearch's API.\n * @access public\n * */\nexport class Search extends Service {\n\t/**\n\t * Get default deployment id associated to Search service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'search_0'\n\t}\n\t/**\n\t * Deletes data\n\t *\n\t * Deletes a document from the elasticsearch engine by id.\n\t * */\n\tdelete({type,id,index}) { return this.$publish('delete', {type,id,index})}\n\t/**\n\t * Gets data\n\t *\n\t * Retrieves a document from the elasticsearch engine by id.\n\t * */\n\tget({type,id,index}) { return this.$publish('get', {type,id,index})}\n\t/**\n\t * Indexes data\n\t *\n\t * Inserts or updates a document into the elasticsearch engine.\n\t * */\n\tindex({type,id,index,data}) { return this.$publish('index', {type,id,index,data})}\n\t/**Searches for data*/\n\tsearch({indices,query,sort,page,types}) { return this.$publish('search', {indices,query,sort,page,types})}\n}\n/**\n * Template engine\n *\n * Template engine to produce documents from parameterized templates\n * <br>An admin creates templates\n * <br> Users produce documents\n * <br>The implementation uses the <a href='http://freemarker\n * org/'>freemarker</a> engine\n *\n * */\n/**\n * User API for templates\n *\n * Users use this API to evaluate pre-configured templates.\n * @access public\n * */\nexport class Template extends Service {\n\t/**\n\t * Get default deployment id associated to Template service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'template_0'\n\t}\n\t/**\n\t * Evaluates a template\n\t *\n\t * Evaluates the given template and returns the result as a string.\n\t * Templates are parsed the first time they are evaluated. Evaluation may fail early due to a parsing error.\n\t * */\n\tevaluate({languageTag,name,requestId,data}) { return this.$publish('evaluate', {languageTag,name,requestId,data})}\n}\n/**\n * Triggers\n *\n * Register callbacks for events and trigger them when needed\n *\n * */\n/**\n * Trigger service\n *\n * Register listeners and trigger events.\n * @access public\n * */\nexport class Trigger extends Service {\n\t/**\n\t * Get default deployment id associated to Trigger service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'trigger_0'\n\t}\n}\n/**\n * Upload: S3\n *\n * Upload service with S3 storage\n * */\n/**\n * User API for file management\n *\n * User API for virtual file management and http file upload\n * This API contains all the verbs needed to browse, upload and remove files.\n * Files are stored on a per-user basis: each user has his or her own whole virtual filesystem.\n * Uploading a file is a 3-step process : request an upload URL, upload via HTTP, notify this service of completion.\n * @access public\n * */\nexport class Zpfs_s3 extends Service {\n\t/**\n\t * Get default deployment id associated to Zpfs_s3 service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'zpfs_s3_0'\n\t}\n\t/**\n\t * Copies a file\n\t *\n\t * Copies a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tcp({oldPath,path,owner}) { return this.$publish('cp', {oldPath,path,owner})}\n\t/**\n\t * Returns disk usage\n\t *\n\t * Returns an recursively aggregated number of used bytes, starting at the given path.\n\t * */\n\tdu({path,owner}) { return this.$publish('du', {path,owner})}\n\t/**\n\t * Links a file\n\t *\n\t * Links a file or folder to another location.\n\t * May fail if the target location is not empty.\n\t * */\n\tlink({oldPath,path,owner}) { return this.$publish('link', {oldPath,path,owner})}\n\t/**\n\t * Lists a folder content\n\t *\n\t * Returns a paginated list of the folder's content.\n\t * */\n\tls({folder,owner,page}) { return this.$publish('ls', {folder,owner,page})}\n\t/**\n\t * Creates a folder\n\t *\n\t * Creates a new folder.\n\t * May fail if the target location is not empty.\n\t * */\n\tmkdir({parents,folder,owner}) { return this.$publish('mkdir', {parents,folder,owner})}\n\t/**\n\t * Moves a file\n\t *\n\t * Moves a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tmv({oldPath,path,owner}) { return this.$publish('mv', {oldPath,path,owner})}\n\t/**\n\t * Notifies of upload completion\n\t *\n\t * The client application calls this verb to notify that it's done uploading to the cloud.\n\t * Calling that verb MAY trigger additional events such as thumbnail/metadata creation.\n\t * */\n\tnewFile({tags,guid,metadata,owner}) { return this.$publish('newFile', {tags,guid,metadata,owner})}\n\t/**\n\t * Requests an upload URL\n\t *\n\t * Requests an HTTP upload URL.\n\t * The URL contains temporary credentials (typically valid for a few minutes) and is meant for immediate use.\n\t * */\n\tnewUploadUrl({contentType,path,owner}) { return this.$publish('newUploadUrl', {contentType,path,owner})}\n\t/**\n\t * Removes a file\n\t *\n\t * Removes a file or folder (recursively).\n\t * */\n\trm({path,owner}) { return this.$publish('rm', {path,owner})}\n\t/**\n\t * Creates a snapshot in a new folder\n\t *\n\t * Creates a new folder and then copies the given files inside\n\t * */\n\tsnapshot({parents,folder,items,flatten,owner}) { return this.$publish('snapshot', {parents,folder,items,flatten,owner})}\n\t/**\n\t * Returns information about a file\n\t *\n\t * Returns information about a single file.\n\t * The entry field will be null if the path does not exist\n\t * */\n\tstat({path,owner}) { return this.$publish('stat', {path,owner})}\n\t/**Updates a file's metadata*/\n\tupdateMeta({path,metadataFiles,metadata,owner}) { return this.$publish('updateMeta', {path,metadataFiles,metadata,owner})}\n}\n/**\n * Upload: local\n *\n * Upload service with local HDFS storage\n * */\n/**\n * User API for local file management\n *\n * User API for file content manipulation\n * @access public\n * */\nexport class Zpfs_hdfs extends Service {\n\t/**\n\t * Get default deployment id associated to Zpfs_hdfs service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'zpfs_hdfs_0'\n\t}\n\t/**\n\t * Copies a file\n\t *\n\t * Copies a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tcp({oldPath,path,owner}) { return this.$publish('cp', {oldPath,path,owner})}\n\t/**\n\t * Returns disk usage\n\t *\n\t * Returns an recursively aggregated number of used bytes, starting at the given path.\n\t * */\n\tdu({path,owner}) { return this.$publish('du', {path,owner})}\n\t/**\n\t * Links a file\n\t *\n\t * Links a file or folder to another location.\n\t * May fail if the target location is not empty.\n\t * */\n\tlink({oldPath,path,owner}) { return this.$publish('link', {oldPath,path,owner})}\n\t/**\n\t * Lists a folder content\n\t *\n\t * Returns a paginated list of the folder's content.\n\t * */\n\tls({folder,owner,page}) { return this.$publish('ls', {folder,owner,page})}\n\t/**\n\t * Creates a folder\n\t *\n\t * Creates a new folder.\n\t * May fail if the target location is not empty.\n\t * */\n\tmkdir({parents,folder,owner}) { return this.$publish('mkdir', {parents,folder,owner})}\n\t/**\n\t * Moves a file\n\t *\n\t * Moves a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tmv({oldPath,path,owner}) { return this.$publish('mv', {oldPath,path,owner})}\n\t/**\n\t * Notifies of upload completion\n\t *\n\t * The client application calls this verb to notify that it's done uploading to the cloud.\n\t * Calling that verb MAY trigger additional events such as thumbnail/metadata creation.\n\t * */\n\tnewFile({tags,guid,metadata,owner}) { return this.$publish('newFile', {tags,guid,metadata,owner})}\n\t/**\n\t * Requests an upload URL\n\t *\n\t * Requests an HTTP upload URL.\n\t * The URL contains temporary credentials (typically valid for a few minutes) and is meant for immediate use.\n\t * */\n\tnewUploadUrl({contentType,path,owner}) { return this.$publish('newUploadUrl', {contentType,path,owner})}\n\t/**\n\t * Removes a file\n\t *\n\t * Removes a file or folder (recursively).\n\t * */\n\trm({path,owner}) { return this.$publish('rm', {path,owner})}\n\t/**\n\t * Creates a snapshot in a new folder\n\t *\n\t * Creates a new folder and then copies the given files inside\n\t * */\n\tsnapshot({parents,folder,items,flatten,owner}) { return this.$publish('snapshot', {parents,folder,items,flatten,owner})}\n\t/**\n\t * Returns information about a file\n\t *\n\t * Returns information about a single file.\n\t * The entry field will be null if the path does not exist\n\t * */\n\tstat({path,owner}) { return this.$publish('stat', {path,owner})}\n\t/**Updates a file's metadata*/\n\tupdateMeta({path,metadataFiles,metadata,owner}) { return this.$publish('updateMeta', {path,metadataFiles,metadata,owner})}\n}\n/**\n * Upload: pseudo-S3\n *\n * Upload service with pseudo-S3compatible storage\n * */\n/**\n * User API for file management\n *\n * User API for virtual file management and http file upload\n * This API contains all the verbs needed to browse, upload and remove files.\n * Files are stored on a per-user basis: each user has his or her own whole virtual filesystem.\n * Uploading a file is a 3-step process : request an upload URL, upload via HTTP, notify this service of completion.\n * @access public\n * */\nexport class Zpfs_s3compat extends Service {\n\t/**\n\t * Get default deployment id associated to Zpfs_s3compat service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'zpfs_s3compat_0'\n\t}\n\t/**\n\t * Copies a file\n\t *\n\t * Copies a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tcp({oldPath,path,owner}) { return this.$publish('cp', {oldPath,path,owner})}\n\t/**\n\t * Returns disk usage\n\t *\n\t * Returns an recursively aggregated number of used bytes, starting at the given path.\n\t * */\n\tdu({path,owner}) { return this.$publish('du', {path,owner})}\n\t/**\n\t * Links a file\n\t *\n\t * Links a file or folder to another location.\n\t * May fail if the target location is not empty.\n\t * */\n\tlink({oldPath,path,owner}) { return this.$publish('link', {oldPath,path,owner})}\n\t/**\n\t * Lists a folder content\n\t *\n\t * Returns a paginated list of the folder's content.\n\t * */\n\tls({folder,owner,page}) { return this.$publish('ls', {folder,owner,page})}\n\t/**\n\t * Creates a folder\n\t *\n\t * Creates a new folder.\n\t * May fail if the target location is not empty.\n\t * */\n\tmkdir({parents,folder,owner}) { return this.$publish('mkdir', {parents,folder,owner})}\n\t/**\n\t * Moves a file\n\t *\n\t * Moves a file or folder (recursively) to a new location.\n\t * May fail if the target location is not empty.\n\t * */\n\tmv({oldPath,path,owner}) { return this.$publish('mv', {oldPath,path,owner})}\n\t/**\n\t * Notifies of upload completion\n\t *\n\t * The client application calls this verb to notify that it's done uploading to the cloud.\n\t * Calling that verb MAY trigger additional events such as thumbnail/metadata creation.\n\t * */\n\tnewFile({tags,guid,metadata,owner}) { return this.$publish('newFile', {tags,guid,metadata,owner})}\n\t/**\n\t * Requests an upload URL\n\t *\n\t * Requests an HTTP upload URL.\n\t * The URL contains temporary credentials (typically valid for a few minutes) and is meant for immediate use.\n\t * */\n\tnewUploadUrl({contentType,path,owner}) { return this.$publish('newUploadUrl', {contentType,path,owner})}\n\t/**\n\t * Removes a file\n\t *\n\t * Removes a file or folder (recursively).\n\t * */\n\trm({path,owner}) { return this.$publish('rm', {path,owner})}\n\t/**\n\t * Creates a snapshot in a new folder\n\t *\n\t * Creates a new folder and then copies the given files inside\n\t * */\n\tsnapshot({parents,folder,items,flatten,owner}) { return this.$publish('snapshot', {parents,folder,items,flatten,owner})}\n\t/**\n\t * Returns information about a file\n\t *\n\t * Returns information about a single file.\n\t * The entry field will be null if the path does not exist\n\t * */\n\tstat({path,owner}) { return this.$publish('stat', {path,owner})}\n\t/**Updates a file's metadata*/\n\tupdateMeta({path,metadataFiles,metadata,owner}) { return this.$publish('updateMeta', {path,metadataFiles,metadata,owner})}\n}\n/**\n * User directory service\n *\n * User directory service\n * */\n/**\n * User API for user information\n *\n * @access public\n * */\nexport class Userdir extends Service {\n\t/**\n\t * Get default deployment id associated to Userdir service\n\t * @return {string}\n\t */\n\tstatic get DEFAULT_DEPLOYMENT_ID() {\n\t\treturn 'userdir_0'\n\t}\n\t/**Searches for users matching the request*/\n\tsearch({requestId,query,page}) { return this.$publish('search', {requestId,query,page})}\n\t/**Requests public data for the specified users*/\n\tuserInfo({userKeys}) { return this.$publish('userInfo', {userKeys})}\n}\n",
@@ -4079,7 +4128,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 216,
+    "__docId__": 217,
     "kind": "class",
     "name": "Aggreg",
     "memberof": "src/mapping/services.js",
@@ -4097,7 +4146,7 @@
     ]
   },
   {
-    "__docId__": 217,
+    "__docId__": 218,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Aggreg",
@@ -4123,7 +4172,7 @@
     }
   },
   {
-    "__docId__": 218,
+    "__docId__": 219,
     "kind": "method",
     "name": "push",
     "memberof": "src/mapping/services.js~Aggreg",
@@ -4154,7 +4203,7 @@
     }
   },
   {
-    "__docId__": 219,
+    "__docId__": 220,
     "kind": "class",
     "name": "Stack",
     "memberof": "src/mapping/services.js",
@@ -4172,7 +4221,7 @@
     ]
   },
   {
-    "__docId__": 220,
+    "__docId__": 221,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Stack",
@@ -4198,7 +4247,7 @@
     }
   },
   {
-    "__docId__": 221,
+    "__docId__": 222,
     "kind": "method",
     "name": "getListeners",
     "memberof": "src/mapping/services.js~Stack",
@@ -4229,7 +4278,7 @@
     }
   },
   {
-    "__docId__": 222,
+    "__docId__": 223,
     "kind": "method",
     "name": "list",
     "memberof": "src/mapping/services.js~Stack",
@@ -4261,7 +4310,7 @@
     }
   },
   {
-    "__docId__": 223,
+    "__docId__": 224,
     "kind": "method",
     "name": "purge",
     "memberof": "src/mapping/services.js~Stack",
@@ -4292,7 +4341,7 @@
     }
   },
   {
-    "__docId__": 224,
+    "__docId__": 225,
     "kind": "method",
     "name": "push",
     "memberof": "src/mapping/services.js~Stack",
@@ -4324,7 +4373,7 @@
     }
   },
   {
-    "__docId__": 225,
+    "__docId__": 226,
     "kind": "method",
     "name": "remove",
     "memberof": "src/mapping/services.js~Stack",
@@ -4356,7 +4405,7 @@
     }
   },
   {
-    "__docId__": 226,
+    "__docId__": 227,
     "kind": "method",
     "name": "setListeners",
     "memberof": "src/mapping/services.js~Stack",
@@ -4388,7 +4437,7 @@
     }
   },
   {
-    "__docId__": 227,
+    "__docId__": 228,
     "kind": "method",
     "name": "update",
     "memberof": "src/mapping/services.js~Stack",
@@ -4421,7 +4470,7 @@
     }
   },
   {
-    "__docId__": 228,
+    "__docId__": 229,
     "kind": "class",
     "name": "Echo",
     "memberof": "src/mapping/services.js",
@@ -4439,7 +4488,7 @@
     ]
   },
   {
-    "__docId__": 229,
+    "__docId__": 230,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Echo",
@@ -4465,7 +4514,7 @@
     }
   },
   {
-    "__docId__": 230,
+    "__docId__": 231,
     "kind": "method",
     "name": "echo",
     "memberof": "src/mapping/services.js~Echo",
@@ -4491,7 +4540,7 @@
     }
   },
   {
-    "__docId__": 231,
+    "__docId__": 232,
     "kind": "class",
     "name": "Game",
     "memberof": "src/mapping/services.js",
@@ -4509,7 +4558,7 @@
     ]
   },
   {
-    "__docId__": 232,
+    "__docId__": 233,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Game",
@@ -4535,7 +4584,7 @@
     }
   },
   {
-    "__docId__": 233,
+    "__docId__": 234,
     "kind": "method",
     "name": "available",
     "memberof": "src/mapping/services.js~Game",
@@ -4554,7 +4603,7 @@
     }
   },
   {
-    "__docId__": 234,
+    "__docId__": 235,
     "kind": "method",
     "name": "join",
     "memberof": "src/mapping/services.js~Game",
@@ -4587,7 +4636,7 @@
     }
   },
   {
-    "__docId__": 235,
+    "__docId__": 236,
     "kind": "method",
     "name": "organize",
     "memberof": "src/mapping/services.js~Game",
@@ -4619,7 +4668,7 @@
     }
   },
   {
-    "__docId__": 236,
+    "__docId__": 237,
     "kind": "method",
     "name": "play",
     "memberof": "src/mapping/services.js~Game",
@@ -4651,7 +4700,7 @@
     }
   },
   {
-    "__docId__": 237,
+    "__docId__": 238,
     "kind": "method",
     "name": "start",
     "memberof": "src/mapping/services.js~Game",
@@ -4681,7 +4730,7 @@
     }
   },
   {
-    "__docId__": 238,
+    "__docId__": 239,
     "kind": "method",
     "name": "unjoin",
     "memberof": "src/mapping/services.js~Game",
@@ -4714,7 +4763,7 @@
     }
   },
   {
-    "__docId__": 239,
+    "__docId__": 240,
     "kind": "class",
     "name": "GameEngine",
     "memberof": "src/mapping/services.js",
@@ -4732,7 +4781,7 @@
     ]
   },
   {
-    "__docId__": 240,
+    "__docId__": 241,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~GameEngine",
@@ -4758,7 +4807,7 @@
     }
   },
   {
-    "__docId__": 241,
+    "__docId__": 242,
     "kind": "method",
     "name": "join_result",
     "memberof": "src/mapping/services.js~GameEngine",
@@ -4791,7 +4840,7 @@
     }
   },
   {
-    "__docId__": 242,
+    "__docId__": 243,
     "kind": "method",
     "name": "organize_result",
     "memberof": "src/mapping/services.js~GameEngine",
@@ -4824,7 +4873,7 @@
     }
   },
   {
-    "__docId__": 243,
+    "__docId__": 244,
     "kind": "method",
     "name": "register",
     "memberof": "src/mapping/services.js~GameEngine",
@@ -4856,7 +4905,7 @@
     }
   },
   {
-    "__docId__": 244,
+    "__docId__": 245,
     "kind": "method",
     "name": "start_result",
     "memberof": "src/mapping/services.js~GameEngine",
@@ -4886,7 +4935,7 @@
     }
   },
   {
-    "__docId__": 245,
+    "__docId__": 246,
     "kind": "method",
     "name": "state",
     "memberof": "src/mapping/services.js~GameEngine",
@@ -4918,7 +4967,7 @@
     }
   },
   {
-    "__docId__": 246,
+    "__docId__": 247,
     "kind": "method",
     "name": "unjoin_result",
     "memberof": "src/mapping/services.js~GameEngine",
@@ -4951,7 +5000,7 @@
     }
   },
   {
-    "__docId__": 247,
+    "__docId__": 248,
     "kind": "class",
     "name": "Gda",
     "memberof": "src/mapping/services.js",
@@ -4969,7 +5018,7 @@
     ]
   },
   {
-    "__docId__": 248,
+    "__docId__": 249,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Gda",
@@ -4995,7 +5044,7 @@
     }
   },
   {
-    "__docId__": 249,
+    "__docId__": 250,
     "kind": "method",
     "name": "get",
     "memberof": "src/mapping/services.js~Gda",
@@ -5027,7 +5076,7 @@
     }
   },
   {
-    "__docId__": 250,
+    "__docId__": 251,
     "kind": "method",
     "name": "getCells",
     "memberof": "src/mapping/services.js~Gda",
@@ -5061,7 +5110,7 @@
     }
   },
   {
-    "__docId__": 251,
+    "__docId__": 252,
     "kind": "method",
     "name": "inc",
     "memberof": "src/mapping/services.js~Gda",
@@ -5096,7 +5145,7 @@
     }
   },
   {
-    "__docId__": 252,
+    "__docId__": 253,
     "kind": "method",
     "name": "list",
     "memberof": "src/mapping/services.js~Gda",
@@ -5129,7 +5178,7 @@
     }
   },
   {
-    "__docId__": 253,
+    "__docId__": 254,
     "kind": "method",
     "name": "put",
     "memberof": "src/mapping/services.js~Gda",
@@ -5164,7 +5213,7 @@
     }
   },
   {
-    "__docId__": 254,
+    "__docId__": 255,
     "kind": "method",
     "name": "puts",
     "memberof": "src/mapping/services.js~Gda",
@@ -5196,7 +5245,7 @@
     }
   },
   {
-    "__docId__": 255,
+    "__docId__": 256,
     "kind": "method",
     "name": "range",
     "memberof": "src/mapping/services.js~Gda",
@@ -5231,7 +5280,7 @@
     }
   },
   {
-    "__docId__": 256,
+    "__docId__": 257,
     "kind": "method",
     "name": "removeCell",
     "memberof": "src/mapping/services.js~Gda",
@@ -5265,7 +5314,7 @@
     }
   },
   {
-    "__docId__": 257,
+    "__docId__": 258,
     "kind": "method",
     "name": "removeColumn",
     "memberof": "src/mapping/services.js~Gda",
@@ -5298,7 +5347,7 @@
     }
   },
   {
-    "__docId__": 258,
+    "__docId__": 259,
     "kind": "method",
     "name": "removeRange",
     "memberof": "src/mapping/services.js~Gda",
@@ -5332,7 +5381,7 @@
     }
   },
   {
-    "__docId__": 259,
+    "__docId__": 260,
     "kind": "method",
     "name": "removeRow",
     "memberof": "src/mapping/services.js~Gda",
@@ -5364,7 +5413,7 @@
     }
   },
   {
-    "__docId__": 260,
+    "__docId__": 261,
     "kind": "class",
     "name": "Remoting",
     "memberof": "src/mapping/services.js",
@@ -5382,7 +5431,7 @@
     ]
   },
   {
-    "__docId__": 261,
+    "__docId__": 262,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Remoting",
@@ -5408,7 +5457,7 @@
     }
   },
   {
-    "__docId__": 262,
+    "__docId__": 263,
     "kind": "method",
     "name": "addListener",
     "memberof": "src/mapping/services.js~Remoting",
@@ -5443,7 +5492,7 @@
     }
   },
   {
-    "__docId__": 263,
+    "__docId__": 264,
     "kind": "method",
     "name": "capabilities",
     "memberof": "src/mapping/services.js~Remoting",
@@ -5475,7 +5524,7 @@
     }
   },
   {
-    "__docId__": 264,
+    "__docId__": 265,
     "kind": "method",
     "name": "execute",
     "memberof": "src/mapping/services.js~Remoting",
@@ -5508,7 +5557,7 @@
     }
   },
   {
-    "__docId__": 265,
+    "__docId__": 266,
     "kind": "method",
     "name": "getCapabilities",
     "memberof": "src/mapping/services.js~Remoting",
@@ -5527,7 +5576,7 @@
     }
   },
   {
-    "__docId__": 266,
+    "__docId__": 267,
     "kind": "method",
     "name": "notify",
     "memberof": "src/mapping/services.js~Remoting",
@@ -5562,7 +5611,7 @@
     }
   },
   {
-    "__docId__": 267,
+    "__docId__": 268,
     "kind": "method",
     "name": "ping",
     "memberof": "src/mapping/services.js~Remoting",
@@ -5592,7 +5641,7 @@
     }
   },
   {
-    "__docId__": 268,
+    "__docId__": 269,
     "kind": "method",
     "name": "pong",
     "memberof": "src/mapping/services.js~Remoting",
@@ -5627,7 +5676,7 @@
     }
   },
   {
-    "__docId__": 269,
+    "__docId__": 270,
     "kind": "method",
     "name": "removeListener",
     "memberof": "src/mapping/services.js~Remoting",
@@ -5662,7 +5711,7 @@
     }
   },
   {
-    "__docId__": 270,
+    "__docId__": 271,
     "kind": "class",
     "name": "GroupManagement",
     "memberof": "src/mapping/services.js",
@@ -5680,7 +5729,7 @@
     ]
   },
   {
-    "__docId__": 271,
+    "__docId__": 272,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -5706,7 +5755,7 @@
     }
   },
   {
-    "__docId__": 272,
+    "__docId__": 273,
     "kind": "method",
     "name": "addMe",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -5737,7 +5786,7 @@
     }
   },
   {
-    "__docId__": 273,
+    "__docId__": 274,
     "kind": "method",
     "name": "addUser",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -5769,7 +5818,7 @@
     }
   },
   {
-    "__docId__": 274,
+    "__docId__": 275,
     "kind": "method",
     "name": "addUsers",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -5801,7 +5850,7 @@
     }
   },
   {
-    "__docId__": 275,
+    "__docId__": 276,
     "kind": "method",
     "name": "allGroups",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -5831,7 +5880,7 @@
     }
   },
   {
-    "__docId__": 276,
+    "__docId__": 277,
     "kind": "method",
     "name": "createGroup",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -5863,7 +5912,7 @@
     }
   },
   {
-    "__docId__": 277,
+    "__docId__": 278,
     "kind": "method",
     "name": "delGroup",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -5894,7 +5943,7 @@
     }
   },
   {
-    "__docId__": 278,
+    "__docId__": 279,
     "kind": "method",
     "name": "delUser",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -5926,7 +5975,7 @@
     }
   },
   {
-    "__docId__": 279,
+    "__docId__": 280,
     "kind": "method",
     "name": "delUsers",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -5959,7 +6008,7 @@
     }
   },
   {
-    "__docId__": 280,
+    "__docId__": 281,
     "kind": "method",
     "name": "exists",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -5990,7 +6039,7 @@
     }
   },
   {
-    "__docId__": 281,
+    "__docId__": 282,
     "kind": "method",
     "name": "grant",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -6023,7 +6072,7 @@
     }
   },
   {
-    "__docId__": 282,
+    "__docId__": 283,
     "kind": "method",
     "name": "groupUsers",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -6054,7 +6103,7 @@
     }
   },
   {
-    "__docId__": 283,
+    "__docId__": 284,
     "kind": "method",
     "name": "groups",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -6084,7 +6133,7 @@
     }
   },
   {
-    "__docId__": 284,
+    "__docId__": 285,
     "kind": "method",
     "name": "listGrants",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -6115,7 +6164,7 @@
     }
   },
   {
-    "__docId__": 285,
+    "__docId__": 286,
     "kind": "method",
     "name": "listPresences",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -6146,7 +6195,7 @@
     }
   },
   {
-    "__docId__": 286,
+    "__docId__": 287,
     "kind": "method",
     "name": "memberOf",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -6178,7 +6227,7 @@
     }
   },
   {
-    "__docId__": 287,
+    "__docId__": 288,
     "kind": "method",
     "name": "mgrant",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -6211,7 +6260,7 @@
     }
   },
   {
-    "__docId__": 288,
+    "__docId__": 289,
     "kind": "method",
     "name": "mrevoke",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -6244,7 +6293,7 @@
     }
   },
   {
-    "__docId__": 289,
+    "__docId__": 290,
     "kind": "method",
     "name": "myGroups",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -6274,7 +6323,7 @@
     }
   },
   {
-    "__docId__": 290,
+    "__docId__": 291,
     "kind": "method",
     "name": "revoke",
     "memberof": "src/mapping/services.js~GroupManagement",
@@ -6307,7 +6356,7 @@
     }
   },
   {
-    "__docId__": 291,
+    "__docId__": 292,
     "kind": "class",
     "name": "Httpclient",
     "memberof": "src/mapping/services.js",
@@ -6325,7 +6374,7 @@
     ]
   },
   {
-    "__docId__": 292,
+    "__docId__": 293,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Httpclient",
@@ -6351,7 +6400,7 @@
     }
   },
   {
-    "__docId__": 293,
+    "__docId__": 294,
     "kind": "method",
     "name": "call",
     "memberof": "src/mapping/services.js~Httpclient",
@@ -6382,7 +6431,7 @@
     }
   },
   {
-    "__docId__": 294,
+    "__docId__": 295,
     "kind": "class",
     "name": "MacroDebug",
     "memberof": "src/mapping/services.js",
@@ -6400,7 +6449,7 @@
     ]
   },
   {
-    "__docId__": 295,
+    "__docId__": 296,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~MacroDebug",
@@ -6426,7 +6475,7 @@
     }
   },
   {
-    "__docId__": 296,
+    "__docId__": 297,
     "kind": "method",
     "name": "breakpoint",
     "memberof": "src/mapping/services.js~MacroDebug",
@@ -6458,7 +6507,7 @@
     }
   },
   {
-    "__docId__": 297,
+    "__docId__": 298,
     "kind": "method",
     "name": "info",
     "memberof": "src/mapping/services.js~MacroDebug",
@@ -6492,7 +6541,7 @@
     }
   },
   {
-    "__docId__": 298,
+    "__docId__": 299,
     "kind": "method",
     "name": "livedebug",
     "memberof": "src/mapping/services.js~MacroDebug",
@@ -6528,7 +6577,7 @@
     }
   },
   {
-    "__docId__": 299,
+    "__docId__": 300,
     "kind": "method",
     "name": "resume",
     "memberof": "src/mapping/services.js~MacroDebug",
@@ -6559,7 +6608,7 @@
     }
   },
   {
-    "__docId__": 300,
+    "__docId__": 301,
     "kind": "method",
     "name": "variable",
     "memberof": "src/mapping/services.js~MacroDebug",
@@ -6592,7 +6641,7 @@
     }
   },
   {
-    "__docId__": 301,
+    "__docId__": 302,
     "kind": "class",
     "name": "Macro",
     "memberof": "src/mapping/services.js",
@@ -6610,7 +6659,7 @@
     ]
   },
   {
-    "__docId__": 302,
+    "__docId__": 303,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Macro",
@@ -6636,7 +6685,7 @@
     }
   },
   {
-    "__docId__": 303,
+    "__docId__": 304,
     "kind": "method",
     "name": "call",
     "memberof": "src/mapping/services.js~Macro",
@@ -6670,7 +6719,7 @@
     }
   },
   {
-    "__docId__": 304,
+    "__docId__": 305,
     "kind": "class",
     "name": "Sendmail",
     "memberof": "src/mapping/services.js",
@@ -6688,7 +6737,7 @@
     ]
   },
   {
-    "__docId__": 305,
+    "__docId__": 306,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Sendmail",
@@ -6714,7 +6763,7 @@
     }
   },
   {
-    "__docId__": 306,
+    "__docId__": 307,
     "kind": "class",
     "name": "Messaging",
     "memberof": "src/mapping/services.js",
@@ -6732,7 +6781,7 @@
     ]
   },
   {
-    "__docId__": 307,
+    "__docId__": 308,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Messaging",
@@ -6758,7 +6807,7 @@
     }
   },
   {
-    "__docId__": 308,
+    "__docId__": 309,
     "kind": "method",
     "name": "send",
     "memberof": "src/mapping/services.js~Messaging",
@@ -6790,7 +6839,7 @@
     }
   },
   {
-    "__docId__": 309,
+    "__docId__": 310,
     "kind": "class",
     "name": "Queue",
     "memberof": "src/mapping/services.js",
@@ -6808,7 +6857,7 @@
     ]
   },
   {
-    "__docId__": 310,
+    "__docId__": 311,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Queue",
@@ -6834,7 +6883,7 @@
     }
   },
   {
-    "__docId__": 311,
+    "__docId__": 312,
     "kind": "method",
     "name": "call",
     "memberof": "src/mapping/services.js~Queue",
@@ -6868,7 +6917,7 @@
     }
   },
   {
-    "__docId__": 312,
+    "__docId__": 313,
     "kind": "method",
     "name": "done",
     "memberof": "src/mapping/services.js~Queue",
@@ -6900,7 +6949,7 @@
     }
   },
   {
-    "__docId__": 313,
+    "__docId__": 314,
     "kind": "method",
     "name": "register",
     "memberof": "src/mapping/services.js~Queue",
@@ -6930,7 +6979,7 @@
     }
   },
   {
-    "__docId__": 314,
+    "__docId__": 315,
     "kind": "method",
     "name": "submit",
     "memberof": "src/mapping/services.js~Queue",
@@ -6964,7 +7013,7 @@
     }
   },
   {
-    "__docId__": 315,
+    "__docId__": 316,
     "kind": "method",
     "name": "unregister",
     "memberof": "src/mapping/services.js~Queue",
@@ -6983,7 +7032,7 @@
     }
   },
   {
-    "__docId__": 316,
+    "__docId__": 317,
     "kind": "class",
     "name": "Notif",
     "memberof": "src/mapping/services.js",
@@ -7001,7 +7050,7 @@
     ]
   },
   {
-    "__docId__": 317,
+    "__docId__": 318,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Notif",
@@ -7027,7 +7076,7 @@
     }
   },
   {
-    "__docId__": 318,
+    "__docId__": 319,
     "kind": "class",
     "name": "Rdbms",
     "memberof": "src/mapping/services.js",
@@ -7045,7 +7094,7 @@
     ]
   },
   {
-    "__docId__": 319,
+    "__docId__": 320,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Rdbms",
@@ -7071,7 +7120,7 @@
     }
   },
   {
-    "__docId__": 320,
+    "__docId__": 321,
     "kind": "class",
     "name": "Sms_ovh",
     "memberof": "src/mapping/services.js",
@@ -7089,7 +7138,7 @@
     ]
   },
   {
-    "__docId__": 321,
+    "__docId__": 322,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Sms_ovh",
@@ -7115,7 +7164,7 @@
     }
   },
   {
-    "__docId__": 322,
+    "__docId__": 323,
     "kind": "class",
     "name": "Cron",
     "memberof": "src/mapping/services.js",
@@ -7133,7 +7182,7 @@
     ]
   },
   {
-    "__docId__": 323,
+    "__docId__": 324,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Cron",
@@ -7159,7 +7208,7 @@
     }
   },
   {
-    "__docId__": 324,
+    "__docId__": 325,
     "kind": "method",
     "name": "list",
     "memberof": "src/mapping/services.js~Cron",
@@ -7192,7 +7241,7 @@
     }
   },
   {
-    "__docId__": 325,
+    "__docId__": 326,
     "kind": "class",
     "name": "Search",
     "memberof": "src/mapping/services.js",
@@ -7210,7 +7259,7 @@
     ]
   },
   {
-    "__docId__": 326,
+    "__docId__": 327,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Search",
@@ -7236,7 +7285,7 @@
     }
   },
   {
-    "__docId__": 327,
+    "__docId__": 328,
     "kind": "method",
     "name": "delete",
     "memberof": "src/mapping/services.js~Search",
@@ -7268,7 +7317,7 @@
     }
   },
   {
-    "__docId__": 328,
+    "__docId__": 329,
     "kind": "method",
     "name": "get",
     "memberof": "src/mapping/services.js~Search",
@@ -7300,7 +7349,7 @@
     }
   },
   {
-    "__docId__": 329,
+    "__docId__": 330,
     "kind": "method",
     "name": "index",
     "memberof": "src/mapping/services.js~Search",
@@ -7333,7 +7382,7 @@
     }
   },
   {
-    "__docId__": 330,
+    "__docId__": 331,
     "kind": "method",
     "name": "search",
     "memberof": "src/mapping/services.js~Search",
@@ -7367,7 +7416,7 @@
     }
   },
   {
-    "__docId__": 331,
+    "__docId__": 332,
     "kind": "class",
     "name": "Template",
     "memberof": "src/mapping/services.js",
@@ -7385,7 +7434,7 @@
     ]
   },
   {
-    "__docId__": 332,
+    "__docId__": 333,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Template",
@@ -7411,7 +7460,7 @@
     }
   },
   {
-    "__docId__": 333,
+    "__docId__": 334,
     "kind": "method",
     "name": "evaluate",
     "memberof": "src/mapping/services.js~Template",
@@ -7444,7 +7493,7 @@
     }
   },
   {
-    "__docId__": 334,
+    "__docId__": 335,
     "kind": "class",
     "name": "Trigger",
     "memberof": "src/mapping/services.js",
@@ -7462,7 +7511,7 @@
     ]
   },
   {
-    "__docId__": 335,
+    "__docId__": 336,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Trigger",
@@ -7488,7 +7537,7 @@
     }
   },
   {
-    "__docId__": 336,
+    "__docId__": 337,
     "kind": "class",
     "name": "Zpfs_s3",
     "memberof": "src/mapping/services.js",
@@ -7506,7 +7555,7 @@
     ]
   },
   {
-    "__docId__": 337,
+    "__docId__": 338,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7532,7 +7581,7 @@
     }
   },
   {
-    "__docId__": 338,
+    "__docId__": 339,
     "kind": "method",
     "name": "cp",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7564,7 +7613,7 @@
     }
   },
   {
-    "__docId__": 339,
+    "__docId__": 340,
     "kind": "method",
     "name": "du",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7595,7 +7644,7 @@
     }
   },
   {
-    "__docId__": 340,
+    "__docId__": 341,
     "kind": "method",
     "name": "link",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7627,7 +7676,7 @@
     }
   },
   {
-    "__docId__": 341,
+    "__docId__": 342,
     "kind": "method",
     "name": "ls",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7659,7 +7708,7 @@
     }
   },
   {
-    "__docId__": 342,
+    "__docId__": 343,
     "kind": "method",
     "name": "mkdir",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7691,7 +7740,7 @@
     }
   },
   {
-    "__docId__": 343,
+    "__docId__": 344,
     "kind": "method",
     "name": "mv",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7723,7 +7772,7 @@
     }
   },
   {
-    "__docId__": 344,
+    "__docId__": 345,
     "kind": "method",
     "name": "newFile",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7756,7 +7805,7 @@
     }
   },
   {
-    "__docId__": 345,
+    "__docId__": 346,
     "kind": "method",
     "name": "newUploadUrl",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7788,7 +7837,7 @@
     }
   },
   {
-    "__docId__": 346,
+    "__docId__": 347,
     "kind": "method",
     "name": "rm",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7819,7 +7868,7 @@
     }
   },
   {
-    "__docId__": 347,
+    "__docId__": 348,
     "kind": "method",
     "name": "snapshot",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7853,7 +7902,7 @@
     }
   },
   {
-    "__docId__": 348,
+    "__docId__": 349,
     "kind": "method",
     "name": "stat",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7884,7 +7933,7 @@
     }
   },
   {
-    "__docId__": 349,
+    "__docId__": 350,
     "kind": "method",
     "name": "updateMeta",
     "memberof": "src/mapping/services.js~Zpfs_s3",
@@ -7917,7 +7966,7 @@
     }
   },
   {
-    "__docId__": 350,
+    "__docId__": 351,
     "kind": "class",
     "name": "Zpfs_hdfs",
     "memberof": "src/mapping/services.js",
@@ -7935,7 +7984,7 @@
     ]
   },
   {
-    "__docId__": 351,
+    "__docId__": 352,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -7961,7 +8010,7 @@
     }
   },
   {
-    "__docId__": 352,
+    "__docId__": 353,
     "kind": "method",
     "name": "cp",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -7993,7 +8042,7 @@
     }
   },
   {
-    "__docId__": 353,
+    "__docId__": 354,
     "kind": "method",
     "name": "du",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -8024,7 +8073,7 @@
     }
   },
   {
-    "__docId__": 354,
+    "__docId__": 355,
     "kind": "method",
     "name": "link",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -8056,7 +8105,7 @@
     }
   },
   {
-    "__docId__": 355,
+    "__docId__": 356,
     "kind": "method",
     "name": "ls",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -8088,7 +8137,7 @@
     }
   },
   {
-    "__docId__": 356,
+    "__docId__": 357,
     "kind": "method",
     "name": "mkdir",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -8120,7 +8169,7 @@
     }
   },
   {
-    "__docId__": 357,
+    "__docId__": 358,
     "kind": "method",
     "name": "mv",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -8152,7 +8201,7 @@
     }
   },
   {
-    "__docId__": 358,
+    "__docId__": 359,
     "kind": "method",
     "name": "newFile",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -8185,7 +8234,7 @@
     }
   },
   {
-    "__docId__": 359,
+    "__docId__": 360,
     "kind": "method",
     "name": "newUploadUrl",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -8217,7 +8266,7 @@
     }
   },
   {
-    "__docId__": 360,
+    "__docId__": 361,
     "kind": "method",
     "name": "rm",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -8248,7 +8297,7 @@
     }
   },
   {
-    "__docId__": 361,
+    "__docId__": 362,
     "kind": "method",
     "name": "snapshot",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -8282,7 +8331,7 @@
     }
   },
   {
-    "__docId__": 362,
+    "__docId__": 363,
     "kind": "method",
     "name": "stat",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -8313,7 +8362,7 @@
     }
   },
   {
-    "__docId__": 363,
+    "__docId__": 364,
     "kind": "method",
     "name": "updateMeta",
     "memberof": "src/mapping/services.js~Zpfs_hdfs",
@@ -8346,7 +8395,7 @@
     }
   },
   {
-    "__docId__": 364,
+    "__docId__": 365,
     "kind": "class",
     "name": "Zpfs_s3compat",
     "memberof": "src/mapping/services.js",
@@ -8364,7 +8413,7 @@
     ]
   },
   {
-    "__docId__": 365,
+    "__docId__": 366,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8390,7 +8439,7 @@
     }
   },
   {
-    "__docId__": 366,
+    "__docId__": 367,
     "kind": "method",
     "name": "cp",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8422,7 +8471,7 @@
     }
   },
   {
-    "__docId__": 367,
+    "__docId__": 368,
     "kind": "method",
     "name": "du",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8453,7 +8502,7 @@
     }
   },
   {
-    "__docId__": 368,
+    "__docId__": 369,
     "kind": "method",
     "name": "link",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8485,7 +8534,7 @@
     }
   },
   {
-    "__docId__": 369,
+    "__docId__": 370,
     "kind": "method",
     "name": "ls",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8517,7 +8566,7 @@
     }
   },
   {
-    "__docId__": 370,
+    "__docId__": 371,
     "kind": "method",
     "name": "mkdir",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8549,7 +8598,7 @@
     }
   },
   {
-    "__docId__": 371,
+    "__docId__": 372,
     "kind": "method",
     "name": "mv",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8581,7 +8630,7 @@
     }
   },
   {
-    "__docId__": 372,
+    "__docId__": 373,
     "kind": "method",
     "name": "newFile",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8614,7 +8663,7 @@
     }
   },
   {
-    "__docId__": 373,
+    "__docId__": 374,
     "kind": "method",
     "name": "newUploadUrl",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8646,7 +8695,7 @@
     }
   },
   {
-    "__docId__": 374,
+    "__docId__": 375,
     "kind": "method",
     "name": "rm",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8677,7 +8726,7 @@
     }
   },
   {
-    "__docId__": 375,
+    "__docId__": 376,
     "kind": "method",
     "name": "snapshot",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8711,7 +8760,7 @@
     }
   },
   {
-    "__docId__": 376,
+    "__docId__": 377,
     "kind": "method",
     "name": "stat",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8742,7 +8791,7 @@
     }
   },
   {
-    "__docId__": 377,
+    "__docId__": 378,
     "kind": "method",
     "name": "updateMeta",
     "memberof": "src/mapping/services.js~Zpfs_s3compat",
@@ -8775,7 +8824,7 @@
     }
   },
   {
-    "__docId__": 378,
+    "__docId__": 379,
     "kind": "class",
     "name": "Userdir",
     "memberof": "src/mapping/services.js",
@@ -8793,7 +8842,7 @@
     ]
   },
   {
-    "__docId__": 379,
+    "__docId__": 380,
     "kind": "get",
     "name": "DEFAULT_DEPLOYMENT_ID",
     "memberof": "src/mapping/services.js~Userdir",
@@ -8819,7 +8868,7 @@
     }
   },
   {
-    "__docId__": 380,
+    "__docId__": 381,
     "kind": "method",
     "name": "search",
     "memberof": "src/mapping/services.js~Userdir",
@@ -8851,7 +8900,7 @@
     }
   },
   {
-    "__docId__": 381,
+    "__docId__": 382,
     "kind": "method",
     "name": "userInfo",
     "memberof": "src/mapping/services.js~Userdir",
@@ -8881,7 +8930,7 @@
     }
   },
   {
-    "__docId__": 382,
+    "__docId__": 383,
     "kind": "file",
     "name": "src/utils/index.js",
     "content": "/**\n * Match unsecure pattern web\n * @type {RegExp}\n */\nconst HTTP_PATTERN = /^http:\\/\\/|^\\/\\//\n\n/**\n * Http protocol\n * @type {string}\n */\nconst HTTP_PROTOCOL = 'http:'\n\n/**\n * Https protocol\n * @type {string}\n */\nconst HTTPS_PROTOCOL = 'https:'\n\n/**\n * Alpha numeric dictionary\n */\nconst DICTIONARY = 'abcdefghijklmnopqrstuvwxyz0123456789'\n\n/**\n * Default ZetaPush API URL\n * @access private\n */\nexport const API_URL = 'https://api.zpush.io/'\n\n/**\n * Force ssl based protocol for network echange\n * Cross Env (Browser/Node) test\n * @access private\n * @type boolean\n */\nexport const FORCE_HTTPS = typeof location === 'undefined' ? false : location.protocol === HTTPS_PROTOCOL\n\n/**\n * @access private\n * @param {string} apiUrl\n * @return {string}\n */\nconst normalizeApiUrl = (apiUrl) => {\n  const last = apiUrl.charAt(apiUrl.length - 1)\n  const SLASH = '/'\n  return last === SLASH ? apiUrl : apiUrl + SLASH\n}\n\n/**\n * @access private\n * @param {Array<Object>} list\n * @return {Object}\n */\nexport const shuffle = (list) => {\n  const index = Math.floor(Math.random() * list.length)\n  return list[index]\n}\n\n/**\n * @access private\n * @param {string} url\n * @param {boolean} forceHttps\n * @return {string}\n */\nexport const getSecureUrl = (url, forceHttps) => {\n  return forceHttps ? url.replace(HTTP_PATTERN, `${HTTPS_PROTOCOL}//`) : url\n}\n\n/**\n * @access private\n * @param {{apiUrl: string, sandboxId: string, forceHttps: boolean, transports: Transports}} parameters\n * @return {Promise}\n */\nexport const getServers = ({ apiUrl, sandboxId, forceHttps, transports }) => {\n  const normalizedSecuresApiUrl = normalizeApiUrl(getSecureUrl(apiUrl, forceHttps))\n  const url = `${normalizedSecuresApiUrl}${sandboxId}`\n  const options = { protocol: forceHttps ? HTTPS_PROTOCOL : HTTP_PROTOCOL }\n  return transports.fetch(url, options)\n    .then((response) => response.json())\n    // TODO: Replace by a server side implementation when available\n    .then(({ servers }) => servers.map((server) => getSecureUrl(server, forceHttps)))\n}\n\n/**\n * @access private\n * @param Class Derived\n * @param Class Parent\n * @return {boolean}\n */\nexport const isDerivedOf = (Derived, Parent) => {\n  let prototype = Object.getPrototypeOf(Derived)\n  let is = false\n  while (!(is || prototype === null)) {\n    is = prototype === Parent\n    prototype = Object.getPrototypeOf(prototype)\n  }\n  return is\n}\n\n/**\n * Get random id\n * @return {string}\n */\nexport const uuid = (entropy = 7, dictionary = DICTIONARY) => Array.from(Array(entropy)).reduce((previous) => {\n  const next = dictionary.charAt(Math.floor(Math.random() * dictionary.length))\n  return `${previous}${next}`\n}, '')\n",
@@ -8892,7 +8941,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 383,
+    "__docId__": 384,
     "kind": "variable",
     "name": "HTTP_PATTERN",
     "memberof": "src/utils/index.js",
@@ -8914,7 +8963,7 @@
     }
   },
   {
-    "__docId__": 384,
+    "__docId__": 385,
     "kind": "variable",
     "name": "HTTP_PROTOCOL",
     "memberof": "src/utils/index.js",
@@ -8936,7 +8985,7 @@
     }
   },
   {
-    "__docId__": 385,
+    "__docId__": 386,
     "kind": "variable",
     "name": "HTTPS_PROTOCOL",
     "memberof": "src/utils/index.js",
@@ -8958,7 +9007,7 @@
     }
   },
   {
-    "__docId__": 386,
+    "__docId__": 387,
     "kind": "variable",
     "name": "DICTIONARY",
     "memberof": "src/utils/index.js",
@@ -8977,7 +9026,7 @@
     }
   },
   {
-    "__docId__": 387,
+    "__docId__": 388,
     "kind": "variable",
     "name": "API_URL",
     "memberof": "src/utils/index.js",
@@ -8997,7 +9046,7 @@
     }
   },
   {
-    "__docId__": 388,
+    "__docId__": 389,
     "kind": "variable",
     "name": "FORCE_HTTPS",
     "memberof": "src/utils/index.js",
@@ -9020,7 +9069,7 @@
     "ignore": true
   },
   {
-    "__docId__": 389,
+    "__docId__": 390,
     "kind": "function",
     "name": "normalizeApiUrl",
     "memberof": "src/utils/index.js",
@@ -9057,7 +9106,7 @@
     "ignore": true
   },
   {
-    "__docId__": 390,
+    "__docId__": 391,
     "kind": "function",
     "name": "shuffle",
     "memberof": "src/utils/index.js",
@@ -9094,7 +9143,7 @@
     "ignore": true
   },
   {
-    "__docId__": 391,
+    "__docId__": 392,
     "kind": "function",
     "name": "getSecureUrl",
     "memberof": "src/utils/index.js",
@@ -9141,7 +9190,7 @@
     "ignore": true
   },
   {
-    "__docId__": 392,
+    "__docId__": 393,
     "kind": "function",
     "name": "getServers",
     "memberof": "src/utils/index.js",
@@ -9178,7 +9227,7 @@
     "ignore": true
   },
   {
-    "__docId__": 393,
+    "__docId__": 394,
     "kind": "function",
     "name": "isDerivedOf",
     "memberof": "src/utils/index.js",
@@ -9225,7 +9274,7 @@
     "ignore": true
   },
   {
-    "__docId__": 394,
+    "__docId__": 395,
     "kind": "function",
     "name": "uuid",
     "memberof": "src/utils/index.js",
@@ -9269,7 +9318,7 @@
     ]
   },
   {
-    "__docId__": 395,
+    "__docId__": 396,
     "kind": "file",
     "name": "src/utils/session-persistence.js",
     "content": "import { platformStorage } from './storage'\n\n/**\n * @type {string}\n */\nexport const ZETAPUSH_SESSION_KEY = 'zetapush.token'\n\n/**\n * Provide abstraction for token persistence\n * @access protected\n */\nexport class SessionPersistenceStrategy {\n  /**\n   * @param {{sandboxId: string, storage: DOMStorage}} parameters\n   */\n  constructor({ sandboxId, storage = platformStorage } = {}) {\n    /**\n     * @access private\n     * @type {string}\n     */\n    this.key = `${ZETAPUSH_SESSION_KEY}.${sandboxId}`\n    /**\n     * @access private\n     * @type {DOMStorage}\n     */\n    this.storage = storage\n  }\n  /**\n   * @return {string} session The stored session\n   */\n  get() {\n    const { key, storage } = this\n    const json = storage.getItem(key) || '{}'\n    let session = {}\n    try {\n      session = JSON.parse(json)\n    } catch (e) { }\n    return session\n  }\n  /**\n   * @param {Object} session The session to store\n   */\n  set(session = {}) {\n    const { key, storage } = this\n    const json = JSON.stringify(session)\n    try {\n      storage.setItem(key, json)\n    } catch (e) { }\n    return session\n  }\n}\n",
@@ -9280,7 +9329,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 396,
+    "__docId__": 397,
     "kind": "variable",
     "name": "ZETAPUSH_SESSION_KEY",
     "memberof": "src/utils/session-persistence.js",
@@ -9302,7 +9351,7 @@
     }
   },
   {
-    "__docId__": 397,
+    "__docId__": 398,
     "kind": "class",
     "name": "SessionPersistenceStrategy",
     "memberof": "src/utils/session-persistence.js",
@@ -9318,7 +9367,7 @@
     "ignore": true
   },
   {
-    "__docId__": 398,
+    "__docId__": 399,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/utils/session-persistence.js~SessionPersistenceStrategy",
@@ -9343,7 +9392,7 @@
     ]
   },
   {
-    "__docId__": 399,
+    "__docId__": 400,
     "kind": "member",
     "name": "key",
     "memberof": "src/utils/session-persistence.js~SessionPersistenceStrategy",
@@ -9363,7 +9412,7 @@
     "ignore": true
   },
   {
-    "__docId__": 400,
+    "__docId__": 401,
     "kind": "member",
     "name": "storage",
     "memberof": "src/utils/session-persistence.js~SessionPersistenceStrategy",
@@ -9383,7 +9432,7 @@
     "ignore": true
   },
   {
-    "__docId__": 401,
+    "__docId__": 402,
     "kind": "method",
     "name": "get",
     "memberof": "src/utils/session-persistence.js~SessionPersistenceStrategy",
@@ -9405,7 +9454,7 @@
     "params": []
   },
   {
-    "__docId__": 402,
+    "__docId__": 403,
     "kind": "method",
     "name": "set",
     "memberof": "src/utils/session-persistence.js~SessionPersistenceStrategy",
@@ -9435,7 +9484,7 @@
     }
   },
   {
-    "__docId__": 403,
+    "__docId__": 404,
     "kind": "file",
     "name": "src/utils/storage.js",
     "content": "/**\n * Provide fallback for DOMStorage\n * @access protected\n */\nclass MemoryStorage {\n  constructor() {\n    this._map = new Map()\n  }\n  getItem(key) {\n    return this._map.get(key)\n  }\n  setItem(key, value) {\n    return this._map.get(key)\n  }\n  removeItem(key) {\n    this._map.delete(key)\n  }\n  clear() {\n    this._map = new Map()\n  }\n  key(n) {\n    return Array.from(this._map.keys())[n]\n  }\n  get length() {\n    return this._map.size\n  }\n}\n\n/**\n * @type {Storage}\n * @access protected\n */\nexport const platformStorage = typeof localStorage === 'undefined' ? new MemoryStorage() : localStorage\n",
@@ -9446,7 +9495,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 404,
+    "__docId__": 405,
     "kind": "class",
     "name": "MemoryStorage",
     "memberof": "src/utils/storage.js",
@@ -9462,7 +9511,7 @@
     "ignore": true
   },
   {
-    "__docId__": 405,
+    "__docId__": 406,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/utils/storage.js~MemoryStorage",
@@ -9476,7 +9525,7 @@
     "undocument": true
   },
   {
-    "__docId__": 406,
+    "__docId__": 407,
     "kind": "member",
     "name": "_map",
     "memberof": "src/utils/storage.js~MemoryStorage",
@@ -9494,7 +9543,7 @@
     }
   },
   {
-    "__docId__": 407,
+    "__docId__": 408,
     "kind": "method",
     "name": "getItem",
     "memberof": "src/utils/storage.js~MemoryStorage",
@@ -9521,7 +9570,7 @@
     }
   },
   {
-    "__docId__": 408,
+    "__docId__": 409,
     "kind": "method",
     "name": "setItem",
     "memberof": "src/utils/storage.js~MemoryStorage",
@@ -9554,7 +9603,7 @@
     }
   },
   {
-    "__docId__": 409,
+    "__docId__": 410,
     "kind": "method",
     "name": "removeItem",
     "memberof": "src/utils/storage.js~MemoryStorage",
@@ -9577,7 +9626,7 @@
     "return": null
   },
   {
-    "__docId__": 410,
+    "__docId__": 411,
     "kind": "method",
     "name": "clear",
     "memberof": "src/utils/storage.js~MemoryStorage",
@@ -9593,7 +9642,7 @@
     "return": null
   },
   {
-    "__docId__": 412,
+    "__docId__": 413,
     "kind": "method",
     "name": "key",
     "memberof": "src/utils/storage.js~MemoryStorage",
@@ -9620,7 +9669,7 @@
     }
   },
   {
-    "__docId__": 413,
+    "__docId__": 414,
     "kind": "get",
     "name": "length",
     "memberof": "src/utils/storage.js~MemoryStorage",
@@ -9639,7 +9688,7 @@
     }
   },
   {
-    "__docId__": 414,
+    "__docId__": 415,
     "kind": "variable",
     "name": "platformStorage",
     "memberof": "src/utils/storage.js",
@@ -9663,7 +9712,7 @@
   },
   {
     "kind": "index",
-    "content": "[![NPM version][npm-version-image]][npm-url]\n[![Document][doc-version-image]][doc-url]\n[![Build Status][build-status-image]][build-status-url]\n\n# ZetaPush JavaScript SDK\n\n## Install\n\nFrom bower\n\n```console\nbower install zetapush-js --save\n```\n\n```html\n<script src=\"/bower_components/zetapush-js/dist/zetapush.min.js\"></script>\n```\n\nFrom npm\n\n```console\nnpm install zetapush-js --save\n```\n\n```js\nimport { Client, Authentication, services } from 'zetapush-js'\n```\n\nFrom CDN (unpkg recommended)\n\n```html\n<script src=\"//unpkg.com/zetapush-js/dist/zetapush.min.js\"></script>\n```\n\n```js\nconst { Client, Authentication, services } = ZetaPush\n```\n\n## Usage\n\n```js\n// Create new ZetaPush Client\nconst client = new Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  authentication() {\n    return Authentication.weak({\n      token: null\n    })\n  }\n})\n// Create a Stack service\nconst service = client.createService({\n  Type: services.Stack,\n  listener: {\n    list(message) {\n      console.log('list callback', message)\n    }\n  }\n})\n// Add connection listener\nclient.onConnectionEstablished(() => {\n  // Call service methods\n  service.list({\n    stack: '<YOUR-STACK-ID>'\n  })\n})\n// Connect client to ZetaPush BaaS\nclient.connect()\n```\n\n## Any questions?\n\n* [Frequently Asked Questions](./docs/faq.md)\n* :warning: ZetaPush v1.x users? Please check [Migration Guide](./docs/migration.md)\n\n[npm-version-image]: http://img.shields.io/npm/v/zetapush-js.svg?style=flat-square\n[npm-url]: https://npmjs.org/package/zetapush-js\n\n[doc-version-image]: http://zetapush.github.io/zetapush-js/badge.svg?t=0\n[doc-url]: http://zetapush.github.io/zetapush-js/\n\n[build-status-image]: http://img.shields.io/travis/zetapush/zetapush-js.svg?style=flat\n[build-status-url]: http://travis-ci.org/zetapush/zetapush-js\n",
+    "content": "[![NPM version][npm-version-image]][npm-url]\n[![Document][doc-version-image]][doc-url]\n[![Build Status][build-status-image]][build-status-url]\n\n# ZetaPush JavaScript SDK\n\n## Install\n\nFrom npm\n\n```console\nnpm install zetapush-js --save\n```\n\nFrom yarn\n\n```console\nyarn add zetapush-js\n```\n\n```js\nimport { Client, Authentication, services } from 'zetapush-js'\n```\n\nFrom CDN (unpkg recommended)\n\n```html\n<script src=\"//unpkg.com/zetapush-js/dist/zetapush.min.js\"></script>\n```\n\n```js\nconst { Client, Authentication, services } = ZetaPush\n```\n\n## Usage\n\n```js\n// Create new ZetaPush Client\nconst client = new Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  authentication() {\n    return Authentication.weak({\n      token: null\n    })\n  }\n})\n// Create a Stack service\nconst service = client.createService({\n  Type: services.Stack,\n  listener: {\n    list(message) {\n      console.log('list callback', message)\n    }\n  }\n})\n// Add connection listener\nclient.onConnectionEstablished(() => {\n  // Call service methods\n  service.list({\n    stack: '<YOUR-STACK-ID>'\n  })\n})\n// Connect client to ZetaPush BaaS\nclient.connect()\n```\n\n## Any questions?\n\n* [Frequently Asked Questions](./docs/faq.md)\n* :warning: ZetaPush v1.x users? Please check [Migration Guide](./docs/migration.md)\n\n[npm-version-image]: http://img.shields.io/npm/v/zetapush-js.svg?style=flat-square\n[npm-url]: https://npmjs.org/package/zetapush-js\n\n[doc-version-image]: http://zetapush.github.io/zetapush-js/badge.svg?t=0\n[doc-url]: http://zetapush.github.io/zetapush-js/\n\n[build-status-image]: http://img.shields.io/travis/zetapush/zetapush-js.svg?style=flat\n[build-status-url]: http://travis-ci.org/zetapush/zetapush-js\n",
     "longname": "/Users/ghoullier/GitHub/zetapush/zetapush-js/README.md",
     "name": "./README.md",
     "static": true,
@@ -9671,7 +9720,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"zetapush-js\",\n  \"version\": \"3.2.0\",\n  \"description\": \"JavaScript SDK for ZetaPush\",\n  \"browser\": \"dist/zetapush.js\",\n  \"main\": \"lib/index.js\",\n  \"module\": \"es/index.js\",\n  \"jsnext:main\": \"es/index.js\",\n  \"typings\": \"index.d.ts\",\n  \"homepage\": \"http://zetapush.com\",\n  \"bugs\": \"https://github.com/zetapush/zetapush-js/issues\",\n  \"files\": [\n    \"dist\",\n    \"lib\",\n    \"es\",\n    \"src\",\n    \"index.d.ts\"\n  ],\n  \"keywords\": [\n    \"zetapush\",\n    \"realtime\",\n    \"sdk\",\n    \"websocket\",\n    \"long-polling\"\n  ],\n  \"license\": \"MIT\",\n  \"contributors\": [\n    \"Grégory Houllier\",\n    \"Mikael Morvan\"\n  ],\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git@github.com:zetapush/zetapush-js.git\"\n  },\n  \"scripts\": {\n    \"lint\": \"eslint src\",\n    \"clean\": \"rimraf lib dist es\",\n    \"build:commonjs\": \"cross-env BABEL_ENV=commonjs babel src --out-dir lib\",\n    \"build:es\": \"cross-env BABEL_ENV=es babel src --out-dir es\",\n    \"build:umd\": \"cross-env BABEL_ENV=umd NODE_ENV=development rollup -c -i src/index.js -o dist/zetapush.js\",\n    \"build:umd:min\": \"cross-env BABEL_ENV=umd NODE_ENV=production rollup -c -i src/index.js -o dist/zetapush.min.js\",\n    \"build\": \"yarn run build:commonjs && yarn run build:es && yarn run build:umd && yarn run build:umd:min\",\n    \"prepublish\": \"yarn run clean && yarn run lint && yarn run build && yarn test:ci\",\n    \"doc\": \"esdoc -c esdoc.json\",\n    \"deploy:github\": \"yarn run doc && gulp deploy:github\",\n    \"serve\": \"lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001\",\n    \"test:ci\": \"karma start karma.conf.js\"\n  },\n  \"dependencies\": {\n    \"zetapush-cometd\": \"3.2.0\"\n  },\n  \"devDependencies\": {\n    \"babel-cli\": \"^6.24.1\",\n    \"babel-core\": \"^6.25.0\",\n    \"babel-eslint\": \"^7.2.3\",\n    \"babel-plugin-external-helpers\": \"^6.22.0\",\n    \"babel-preset-env\": \"^1.6.0\",\n    \"cross-env\": \"^5.0.5\",\n    \"esdoc\": \"^1.0.1\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"eslint\": \"^4.4.1\",\n    \"eslint-config-standard\": \"^10.2.1\",\n    \"eslint-plugin-import\": \"^2.7.0\",\n    \"eslint-plugin-node\": \"^5.1.1\",\n    \"eslint-plugin-promise\": \"^3.5.0\",\n    \"eslint-plugin-standard\": \"^3.0.1\",\n    \"gulp\": \"^3.9.1\",\n    \"gulp-gh-pages\": \"^0.5.4\",\n    \"jasmine-core\": \"^2.7.0\",\n    \"karma\": \"^1.7.0\",\n    \"karma-chrome-launcher\": \"^2.2.0\",\n    \"karma-cli\": \"^1.0.1\",\n    \"karma-jasmine\": \"^1.1.0\",\n    \"lr-http-server\": \"^0.1.4\",\n    \"request\": \"^2.81.0\",\n    \"rimraf\": \"^2.6.1\",\n    \"rollup\": \"^0.47.4\",\n    \"rollup-plugin-babel\": \"^3.0.2\",\n    \"rollup-plugin-commonjs\": \"^8.1.0\",\n    \"rollup-plugin-json\": \"^2.3.0\",\n    \"rollup-plugin-node-resolve\": \"^3.0.0\",\n    \"rollup-plugin-uglify\": \"^2.0.1\",\n    \"rollup-watch\": \"^4.3.1\",\n    \"typescript\": \"^2.4.2\"\n  },\n  \"engines\": {\n    \"node\": \">=6\"\n  }\n}\n",
+    "content": "{\n  \"name\": \"zetapush-js\",\n  \"version\": \"3.3.0\",\n  \"description\": \"JavaScript SDK for ZetaPush\",\n  \"browser\": \"dist/zetapush.js\",\n  \"main\": \"lib/index.js\",\n  \"module\": \"es/index.js\",\n  \"jsnext:main\": \"es/index.js\",\n  \"typings\": \"index.d.ts\",\n  \"homepage\": \"http://zetapush.com\",\n  \"bugs\": \"https://github.com/zetapush/zetapush-js/issues\",\n  \"files\": [\n    \"dist\",\n    \"lib\",\n    \"es\",\n    \"src\",\n    \"index.d.ts\"\n  ],\n  \"keywords\": [\n    \"zetapush\",\n    \"realtime\",\n    \"sdk\",\n    \"websocket\",\n    \"long-polling\"\n  ],\n  \"license\": \"MIT\",\n  \"contributors\": [\n    \"Grégory Houllier\",\n    \"Mikael Morvan\"\n  ],\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git@github.com:zetapush/zetapush-js.git\"\n  },\n  \"scripts\": {\n    \"lint\": \"eslint src\",\n    \"clean\": \"rimraf lib dist es .deploy .esdoc\",\n    \"build:commonjs\": \"cross-env BABEL_ENV=commonjs babel src --out-dir lib\",\n    \"build:es\": \"cross-env BABEL_ENV=es babel src --out-dir es\",\n    \"build:umd\": \"cross-env BABEL_ENV=umd NODE_ENV=development rollup -c -i src/index.js -o dist/zetapush.js\",\n    \"build:umd:min\": \"cross-env BABEL_ENV=umd NODE_ENV=production rollup -c -i src/index.js -o dist/zetapush.min.js\",\n    \"build\": \"yarn run build:commonjs && yarn run build:es && yarn run build:umd && yarn run build:umd:min\",\n    \"prepublish\": \"yarn run clean && yarn run lint && yarn run build && yarn test:ci\",\n    \"doc\": \"esdoc -c esdoc.json\",\n    \"deploy:github\": \"yarn run doc && gulp deploy:github\",\n    \"serve\": \"lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001\",\n    \"test:ci\": \"karma start karma.conf.js\"\n  },\n  \"dependencies\": {\n    \"zetapush-cometd\": \"3.2.0\"\n  },\n  \"devDependencies\": {\n    \"babel-cli\": \"^6.26.0\",\n    \"babel-core\": \"^6.26.0\",\n    \"babel-eslint\": \"^8.0.1\",\n    \"babel-plugin-external-helpers\": \"^6.22.0\",\n    \"babel-preset-env\": \"^1.6.1\",\n    \"cross-env\": \"^5.1.1\",\n    \"esdoc\": \"^1.0.3\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"eslint\": \"^4.10.0\",\n    \"eslint-config-standard\": \"^10.2.1\",\n    \"eslint-plugin-import\": \"^2.8.0\",\n    \"eslint-plugin-node\": \"^5.2.1\",\n    \"eslint-plugin-promise\": \"^3.6.0\",\n    \"eslint-plugin-standard\": \"^3.0.1\",\n    \"gulp\": \"^3.9.1\",\n    \"gulp-gh-pages\": \"^0.5.4\",\n    \"jasmine-core\": \"^2.8.0\",\n    \"karma\": \"^1.7.1\",\n    \"karma-chrome-launcher\": \"^2.2.0\",\n    \"karma-cli\": \"^1.0.1\",\n    \"karma-jasmine\": \"^1.1.0\",\n    \"lr-http-server\": \"^0.1.5\",\n    \"request\": \"^2.83.0\",\n    \"rimraf\": \"^2.6.2\",\n    \"rollup\": \"^0.50.0\",\n    \"rollup-plugin-babel\": \"^3.0.2\",\n    \"rollup-plugin-commonjs\": \"^8.2.6\",\n    \"rollup-plugin-json\": \"^2.3.0\",\n    \"rollup-plugin-node-resolve\": \"^3.0.0\",\n    \"rollup-plugin-uglify\": \"^2.0.1\",\n    \"rollup-watch\": \"^4.3.1\",\n    \"typescript\": \"^2.6.1\"\n  },\n  \"engines\": {\n    \"node\": \">=6\"\n  }\n}",
     "longname": "/Users/ghoullier/GitHub/zetapush/zetapush-js/package.json",
     "name": "package.json",
     "static": true,
@@ -9690,7 +9739,7 @@
     "kind": "manual",
     "longname": "/Users/ghoullier/GitHub/zetapush/zetapush-js/CHANGELOG.md",
     "name": "./CHANGELOG.md",
-    "content": "# 3.2.0 (2017-10-06)\n\n### Features\n\n* **client** Add new getUserInfo() method to retreive user public info\n\n```js\nconst { Authentication, Client } = require('zetapush-js')\n// Create new ZetaPush Client\nconst client = new Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  authentication: () => Authentication.simple({\n    login: '<YOUR-USER-LOGIN>',\n    password: '<YOUR-USER-PASSWORD>'\n  })\n})\n// Add connection establised listener\nclient.onConnectionEstablished(() => {\n  console.log('onConnectionEstablished')\n  const profile = client.getUserInfo()\n  console.log('Your profile', profile)\n})\nclient.connect()\n```\n\n* **node** Support node execution context\n\n```js\nconst { WeakClient } = require('zetapush-js')\nconst NodeJSTransports = require('zetapush-cometd/lib/node/Transports')\n// Create new ZetaPush Client\nconst client = new WeakClient({\n  transports: NodeJSTransports,\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})\n// Add connection establised listener\nclient.onConnectionEstablished(() => {\n  console.log('onConnectionEstablished')\n})\nclient.connect()\n```\n\n* **client** Add new lifecycle handler onNegotiationFailed\n\n### Changes\n\n* **core** Reduce bundle size\n* **core** From webpack@2 to rollup\n* **client** Update TransportLayer implementation\n* **zetapush-cometd** Update TransportLayer implementation\n\n# 3.1.3 (2017-04-13)\n\n### Fix\n\n* **typescript** Fix TypeScript issues\n\n# 3.1.2 (2017-04-13)\n\n### Features\n\n* **typescript** Add TypeScript support\n\n# 3.1.1 (2017-04-10)\n\n### Features\n\n* **client** Normalize apiUrl\n\n# 3.1.0 (2017-02-21)\n\n### Features\n\n* **client** Add new connection callback onNoServerUrlAvailable\n* **client** Add new connection callback onConnectionToServerFail\n* **client** Add getServers method to expose server urls\n* **client** Add createAsyncMacroService method to provide promise based macro services instance\n* **internal** Improve code separation to support tree shaking\n\n### Fixes\n\n* **persistence** Catch SessionPersistenceStrategy error in private navigation mode\n\n# 3.1.0-alpha.9 (2017-01-18)\n\n* **persistence** Catch SessionPersistenceStrategy error in private navigation mode\n\n# 3.0.1 (2017-01-18)\n\n### Fixes\n\n* **persistence** Catch SessionPersistenceStrategy error in private navigation mode\n\n# 3.1.0-alpha.8 (2017-01-09)\n\n* **chore** Upgrade eslint dependency to 3.13.0\n\n# 3.1.0-alpha.7 (2017-01-09)\n\n* **env** Update engines directive to \"node\": \">=6\"\n\n# 3.1.0-alpha.6 (2017-01-02)\n\n* **client** Add new connection callback onNoServerUrlAvailable\n\n# 3.1.0-alpha.5 (2017-01-02)\n\n* **client** Add new connection callback onConnectionToServerFail\n\n# 3.1.0-alpha.4 (2017-01-02)\n\n* **npm** Bump to alpha.4 to avoid npm conflict\n\n# 3.1.0-alpha.3 (2017-01-02)\n\n* **client** Add getServers method to expose server urls\n\n# 3.1.0-alpha.2 (2016-11-14)\n\n* **internal** Improve code separation to support tree shaking\n\n# 3.1.0-alpha.1 (2016-11-04)\n\n* **client** Add createAsyncMacroService method to provide promise based macro services instance\n\n### Features\n\n# 3.0.0 (2016-10-24)\n\n### Changes\n\n* **client** Rename createService parameter from type to Type\n* **core:** Update lib/client, rename credentials to authentication\n\n### Fixes\n\n* **smart-client** Fix sessions persistence key generation\n\n### Features\n\n* **core** Add lib/smart-client\n* **test** ZetaPush core functionalities are now tested with Karma/Jasmine\n\n# 3.0.0-alpha.3 (2016-09-16)\n\nMajor API modification\n\n### BREAKING CHANGES\n\n* **client** Rename createService parameter from type to Type\n\n**Before**\n\n```js\n// Create new service\nconst service = new client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on list', message)\n    }\n  }\n})\n```\n\n**After**\n\n```js\n// Create new service\nconst service = new client.createService({\n  Type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on list', message)\n    }\n  }\n})\n```\n\n# 3.0.0-alpha.2 (2016-09-06)\n\n### Fix\n\n* **smart-client** Fix sessions persistence key generation\n\n# 3.0.0-alpha.1 (2016-08-19)\n\nMajor API modification\n\n### BREAKING CHANGES\n\n* **core:** Update lib/client, rename credentials to authentication\n\n**Before**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.AuthentFactory.createWeakHandshake({\n      token: null\n    })\n  }\n})\n```\n\n**After**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  authentication() {\n    return ZetaPush.Authentication.weak({\n      token: null\n    })\n  }\n})\n```\n\n### Features\n\n* **core** Add lib/smart-client\n* **test** ZetaPush core functionalities are now tested with Karma/Jasmine\n\n# 2.0.1 (2016-07-26)\n\n### Fixes\n\n* **cometd** Update cometd to 3.0.13 to fix network overflow on handshake failure with reconnect advice\n\n# 2.0.0 (2016-07-25)\n\n:tada: After a complete refactoring, ZetaPush 2.0 is production ready\n\n# 2.0.0-rc.3 (2016-07-15)\n\n### Fixes\n\n* **build** Improve build support with babel-plugin-transform-runtime\n\n# 2.0.0-rc.2 (2016-07-13)\n\n### Features\n\n* **core:** Update lib/client, add new transports option\n* **core:** Update lib/weak-client, add new transports option\n\n```js\nconst client = new ZetaPush.WeakClient({\n  sandboxId: 'Y1k3xBDc',\n  transports: [ZetaPush.TransportTypes.LONG_POLLING]\n})\n```\n\n# 2.0.0-rc.1 (2016-07-12)\n\nMajor API modification\n\n### BREAKING CHANGES\n\n* **core:** Update lib/authentication/handshake\n\n**Before**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.AuthentFactory.createWeakHandshake({\n      token: null\n    })\n  }\n})\n```\n\n**After**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.weak({\n      token: null\n    })\n  }\n})\n```\n\n# 2.0.0-beta.23 (2016-07-08)\n\n### Fixes\n\n* **client** Expose user Id\n\n# 2.0.0-beta.22 (2016-07-07)\n\n### Changes\n\n* **tools** Build file is now generated via webpack instead of gulp\n\n# 2.0.0-beta.21 (2016-07-05)\n\n### Fixes\n\n* **stand by** Update cometd version version to fix stand by bug\n\n# 2.0.0-beta.20 (2016-07-05)\n\n### Changes\n\n* **log** Replace console.log in source code by cometd log layer\n* **examples** Update examples with new **zetapush.min.js** file name\n\n# 2.0.0-beta.19 (2016-07-04)\n\n### Changes\n\n* **dist** Add suffix min to build file\n\n# 2.0.0-beta.18 (2016-06-21)\n\nMajor API modification\n\n### BREAKING CHANGES\n\n* **core:** Update lib/client.constructor()\n\n**Before**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  handshakeStrategy() {\n    return ZetaPush.AuthentFactory.createWeakHandshake({\n      token: null\n    })\n  }\n})\n```\n\n**After**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.AuthentFactory.createWeakHandshake({\n      token: null\n    })\n  }\n})\n```\n\n# 2.0.0-beta.17 (2016-06-20)\n\nMajor API simplification\n\n### BREAKING CHANGES\n\n* **core:** Update lib/client.createService()\n* **core:** Update lib/client.unsubscribe()\n\n**Before**\n\n```js\nconst service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on list stack', message.data)\n    }\n  }\n})\nservice.publisher.list({\n  stack: '<STACK-ID>'\n})\n```\n\n**After**\n\n```js\nconst service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on list stack', message.data)\n    }\n  }\n})\nservice.list({\n  stack: '<STACK-ID>'\n})\n```\n\n# 2.0.0-beta.16 (2016-06-06)\n\nMajor API simplification\n\n### BREAKING CHANGES\n\n* **core:** Add lib/client.createService()\n* **core:** Remove lib/client.createMacroPublisher()\n* **core:** Remove lib/client.createServicePublisher()\n* **core:** Remove lib/client.getSessionId()\n* **core:** Remove lib/client.subscribe()\n* **core:** Remove lib/client.createMacroPublisherSubscriber()\n* **core:** Remove lib/client.createServicePublisherSubscriber()\n* **core:** Remove lib/client.handshake()\n* **core:** Rename lib/definitions to lib/services\n\n**Before**\n\n```js\nvar service = client.createServicePublisherSubscriber({\n  definition: ZetaPush.definitions.StackPublisherDefinition,\n    list: function (message) {\n      console.log('on list stack', message.data)\n    }\n  }\n})\nservice.publisher.list({\n  stack: '<STACK-ID>'\n})\n```\n\n**After**\n\n```js\nconst service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on list stack', message.data)\n    }\n  }\n})\nservice.publisher.list({\n  stack: '<STACK-ID>'\n})\n```\n\n# 2.0.0-beta.15 (2016-06-03)\n\n### Changes\n\n* **misc:** Update internal default deployment id\n\n# 2.0.0-beta.14 (2016-06-01)\n\n### Fix\n\n* **security:** Update forceHttps implementation\n\n# 2.0.0-beta.13 (2016-06-01)\n\n### Fix\n\n* **security:** Dont override forceHttps for WeakClient\n\n# 2.0.0-beta.12 (2016-06-01)\n\n### Changes\n\n* **security:** Force HTTPS when location.protocol is HTTPS\n\n# 2.0.0-beta.11 (2016-06-01)\n\n### Changes\n\n* **core:**  Add shorthand methods to handle lifecycle connection events\n\n# 2.0.0-beta.10 (2016-06-01)\n\n### Changes\n\n* **core:** Use default deploymentId for all services and authentication\n\n# 2.0.0-beta.9\n\n### Changes\n\n* **core:** Add new API setLogLevel\n\n### Fix\n\n* **doc:** Update bower install path\n\n# 2.0.0-beta.8 (2016-05-23)\n\n### Changes\n\n* **core:** Use subscription queue to automatically reconnect subscription\n\n# 2.0.0-beta.7 (2016-05-23)\n\n### Fix\n\n* **core:** Fix connection status listener index\n\n# 2.0.0-beta.6 (2016-05-20)\n\n### Changes\n\n* **core:** Rename SmartClient to WeakClient\n\n# 2.0.0-beta.4 (2016-05-20)\n\n### Changes\n\n* **core:** Add new API isConnected\n\n# 2.0.0-beta.3 (2016-05-17)\n\n### Changes\n\n* **macro:** Allow hardFail and debug option for macro publisher\n\n# 2.0.0-beta.2 (2016-05-09)\n\n### Fix\n\n* **dependencies:** Update npm dependencies\n\n# 2.0.0-beta.1 (2016-05-09)\n\n### Fix\n\n* **dependencies:** Add zetapush-cometd as a dependency\n\n# 2.0.0-beta.0 (2016-05-09)\n\n### Changes\n\n* **core:** Add new API unsubscribe\n\n# 2.0.0-alpha.6 (2016-05-02)\n\n### Changes\n\n* **core:** Add new VERSION parameter\n* **core:** Add new API removeConnectionStatusListener\n\n# 2.0.0-alpha.5 (2016-04-29)\n\n### Changes\n\n* **connection:** Add new connection lifecycle onConnectionWillClose\n\n# 2.0.0-alpha.4 (2016-04-28)\n\n### Fixes\n\n* **npm:** Clean npm files\n\n# 2.0.0-alpha.3 (2016-04-28)\n\n### Features\n\n* **core:** Add createMacroPublisherSubscriber() API\n* **core:** Rename createServicePublisherSubscriber() API\n* **examples:** Add new examples\n\n# 2.0.0-alpha.2 (2016-04-25)\n\n### Features\n\n* **core:** Expose SmartClient API\n* **examples:** Add new api and app examples\n\n# 2.0.0-alpha.1 (2016-04-05)\n\n### Features\n\n* **core:** Complete API rewrite\n\n### BREAKING CHANGES\n\n* 2.x API is no longer compatible with 1.X\n",
+    "content": "# 3.3.0 (2017-11-02)\n\n# Fix\n\n* **typescript** Remove unsupported default parameters in typed definition\n\n### Features\n\n* **bower** Remove bower support\n* **client** Support custom deployment for SmartClient (#8)\n\n# 3.2.2 (2017-11-02)\n\n> Fix issus on previously published version\n\n# 3.2.1 (2017-11-02)\n\n### Features\n\n* **client** Update TS definition to support optionnal parameters in publish method\n\n# 3.2.0 (2017-10-06)\n\n### Features\n\n* **client** Add new getUserInfo() method to retreive user public info\n\n```js\nconst { Authentication, Client } = require('zetapush-js')\n// Create new ZetaPush Client\nconst client = new Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  authentication: () => Authentication.simple({\n    login: '<YOUR-USER-LOGIN>',\n    password: '<YOUR-USER-PASSWORD>'\n  })\n})\n// Add connection establised listener\nclient.onConnectionEstablished(() => {\n  console.log('onConnectionEstablished')\n  const profile = client.getUserInfo()\n  console.log('Your profile', profile)\n})\nclient.connect()\n```\n\n* **node** Support node execution context\n\n```js\nconst { WeakClient } = require('zetapush-js')\nconst NodeJSTransports = require('zetapush-cometd/lib/node/Transports')\n// Create new ZetaPush Client\nconst client = new WeakClient({\n  transports: NodeJSTransports,\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})\n// Add connection establised listener\nclient.onConnectionEstablished(() => {\n  console.log('onConnectionEstablished')\n})\nclient.connect()\n```\n\n* **client** Add new lifecycle handler onNegotiationFailed\n\n### Changes\n\n* **core** Reduce bundle size\n* **core** From webpack@2 to rollup\n* **client** Update TransportLayer implementation\n* **zetapush-cometd** Update TransportLayer implementation\n\n# 3.1.3 (2017-04-13)\n\n### Fix\n\n* **typescript** Fix TypeScript issues\n\n# 3.1.2 (2017-04-13)\n\n### Features\n\n* **typescript** Add TypeScript support\n\n# 3.1.1 (2017-04-10)\n\n### Features\n\n* **client** Normalize apiUrl\n\n# 3.1.0 (2017-02-21)\n\n### Features\n\n* **client** Add new connection callback onNoServerUrlAvailable\n* **client** Add new connection callback onConnectionToServerFail\n* **client** Add getServers method to expose server urls\n* **client** Add createAsyncMacroService method to provide promise based macro services instance\n* **internal** Improve code separation to support tree shaking\n\n### Fixes\n\n* **persistence** Catch SessionPersistenceStrategy error in private navigation mode\n\n# 3.1.0-alpha.9 (2017-01-18)\n\n* **persistence** Catch SessionPersistenceStrategy error in private navigation mode\n\n# 3.0.1 (2017-01-18)\n\n### Fixes\n\n* **persistence** Catch SessionPersistenceStrategy error in private navigation mode\n\n# 3.1.0-alpha.8 (2017-01-09)\n\n* **chore** Upgrade eslint dependency to 3.13.0\n\n# 3.1.0-alpha.7 (2017-01-09)\n\n* **env** Update engines directive to \"node\": \">=6\"\n\n# 3.1.0-alpha.6 (2017-01-02)\n\n* **client** Add new connection callback onNoServerUrlAvailable\n\n# 3.1.0-alpha.5 (2017-01-02)\n\n* **client** Add new connection callback onConnectionToServerFail\n\n# 3.1.0-alpha.4 (2017-01-02)\n\n* **npm** Bump to alpha.4 to avoid npm conflict\n\n# 3.1.0-alpha.3 (2017-01-02)\n\n* **client** Add getServers method to expose server urls\n\n# 3.1.0-alpha.2 (2016-11-14)\n\n* **internal** Improve code separation to support tree shaking\n\n# 3.1.0-alpha.1 (2016-11-04)\n\n* **client** Add createAsyncMacroService method to provide promise based macro services instance\n\n### Features\n\n# 3.0.0 (2016-10-24)\n\n### Changes\n\n* **client** Rename createService parameter from type to Type\n* **core:** Update lib/client, rename credentials to authentication\n\n### Fixes\n\n* **smart-client** Fix sessions persistence key generation\n\n### Features\n\n* **core** Add lib/smart-client\n* **test** ZetaPush core functionalities are now tested with Karma/Jasmine\n\n# 3.0.0-alpha.3 (2016-09-16)\n\nMajor API modification\n\n### BREAKING CHANGES\n\n* **client** Rename createService parameter from type to Type\n\n**Before**\n\n```js\n// Create new service\nconst service = new client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on list', message)\n    }\n  }\n})\n```\n\n**After**\n\n```js\n// Create new service\nconst service = new client.createService({\n  Type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on list', message)\n    }\n  }\n})\n```\n\n# 3.0.0-alpha.2 (2016-09-06)\n\n### Fix\n\n* **smart-client** Fix sessions persistence key generation\n\n# 3.0.0-alpha.1 (2016-08-19)\n\nMajor API modification\n\n### BREAKING CHANGES\n\n* **core:** Update lib/client, rename credentials to authentication\n\n**Before**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.AuthentFactory.createWeakHandshake({\n      token: null\n    })\n  }\n})\n```\n\n**After**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  authentication() {\n    return ZetaPush.Authentication.weak({\n      token: null\n    })\n  }\n})\n```\n\n### Features\n\n* **core** Add lib/smart-client\n* **test** ZetaPush core functionalities are now tested with Karma/Jasmine\n\n# 2.0.1 (2016-07-26)\n\n### Fixes\n\n* **cometd** Update cometd to 3.0.13 to fix network overflow on handshake failure with reconnect advice\n\n# 2.0.0 (2016-07-25)\n\n:tada: After a complete refactoring, ZetaPush 2.0 is production ready\n\n# 2.0.0-rc.3 (2016-07-15)\n\n### Fixes\n\n* **build** Improve build support with babel-plugin-transform-runtime\n\n# 2.0.0-rc.2 (2016-07-13)\n\n### Features\n\n* **core:** Update lib/client, add new transports option\n* **core:** Update lib/weak-client, add new transports option\n\n```js\nconst client = new ZetaPush.WeakClient({\n  sandboxId: 'Y1k3xBDc',\n  transports: [ZetaPush.TransportTypes.LONG_POLLING]\n})\n```\n\n# 2.0.0-rc.1 (2016-07-12)\n\nMajor API modification\n\n### BREAKING CHANGES\n\n* **core:** Update lib/authentication/handshake\n\n**Before**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.AuthentFactory.createWeakHandshake({\n      token: null\n    })\n  }\n})\n```\n\n**After**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.Authentication.weak({\n      token: null\n    })\n  }\n})\n```\n\n# 2.0.0-beta.23 (2016-07-08)\n\n### Fixes\n\n* **client** Expose user Id\n\n# 2.0.0-beta.22 (2016-07-07)\n\n### Changes\n\n* **tools** Build file is now generated via webpack instead of gulp\n\n# 2.0.0-beta.21 (2016-07-05)\n\n### Fixes\n\n* **stand by** Update cometd version version to fix stand by bug\n\n# 2.0.0-beta.20 (2016-07-05)\n\n### Changes\n\n* **log** Replace console.log in source code by cometd log layer\n* **examples** Update examples with new **zetapush.min.js** file name\n\n# 2.0.0-beta.19 (2016-07-04)\n\n### Changes\n\n* **dist** Add suffix min to build file\n\n# 2.0.0-beta.18 (2016-06-21)\n\nMajor API modification\n\n### BREAKING CHANGES\n\n* **core:** Update lib/client.constructor()\n\n**Before**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  handshakeStrategy() {\n    return ZetaPush.AuthentFactory.createWeakHandshake({\n      token: null\n    })\n  }\n})\n```\n\n**After**\n\n```js\n// Create new ZetaPush Client\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>',\n  credentials() {\n    return ZetaPush.AuthentFactory.createWeakHandshake({\n      token: null\n    })\n  }\n})\n```\n\n# 2.0.0-beta.17 (2016-06-20)\n\nMajor API simplification\n\n### BREAKING CHANGES\n\n* **core:** Update lib/client.createService()\n* **core:** Update lib/client.unsubscribe()\n\n**Before**\n\n```js\nconst service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on list stack', message.data)\n    }\n  }\n})\nservice.publisher.list({\n  stack: '<STACK-ID>'\n})\n```\n\n**After**\n\n```js\nconst service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on list stack', message.data)\n    }\n  }\n})\nservice.list({\n  stack: '<STACK-ID>'\n})\n```\n\n# 2.0.0-beta.16 (2016-06-06)\n\nMajor API simplification\n\n### BREAKING CHANGES\n\n* **core:** Add lib/client.createService()\n* **core:** Remove lib/client.createMacroPublisher()\n* **core:** Remove lib/client.createServicePublisher()\n* **core:** Remove lib/client.getSessionId()\n* **core:** Remove lib/client.subscribe()\n* **core:** Remove lib/client.createMacroPublisherSubscriber()\n* **core:** Remove lib/client.createServicePublisherSubscriber()\n* **core:** Remove lib/client.handshake()\n* **core:** Rename lib/definitions to lib/services\n\n**Before**\n\n```js\nvar service = client.createServicePublisherSubscriber({\n  definition: ZetaPush.definitions.StackPublisherDefinition,\n    list: function (message) {\n      console.log('on list stack', message.data)\n    }\n  }\n})\nservice.publisher.list({\n  stack: '<STACK-ID>'\n})\n```\n\n**After**\n\n```js\nconst service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on list stack', message.data)\n    }\n  }\n})\nservice.publisher.list({\n  stack: '<STACK-ID>'\n})\n```\n\n# 2.0.0-beta.15 (2016-06-03)\n\n### Changes\n\n* **misc:** Update internal default deployment id\n\n# 2.0.0-beta.14 (2016-06-01)\n\n### Fix\n\n* **security:** Update forceHttps implementation\n\n# 2.0.0-beta.13 (2016-06-01)\n\n### Fix\n\n* **security:** Dont override forceHttps for WeakClient\n\n# 2.0.0-beta.12 (2016-06-01)\n\n### Changes\n\n* **security:** Force HTTPS when location.protocol is HTTPS\n\n# 2.0.0-beta.11 (2016-06-01)\n\n### Changes\n\n* **core:**  Add shorthand methods to handle lifecycle connection events\n\n# 2.0.0-beta.10 (2016-06-01)\n\n### Changes\n\n* **core:** Use default deploymentId for all services and authentication\n\n# 2.0.0-beta.9\n\n### Changes\n\n* **core:** Add new API setLogLevel\n\n### Fix\n\n* **doc:** Update bower install path\n\n# 2.0.0-beta.8 (2016-05-23)\n\n### Changes\n\n* **core:** Use subscription queue to automatically reconnect subscription\n\n# 2.0.0-beta.7 (2016-05-23)\n\n### Fix\n\n* **core:** Fix connection status listener index\n\n# 2.0.0-beta.6 (2016-05-20)\n\n### Changes\n\n* **core:** Rename SmartClient to WeakClient\n\n# 2.0.0-beta.4 (2016-05-20)\n\n### Changes\n\n* **core:** Add new API isConnected\n\n# 2.0.0-beta.3 (2016-05-17)\n\n### Changes\n\n* **macro:** Allow hardFail and debug option for macro publisher\n\n# 2.0.0-beta.2 (2016-05-09)\n\n### Fix\n\n* **dependencies:** Update npm dependencies\n\n# 2.0.0-beta.1 (2016-05-09)\n\n### Fix\n\n* **dependencies:** Add zetapush-cometd as a dependency\n\n# 2.0.0-beta.0 (2016-05-09)\n\n### Changes\n\n* **core:** Add new API unsubscribe\n\n# 2.0.0-alpha.6 (2016-05-02)\n\n### Changes\n\n* **core:** Add new VERSION parameter\n* **core:** Add new API removeConnectionStatusListener\n\n# 2.0.0-alpha.5 (2016-04-29)\n\n### Changes\n\n* **connection:** Add new connection lifecycle onConnectionWillClose\n\n# 2.0.0-alpha.4 (2016-04-28)\n\n### Fixes\n\n* **npm:** Clean npm files\n\n# 2.0.0-alpha.3 (2016-04-28)\n\n### Features\n\n* **core:** Add createMacroPublisherSubscriber() API\n* **core:** Rename createServicePublisherSubscriber() API\n* **examples:** Add new examples\n\n# 2.0.0-alpha.2 (2016-04-25)\n\n### Features\n\n* **core:** Expose SmartClient API\n* **examples:** Add new api and app examples\n\n# 2.0.0-alpha.1 (2016-04-05)\n\n### Features\n\n* **core:** Complete API rewrite\n\n### BREAKING CHANGES\n\n* 2.x API is no longer compatible with 1.X\n",
     "static": true,
     "access": "public"
   },
@@ -9698,7 +9747,7 @@
     "kind": "manual",
     "longname": "/Users/ghoullier/GitHub/zetapush/zetapush-js/docs/FAQ.md",
     "name": "./docs/FAQ.md",
-    "content": "# Frequently Asked Questions\n\n## Can I use zetapush-js in a NodeJS Context?\n\nYes, you have to install latest version of zetapush-js and zetapush-cometd to enable NodeJS support.\n\n```console\nnpm install zetapush-js@next zetapush-cometd@next\n```\n\n```js\nconst { WeakClient } = require('zetapush-js')\nconst NodeJSTransports = require('zetapush-cometd/lib/node/Transports')\n// Create new ZetaPush Client\nconst client = new WeakClient({\n  transports: NodeJSTransports,\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})\n// Add connection establised listener\nclient.onConnectionEstablished(() => {\n  console.log('onConnectionEstablished')\n})\nclient.connect()\n```\n\n## Can I use zetapush-js with TypeScript?\n\nYes, since 3.1.2 zetapush-js include typings definition.\n\n## How to use [ES2015 features](https://babeljs.io/docs/learn-es2015/) (const, class, arrow functions, ...) on my project today ?\n\nZetaPush source code and examples are written in plain [ES2015](http://kangax.github.io/compat-table/es6/), you can use [Babel to transpile your code](https://babeljs.io/docs/learn-es2015/)\n\n## How to subscribe and publish to a ZetaPush service ?\n\nZetaPush Client provide a function **createService({ type, listener })**\n\n```js\nconst client = new ZetaPush.Client({ ... })\n// Create a service publisher mapping Stack service\nconst service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    // callback fired when a list message is fired by ZetaPush\n    list(message) {\n      console.log('list callback', message)\n    }\n  }\n})\n// Request a list\nservice.list({\n  stack: '<YOUR-STACK-ID>'\n})\n```\n\n## How force ZetaPush SDK to use **https** instead **http** ?\n\nZetaPush client allow you to declare a specific apiUrl\n\n```js\nconst client = new ZetaPush.Client({\n  forceHttps: true,\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})\n```\n\n## How to use ZetaPush with my on-premise backend ?\n\nZetaPush client allow you to declare a specific apiUrl\n\n```js\nconst client = new ZetaPush.Client({\n  apiUrl: '<YOUR-ON-PREMISE-URL>',\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})\n```\n\n## How to know my ZetaPush SDK version ?\n\nZetaPush SDK provide a top level constant VERSION\n\n```js\nconsole.log(ZetaPush.VERSION)\n```\n\n## How to change log level ?\n\nZetaPush Client provide a function **setLogLevel**\n\n```js\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})\nclient.setLogLevel('debug')\n```\n\n## How to force long polling instead of websocket ?\n\nZetaPush Client provide an option to specify active transports\n\n```js\nconst client = new ZetaPush.WeakClient({\n  sandboxId: 'Y1k3xBDc',\n  transports: [ZetaPush.TransportTypes.LONG_POLLING]\n})\n```\n\n## How ZetaPush client call my service without explicit deployment id ?\n\nZetaPush Client provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n\n```js\n// Create service with implicit service deployment id\nconst service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on stack list', message)\n    }\n  }\n})\nservice.list({\n  stack: '<YOUR-STACK-ID>'\n})\n```\n\nIn the previous example, deployment id is `stack_0`\n\n```js\n// Create service with explicit service deployment id\nconst service = client.createService({\n  deploymentId: 'stack_0',\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on stack list', message)\n    }\n  }\n})\nservice.list({\n  stack: '<YOUR-STACK-ID>'\n})\n```\n",
+    "content": "# Frequently Asked Questions\n\n## Can I use zetapush-js in a NodeJS Context?\n\nYes, you have to install ~latest~ (>=3.2.0) version of zetapush-js enable NodeJS support.\n\n```js\nconst { WeakClient } = require('zetapush-js')\nconst NodeJSTransports = require('zetapush-cometd/lib/node/Transports')\n// Create new ZetaPush Client\nconst client = new WeakClient({\n  transports: NodeJSTransports,\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})\n// Add connection establised listener\nclient.onConnectionEstablished(() => {\n  console.log('onConnectionEstablished')\n})\nclient.connect()\n```\n\n## Can I use zetapush-js with TypeScript?\n\nYes, since 3.1.2 zetapush-js include typings definition.\n\n## How to use [ES2015 features](https://babeljs.io/docs/learn-es2015/) (const, class, arrow functions, ...) on my project today ?\n\nZetaPush source code and examples are written in plain [ES2015](http://kangax.github.io/compat-table/es6/), you can use [Babel to transpile your code](https://babeljs.io/docs/learn-es2015/)\n\n## How to subscribe and publish to a ZetaPush service ?\n\nZetaPush Client provide a function **createService({ type, listener })**\n\n```js\nconst client = new ZetaPush.Client({ ... })\n// Create a service publisher mapping Stack service\nconst service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    // callback fired when a list message is fired by ZetaPush\n    list(message) {\n      console.log('list callback', message)\n    }\n  }\n})\n// Request a list\nservice.list({\n  stack: '<YOUR-STACK-ID>'\n})\n```\n\n## How force ZetaPush SDK to use **https** instead **http** ?\n\nZetaPush client allow you to declare a specific apiUrl\n\n```js\nconst client = new ZetaPush.Client({\n  forceHttps: true,\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})\n```\n\n## How to use ZetaPush with my on-premise backend ?\n\nZetaPush client allow you to declare a specific apiUrl\n\n```js\nconst client = new ZetaPush.Client({\n  apiUrl: '<YOUR-ON-PREMISE-URL>',\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})\n```\n\n## How to know my ZetaPush SDK version ?\n\nZetaPush SDK provide a top level constant VERSION\n\n```js\nconsole.log(ZetaPush.VERSION)\n```\n\n## How to change log level ?\n\nZetaPush Client provide a function **setLogLevel**\n\n```js\nconst client = new ZetaPush.Client({\n  sandboxId: '<YOUR-SANDBOX-ID>'\n})\nclient.setLogLevel('debug')\n```\n\n## How to force long polling instead of websocket ?\n\nZetaPush Client provide an option to specify active transports\n\n```js\nconst client = new ZetaPush.WeakClient({\n  sandboxId: 'Y1k3xBDc',\n  transports: [ZetaPush.TransportTypes.LONG_POLLING]\n})\n```\n\n## How ZetaPush client call my service without explicit deployment id ?\n\nZetaPush Client provide optional deployment id, according to the following convention `${ServiceType.toLowerCase()_0}`\n\n```js\n// Create service with implicit service deployment id\nconst service = client.createService({\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on stack list', message)\n    }\n  }\n})\nservice.list({\n  stack: '<YOUR-STACK-ID>'\n})\n```\n\nIn the previous example, deployment id is `stack_0`\n\n```js\n// Create service with explicit service deployment id\nconst service = client.createService({\n  deploymentId: 'stack_0',\n  type: ZetaPush.services.Stack,\n  listener: {\n    list(message) {\n      console.log('on stack list', message)\n    }\n  }\n})\nservice.list({\n  stack: '<YOUR-STACK-ID>'\n})\n```\n",
     "static": true,
     "access": "public"
   },

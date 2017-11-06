@@ -40,6 +40,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-UPDATE_SERVER_URL_DELAY">UPDATE_SERVER_URL_DELAY</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ClientConfig">ClientConfig</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientConfig">SmartClientConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SmartClientDeployment">SmartClientDeployment</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-WeakClientConfig">WeakClientConfig</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#connection">connection</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/connection/connection-status.js~ConnectionStatusListener.html">ConnectionStatusListener</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mapping">mapping</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mapping/authentications.js~Delegating.html">Delegating</a></span></span></li>
@@ -86,9 +87,17 @@ import { Authentication } from &apos;../authentication/handshake&apos;
 import { SessionPersistenceStrategy } from &apos;../utils/session-persistence&apos;
 
 /**
+ * SmartClient deployment infos.
+ * @typedef {Object} SmartClientDeployment
+ * @property {string} simple - Simple deployment id
+ * @property {string} weak - Weak deployment id
+ */
+
+/**
  * SmartClient config object.
  * @typedef {Object} SmartClientConfig
  * @property {string} apiUrl - Api Url
+ * @property {SmartClientDeployment} deployment - Deployment infos
  * @property {string} sandboxId - Sandbox id
  * @property {boolean} forceHttps - Force end to end HTTPS connection
  * @property {string} resource - Client resource id
@@ -109,7 +118,7 @@ export class SmartClient extends Client {
    * Create a new ZetaPush SmartClient
    * @param {SmartClientConfig} config
    */
-  constructor({ apiUrl, sandboxId, forceHttps, resource, transports }) {
+  constructor({ apiUrl, deployment, sandboxId, forceHttps, resource, transports }) {
     const persistence = new SessionPersistenceStrategy({ sandboxId })
 
     /**
@@ -124,17 +133,20 @@ export class SmartClient extends Client {
         this.setCredentials({})
         return Authentication.simple({
           login,
-          password
+          password,
+          deploymentId: deployment &amp;&amp; deployment.simple
         })
       } else {
         if (this.isStronglyAuthenticated(session)) {
           return Authentication.simple({
             login: token,
-            password: null
+            password: null,
+            deploymentId: deployment &amp;&amp; deployment.simple
           })
         } else {
           return Authentication.weak({
-            token
+            token,
+            deploymentId: deployment &amp;&amp; deployment.weak
           })
         }
       }

@@ -756,6 +756,12 @@ window.esdocSearchIndex = [
     "typedef"
   ],
   [
+    "src/client/smart.js~smartclientdeployment",
+    "typedef/index.html#static-typedef-SmartClientDeployment",
+    "src/client/smart.js~SmartClientDeployment",
+    "typedef"
+  ],
+  [
     "src/client/weak.js",
     "file/src/client/weak.js.html",
     "src/client/weak.js",
