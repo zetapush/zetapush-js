@@ -58,9 +58,9 @@ interface TokenHandshake extends AbstractHandshake {
 
 type AuthenticationCallback = () => AbstractHandshake;
 
-type AsyncMacroServicePublisher = (method: string, parameters: PublishParameters = {}, hardFail?: boolean, debug?: number) => Promise<any>;
+type AsyncMacroServicePublisher = (method: string, parameters?: PublishParameters, hardFail?: boolean, debug?: number) => Promise<any>;
 
-type MacroServicePublisher = (method: string, parameters: PublishParameters = {}, hardFail?: boolean, debug?: number) => void;
+type MacroServicePublisher = (method: string, parameters?: PublishParameters, hardFail?: boolean, debug?: number) => void;
 
 type ServicePublisher = (method: string, parameters: any) => void;
 
