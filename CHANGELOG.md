@@ -1,3 +1,14 @@
+# 3.3.0 (2017-11-02)
+
+# Fix
+
+* **typescript** Remove unsupported default parameters in typed definition
+
+### Features
+
+* **bower** Remove bower support
+* **client** Support custom deployment for SmartClient (#8)
+
 # 3.2.2 (2017-11-02)
 
 > Fix issus on previously published version

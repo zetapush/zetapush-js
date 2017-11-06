@@ -6,9 +6,8 @@ import uglify from 'rollup-plugin-uglify';
 
 const env = process.env.NODE_ENV
 const config = {
-  format: 'umd',
-  moduleName: 'ZetaPush',
-  sourceMap: true,
+  name: 'ZetaPush',
+  sourcemap: true,
   plugins: [
     resolve({
       jsnext: true,
@@ -21,7 +20,10 @@ const config = {
       exclude: 'node_modules/**'
     }),
     json()
-  ]
+  ],
+  output: {
+    format: 'umd'
+  }
 }
 
 if (env === 'production') {

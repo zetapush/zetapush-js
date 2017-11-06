@@ -3,9 +3,17 @@ import { Authentication } from '../authentication/handshake'
 import { SessionPersistenceStrategy } from '../utils/session-persistence'
 
 /**
+ * SmartClient deployment infos.
+ * @typedef {Object} SmartClientDeployment
+ * @property {string} simple - Simple deployment id
+ * @property {string} weak - Weak deployment id
+ */
+
+/**
  * SmartClient config object.
  * @typedef {Object} SmartClientConfig
  * @property {string} apiUrl - Api Url
+ * @property {SmartClientDeployment} deployment - Deployment infos
  * @property {string} sandboxId - Sandbox id
  * @property {boolean} forceHttps - Force end to end HTTPS connection
  * @property {string} resource - Client resource id
@@ -26,7 +34,7 @@ export class SmartClient extends Client {
    * Create a new ZetaPush SmartClient
    * @param {SmartClientConfig} config
    */
-  constructor({ apiUrl, sandboxId, forceHttps, resource, transports }) {
+  constructor({ apiUrl, deployment, sandboxId, forceHttps, resource, transports }) {
     const persistence = new SessionPersistenceStrategy({ sandboxId })
 
     /**
@@ -41,17 +49,20 @@ export class SmartClient extends Client {
         this.setCredentials({})
         return Authentication.simple({
           login,
-          password
+          password,
+          deploymentId: deployment && deployment.simple
         })
       } else {
         if (this.isStronglyAuthenticated(session)) {
           return Authentication.simple({
             login: token,
-            password: null
+            password: null,
+            deploymentId: deployment && deployment.simple
           })
         } else {
           return Authentication.weak({
-            token
+            token,
+            deploymentId: deployment && deployment.weak
           })
         }
       }
