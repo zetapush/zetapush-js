@@ -1,0 +1,89 @@
+{
+  "name": "zetapush-js",
+  "version": "3.3.0",
+  "description": "JavaScript SDK for ZetaPush",
+  "browser": "dist/zetapush.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "jsnext:main": "es/index.js",
+  "typings": "index.d.ts",
+  "homepage": "http://zetapush.com",
+  "bugs": "https://github.com/zetapush/zetapush-js/issues",
+  "files": [
+    "dist",
+    "lib",
+    "es",
+    "src",
+    "index.d.ts"
+  ],
+  "keywords": [
+    "zetapush",
+    "realtime",
+    "sdk",
+    "websocket",
+    "long-polling"
+  ],
+  "license": "MIT",
+  "contributors": [
+    "Grégory Houllier",
+    "Mikael Morvan"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zetapush/zetapush-js.git"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "clean": "rimraf lib dist es .deploy .esdoc",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
+    "build:umd": "cross-env BABEL_ENV=umd NODE_ENV=development rollup -c -i src/index.js -o dist/zetapush.js",
+    "build:umd:min": "cross-env BABEL_ENV=umd NODE_ENV=production rollup -c -i src/index.js -o dist/zetapush.min.js",
+    "build": "yarn run build:commonjs && yarn run build:es && yarn run build:umd && yarn run build:umd:min",
+    "prepublish": "yarn run clean && yarn run lint && yarn run build && yarn test:ci",
+    "doc": "esdoc -c esdoc.json",
+    "deploy:github": "yarn run doc && gulp deploy:github",
+    "serve": "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001",
+    "test:ci": "karma start karma.conf.js"
+  },
+  "dependencies": {
+    "zetapush-cometd": "3.2.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
+    "cross-env": "^5.1.1",
+    "esdoc": "^1.0.3",
+    "esdoc-standard-plugin": "^1.0.0",
+    "eslint": "^4.10.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "gulp": "^3.9.1",
+    "gulp-gh-pages": "^0.5.4",
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-cli": "^1.0.1",
+    "karma-jasmine": "^1.1.0",
+    "lr-http-server": "^0.1.5",
+    "request": "^2.83.0",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
+    "rollup-watch": "^4.3.1",
+    "typescript": "^2.6.1"
+  },
+  "engines": {
+    "node": ">=6"
+  }
+}

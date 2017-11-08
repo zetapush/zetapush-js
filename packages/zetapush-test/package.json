@@ -1,0 +1,29 @@
+{
+  "name": "@zetapush/test",
+  "version": "4.0.0-alpha.1",
+  "description": "ZetaPush test.",
+  "repository": "https://github.com/zetapush/zetapush-js/tree/master/packages/zetapush-test",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepublish": "tsc -p tsconfig.build.json"
+  },
+  "keywords": [
+    "serverless",
+    "realtime",
+    "websocket"
+  ],
+  "contributors": [
+    "Grégory Houllier"
+  ],
+  "dependencies": {
+    "@zetapush/authentication": "4.0.0-alpha.1",
+    "@zetapush/connection": "4.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "typescript": "^2.6.0"
+  },
+  "peerDependencies": {}
+}
