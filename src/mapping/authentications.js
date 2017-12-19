@@ -1,4 +1,4 @@
-import { Service } from './core'
+import { Service } from './core';
 /**
  * Delegating authentication
  *
@@ -15,13 +15,13 @@ import { Service } from './core'
  * @access public
  * */
 export class Delegating extends Service {
-	/**
-	 * Get default deployment id associated to Delegating service
-	 * @return {string}
-	 */
-	static get DEFAULT_DEPLOYMENT_ID() {
-		return 'delegating_0'
-	}
+  /**
+   * Get default deployment id associated to Delegating service
+   * @return {string}
+   */
+  static get DEFAULT_DEPLOYMENT_ID() {
+    return 'delegating_0';
+  }
 }
 /**
  * Local authentication
@@ -37,13 +37,13 @@ export class Delegating extends Service {
  * @access public
  * */
 export class Simple extends Service {
-	/**
-	 * Get default deployment id associated to Simple service
-	 * @return {string}
-	 */
-	static get DEFAULT_DEPLOYMENT_ID() {
-		return 'simple_0'
-	}
+  /**
+   * Get default deployment id associated to Simple service
+   * @return {string}
+   */
+  static get DEFAULT_DEPLOYMENT_ID() {
+    return 'simple_0';
+  }
 }
 /**
  * Weak authentication
@@ -58,33 +58,39 @@ export class Simple extends Service {
  * @access public
  * */
 export class Weak extends Service {
-	/**
-	 * Get default deployment id associated to Weak service
-	 * @return {string}
-	 */
-	static get DEFAULT_DEPLOYMENT_ID() {
-		return 'weak_0'
-	}
-	/**
-	 * Controls a session
-	 *
-	 * Takes control of a weak user session, identified by the given public token.
-	 * The public token has been previously made available by the controlled device, for example by displaying a QRCode.
-	 * Upon control notification, the client SDK of the controlled session is expected to re-handshake.
-	 * */
-	control({publicToken,fullRights}) { return this.$publish('control', {publicToken,fullRights})}
-	/**
-	 * Returns the current token
-	 *
-	 * Returns your current session's private token. The token field may be null, if you did not log in with this authentication.
-	 * The token can be used to log in as the same weak user another time.
-	 * */
-	getToken() { return this.$publish('getToken', {})}
-	/**
-	 * Releases a session
-	 *
-	 * Releases control of a weak user session, identified by the given public token.
-	 * The weak user session must have been previously controlled by a call to 'control'.
-	 * */
-	release({publicToken,fullRights}) { return this.$publish('release', {publicToken,fullRights})}
+  /**
+   * Get default deployment id associated to Weak service
+   * @return {string}
+   */
+  static get DEFAULT_DEPLOYMENT_ID() {
+    return 'weak_0';
+  }
+  /**
+   * Controls a session
+   *
+   * Takes control of a weak user session, identified by the given public token.
+   * The public token has been previously made available by the controlled device, for example by displaying a QRCode.
+   * Upon control notification, the client SDK of the controlled session is expected to re-handshake.
+   * */
+  control({ publicToken, fullRights }) {
+    return this.$publish('control', { publicToken, fullRights });
+  }
+  /**
+   * Returns the current token
+   *
+   * Returns your current session's private token. The token field may be null, if you did not log in with this authentication.
+   * The token can be used to log in as the same weak user another time.
+   * */
+  getToken() {
+    return this.$publish('getToken', {});
+  }
+  /**
+   * Releases a session
+   *
+   * Releases control of a weak user session, identified by the given public token.
+   * The weak user session must have been previously controlled by a call to 'control'.
+   * */
+  release({ publicToken, fullRights }) {
+    return this.$publish('release', { publicToken, fullRights });
+  }
 }

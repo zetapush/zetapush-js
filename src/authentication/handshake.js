@@ -1,4 +1,4 @@
-import { Delegating, Simple, Weak } from '../mapping/authentications'
+import { Delegating, Simple, Weak } from '../mapping/authentications';
 
 /**
  * ZetaPush deployables names
@@ -6,8 +6,9 @@ import { Delegating, Simple, Weak } from '../mapping/authentications'
 const DeployableNames = {
   AUTH_SIMPLE: 'simple',
   AUTH_WEAK: 'weak',
-  AUTH_DELEGATING: 'delegating'
-}
+  AUTH_DELEGATING: 'delegating',
+  AUTH_DEVELOPER: 'developer',
+};
 
 /**
  * Provide abstraction over CometD handshake data structure
@@ -23,17 +24,17 @@ class AbstractHandshake {
      * @access protected
      * @type {string}
      */
-    this.authType = authType
+    this.authType = authType;
     /**
      * @access protected
      * @type {string}
      */
-    this.sandboxId = sandboxId
+    this.sandboxId = sandboxId;
     /**
      * @access protected
      * @type {string}
      */
-    this.deploymentId = deploymentId
+    this.deploymentId = deploymentId;
   }
   /**
    * @param {ClientHelper} client
@@ -43,23 +44,23 @@ class AbstractHandshake {
     const authentication = {
       data: this.authData,
       type: `${client.getSandboxId()}.${this.deploymentId}.${this.authType}`,
-      version: this.authVersion
-    }
+      version: this.authVersion,
+    };
     if (client.getResource()) {
-      authentication.resource = client.getResource()
+      authentication.resource = client.getResource();
     }
     return {
       ext: {
-        authentication
-      }
-    }
+        authentication,
+      },
+    };
   }
   /**
    * Get auth version
    * @return {string}
    */
   get authVersion() {
-    return 'none'
+    return 'none';
   }
 }
 
@@ -73,21 +74,24 @@ class TokenHandshake extends AbstractHandshake {
    * @param {{authType: string, deploymentId: string, token: string}} parameters
    */
   constructor({ authType, deploymentId, token }) {
-    super({ deploymentId, authType })
+    super({
+      deploymentId,
+      authType,
+    });
     /**
      * @access private
      * @type {string}
      */
-    this.token = token
+    this.token = token;
   }
   /**
    * @return {token: string}
    */
   get authData() {
-    const { token } = this
+    const { token } = this;
     return {
-      token
-    }
+      token,
+    };
   }
 }
 
@@ -101,27 +105,31 @@ class CredentialsHandshake extends AbstractHandshake {
    * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
    */
   constructor({ authType, deploymentId, login, password }) {
-    super({ authType, deploymentId })
+    super({
+      authType,
+      deploymentId,
+    });
     /**
      * @access private
      * @type {string}
      */
-    this.login = login
+    this.login = login;
     /**
      * @access private
      * @type {string}
      */
-    this.password = password
+    this.password = password;
   }
   /**
    * Get auth data
    * @return {login: string, password: string}
    */
   get authData() {
-    const { login, password } = this
+    const { login, password } = this;
     return {
-      login, password
-    }
+      login,
+      password,
+    };
   }
 }
 
@@ -142,13 +150,17 @@ export class Authentication {
    *   password: '<USER-PASSWORD>'
    * })
    */
-  static simple({ deploymentId = Simple.DEFAULT_DEPLOYMENT_ID, login, password }) {
+  static simple({
+    deploymentId = Simple.DEFAULT_DEPLOYMENT_ID,
+    login,
+    password,
+  }) {
     return Authentication.create({
       authType: DeployableNames.AUTH_SIMPLE,
       deploymentId,
       login,
-      password
-    })
+      password,
+    });
   }
   /**
    * @param {{deploymentId: string, token: string}} parameters
@@ -166,8 +178,8 @@ export class Authentication {
       authType: DeployableNames.AUTH_WEAK,
       deploymentId,
       login: token,
-      password: null
-    })
+      password: null,
+    });
   }
   /**
    * @param {{deploymentId: string, token: string}} parameters
@@ -180,13 +192,24 @@ export class Authentication {
    *   token: null
    * })
    */
-  static delegating({ deploymentId = Delegating.DEFAULT_DEPLOYMENT_ID, token }) {
+  static delegating({
+    deploymentId = Delegating.DEFAULT_DEPLOYMENT_ID,
+    token,
+  }) {
     return Authentication.create({
       authType: DeployableNames.AUTH_DELEGATING,
       deploymentId,
       login: token,
-      password: null
-    })
+      password: null,
+    });
+  }
+  static developer({ login, password }) {
+    return Authentication.create({
+      authType: DeployableNames.AUTH_DEVELOPER,
+      deploymentId: DeployableNames.AUTH_DEVELOPER,
+      login,
+      password,
+    });
   }
   /**
    * @param {{authType: string, deploymentId: string, login: string, password: string}} parameters
@@ -194,8 +217,17 @@ export class Authentication {
    */
   static create({ authType, deploymentId, login, password }) {
     if (password === null) {
-      return new TokenHandshake({ authType, deploymentId, token: login })
+      return new TokenHandshake({
+        authType,
+        deploymentId,
+        token: login,
+      });
     }
-    return new CredentialsHandshake({ authType, deploymentId, login, password })
+    return new CredentialsHandshake({
+      authType,
+      deploymentId,
+      login,
+      password,
+    });
   }
 }

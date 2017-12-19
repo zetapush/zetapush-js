@@ -1,7 +1,7 @@
 {
-  "extends": "standard",
+  "extends": ["standard", "prettier", "prettier/standard"],
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 8,
     "sourceType": "module"
   },
   "env": {
@@ -10,6 +10,6 @@
     "node": true
   },
   "rules": {
-    "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }]
+    "comma-dangle": ["error", "only-multiline"]
   }
 }

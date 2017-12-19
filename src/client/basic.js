@@ -1,6 +1,6 @@
-import { ClientHelper } from './helper'
-import { API_URL, FORCE_HTTPS } from '../utils/index'
-import { ConnectionStatusListener } from '../connection/connection-status'
+import { ClientHelper } from './helper';
+import { API_URL, FORCE_HTTPS } from '../utils/index';
+import { ConnectionStatusListener } from '../connection/connection-status';
 
 /**
  * Client config object.
@@ -64,7 +64,14 @@ export class Client {
    * Create a new ZetaPush Client
    * @param {ClientConfig} config
    */
-  constructor({ apiUrl = API_URL, sandboxId, forceHttps = FORCE_HTTPS, authentication, resource, transports }) {
+  constructor({
+    apiUrl = API_URL,
+    sandboxId,
+    forceHttps = FORCE_HTTPS,
+    authentication,
+    resource,
+    transports,
+  }) {
     /**
      * @access private
      * @type {ClientHelper}
@@ -75,8 +82,8 @@ export class Client {
       forceHttps,
       authentication,
       resource,
-      transports
-    })
+      transports,
+    });
   }
   /**
    * Add a connection listener to handle life cycle connection events
@@ -84,7 +91,7 @@ export class Client {
    * @return {number} handler
    */
   addConnectionStatusListener(listener) {
-    return this.helper.addConnectionStatusListener(listener)
+    return this.helper.addConnectionStatusListener(listener);
   }
   /**
    * Safely connect client to ZetaPush
@@ -93,17 +100,17 @@ export class Client {
     if (this.isConnected()) {
       const handler = this.addConnectionStatusListener({
         onConnectionClosed: () => {
-          this.removeConnectionStatusListener(handler)
-          this.helper.connect()
-        }
-      })
-      this.disconnect()
+          this.removeConnectionStatusListener(handler);
+          this.helper.connect();
+        },
+      });
+      this.disconnect();
     } else {
-      this.helper.connect()
+      this.helper.connect();
     }
   }
   /**
-   * Create a promise based service instance
+   * Create a promise based macro service instance
    * @param {{listener: Object, Type: class, deploymentId: string}} parameters
    * @return {Object} service
    * @example
@@ -117,7 +124,31 @@ export class Client {
    * })
    */
   createAsyncMacroService({ deploymentId, listener, Type }) {
-    return this.helper.createAsyncMacroService({ deploymentId, listener, Type })
+    return this.helper.createAsyncMacroService({
+      deploymentId,
+      listener,
+      Type,
+    });
+  }
+  /**
+   * Create a promise based task service instance
+   * @param {{listener: Object, Type: class, deploymentId: string}} parameters
+   * @return {Object} service
+   * @example
+   * const api = client.createAsyncMacroService({
+   *   Type: WelcomeMacro
+   * })
+   * api.welcome({
+   *   message: Hello'
+   * }).then(({ message }) => {
+   *   console.log(message)
+   * })
+   */
+  createAsyncTaskService({ deploymentId, Type }) {
+    return this.helper.createAsyncTaskService({
+      deploymentId,
+      Type,
+    });
   }
   /**
    * Create a publish/subscribe for a service type
@@ -158,14 +189,18 @@ export class Client {
    * })
    */
   createService({ deploymentId, listener, Type }) {
-    return this.helper.createService({ deploymentId, listener, Type })
+    return this.helper.createService({
+      deploymentId,
+      listener,
+      Type,
+    });
   }
   /**
    * Disonnect client from ZetaPush
    */
   disconnect() {
     if (this.isConnected()) {
-      this.helper.disconnect()
+      this.helper.disconnect();
     }
   }
   /**
@@ -173,35 +208,35 @@ export class Client {
    * @return {boolean}
    */
   isConnected() {
-    return this.helper.isConnected()
+    return this.helper.isConnected();
   }
   /**
    * Get the client sandbox id
    * @return {string}
    */
   getSandboxId() {
-    return this.helper.getSandboxId()
+    return this.helper.getSandboxId();
   }
   /**
    * Get the client resource
    * @return {string}
    */
   getResource() {
-    return this.helper.getResource()
+    return this.helper.getResource();
   }
   /**
    * Get server urls list
    * @return {Promise} servers
    */
   getServers() {
-    return this.helper.getServers()
+    return this.helper.getServers();
   }
   /**
    * Get the client user id
    * @return {string}
    */
   getUserId() {
-    return this.helper.getUserId()
+    return this.helper.getUserId();
   }
   /*
    * Get the client user info
@@ -224,21 +259,21 @@ export class Client {
    * client.connect()
    */
   getUserInfo() {
-    return this.helper.getUserInfo()
+    return this.helper.getUserInfo();
   }
   /**
    * Remove a connection status listener
    * @param {number} handler
    */
   removeConnectionStatusListener(handler) {
-    return this.helper.removeConnectionStatusListener(handler)
+    return this.helper.removeConnectionStatusListener(handler);
   }
   /**
    * Set a new authentication methods
    * @param {function():AbstractHandshake} authentication
    */
   setAuthentication(authentication) {
-    this.helper.setAuthentication(authentication)
+    this.helper.setAuthentication(authentication);
   }
   /**
    * Set logging level
@@ -247,14 +282,14 @@ export class Client {
    * @param {string} level
    */
   setLogLevel(level) {
-    this.helper.setLogLevel(level)
+    this.helper.setLogLevel(level);
   }
   /**
    * Set new client resource value
    * @param {string} resource
    */
   setResource(resource) {
-    this.helper.setResource(resource)
+    this.helper.setResource(resource);
   }
   /**
    * Remove all subscriptions
@@ -262,22 +297,24 @@ export class Client {
    */
   unsubscribe(service) {
     if (!service.$subscriptions) {
-      throw new TypeError('Missing $subscriptions property in service')
+      throw new TypeError('Missing $subscriptions property in service');
     }
-    return this.helper.unsubscribe(service.$subscriptions)
+    return this.helper.unsubscribe(service.$subscriptions);
   }
 }
 
 /**
  * Add shorthand connection status method
  */
-Object.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach((method) => {
-  // Only implements unsupported methods
-  if (!Client.prototype.hasOwnProperty(method)) {
-    Client.prototype[method] = function addListener(listener) {
-      return this.addConnectionStatusListener({
-        [method]: listener
-      })
+Object.getOwnPropertyNames(ConnectionStatusListener.prototype).forEach(
+  (method) => {
+    // Only implements unsupported methods
+    if (!Client.prototype.hasOwnProperty(method)) {
+      Client.prototype[method] = function addListener(listener) {
+        return this.addConnectionStatusListener({
+          [method]: listener,
+        });
+      };
     }
-  }
-})
+  },
+);

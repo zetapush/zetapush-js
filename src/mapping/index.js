@@ -1,4 +1,4 @@
-import * as authentications from './authentications'
-import * as services from './services'
+import * as authentications from './authentications';
+import * as services from './services';
 
-export { authentications, services }
+export { authentications, services };

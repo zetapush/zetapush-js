@@ -1,6 +1,6 @@
 {
   "name": "zetapush-js",
-  "version": "3.3.0",
+  "version": "3.4.0-alpha.1",
   "description": "JavaScript SDK for ZetaPush",
   "browser": "dist/zetapush.js",
   "main": "lib/index.js",
@@ -44,7 +44,9 @@
     "doc": "esdoc -c esdoc.json",
     "deploy:github": "yarn run doc && gulp deploy:github",
     "serve": "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001",
-    "test:ci": "karma start karma.conf.js"
+    "test:ci": "karma start karma.conf.js",
+    "precommit": "lint-staged",
+    "prettify": "prettier --single-quote --trailing-comma all --arrow-parens always --write 'src/**/*.js'"
   },
   "dependencies": {
     "zetapush-cometd": "3.2.0"
@@ -52,38 +54,48 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.1",
+    "babel-eslint": "^8.0.3",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "cross-env": "^5.1.1",
-    "esdoc": "^1.0.3",
+    "esdoc": "^1.0.4",
     "esdoc-standard-plugin": "^1.0.0",
-    "eslint": "^4.10.0",
-    "eslint-config-standard": "^10.2.1",
+    "eslint": "^4.13.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
     "gulp": "^3.9.1",
     "gulp-gh-pages": "^0.5.4",
+    "husky": "^0.14.3",
     "jasmine-core": "^2.8.0",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-cli": "^1.0.1",
-    "karma-jasmine": "^1.1.0",
+    "karma-jasmine": "^1.1.1",
+    "lint-staged": "^6.0.0",
     "lr-http-server": "^0.1.5",
+    "prettier": "^1.9.2",
     "request": "^2.83.0",
     "rimraf": "^2.6.2",
-    "rollup": "^0.50.0",
-    "rollup-plugin-babel": "^3.0.2",
+    "rollup": "^0.52.3",
+    "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-uglify": "^2.0.1",
     "rollup-watch": "^4.3.1",
-    "typescript": "^2.6.1"
+    "typescript": "^2.6.2"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "prettier --single-quote --trailing-comma all --arrow-parens always --write",
+      "git add"
+    ]
   },
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   }
 }

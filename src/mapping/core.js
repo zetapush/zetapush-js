@@ -3,6 +3,6 @@
  */
 export class Service {
   constructor({ $publish }) {
-    this.$publish = $publish
+    this.$publish = $publish;
   }
 }

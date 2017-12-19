@@ -30,8 +30,8 @@ export class ConnectionStatusListener {
    */
   onNoServerUrlAvailable() {}
   /**
-  * Callback fired when connection will close
-  */
+   * Callback fired when connection will close
+   */
   onConnectionWillClose() {}
   /**
    * Callback fired when an error occurs in handshake step
