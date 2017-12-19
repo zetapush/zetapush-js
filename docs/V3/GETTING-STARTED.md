@@ -1,11 +1,17 @@
 # ZetaPush V3 Getting Started
 
+> Install latest zetapush version
+
+```console
+yarn add zetapush-js@next zetapush-cometd
+```
+
 ## Server Side
 
 index.js
 
 ```javascript
-const { ServerClient } = require('../es');
+const { ServerClient } = require('zetapush-js');
 const NodeJSTransports = require('zetapush-cometd/lib/node/Transports');
 
 const api = require('./api');
