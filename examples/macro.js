@@ -1,40 +1,60 @@
 // Create new ZetaPush Client
-const client = new ZetaPush.WeakClient({
-  sandboxId: 'bcu1JtRb'
-})
+const client = new ZetaPush.SmartClient({
+  sandboxId: 'fCDDOkuc',
+  apiUrl: 'https://zbo.zpush.io/zbo/pub/business',
+});
+const login = prompt('Login?', 'user-1');
+client.setCredentials(
+  login
+    ? {
+        login,
+        password: 'password',
+      }
+    : {},
+);
+client.helper.servers = Promise.resolve([
+  prompt('Server?', 'https://cluster-1-str-1.zpush.io/str'),
+]);
 // Create a Macro service
-const service = client.createService({
+const api = client.createService({
   Type: ZetaPush.services.Macro,
   listener: {
-    completed({ data }) {
-      console.log('macro completed', data)
-    }
-  }
-})
+    welcome({ data }) {
+      console.log('macro welcome', data);
+    },
+  },
+});
+client.createService({
+  deploymentId: 'macro_1',
+  Type: ZetaPush.services.Macro,
+  listener: {
+    onWelcome({ data }) {
+      console.log('macro onWelcome', data);
+    },
+  },
+});
 // Add connection establised listener
 client.onConnectionEstablished(() => {
-  console.debug('onConnectionEstablished')
-})
+  console.debug('onConnectionEstablished');
+});
 // Add connection closed listener
 client.onConnectionClosed(() => {
-  console.debug('onConnectionClosed')
-})
-document.querySelector('.js-SayHello').addEventListener('click', () => {
-  console.log('.js-SayHello', 'click')
-  service.call({
-    name: 'hello',
-    parameters: {
-      name: 'World'
-    }
-  })
-})
+  console.debug('onConnectionClosed');
+});
+document.querySelector('.js-Welcome').addEventListener('click', () => {
+  console.log('.js-Welcome', 'click');
+  api.call({
+    name: 'welcome',
+    parameters: {},
+  });
+});
 document.querySelector('.js-Connect').addEventListener('click', () => {
-  console.log('.js-Connect', 'click')
+  console.log('.js-Connect', 'click');
   // Connect client to ZetaPush BaaS
-  client.connect()
-})
+  client.connect();
+});
 document.querySelector('.js-Disconnect').addEventListener('click', () => {
-  console.log('.js-Disconnect', 'click')
+  console.log('.js-Disconnect', 'click');
   // Disconnect client from ZetaPush BaaS
-  client.disconnect()
-})
+  client.disconnect();
+});
