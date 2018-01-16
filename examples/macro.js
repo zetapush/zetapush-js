@@ -6,8 +6,8 @@ const client = new ZetaPush.WeakClient({
 const service = client.createService({
   Type: ZetaPush.services.Macro,
   listener: {
-    completed({ data }) {
-      console.log('macro completed', data)
+    hello({ data }) {
+      console.log('hello', data)
     }
   }
 })
