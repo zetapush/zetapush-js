@@ -1,0 +1,31 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.10.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:debug:20170905':
+    - lr-http-server > tiny-lr > debug:
+        patched: '2018-01-16T17:25:44.495Z'
+    - lr-http-server > tiny-lr > body-parser > debug:
+        patched: '2018-01-16T17:25:44.495Z'
+    - karma > log4js > mailgun-js > debug:
+        patched: '2018-01-16T17:25:44.495Z'
+  'npm:marked:20170907':
+    - esdoc-standard-plugin > esdoc-publish-html-plugin > marked:
+        patched: '2018-01-16T17:25:44.495Z'
+    - esdoc > marked:
+        patched: '2018-01-16T17:25:44.495Z'
+  'npm:minimatch:20160620':
+    - gulp > vinyl-fs > glob-stream > minimatch:
+        patched: '2018-01-16T17:25:44.495Z'
+    - gulp > vinyl-fs > glob-watcher > gaze > globule > minimatch:
+        patched: '2018-01-16T17:25:44.495Z'
+    - gulp > vinyl-fs > glob-watcher > gaze > globule > glob > minimatch:
+        patched: '2018-01-16T17:25:44.495Z'
+  'npm:ms:20170412':
+    - lr-http-server > tiny-lr > debug > ms:
+        patched: '2018-01-16T17:25:44.495Z'
+    - karma > log4js > mailgun-js > debug > ms:
+        patched: '2018-01-16T17:25:44.495Z'
+    - lr-http-server > tiny-lr > body-parser > debug > ms:
+        patched: '2018-01-16T17:25:44.495Z'
