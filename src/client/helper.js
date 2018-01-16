@@ -576,8 +576,10 @@ export class ClientHelper {
     if (!this.cometd.isDisconnected()) {
       for (let method in listener) {
         if (listener.hasOwnProperty(method)) {
-          const channel = `${prefix}/${method}`
-          subscriptions[method] = this.cometd.subscribe(channel, listener[method])
+          if (subscriptions[method] === void 0) {
+            const channel = `${prefix}/${method}`
+            subscriptions[method] = this.cometd.subscribe(channel, listener[method])
+          }
         }
       }
     }

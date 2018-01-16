@@ -1,3 +1,9 @@
+# 3.3.1 (2018-01-16)
+
+# Fix
+
+* **connection** Avoid multiple connection on connection lost
+
 # 3.3.0 (2017-11-02)
 
 # Fix

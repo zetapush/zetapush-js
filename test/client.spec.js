@@ -64,7 +64,7 @@ describe('Client', () => {
     it('Should have a valid userInfo', (done) => {
       const client = this.client
       client.onConnectionEstablished(() => {
-        expect(client.getUserInfo()).toBeUndefined()
+        expect(client.getUserInfo()).not.toBeUndefined()
         done()
       })
       expect(client.getUserInfo()).toBeNull()
