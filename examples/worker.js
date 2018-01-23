@@ -23,6 +23,7 @@ const worker = client.createAsyncTaskService({
 
 client.onConnectionEstablished(async () => {
   console.debug('onConnectionEstablished');
+  [...document.querySelectorAll('button')].forEach((node) => node.removeAttribute('disabled'));
 });
 client.connect();
 
@@ -34,19 +35,23 @@ const uuid = (() => {
 const on = (cssClass, eventType, handler) =>
   document.querySelector(cssClass).addEventListener(eventType, handler);
 
+const trace = async (section, behavior) => {
+  const begin = Date.now()
+  const output = await behavior()
+  const end = Date.now()
+  const duration = end - begin
+  console.log({ section, begin, end, duration, output })
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  on('.js-Hello', 'click', async (event) => {
+  on('.js-Hello', 'click', (event) => {
+    event.target.dataset.count = (parseInt(event.target.dataset.count, 10) || 0) + 1
     const id = uuid();
-    console.time(`hello--${id}`);
-    const message = await worker.hello();
-    console.timeEnd(`hello--${id}`);
-    console.log(message);
+    trace(`hello--${id}`, () => worker.hello())
   });
   on('.js-Reduce', 'click', async (event) => {
+    event.target.dataset.count = (parseInt(event.target.dataset.count, 10) || 0) + 1
     const id = uuid();
-    console.time(`reduce--${id}`);
-    const reduced = await worker.reduce([10, 20, 30, 40]);
-    console.timeEnd(`reduce--${id}`);
-    console.log(reduced);
+    trace(`reduce--${id}`, () => worker.reduce([10, 20, 30, 40]))
   });
 });

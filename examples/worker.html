@@ -21,7 +21,15 @@
       font-family: Calibri, Helvetica, Arial;
       font-weight: bold;
     }
-
+    button::after {
+      content: "(" attr(data-count) ")";
+      display: inline-block;
+    }
+    button[disabled] {
+      opacity: 0.9;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 
@@ -29,8 +37,8 @@
   <script src="../dist/zetapush.js"></script>
   <script src="./worker.js"></script>
 
-  <button class="js-Hello">hello</button>
-  <button class="js-Reduce">reduce</button>
+  <button disabled class="js-Hello">hello</button>
+  <button disabled class="js-Reduce">reduce</button>
 </body>
 
 </html>
