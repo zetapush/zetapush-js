@@ -4,27 +4,27 @@ import json from 'rollup-plugin-json';
 import resolve from 'rollup-plugin-node-resolve';
 import uglify from 'rollup-plugin-uglify';
 
-const env = process.env.NODE_ENV
+const env = process.env.NODE_ENV;
 const config = {
-  name: 'ZetaPush',
-  sourcemap: true,
   plugins: [
     resolve({
       jsnext: true,
-      main: true
+      main: true,
     }),
     commonjs({
-      include: 'node_modules/**'
+      include: 'node_modules/**',
     }),
     babel({
-      exclude: 'node_modules/**'
+      exclude: 'node_modules/**',
     }),
-    json()
+    json(),
   ],
   output: {
-    format: 'umd'
-  }
-}
+    name: 'ZetaPush',
+    format: 'umd',
+    sourcemap: true,
+  },
+};
 
 if (env === 'production') {
   config.plugins.push(
@@ -33,10 +33,10 @@ if (env === 'production') {
         pure_getters: true,
         unsafe: true,
         unsafe_comps: true,
-        warnings: false
-      }
-    })
-  )
+        warnings: false,
+      },
+    }),
+  );
 }
 
-export default config
+export default config;

@@ -19,20 +19,11 @@ client.helper.servers = Promise.resolve([
 const api = client.createService({
   Type: ZetaPush.services.Macro,
   listener: {
-    welcome({ data }) {
-      console.log('macro welcome', data);
-    },
-  },
-});
-client.createService({
-  deploymentId: 'macro_1',
-  Type: ZetaPush.services.Macro,
-  listener: {
-    onWelcome({ data }) {
-      console.log('macro onWelcome', data);
-    },
-  },
-});
+    hello({ data }) {
+      console.log('hello', data)
+    }
+  }
+})
 // Add connection establised listener
 client.onConnectionEstablished(() => {
   console.debug('onConnectionEstablished');
