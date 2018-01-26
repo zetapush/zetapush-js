@@ -6,12 +6,13 @@
     "clean": "rimraf packages/**/lib",
     "lint": "tslint -c tslint.json 'packages/*/src/**/*.ts'",
     "precommit": "lint-staged",
-    "prettify": "prettier --single-quote --trailing-comma all --write 'packages/zetapush-*/src/**/*.ts'"
+    "prettify":
+      "prettier --single-quote --trailing-comma all --arrow-parens always --write 'packages/zetapush-*/src/**/*.ts'"
   },
   "devDependencies": {
     "@types/node": "^8.0.50",
     "husky": "^0.14.3",
-    "lerna": "^2.5.1",
+    "lerna": "^2.8.0",
     "lint-staged": "^4.3.0",
     "prettier": "^1.7.4",
     "rimraf": "^2.6.2",
@@ -20,11 +21,9 @@
   },
   "lint-staged": {
     "packages/zetapush-*/src/**/*.ts": [
-      "prettier --single-quote --trailing-comma all --write",
+      "prettier --single-quote --trailing-comma all arrow-parens always --write",
       "git add"
     ]
   },
-  "workspaces": [
-    "packages/*"
-  ]
+  "workspaces": ["packages/*"]
 }
