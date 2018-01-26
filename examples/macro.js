@@ -20,10 +20,10 @@ const api = client.createService({
   Type: ZetaPush.services.Macro,
   listener: {
     hello({ data }) {
-      console.log('hello', data)
-    }
-  }
-})
+      console.log('hello', data);
+    },
+  },
+});
 // Add connection establised listener
 client.onConnectionEstablished(() => {
   console.debug('onConnectionEstablished');

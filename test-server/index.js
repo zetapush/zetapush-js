@@ -4,7 +4,7 @@ const transports = require('zetapush-cometd/lib/node/Transports');
 
 const api = require('./api');
 
-const resource = `node_js_worker_${uuid()}`
+const resource = `node_js_worker_${uuid()}`;
 
 const config = {
   apiUrl: 'http://vm-zbo:8080/zbo/pub/business',
@@ -12,7 +12,7 @@ const config = {
   sandboxId: 'C-flCeDl',
   login: 'gregory.houllier@zetapush.com',
   password: 'zp.2015',
-  resource
+  resource,
 };
 
 console.log(config);

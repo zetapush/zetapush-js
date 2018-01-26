@@ -8,12 +8,12 @@ const { uuid } = require('../../../../es/utils');
 const transports = require('zetapush-cometd/lib/node/Transports');
 
 const run = (api, config) => {
-  const resource = `node_js_worker_${uuid()}`
+  const resource = `node_js_worker_${uuid()}`;
 
   config = {
     ...config,
     transports,
-    resource
+    resource,
   };
 
   console.log('[LOG] Config', config);
@@ -30,10 +30,10 @@ const run = (api, config) => {
       client.subscribeTaskServer(api);
     })
     .catch((error) => console.error('[ERROR] ZetaPush V3 Error', error));
-}
+};
 
-const moduleId = (_.length === 1) ? `./${_[0]}` : '.'
+const moduleId = _.length === 1 ? `./${_[0]}` : '.';
 const path = cwd(moduleId);
 const api = require(path);
 
-read(moduleId).then(({zetapush}) => run(api, zetapush));
+read(moduleId).then(({ zetapush }) => run(api, zetapush));

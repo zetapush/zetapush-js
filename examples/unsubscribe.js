@@ -1,33 +1,33 @@
 const client = new ZetaPush.WeakClient({
-  sandboxId: 'bcu1JtRb'
-})
+  sandboxId: 'bcu1JtRb',
+});
 const service = client.createService({
   Type: ZetaPush.services.Macro,
   listener: {
     error(message) {
-      console.error('macro error', message.data)
+      console.error('macro error', message.data);
     },
     completed(message) {
-      console.log('macro completed', message.data.result)
-    }
-  }
-})
+      console.log('macro completed', message.data.result);
+    },
+  },
+});
 // Add connection listener
 client.onConnectionEstablished(() => {
-  console.debug('onConnectionEstablished')
-})
+  console.debug('onConnectionEstablished');
+});
 // Connect client to ZetaPush BaaS
-client.connect()
+client.connect();
 document.querySelector('.js-SayHello').addEventListener('click', () => {
-  console.log('.js-SayHello', 'click')
+  console.log('.js-SayHello', 'click');
   service.call({
     name: 'hello',
     parameters: {
-      name: 'World'
-    }
-  })
-})
+      name: 'World',
+    },
+  });
+});
 document.querySelector('.js-Unsubscribe').addEventListener('click', () => {
-  console.log('.js-Unsubscribe', 'click')
-  client.unsubscribe(service)
-})
+  console.log('.js-Unsubscribe', 'click');
+  client.unsubscribe(service);
+});

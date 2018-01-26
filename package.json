@@ -9,25 +9,10 @@
   "typings": "index.d.ts",
   "homepage": "http://zetapush.com",
   "bugs": "https://github.com/zetapush/zetapush-js/issues",
-  "files": [
-    "dist",
-    "lib",
-    "es",
-    "src",
-    "index.d.ts"
-  ],
-  "keywords": [
-    "zetapush",
-    "realtime",
-    "sdk",
-    "websocket",
-    "long-polling"
-  ],
+  "files": ["dist", "lib", "es", "src", "index.d.ts"],
+  "keywords": ["zetapush", "realtime", "sdk", "websocket", "long-polling"],
   "license": "MIT",
-  "contributors": [
-    "Grégory Houllier",
-    "Mikael Morvan"
-  ],
+  "contributors": ["Grégory Houllier", "Mikael Morvan"],
   "repository": {
     "type": "git",
     "url": "git@github.com:zetapush/zetapush-js.git"
@@ -37,16 +22,22 @@
     "clean": "rimraf lib dist es .deploy .esdoc",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
-    "build:umd": "cross-env BABEL_ENV=umd NODE_ENV=development rollup -c -i src/index.js -o dist/zetapush.js",
-    "build:umd:min": "cross-env BABEL_ENV=umd NODE_ENV=production rollup -c -i src/index.js -o dist/zetapush.min.js",
-    "build": "yarn run build:commonjs && yarn run build:es && yarn run build:umd && yarn run build:umd:min",
-    "prepublish": "yarn run clean && yarn run lint && yarn run build && yarn test:ci",
+    "build:umd":
+      "cross-env BABEL_ENV=umd NODE_ENV=development rollup -c -i src/index.js -o dist/zetapush.js",
+    "build:umd:min":
+      "cross-env BABEL_ENV=umd NODE_ENV=production rollup -c -i src/index.js -o dist/zetapush.min.js",
+    "build":
+      "yarn run build:commonjs && yarn run build:es && yarn run build:umd && yarn run build:umd:min",
+    "prepublish":
+      "yarn run clean && yarn run lint && yarn run build && yarn test:ci",
     "doc": "esdoc -c esdoc.json",
     "deploy:github": "yarn run doc && gulp deploy:github",
-    "serve": "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001",
+    "serve":
+      "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001",
     "test:ci": "karma start karma.conf.js",
     "precommit": "lint-staged",
-    "prettify": "prettier --single-quote --trailing-comma all --arrow-parens always --write 'src/**/*.js'"
+    "prettify":
+      "prettier --single-quote --trailing-comma all --arrow-parens always --write '{examples,src}/**/*.js'"
   },
   "dependencies": {
     "zetapush-cometd": "^3.2.1"
@@ -91,7 +82,7 @@
     "typescript": "^2.6.2"
   },
   "lint-staged": {
-    "src/**/*.js": [
+    "{examples,src}/**/*.js": [
       "prettier --single-quote --trailing-comma all --arrow-parens always --write",
       "git add"
     ]
