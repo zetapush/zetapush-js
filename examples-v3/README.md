@@ -6,6 +6,12 @@
 yarn install
 ```
 
+## Getting started
+
+```console
+yarn start
+```
+
 ## Project structure
 
 ```console
