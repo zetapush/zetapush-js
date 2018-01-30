@@ -3,8 +3,8 @@
 const { _ } = require('minimist')(process.argv.slice(2));
 const cwd = require('resolve-cwd');
 const read = require('read-pkg');
-const { ServerClient } = require('../../../../es');
-const { uuid } = require('../../../../es/utils');
+const { ServerClient } = require('zetapush-js');
+const { uuid } = require('zetapush-js/es/utils');
 const transports = require('zetapush-cometd/lib/node/Transports');
 
 const run = (api, config) => {

@@ -6,7 +6,20 @@
 yarn add zetapush-js@next zetapush-cometd
 ```
 
-## Server Side
+## Folder structure
+
+```console
+.
+└──
+  ├── client
+  │  ├── index.html
+  │  └── index.js
+  └── server
+    ├── api.js (api implementation)
+    └── index.js (server declaration)
+```
+
+### Server Side
 
 index.js
 
@@ -47,7 +60,7 @@ module.exports.reduce = async (list) =>
 module.exports.hello = async () => `Hello World from JavaScript ${Date.now()}`;
 ```
 
-## Client Side
+### Client Side
 
 index.js
 
@@ -80,4 +93,30 @@ client.onConnectionEstablished(async () => {
   console.log(message);
 });
 client.connect();
+```
+
+index.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZetaPush</title>
+</head>
+
+<body>
+  <script src="https://unpkg.com/zetapush-js@next"></script>
+  <script src="./index.js"></script>
+</body>
+
+</html>
+```
+
+### Start your server
+
+```console
+node ./server/index.js
 ```

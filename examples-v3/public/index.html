@@ -21,21 +21,24 @@
       font-family: Calibri, Helvetica, Arial;
       font-weight: bold;
     }
+
     button::after {
       content: "(" attr(data-count) ")";
       display: inline-block;
     }
+
     button[disabled] {
       opacity: 0.9;
       pointer-events: none;
       cursor: not-allowed;
     }
+
   </style>
 </head>
 
 <body>
-  <script src="../dist/zetapush.js"></script>
-  <script src="./worker.js"></script>
+  <script src="https://unpkg.com/zetapush-js@next"></script>
+  <script src="./index.js"></script>
 
   <button disabled class="js-Hello">hello</button>
   <button disabled class="js-Reduce">reduce</button>
