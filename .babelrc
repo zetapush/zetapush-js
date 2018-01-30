@@ -2,31 +2,39 @@
   "env": {
     "umd": {
       "presets": [
-        ["env", {
-          "modules": false
-        }]
+        [
+          "env",
+          {
+            "modules": false
+          }
+        ]
       ],
-      "plugins": [
-        "external-helpers"
-      ]
+      "plugins": ["external-helpers"]
     },
     "commonjs": {
       "presets": [
-        ["env", {
-          "modules": false
-        }]
+        [
+          "env",
+          {
+            "modules": false,
+            "targets": {
+              "node": "current"
+            }
+          }
+        ]
       ],
-      "plugins": [
-        ["transform-es2015-modules-commonjs", { "loose": true }]
-      ]
+      "plugins": [["transform-es2015-modules-commonjs", { "loose": true }]]
     },
     "es": {
       "presets": [
-        ["env", {
-          "targets": {
-            "node": "current"
+        [
+          "env",
+          {
+            "targets": {
+              "node": "current"
+            }
           }
-        }]
+        ]
       ],
       "plugins": []
     }
