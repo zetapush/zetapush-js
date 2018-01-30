@@ -27,7 +27,7 @@ yarn start
 
 ## How it works?
 
-Server side
+> Server side
 
 All methods exported in index.js file are exposed as API entry points.
 
@@ -37,9 +37,11 @@ Example:
 exports.hello = async () => `Hello World from JavaScript ${Date.now()}`;
 ```
 
-This code expose an API called hello which returns a string "Hello World from JavaScript" concatened with server timestamp.
+This code expose an API called **hello** which returns a string "Hello World from JavaScript" concatened with server timestamp.
 
 To consume an API in your front-end application you have to create a **mapped** method.
+
+> Client side
 
 #### Define your API mapping class
 
