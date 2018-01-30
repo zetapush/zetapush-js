@@ -5,10 +5,7 @@ const client = new ZetaPush.WeakClient({
 });
 client.helper.servers = Promise.resolve(['http://hq.zpush.io:9082/str']);
 
-class Worker extends ZetaPush.services.Queue {
-  get DEFAUT_DEPLOYMENT_ID() {
-    return ZetaPush.services.Queue.DEFAUT_DEPLOYMENT_ID;
-  }
+class Api extends ZetaPush.services.Queue {
   hello() {
     return this.$publish('hello', '');
   }
@@ -24,7 +21,7 @@ class Worker extends ZetaPush.services.Queue {
 }
 
 const worker = client.createAsyncTaskService({
-  Type: Worker,
+  Type: Api,
 });
 
 client.onConnectionEstablished(async () => {
