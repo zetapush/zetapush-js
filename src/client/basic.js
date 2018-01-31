@@ -110,6 +110,27 @@ export class Client {
     }
   }
   /**
+   * Create a promise based service instance
+   * @param {{listener: Object, Type: class, deploymentId: string}} parameters
+   * @return {Object} service
+   * @example
+   * const stack = client.createAsyncService({
+   *   Type: Stack
+   * })
+   * stack.push({
+   *   message: Hello'
+   * }).then((result) => {
+   *   console.log(result)
+   * })
+   */
+  createAsyncService({ deploymentId, listener, Type }) {
+    return this.helper.createAsyncMacroService({
+      deploymentId,
+      listener,
+      Type,
+    });
+  }
+  /**
    * Create a promise based macro service instance
    * @param {{listener: Object, Type: class, deploymentId: string}} parameters
    * @return {Object} service

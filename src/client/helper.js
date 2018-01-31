@@ -26,6 +26,18 @@ const UPDATE_SERVER_URL_DELAY = 250;
 const DEFAULT_MACRO_CHANNEL = 'completed';
 
 /**
+ * Default error channel
+ * @type {string}
+ */
+const DEFAULT_ERROR_CHANNEL = 'error';
+
+/**
+ * Default task channel
+ * @type {string}
+ */
+const DEFAULT_TASK_CHANNEL = 'call';
+
+/**
  * Provide utilities and abstraction on CometD Transport layer
  * @access private
  */
@@ -327,6 +339,27 @@ export class ClientHelper {
       });
   }
   /**
+   * Create a promise based service
+   * @experimental
+   * @param {{listener: Object, Type: class, deploymentId: string}} parameters
+   * @return {Object} service
+   */
+  createAsyncService({
+    listener,
+    Type,
+    deploymentId = Type.DEFAULT_DEPLOYMENT_ID,
+  }) {
+    const prefix = `/service/${this.getSandboxId()}/${deploymentId}`;
+    const $publish = this.getAsyncServicePublisher(prefix);
+    // Create service by publisher
+    return this.createServiceByPublisher({
+      listener,
+      prefix,
+      Type,
+      $publish,
+    });
+  }
+  /**
    * Create a promise based macro service
    * @param {{listener: Object, Type: class, deploymentId: string}} parameters
    * @return {Object} service
@@ -346,7 +379,6 @@ export class ClientHelper {
       $publish,
     });
   }
-
   /**
    * Create a promise based task service
    * @experimental
@@ -442,7 +474,40 @@ export class ClientHelper {
       });
     };
   }
-
+  /**
+   * Get a publisher for a service
+   * @param {string} prefix - Channel prefix
+   * @return {Function} publisher
+   */
+  getAsyncServicePublisher(prefix) {
+    return (method, parameters) => {
+      const channel = `${prefix}/${method}`;
+      const uniqRequestId = this.getUniqRequestId();
+      const subscriptions = {};
+      return new Promise((resolve, reject) => {
+        const handler = ({ data = {} }) => {
+          const { requestId, ...result } = data;
+          if (requestId === uniqRequestId) {
+            resolve(result);
+            // TODO Manage errors
+            this.unsubscribe(subscriptions);
+          }
+        };
+        // Create dynamic listener method
+        const listener = {
+          [name]: handler,
+          [DEFAULT_ERROR_CHANNEL]: handler,
+        };
+        // Ad-Hoc subscription
+        this.subscribe(prefix, listener, subscriptions);
+        // Publish message on channel
+        this.publish(channel, {
+          ...parameters,
+          requestId: uniqRequestId,
+        });
+      });
+    };
+  }
   /**
    * Get a publisher for a task service that return a promise
    * @experimental
@@ -450,7 +515,6 @@ export class ClientHelper {
    * @return {Function} publisher
    */
   getAsyncTaskPublisher(prefix) {
-    const DEFAULT_TASK_CHANNEL = 'call';
     return (name, namespace = '', parameters = null) => {
       const channel = `${prefix}/${DEFAULT_TASK_CHANNEL}`;
       const uniqRequestId = this.getUniqRequestId();

@@ -1,7 +1,7 @@
 // Create new ZetaPush Client
 const client = new ZetaPush.WeakClient({
   apiUrl: 'http://hq.zpush.io:9080/zbo/pub/business',
-  sandboxId: '_DYkoFRt',
+  sandboxId: 'tIj38RMT',
 });
 client.helper.servers = Promise.resolve(['http://hq.zpush.io:9082/str']);
 
@@ -20,7 +20,7 @@ class Api extends ZetaPush.services.Queue {
   }
 }
 
-const worker = client.createAsyncTaskService({
+const api = client.createAsyncTaskService({
   Type: Api,
 });
 
@@ -54,26 +54,26 @@ document.addEventListener('DOMContentLoaded', () => {
     event.target.dataset.count =
       (parseInt(event.target.dataset.count, 10) || 0) + 1;
     const id = uuid();
-    trace(`hello--${id}`, () => worker.hello());
+    trace(`hello--${id}`, () => api.hello());
   });
   on('.js-Reduce', 'click', async (event) => {
     event.target.dataset.count =
       (parseInt(event.target.dataset.count, 10) || 0) + 1;
     const id = uuid();
-    trace(`reduce--${id}`, () => worker.reduce([10, 20, 30, 40]));
+    trace(`reduce--${id}`, () => api.reduce([10, 20, 30, 40]));
   });
   on('.js-Push', 'click', async (event) => {
     event.target.dataset.count =
       (parseInt(event.target.dataset.count, 10) || 0) + 1;
     const id = uuid();
     const item = prompt('Item?');
-    trace(`push--${id}`, () => worker.push(item));
+    trace(`push--${id}`, () => api.push(item));
   });
   on('.js-List', 'click', async (event) => {
     event.target.dataset.count =
       (parseInt(event.target.dataset.count, 10) || 0) + 1;
     const id = uuid();
-    const list = await trace(`list--${id}`, () => worker.list());
+    const list = await trace(`list--${id}`, () => api.list());
     const ul = document.querySelector('ul');
     const fragment = document.createDocumentFragment();
     while (ul.firstChild) {

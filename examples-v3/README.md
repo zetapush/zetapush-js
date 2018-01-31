@@ -56,7 +56,7 @@ class Api extends ZetaPush.services.Queue {
 #### Register your API mapping class
 
 ```js
-const worker = client.createAsyncTaskService({
+const api = client.createAsyncTaskService({
   Type: Api,
 });
 ```
@@ -64,5 +64,5 @@ const worker = client.createAsyncTaskService({
 #### Invoke your API mapping class
 
 ```js
-const message = await worker.hello();
+const message = await api.hello();
 ```
