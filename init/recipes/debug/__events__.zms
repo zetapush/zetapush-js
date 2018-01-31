@@ -1,0 +1,17 @@
+macroscript_annotation WorkerCall = @ApiListener(
+	apiService = workers,
+	apiVerb = Verb_queue_call,
+	triggerService = triggers
+);
+
+macroscript_annotation WorkerDispatch = @ApiListener(
+	apiService = workers,
+	apiVerb = Verb_queue_dispatch,
+	triggerService = triggers
+);
+
+macroscript_annotation WorkerDone = @ApiListener(
+	apiService = workers,
+	apiVerb = Verb_queue_done,
+	triggerService = triggers
+);

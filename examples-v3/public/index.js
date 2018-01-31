@@ -1,7 +1,7 @@
 // Create new ZetaPush Client
 const client = new ZetaPush.WeakClient({
   apiUrl: 'http://hq.zpush.io:9080/zbo/pub/business',
-  sandboxId: '_DYkoFRt',
+  sandboxId: 'S1F-PT6V',
 });
 client.helper.servers = Promise.resolve(['http://hq.zpush.io:9082/str']);
 

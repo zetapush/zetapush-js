@@ -1,0 +1,18 @@
+recipe com.zetapush.v3.extensions 1.0.0;
+
+/**
+ * Authentication service
+ */
+service auth = new weak();
+/**
+ * Producer/Consumer service, used to extends ZetaPush
+ */
+service workers = new queue();
+/**
+ * Trigger service, used to handle "Producer/Consumer" api events
+ */
+service triggers = new trigger();
+/**
+ * Macro service, used to broadcast events on devtools
+ */
+service api = new macro() for 'debug';

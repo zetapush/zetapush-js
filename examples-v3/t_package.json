@@ -1,0 +1,21 @@
+{
+  "name": "zetapush-example-v3",
+  "version": "0.0.1",
+  "main": "server/index.js",
+  "private": true,
+  "scripts": {
+    "start": "zetapush-cli | serve public"
+  },
+  "dependencies": {
+    "zetapush-cli": "../zetapush-cli"
+  },
+  "zetapush": {
+    "apiUrl": "http://hq.zpush.io:9080/zbo/pub/business",
+    "sandboxId": "@SANDBOX_ID",
+    "login": "@USERNAME",
+    "password": "@PASSWORD"
+  },
+  "devDependencies": {
+    "serve": "^6.4.9"
+  }
+}
