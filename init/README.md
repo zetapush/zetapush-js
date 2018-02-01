@@ -3,15 +3,15 @@
 ## Install dependencies
 
 ```js
-./init ~> npm install 
+./init ~> yarn or npm install 
 ```
 
 ```js
-./examples-v3 -> npm install
+./examples-v3 ->yarn or npm install
 ```
 
 ## Usage
 
 ```js
-./init $> node start.js
+./init $> node index.js
 ```

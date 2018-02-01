@@ -30,9 +30,10 @@ let SANDBOX_CRED                = {
     sandboxId                   : "S1F-PT6V",
     password                    : "caspierre"
 };
-// SANDBOX_CRED = false; // uncomment for prompt credentials
 
 let g_config = SANDBOX_CRED;
+SANDBOX_CRED = false; // uncomment for prompt credentials
+
 let isServing = false;
 let lastReloadTime = Date.now();
 
