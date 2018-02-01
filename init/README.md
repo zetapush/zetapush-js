@@ -3,7 +3,7 @@
 ## Install dependencies
 
 ```js
-./init ~> npm install<br/> 
+./init ~> npm install 
 ```
 
 ```js
