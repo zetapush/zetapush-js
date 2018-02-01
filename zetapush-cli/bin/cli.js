@@ -20,6 +20,21 @@ const run = (api, config) => {
 
   const client = new ServerClient(config);
 
+  const onTerminalSignal = (signal) => {
+    console.log('[LOG] Properly disconnect client');
+    client.disconnect().then((() => {
+      console.log('[LOG] Client properly disconnected');
+      process.exit(0);
+    }));
+  };
+
+  const TERMINATE_SIGNALS = ['SIGINT', 'SIGTERM', 'SIGQUIT'];
+  TERMINATE_SIGNALS.forEach((signal) => {
+    process.on(signal, () => {
+      onTerminalSignal(signal)
+    });
+  });
+
   client
     .connect()
     .then(() => {
