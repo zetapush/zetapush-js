@@ -121,7 +121,7 @@ function serve(){
         // let yarn = spawn('./'+g_config.name+'-cli/node_modules/zetapush-cli/bin/cli.js', ['./'+g_config.name+'-cli']);
         let node = fork('../examples-v3/node_modules/zetapush-cli/bin/cli.js', ['../examples-v3/']);
 
-        fs.watch('../examples-v3/public', () => {
+        fs.watch('../examples-v3/server', () => {
             if (Date.now() - lastReloadTime > RELOAD_MIN_TIME){
                 console.log("Live Reload ", Date.now() -lastReloadTime);
                 while (!node.killed){
