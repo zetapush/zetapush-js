@@ -18,6 +18,12 @@ class Api extends ZetaPush.services.Queue {
   list() {
     return this.$publish('list', '');
   }
+  createUser(profile = {}) {
+    return this.$publish('createUser', '', profile);
+  }
+  findUsers(parameters = {}) {
+    return this.$publish('findUsers', '', parameters);
+  }
 }
 
 const api = client.createAsyncTaskService({
@@ -74,6 +80,37 @@ document.addEventListener('DOMContentLoaded', () => {
       (parseInt(event.target.dataset.count, 10) || 0) + 1;
     const id = uuid();
     const { result: { content: list } } = await trace(`list--${id}`, () => api.list());
+    const ul = document.querySelector('ul');
+    const fragment = document.createDocumentFragment();
+    while (ul.firstChild) {
+      ul.removeChild(ul.firstChild);
+    }
+    list.forEach((item) => {
+      const li = document.createElement('li');
+      li.textContent = JSON.stringify(item);
+      fragment.appendChild(li);
+    });
+    ul.appendChild(fragment);
+  });
+  on('.js-CreateUser', 'click', async (event) => {
+    event.target.dataset.count =
+      (parseInt(event.target.dataset.count, 10) || 0) + 1;
+    const id = uuid();
+    trace(`push--${id}`, () => api.createUser({
+      login: prompt('Login'),
+      password: prompt('Password')
+    }));
+  });
+  on('.js-FindUsers', 'click', async (event) => {
+    event.target.dataset.count =
+      (parseInt(event.target.dataset.count, 10) || 0) + 1;
+    const id = uuid();
+    const { users } = await trace(`findUsers--${id}`, () => api.findUsers({
+      query: {
+        match_all: {}
+      }
+    }));
+    const list = Object.values(users);
     const ul = document.querySelector('ul');
     const fragment = document.createDocumentFragment();
     while (ul.firstChild) {

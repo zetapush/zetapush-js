@@ -1,8 +1,23 @@
-const { services } = require('zetapush-js/es');
+const services = require('./services');
+
+exports.createUser = async (profile = {}) => {
+  const api = exports.Factory(services.SimpleAuthentication);
+  const output = await api.createUser(profile);
+  console.log('createUser', output);
+  return output;
+}
+
+exports.findUsers = async (parameters = {}) => {
+  const api = exports.Factory(services.UserDirectory);
+  const output = await api.search(parameters);
+  console.log('findUsers', output);
+  return output;
+}
 
 exports.push = async (data) => {
   const stack = exports.Factory(services.Stack);
   const output = await stack.push({ stack: 'demo', data });
+  console.log('push', output);
   return output;
 }
 
