@@ -6,24 +6,12 @@ const client = new ZetaPush.WeakClient({
 client.helper.servers = Promise.resolve(['http://hq.zpush.io:9082/str']);
 
 class Api extends ZetaPush.services.Queue {
-  hello() {
-    return this.$publish('hello', '');
-  }
-  reduce(list) {
-    return this.$publish('reduce', '', list);
-  }
-  push(item) {
-    return this.$publish('push', '', { item });
-  }
-  list() {
-    return this.$publish('list', '');
-  }
-  createUser(profile = {}) {
-    return this.$publish('createUser', '', profile);
-  }
-  findUsers(parameters = {}) {
-    return this.$publish('findUsers', '', parameters);
-  }
+  hello() { return this.$publish('hello', ''); }
+  reduce(list) { return this.$publish('reduce', '', list); }
+  push(item) { return this.$publish('push', '', { item }); }
+  list() { return this.$publish('list', ''); }
+  createUser(profile = {}) { return this.$publish('createUser', '', profile); }
+  findUsers(parameters = {}) { return this.$publish('findUsers', '', parameters); }
 }
 
 const api = client.createAsyncTaskService({
