@@ -13,7 +13,7 @@ class Api extends ZetaPush.services.Queue {
     return this.$publish('reduce', '', list);
   }
   push(item) {
-    return this.$publish('push', '', item);
+    return this.$publish('push', '', { item });
   }
   list() {
     return this.$publish('list', '');
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     event.target.dataset.count =
       (parseInt(event.target.dataset.count, 10) || 0) + 1;
     const id = uuid();
-    const list = await trace(`list--${id}`, () => api.list());
+    const { result: { content: list } } = await trace(`list--${id}`, () => api.list());
     const ul = document.querySelector('ul');
     const fragment = document.createDocumentFragment();
     while (ul.firstChild) {
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     list.forEach((item) => {
       const li = document.createElement('li');
-      li.textContent = item;
+      li.textContent = JSON.stringify(item);
       fragment.appendChild(li);
     });
     ul.appendChild(fragment);

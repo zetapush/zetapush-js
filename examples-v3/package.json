@@ -4,10 +4,11 @@
   "main": "server/index.js",
   "private": true,
   "scripts": {
-    "start": "zetapush-cli | serve public"
+    "start": "zetapush-cli"
   },
   "dependencies": {
-    "zetapush-cli": "../zetapush-cli"
+    "zetapush-cli": "../zetapush-cli",
+    "zetapush-js": "3.4.0-alpha.4"
   },
   "zetapush": {
     "apiUrl": "http://hq.zpush.io:9080/zbo/pub/business",
