@@ -1,3 +1,10 @@
+# 3.4.0-alpha.4 (2018-02-02)
+
+### Features
+
+* **server** Add service injection
+* **server** Properly close worker on process end signals
+
 # 3.4.0-alpha.2 (2018-01-30)
 
 ### Features
