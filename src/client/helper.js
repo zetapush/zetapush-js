@@ -495,7 +495,7 @@ export class ClientHelper {
         };
         // Create dynamic listener method
         const listener = {
-          [name]: handler,
+          [method]: handler,
           [DEFAULT_ERROR_CHANNEL]: handler,
         };
         // Ad-Hoc subscription

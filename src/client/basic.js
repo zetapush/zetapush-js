@@ -124,7 +124,7 @@ export class Client {
    * })
    */
   createAsyncService({ deploymentId, listener, Type }) {
-    return this.helper.createAsyncMacroService({
+    return this.helper.createAsyncService({
       deploymentId,
       listener,
       Type,
