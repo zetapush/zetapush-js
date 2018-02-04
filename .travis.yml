@@ -1,9 +1,10 @@
-dist: trusty
+sudo: required
 addons:
   chrome: stable
 language: node_js
 node_js: stable
 cache:
+  yarn: true
   directories:
     - node_modules
 script:
