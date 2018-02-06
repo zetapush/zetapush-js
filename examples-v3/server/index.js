@@ -2,13 +2,14 @@ const services = require('./services');
 
 module.exports = class Api {
   static get injected() {
-    return [services.Stack, services.UserDirectory, services.SimpleAuthentication];
+    return [services.Stack, services.UserDirectory, services.SimpleAuthentication, services.GdaStorage];
   }
-  constructor(stack, directory, auth) {
+  constructor(stack, directory, auth, storage) {
     console.log('Api:constructor', stack, directory, auth)
     this.stack = stack;
     this.directory = directory;
     this.auth = auth;
+    this.storage = storage
   }
   async createUser(profile = {}) {
     const output = await this.auth.createUser(profile);
@@ -31,4 +32,17 @@ module.exports = class Api {
   async reduce(list) {
     return list.reduce((cumulator, value) => cumulator + value, 0);
   }
+
+  async saveData(data) {
+    const output = await this.storage.put({ table: 'test', column: 'column', key: 'key', data})
+    console.log('saveData', output)
+    return output;
+  }
+
+  async getData() {
+    const output = await this.storage.get({table: 'test', key: 'key'})
+    console.log('getData', output)
+    return output
+  }
+
 }

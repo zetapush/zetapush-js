@@ -22,3 +22,10 @@ exports.UserDirectory = class UserDirectory {
   search({ filter, query, page } = { filter: {}, query: {} }) { return this.$publish('search', { filter, query, page }); }
   userInfo({ userKeys } = {}) { return this.$publish('userInfo', { userKeys }); }
 }
+
+exports.GdaStorage = class GdaStorage {
+  constructor({ $publish }) { this.$publish = $publish; }
+  static get DEFAULT_DEPLOYMENT_ID() { return 'gda_0';}
+  put({ table, data, key, column } = {}) { return this.$publish('put', { table, data, key, column });}
+  get({ table, key } = {}) { return this.$publish('get', { table, key })}
+}

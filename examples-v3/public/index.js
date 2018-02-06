@@ -1,7 +1,7 @@
 // Create new ZetaPush Client
 const client = new ZetaPush.WeakClient({
   apiUrl: 'http://hq.zpush.io:9080/zbo/pub/business',
-  sandboxId: 'tIj38RMT',
+  sandboxId: 'D-lY6aNX',
 });
 client.helper.servers = Promise.resolve(['http://hq.zpush.io:9082/str']);
 
@@ -12,9 +12,11 @@ class Api extends ZetaPush.services.Queue {
   list() { return this.$publish('list', ''); }
   createUser(profile = {}) { return this.$publish('createUser', '', profile); }
   findUsers(parameters = {}) { return this.$publish('findUsers', '', parameters); }
+  saveData(data = {}) { return this.$publish('saveData', '', data); }
+  getData() { return this.$publish('getData', '');}
 }
 
-const api = client.createAsyncTaskService({
+exports.api = client.createAsyncTaskService({
   Type: Api,
 });
 
@@ -111,4 +113,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     ul.appendChild(fragment);
   });
+  on('.js-saveData', 'click', async (event) => {
+    event.target.dataset.count =
+      (parseInt(event.target.dataset.count, 10) || 0) + 1;
+    const id = uuid();
+    trace(`push--${id}`, () => api.saveData({
+      data: prompt('value')
+    }));
+  })
+  on('.js-getData', 'click', async (event) => {
+    event.target.dataset.count =
+      (parseInt(event.target.dataset.count, 10) || 0) + 1;
+    const id = uuid();
+    const data = await trace(`getData--${id}`, () => api.getData({}));
+    console.log('getData', data)
+  })
 });
