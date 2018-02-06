@@ -6,21 +6,15 @@ const client = new ZetaPush.WeakClient({
 client.helper.servers = Promise.resolve(['http://hq.zpush.io:9082/str']);
 
 class Api extends ZetaPush.services.Queue {
-  hello() {
-    return this.$publish('hello', '');
-  }
-  reduce(list) {
-    return this.$publish('reduce', '', list);
-  }
-  push(item) {
-    return this.$publish('push', '', item);
-  }
-  list() {
-    return this.$publish('list', '');
-  }
+  hello() { return this.$publish('hello', ''); }
+  reduce(list) { return this.$publish('reduce', '', list); }
+  push(item) { return this.$publish('push', '', { item }); }
+  list() { return this.$publish('list', ''); }
+  createUser(profile = {}) { return this.$publish('createUser', '', profile); }
+  findUsers(parameters = {}) { return this.$publish('findUsers', '', parameters); }
 }
 
-const worker = client.createAsyncTaskService({
+const api = client.createAsyncTaskService({
   Type: Api,
 });
 
@@ -54,26 +48,26 @@ document.addEventListener('DOMContentLoaded', () => {
     event.target.dataset.count =
       (parseInt(event.target.dataset.count, 10) || 0) + 1;
     const id = uuid();
-    trace(`hello--${id}`, () => worker.hello());
+    trace(`hello--${id}`, () => api.hello());
   });
   on('.js-Reduce', 'click', async (event) => {
     event.target.dataset.count =
       (parseInt(event.target.dataset.count, 10) || 0) + 1;
     const id = uuid();
-    trace(`reduce--${id}`, () => worker.reduce([10, 20, 30, 40]));
+    trace(`reduce--${id}`, () => api.reduce([10, 20, 30, 40]));
   });
   on('.js-Push', 'click', async (event) => {
     event.target.dataset.count =
       (parseInt(event.target.dataset.count, 10) || 0) + 1;
     const id = uuid();
     const item = prompt('Item?');
-    trace(`push--${id}`, () => worker.push(item));
+    trace(`push--${id}`, () => api.push(item));
   });
   on('.js-List', 'click', async (event) => {
     event.target.dataset.count =
       (parseInt(event.target.dataset.count, 10) || 0) + 1;
     const id = uuid();
-    const list = await trace(`list--${id}`, () => worker.list());
+    const { result: { content: list } } = await trace(`list--${id}`, () => api.list());
     const ul = document.querySelector('ul');
     const fragment = document.createDocumentFragment();
     while (ul.firstChild) {
@@ -81,7 +75,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     list.forEach((item) => {
       const li = document.createElement('li');
-      li.textContent = item;
+      li.textContent = JSON.stringify(item);
+      fragment.appendChild(li);
+    });
+    ul.appendChild(fragment);
+  });
+  on('.js-CreateUser', 'click', async (event) => {
+    event.target.dataset.count =
+      (parseInt(event.target.dataset.count, 10) || 0) + 1;
+    const id = uuid();
+    trace(`push--${id}`, () => api.createUser({
+      login: prompt('Login'),
+      password: prompt('Password')
+    }));
+  });
+  on('.js-FindUsers', 'click', async (event) => {
+    event.target.dataset.count =
+      (parseInt(event.target.dataset.count, 10) || 0) + 1;
+    const id = uuid();
+    const { users } = await trace(`findUsers--${id}`, () => api.findUsers({
+      query: {
+        match_all: {}
+      }
+    }));
+    const list = Object.values(users);
+    const ul = document.querySelector('ul');
+    const fragment = document.createDocumentFragment();
+    while (ul.firstChild) {
+      ul.removeChild(ul.firstChild);
+    }
+    list.forEach((item) => {
+      const li = document.createElement('li');
+      li.textContent = JSON.stringify(item);
       fragment.appendChild(li);
     });
     ul.appendChild(fragment);

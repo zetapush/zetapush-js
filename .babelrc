@@ -9,7 +9,10 @@
           }
         ]
       ],
-      "plugins": ["external-helpers"]
+      "plugins": [
+        "transform-object-rest-spread",
+        "external-helpers"
+      ]
     },
     "commonjs": {
       "presets": [
@@ -23,7 +26,15 @@
           }
         ]
       ],
-      "plugins": [["transform-es2015-modules-commonjs", { "loose": true }]]
+      "plugins": [
+        "transform-object-rest-spread",
+        [
+          "transform-es2015-modules-commonjs",
+          {
+            "loose": true
+          }
+        ]
+      ]
     },
     "es": {
       "presets": [
@@ -36,7 +47,9 @@
           }
         ]
       ],
-      "plugins": []
+      "plugins": [
+        "transform-object-rest-spread"
+      ]
     }
   }
 }

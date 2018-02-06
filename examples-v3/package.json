@@ -4,10 +4,14 @@
   "main": "server/index.js",
   "private": true,
   "scripts": {
-    "start": "zetapush-cli | serve public"
+    "start": "zetapush-cli",
+    "serve": "serve public/",
+    "worker:start": "pm2 start zetapush-cli -i max",
+    "worker:stop": "pm2 stop all"
   },
   "dependencies": {
-    "zetapush-cli": "../zetapush-cli"
+    "zetapush-cli": "../zetapush-cli",
+    "zetapush-js": "3.4.0-alpha.4"
   },
   "zetapush": {
     "apiUrl": "http://hq.zpush.io:9080/zbo/pub/business",
@@ -16,6 +20,7 @@
     "password": "caspierre"
   },
   "devDependencies": {
+    "pm2": "^2.9.1",
     "serve": "^6.4.9"
   }
 }

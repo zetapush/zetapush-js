@@ -29,15 +29,36 @@ yarn start
 
 > Server side
 
-All methods exported in index.js file are exposed as API entry points.
+Your server api in a plain old class defining your interface.
 
 Example:
 
 ```js
-exports.hello = async () => `Hello World from JavaScript ${Date.now()}`;
+module.exports = class Api {
+  async hello() {
+    return `Hello World from JavaScript ${Date.now()}`;
+  }
+}
 ```
 
 This code expose an API called **hello** which returns a string "Hello World from JavaScript" concatened with server timestamp.
+
+You can use injected platform services with to following.
+
+```js
+const { Stack } = require('zetapush-js/es/mapping/services')
+module.exports = class Api {
+  static get injected() {
+    return [Stack]
+  }
+  constructor(stack) {
+    this.stack = stack;
+  }
+  async push(item) {
+    return this.stack.push({ stack: 'list', data: item });
+  }
+}
+```
 
 To consume an API in your front-end application you have to create a **mapped** method.
 
@@ -56,7 +77,7 @@ class Api extends ZetaPush.services.Queue {
 #### Register your API mapping class
 
 ```js
-const worker = client.createAsyncTaskService({
+const api = client.createAsyncTaskService({
   Type: Api,
 });
 ```
@@ -64,5 +85,5 @@ const worker = client.createAsyncTaskService({
 #### Invoke your API mapping class
 
 ```js
-const message = await worker.hello();
+const message = await api.hello();
 ```

@@ -7,20 +7,32 @@ const { ServerClient } = require('zetapush-js/es');
 const { uuid } = require('zetapush-js/es/utils');
 const transports = require('zetapush-cometd/lib/node/Transports');
 
-const di = (client, Api) => {
+const TYPES = ['AsyncFunction']
+const TYPE_PATTERN = /\[object (\w+)\]/
+const toString = (value) => Object.prototype.toString.call(value)
+const getType = (value) => {
+  const [, type = 'Null'] = TYPE_PATTERN.exec(toString(value))
+  return type
+}
+const isAsyncFunction = (method) => TYPES.indexOf(getType(method)) > -1
+
+const apify = (declaration = {}) => Object.entries(declaration).filter(([property, value]) => isAsyncFunction(value)).reduce((api, [property, value]) => {
+  api[property] = value;
+  return api
+}, {})
+
+const inject = (client, declaration = {}) => {
   const cache = new WeakMap();
-  const factory = (Type) => {
+  declaration.Factory = (Type) => {
     const service = cache.has(Type) ? cache.get(Type) : cache.set(Type, client.createAsyncService({
       Type
     })).get(Type)
     return service
   };
-  const parameters = Api.injected.map((Type) => factory(Type));
-  const instance = new Api(...parameters);
-  return instance;
+  return declaration;
 }
 
-const run = (Api, config) => {
+const run = (api, config) => {
   const resource = `node_js_worker_${uuid()}`;
 
   config = {
@@ -55,7 +67,7 @@ const run = (Api, config) => {
     })
     .then(() => {
       console.log('[LOG] Register Server Task');
-      const declaration = di(client, Api)
+      const declaration = apify(inject(client, api))
       client.subscribeTaskServer(declaration);
     })
     .catch((error) => console.error('[ERROR] ZetaPush V3 Error', error));
@@ -63,6 +75,6 @@ const run = (Api, config) => {
 
 const moduleId = _.length === 1 ? `./${_[0]}` : '.';
 const path = cwd(moduleId);
-const Api = require(path);
+const api = require(path);
 
-read(moduleId).then(({ zetapush }) => run(Api, zetapush));
+read(moduleId).then(({ zetapush }) => run(api, zetapush));
