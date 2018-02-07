@@ -1,7 +1,7 @@
 // Create new ZetaPush Client
 const client = new ZetaPush.WeakClient({
   apiUrl: 'http://hq.zpush.io:9080/zbo/pub/business',
-  sandboxId: 'D-lY6aNX',
+  sandboxId: 'UcDdJMDy',
 });
 client.helper.servers = Promise.resolve(['http://hq.zpush.io:9082/str']);
 
@@ -16,7 +16,7 @@ class Api extends ZetaPush.services.Queue {
   getData() { return this.$publish('getData', '');}
 }
 
-exports.api = client.createAsyncTaskService({
+api = client.createAsyncTaskService({
   Type: Api,
 });
 

@@ -1,12 +1,12 @@
-const defineSupportCode = require('cucumber').defineSupportCode
+const { BeforeAll, Given, When, Then } = require('cucumber')
 const assert = require('assert')
-const transports = require('zetapush-cometd/lib/node/Transports');
 const { WeakClient, services } = require('zetapush-js')
+const transports = require('zetapush-cometd/lib/node/Transports');
 
 // Create new ZetaPush Client
 const client = new WeakClient({
     apiUrl: 'http://hq.zpush.io:9080/zbo/pub/business',
-    sandboxId: 'D-lY6aNX',
+    sandboxId: 'UcDdJMDy',
     transports
   });
 
@@ -27,37 +27,38 @@ api = client.createAsyncTaskService({
     Type: Api,
 });
 
-defineSupportCode(function({ BeforeAll, Given, Then, When}) {
-    var result = null;
-    BeforeAll(function() {
-
-        client.onConnectionEstablish(()  => {
-            console.log('Connected')
-        })
-
-        client.connect()
 
 
+
+BeforeAll(function(callback) {
+    
+    client.onConnectionEstablished(async () => {
+        console.log('onConnectionEstablished');
+        callback()
+      });
+
+    client.connect()
+});
+
+
+Given('I store {int} in database', function (input, callback) {
+    api.saveData({'value': input}).then((result) => {
+        callback()
+    }).catch((err) => {
+        console.error('ErrorSaveData', err)
     })
-
-    Given('I store {int} in database', function (input) {
-        // api.saveData({data: input}).then((res) => {
-        //     callback()
-        // }).catch((err) => {
-        //     console.error('ErrorSaveData', err)
-        // })
-
-        
-    });
-    // When('I retrieve {int} from the database', function(input) {
-    //     api.getData({}).then((output) => {
-    //         console.log('output', output)
-    //         result = output.result.data
-    //     });
-    // });
-    // Then('I have {int} as result', function(input) {
-    //     assert.equal(result, input)
-    // });
 })
+
+When('I retrieve {int} from the database', function(input, callback) {
+    api.getData({}).then((output) => {
+        console.log('output', output)
+        result = output.result.column.value
+        callback()
+    });
+});
+
+Then('I have {int} as result', function(input) {
+    assert.equal(result, input)
+});
 
 
