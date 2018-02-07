@@ -11,4 +11,4 @@ export { services } from './mapping'
  * SDK Version
  * @type {string}
  */
-export const VERSION = '3.3.1'
+export const VERSION = '3.3.2'
