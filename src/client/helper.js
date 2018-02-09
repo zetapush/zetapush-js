@@ -146,6 +146,7 @@ export class ClientHelper {
 
     // Handle transport exception
     this.cometd.onTransportException = (cometd, transport) => {
+      this.cometd._debug('ClientHelper::onTransportException', { transport });
       // Try to find an other available server
       // Remove the current one from the _serverList array
       this.updateServerUrl();
@@ -281,6 +282,7 @@ export class ClientHelper {
         // Send handshake fields
         this.cometd.handshake(this.getHandshakeFields());
       } else {
+        this.cometd._error('ClientHelper::connect', { servers });
         // No servers available
         this.noServerUrlAvailable();
       }
@@ -485,18 +487,24 @@ export class ClientHelper {
       const uniqRequestId = this.getUniqRequestId();
       const subscriptions = {};
       return new Promise((resolve, reject) => {
-        const handler = ({ data = {} }) => {
+        const onError = ({ data = {} }) => {
+          const { requestId, code, message } = data;
+          if (requestId === uniqRequestId) {
+            reject(new Error(`Code: ${code}, Message: ${message}`));
+            this.unsubscribe(subscriptions);
+          }
+        };
+        const onSuccess = ({ data = {} }) => {
           const { requestId, ...result } = data;
           if (requestId === uniqRequestId) {
             resolve(result);
-            // TODO Manage errors
             this.unsubscribe(subscriptions);
           }
         };
         // Create dynamic listener method
         const listener = {
-          [method]: handler,
-          [DEFAULT_ERROR_CHANNEL]: handler,
+          [method]: onSuccess,
+          [DEFAULT_ERROR_CHANNEL]: onError,
         };
         // Ad-Hoc subscription
         this.subscribe(prefix, listener, subscriptions);
