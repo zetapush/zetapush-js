@@ -1,3 +1,7 @@
+# 3.4.0-alpha.7 (2018-02-09)
+
+> Republish version due to npm registry failure
+
 # 3.4.0-alpha.6 (2018-02-09)
 
 ### Features

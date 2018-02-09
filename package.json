@@ -1,6 +1,6 @@
 {
   "name": "zetapush-js",
-  "version": "3.4.0-alpha.6",
+  "version": "3.4.0-alpha.7",
   "description": "JavaScript SDK for ZetaPush",
   "browser": "dist/zetapush.js",
   "main": "lib/index.js",
@@ -40,7 +40,7 @@
     "build:umd": "cross-env BABEL_ENV=umd NODE_ENV=development rollup -c -i src/index.js -o dist/zetapush.js",
     "build:umd:min": "cross-env BABEL_ENV=umd NODE_ENV=production rollup -c -i src/index.js -o dist/zetapush.min.js",
     "build": "yarn run build:commonjs && yarn run build:es && yarn run build:umd && yarn run build:umd:min",
-    "prepublish": "yarn run clean && yarn run lint && yarn run build && yarn test:ci",
+    "prepublish": "yarn run clean && yarn run lint && yarn run build",
     "doc": "esdoc -c esdoc.json",
     "deploy:github": "yarn run doc && gulp deploy:github",
     "serve": "lr-http-server -d ./ -w ./dist/*.js,./examples/**/*.js,./examples/**/*.html -p 2600 -l 26001",
