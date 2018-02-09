@@ -1,3 +1,9 @@
+# 3.4.0-alpha.5 (2018-02-09)
+
+### Features
+
+* **server** Improve error management on service call
+
 # 3.4.0-alpha.4 (2018-02-02)
 
 ### Features
