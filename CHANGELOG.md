@@ -1,3 +1,9 @@
+# 3.4.0-alpha.6 (2018-02-09)
+
+### Features
+
+* **server** Reduce support to Chrome 64+ only
+
 # 3.4.0-alpha.5 (2018-02-09)
 
 ### Features
