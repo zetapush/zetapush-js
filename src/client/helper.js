@@ -3,6 +3,16 @@ import { ConnectionStatusListener } from '../connection/connection-status';
 import { Macro } from '../mapping/services';
 import { getServers, isDerivedOf, shuffle, uuid } from '../utils/index';
 
+class ApiError extends Error {
+  constructor(message, code) {
+    super(message);
+    this.code = code;
+  }
+  toString() {
+    return `Message: ${this.message}, Code: ${this.code}`;
+  }
+}
+
 /**
  * CometD Messages enumeration
  * @type {Object}
@@ -490,7 +500,7 @@ export class ClientHelper {
         const onError = ({ data = {} }) => {
           const { requestId, code, message } = data;
           if (requestId === uniqRequestId) {
-            reject(new Error(`Code: ${code}, Message: ${message}`));
+            reject(new ApiError(message, code));
             this.unsubscribe(subscriptions);
           }
         };
@@ -528,21 +538,24 @@ export class ClientHelper {
       const uniqRequestId = this.getUniqRequestId();
       const subscriptions = {};
       return new Promise((resolve, reject) => {
-        const handler = ({ data = {} }) => {
-          const { result = {}, success, requestId } = data;
+        const onError = ({ data = {} }) => {
+          const { requestId, code, message } = data;
           if (requestId === uniqRequestId) {
-            // Handle errors
-            if (success) {
-              resolve(result);
-            } else {
-              reject(result);
-            }
+            reject(new ApiError(message, code));
+            this.unsubscribe(subscriptions);
+          }
+        };
+        const onSuccess = ({ data = {} }) => {
+          const { result = {}, requestId } = data;
+          if (requestId === uniqRequestId) {
+            resolve(result);
             this.unsubscribe(subscriptions);
           }
         };
         // Create dynamic listener method
         const listener = {
-          [DEFAULT_TASK_CHANNEL]: handler,
+          [DEFAULT_TASK_CHANNEL]: onSuccess,
+          [DEFAULT_ERROR_CHANNEL]: onError,
         };
         // Ad-Hoc subscription
         this.subscribe(prefix, listener, subscriptions);

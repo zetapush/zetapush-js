@@ -102,7 +102,7 @@ export class ServerClient extends Client {
           } catch (error) {
             console.log('error', error);
             queue.done({
-              result: { code: '', message: '' },
+              result: error,
               taskId,
               requestId,
               success: false,

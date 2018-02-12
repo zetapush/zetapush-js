@@ -1,3 +1,10 @@
+# 3.4.0-alpha.8 (2018-02-12)
+
+### Features
+
+* **server** Improve error handling
+
+
 # 3.4.0-alpha.7 (2018-02-09)
 
 > Republish version due to npm registry failure
