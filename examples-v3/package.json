@@ -1,7 +1,7 @@
 {
   "name": "zetapush-example-v3",
   "version": "0.0.1",
-  "main": "server/index.js",
+  "main": "server/file.js",
   "private": true,
   "scripts": {
     "start": "zetapush-cli",
@@ -10,12 +10,13 @@
     "worker:stop": "pm2 stop all"
   },
   "dependencies": {
+    "node": "8",
     "zetapush-cli": "../zetapush-cli",
-    "zetapush-js": "3.4.0-alpha.4"
+    "zetapush-js": "3.4.0-alpha.8"
   },
   "zetapush": {
     "apiUrl": "http://hq.zpush.io:9080/zbo/pub/business",
-    "sandboxId": "tIj38RMT",
+    "sandboxId": "iPcadJ_7",
     "login": "gregory.houllier@zetapush.com",
     "password": "zp.2015"
   },
