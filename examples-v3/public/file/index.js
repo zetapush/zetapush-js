@@ -79,33 +79,37 @@ const doUpload = (request) => new Promise((resolve, reject) => {
   xhr.send(file);
 });
 
+const getFileEntryList = async () => {
+  const $id = uuid();
+  const { entries } = await trace(`getFileEntryList--${$id}`, () => api.getFileEntryList({
+    folder: '/'
+  }));
+  const main = document.querySelector('main');
+  while (main.firstChild) {
+    main.removeChild(main.firstChild);
+  }
+  main.appendChild(entries.map((entry) => {
+    const node = document.createElement('img');
+    node.src = entry.file.url;
+    node.addEventListener('click', async (event) => {
+      main.removeChild(node);
+      await trace(`deleteFileEntry--${$id}`, () => api.deleteFileEntry({
+        path: entry.file.path
+      }));
+    })
+    return node;
+  }).reduce((fragment, child) => {
+    fragment.appendChild(child);
+    return fragment;
+  }, document.createDocumentFragment()));
+  console.log(entries);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   on('.js-getFileEntryList', 'click', async (event) => {
     event.target.dataset.count =
       (parseInt(event.target.dataset.count, 10) || 0) + 1;
-    const $id = uuid();
-    const { entries } = await trace(`getFileEntryList--${$id}`, () => api.getFileEntryList({
-      folder: '/'
-    }));
-    const main = document.querySelector('main');
-    while (main.firstChild) {
-      main.removeChild(main.firstChild);
-    }
-    main.appendChild(entries.map((entry) => {
-      const node = document.createElement('img');
-      node.src = entry.file.url;
-      node.addEventListener('click', async (event) => {
-        main.removeChild(node);
-        await trace(`deleteFileEntry--${$id}`, () => api.deleteFileEntry({
-          path: entry.file.path
-        }));
-      })
-      return node;
-    }).reduce((fragment, child) => {
-      fragment.appendChild(child);
-      return fragment;
-    }, document.createDocumentFragment()));
-    console.log(entries);
+    await getFileEntryList();
   });
   on('.js-selectFile', 'change', async (event) => {
     const files = Array.from(event.target.files);
@@ -127,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         metadata: {},
         tags: []
       }));
+      await getFileEntryList();
     })
   });
 });
