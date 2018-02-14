@@ -1,9 +1,14 @@
+# 3.4.0-alpha.9 (2018-02-14)
+
+### Fix
+
+* **helper** Rename bad log method
+
 # 3.4.0-alpha.8 (2018-02-12)
 
 ### Features
 
 * **server** Improve error handling
-
 
 # 3.4.0-alpha.7 (2018-02-09)
 

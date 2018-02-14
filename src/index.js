@@ -12,4 +12,4 @@ export { services } from './mapping';
  * SDK Version
  * @type {string}
  */
-export const VERSION = '3.4.0-alpha.8';
+export const VERSION = '3.4.0-alpha.9';
