@@ -1,6 +1,43 @@
-# 3.3.2 (2018-02-07)
+# 3.4.0-alpha.9 (2018-02-14)
 
-> Bump npm version
+### Fix
+
+* **helper** Rename bad log method
+
+# 3.4.0-alpha.8 (2018-02-12)
+
+### Features
+
+* **server** Improve error handling
+
+# 3.4.0-alpha.7 (2018-02-09)
+
+> Republish version due to npm registry failure
+
+# 3.4.0-alpha.6 (2018-02-09)
+
+### Features
+
+* **server** Reduce support to Chrome 64+ only
+
+# 3.4.0-alpha.5 (2018-02-09)
+
+### Features
+
+* **server** Improve error management on service call
+
+# 3.4.0-alpha.4 (2018-02-02)
+
+### Features
+
+* **server** Add service injection
+* **server** Properly close worker on process end signals
+
+# 3.4.0-alpha.2 (2018-01-30)
+
+### Features
+
+* **server** Add server extensions
 
 # 3.3.1 (2018-01-16)
 
@@ -36,39 +73,40 @@
 * **client** Add new getUserInfo() method to retreive user public info
 
 ```js
-const { Authentication, Client } = require('zetapush-js')
+const { Authentication, Client } = require('zetapush-js');
 // Create new ZetaPush Client
 const client = new Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
-  authentication: () => Authentication.simple({
-    login: '<YOUR-USER-LOGIN>',
-    password: '<YOUR-USER-PASSWORD>'
-  })
-})
+  authentication: () =>
+    Authentication.simple({
+      login: '<YOUR-USER-LOGIN>',
+      password: '<YOUR-USER-PASSWORD>',
+    }),
+});
 // Add connection establised listener
 client.onConnectionEstablished(() => {
-  console.log('onConnectionEstablished')
-  const profile = client.getUserInfo()
-  console.log('Your profile', profile)
-})
-client.connect()
+  console.log('onConnectionEstablished');
+  const profile = client.getUserInfo();
+  console.log('Your profile', profile);
+});
+client.connect();
 ```
 
 * **node** Support node execution context
 
 ```js
-const { WeakClient } = require('zetapush-js')
-const NodeJSTransports = require('zetapush-cometd/lib/node/Transports')
+const { WeakClient } = require('zetapush-js');
+const NodeJSTransports = require('zetapush-cometd/lib/node/Transports');
 // Create new ZetaPush Client
 const client = new WeakClient({
   transports: NodeJSTransports,
-  sandboxId: '<YOUR-SANDBOX-ID>'
-})
+  sandboxId: '<YOUR-SANDBOX-ID>',
+});
 // Add connection establised listener
 client.onConnectionEstablished(() => {
-  console.log('onConnectionEstablished')
-})
-client.connect()
+  console.log('onConnectionEstablished');
+});
+client.connect();
 ```
 
 * **client** Add new lifecycle handler onNegotiationFailed
@@ -188,10 +226,10 @@ const service = new client.createService({
   type: ZetaPush.services.Stack,
   listener: {
     list(message) {
-      console.log('on list', message)
-    }
-  }
-})
+      console.log('on list', message);
+    },
+  },
+});
 ```
 
 **After**
@@ -202,10 +240,10 @@ const service = new client.createService({
   Type: ZetaPush.services.Stack,
   listener: {
     list(message) {
-      console.log('on list', message)
-    }
-  }
-})
+      console.log('on list', message);
+    },
+  },
+});
 ```
 
 # 3.0.0-alpha.2 (2016-09-06)
@@ -230,10 +268,10 @@ const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
   credentials() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
-      token: null
-    })
-  }
-})
+      token: null,
+    });
+  },
+});
 ```
 
 **After**
@@ -244,10 +282,10 @@ const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
   authentication() {
     return ZetaPush.Authentication.weak({
-      token: null
-    })
-  }
-})
+      token: null,
+    });
+  },
+});
 ```
 
 ### Features
@@ -281,8 +319,8 @@ const client = new ZetaPush.Client({
 ```js
 const client = new ZetaPush.WeakClient({
   sandboxId: 'Y1k3xBDc',
-  transports: [ZetaPush.TransportTypes.LONG_POLLING]
-})
+  transports: [ZetaPush.TransportTypes.LONG_POLLING],
+});
 ```
 
 # 2.0.0-rc.1 (2016-07-12)
@@ -301,10 +339,10 @@ const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
   credentials() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
-      token: null
-    })
-  }
-})
+      token: null,
+    });
+  },
+});
 ```
 
 **After**
@@ -315,10 +353,10 @@ const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
   credentials() {
     return ZetaPush.Authentication.weak({
-      token: null
-    })
-  }
-})
+      token: null,
+    });
+  },
+});
 ```
 
 # 2.0.0-beta.23 (2016-07-08)
@@ -368,10 +406,10 @@ const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
   handshakeStrategy() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
-      token: null
-    })
-  }
-})
+      token: null,
+    });
+  },
+});
 ```
 
 **After**
@@ -382,10 +420,10 @@ const client = new ZetaPush.Client({
   sandboxId: '<YOUR-SANDBOX-ID>',
   credentials() {
     return ZetaPush.AuthentFactory.createWeakHandshake({
-      token: null
-    })
-  }
-})
+      token: null,
+    });
+  },
+});
 ```
 
 # 2.0.0-beta.17 (2016-06-20)
@@ -404,13 +442,13 @@ const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
     list(message) {
-      console.log('on list stack', message.data)
-    }
-  }
-})
+      console.log('on list stack', message.data);
+    },
+  },
+});
 service.publisher.list({
-  stack: '<STACK-ID>'
-})
+  stack: '<STACK-ID>',
+});
 ```
 
 **After**
@@ -420,13 +458,13 @@ const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
     list(message) {
-      console.log('on list stack', message.data)
-    }
-  }
-})
+      console.log('on list stack', message.data);
+    },
+  },
+});
 service.list({
-  stack: '<STACK-ID>'
-})
+  stack: '<STACK-ID>',
+});
 ```
 
 # 2.0.0-beta.16 (2016-06-06)
@@ -467,13 +505,13 @@ const service = client.createService({
   type: ZetaPush.services.Stack,
   listener: {
     list(message) {
-      console.log('on list stack', message.data)
-    }
-  }
-})
+      console.log('on list stack', message.data);
+    },
+  },
+});
 service.publisher.list({
-  stack: '<STACK-ID>'
-})
+  stack: '<STACK-ID>',
+});
 ```
 
 # 2.0.0-beta.15 (2016-06-03)
@@ -504,7 +542,7 @@ service.publisher.list({
 
 ### Changes
 
-* **core:**  Add shorthand methods to handle lifecycle connection events
+* **core:** Add shorthand methods to handle lifecycle connection events
 
 # 2.0.0-beta.10 (2016-06-01)
 
