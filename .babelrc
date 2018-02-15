@@ -2,33 +2,49 @@
   "env": {
     "umd": {
       "presets": [
-        ["env", {
-          "modules": false
-        }]
+        [
+          "@babel/preset-env",
+          {
+            "modules": false
+          }
+        ]
       ],
       "plugins": [
-        "external-helpers"
+        "@babel/plugin-proposal-object-rest-spread"
       ]
     },
     "commonjs": {
       "presets": [
-        ["env", {
-          "modules": false
-        }]
+        [
+          "@babel/preset-env",
+          {
+            "modules": false,
+            "targets": {
+              "node": "current"
+            }
+          }
+        ]
       ],
       "plugins": [
-        ["transform-es2015-modules-commonjs", { "loose": true }]
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-transform-modules-commonjs"
       ]
     },
     "es": {
       "presets": [
-        ["env", {
-          "targets": {
-            "node": "current"
+        [
+          "@babel/preset-env",
+          {
+            "modules": false,
+            "targets": {
+              "node": "current"
+            }
           }
-        }]
+        ]
       ],
-      "plugins": []
+      "plugins": [
+        "@babel/plugin-proposal-object-rest-spread"
+      ]
     }
   }
 }
