@@ -1,13 +1,10 @@
 describe('AsyncMacro', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
 
-  function HelloMacro() {
-    ZetaPush.services.Macro.apply(this, arguments)
-  }
-  HelloMacro.DEFAULT_DEPLOYMENT_ID = ZetaPush.services.Macro.DEFAULT_DEPLOYMENT_ID
-  HelloMacro.prototype = Object.create(ZetaPush.services.Macro.prototype)
-  HelloMacro.prototype.hello = function (parameters) {
-    return this.$publish('hello', parameters)
+  class HelloMacro extends ZetaPush.services.Macro {
+    hello(parameters) {
+      return this.$publish('hello', parameters)
+    }
   }
 
   const apiUrl = 'http://api.zpush.io/'
