@@ -1,6 +1,6 @@
 // Create new ZetaPush Client
 const client = new ZetaPush.WeakClient({
-  sandboxId: 'bcu1JtRb',
+  sandboxId: '<%= sandboxId %>',
 });
 client.onConnectionEstablished(() => {
   console.debug('onConnectionEstablished');

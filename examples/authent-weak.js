@@ -1,6 +1,6 @@
 // Create new ZetaPush Client
 const client = new ZetaPush.Client({
-  sandboxId: 'bcu1JtRb',
+  sandboxId: '<%= sandboxId %>',
   authentication() {
     return ZetaPush.Authentication.weak({
       token: null,

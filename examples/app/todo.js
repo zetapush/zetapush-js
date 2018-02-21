@@ -1,6 +1,6 @@
 // Create a Zetapush WeakClient
 const client = new ZetaPush.WeakClient({
-  sandboxId: 'bcu1JtRb',
+  sandboxId: '<%= sandboxId %>',
 });
 // Get Todo item DOM
 function getTodoItemDom(message, wrapper = true) {

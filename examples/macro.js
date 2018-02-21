@@ -1,6 +1,6 @@
 // Create new ZetaPush Client
 const client = new ZetaPush.SmartClient({
-  sandboxId: 'fCDDOkuc',
+  sandboxId: '<%= sandboxId %>',
   apiUrl: 'https://zbo.zpush.io/zbo/pub/business',
 });
 const login = prompt('Login?', 'user-1');

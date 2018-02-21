@@ -1,7 +1,7 @@
 describe('Client', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
 
-  const sandboxId = 'bcu1JtRb'
+  const sandboxId = '<%= sandboxId %>'
   const protocols = ['http']
   const server = '://api.zpush.io/' + sandboxId
 

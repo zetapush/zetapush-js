@@ -2,7 +2,7 @@ describe('Client', () => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000
 
   const apiUrl = 'http://api.zpush.io/'
-  const sandboxId = 'bcu1JtRb'
+  const sandboxId = '<%= sandboxId %>'
 
   beforeEach(() => {
     this.client = new ZetaPush.Client({

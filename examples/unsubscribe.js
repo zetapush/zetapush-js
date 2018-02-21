@@ -1,5 +1,5 @@
 const client = new ZetaPush.WeakClient({
-  sandboxId: 'bcu1JtRb',
+  sandboxId: '<%= sandboxId %>',
 });
 const service = client.createService({
   Type: ZetaPush.services.Macro,

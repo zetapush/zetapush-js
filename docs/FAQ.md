@@ -96,7 +96,7 @@ ZetaPush Client provide an option to specify active transports
 
 ```js
 const client = new ZetaPush.WeakClient({
-  sandboxId: 'Y1k3xBDc',
+  sandboxId: '<%= sandboxId %>',
   transports: [ZetaPush.TransportTypes.LONG_POLLING]
 })
 ```

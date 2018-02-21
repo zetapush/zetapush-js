@@ -13,9 +13,9 @@ const di = (client, Api) => {
 
 const client = new ZetaPush.ServerClient({
   "apiUrl": "http://hq.zpush.io:9080/zbo/pub/business",
-  "sandboxId": "iPcadJ_7",
-  "login": "gregory.houllier@zetapush.com",
-  "password": "zp.2015"
+  "sandboxId": "<%= sandboxId %>",
+  "login": "<%= login %>",
+  "password": "<%= password %>"
 });
 
 client
