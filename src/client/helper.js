@@ -1,7 +1,7 @@
 import { CometD, Transports } from 'zetapush-cometd'
 import { ConnectionStatusListener } from '../connection/connection-status'
 import { Macro } from '../mapping/services'
-import { getServers, isDerivedOf, shuffle, uuid } from '../utils/index'
+import { getSandboxConfig, isDerivedOf, shuffle, uuid } from '../utils/index'
 
 /**
  * CometD Messages enumeration
@@ -73,11 +73,14 @@ export class ClientHelper {
      * @access private
      * @type {Promise}
      */
-    this.servers = getServers({ apiUrl, sandboxId, forceHttps, transports }).catch((error) => {
+    this.config = getSandboxConfig({ apiUrl, sandboxId, forceHttps, transports }).catch((error) => {
       // Notify error in connection to server step
       this.connectionToServerFail(error)
       // Return empty list
-      return []
+      return {
+        sandboxId,
+        servers: []
+      }
     })
     /**
      * @access private
@@ -114,6 +117,12 @@ export class ClientHelper {
      * @type {CometD}
      */
     this.cometd = new CometD()
+
+    // Resolve sandbox alias from server-side config
+    this.config.then((config) => {
+      // Resolve
+      this.sandboxId = config.sandboxId
+    })
 
     // Register transports layers
     transports.ALL.forEach(({ type, Transport }) => {
@@ -215,7 +224,7 @@ export class ClientHelper {
    * Connect client using CometD Transport
    */
   connect() {
-    this.servers.then((servers) => {
+    this.getServers().then((servers) => {
       if (servers.length > 0) {
         // Get a random server url
         this.serverUrl = shuffle(servers)
@@ -431,7 +440,7 @@ export class ClientHelper {
    * @return {Promise} servers
    */
   getServers() {
-    return this.servers
+    return this.config.then(({ servers }) => servers)
   }
   /**
    * Get a publisher for a service
@@ -589,7 +598,7 @@ export class ClientHelper {
   * Remove current server url from the server list and shuffle for another one
   */
   updateServerUrl() {
-    this.servers.then((servers) => {
+    this.getServers().then((servers) => {
       const index = servers.indexOf(this.serverUrl)
       if (index > -1) {
         servers.splice(index, 1)
