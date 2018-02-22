@@ -293,7 +293,7 @@ export class ClientHelper {
    * @return {Object} service
    */
   createAsyncMacroService({ listener, Type, deploymentId = Type.DEFAULT_DEPLOYMENT_ID }) {
-    const prefix = `/service/${this.getSandboxId()}/${deploymentId}`
+    const prefix = () => `/service/${this.getSandboxId()}/${deploymentId}`
     const $publish = this.getAsyncMacroPublisher(prefix)
     // Create service by publisher
     return this.createServiceByPublisher({ listener, prefix, Type, $publish })
@@ -305,13 +305,13 @@ export class ClientHelper {
    */
   createService({ listener, Type, deploymentId = Type.DEFAULT_DEPLOYMENT_ID }) {
     const isMacroType = isDerivedOf(Type, Macro)
-    const prefix = `/service/${this.getSandboxId()}/${deploymentId}`
+    const prefix = () => `/service/${this.getSandboxId()}/${deploymentId}`
     const $publish = isMacroType ? this.getMacroPublisher(prefix) : this.getServicePublisher(prefix)
     // Create service by publisher
     return this.createServiceByPublisher({ listener, prefix, Type, $publish })
   }
   /**
-   * @param {{listener: Object, prefix: string, Type: class, $publish: Function}} parameters
+   * @param {{listener: Object, prefix: () => string, Type: class, $publish: Function}} parameters
    * @return {Object} service
    */
   createServiceByPublisher({ listener, prefix, Type, $publish }) {
@@ -329,12 +329,12 @@ export class ClientHelper {
   /**
    * Get a publisher for a macro service that return a promise
    * @experimental
-   * @param {string} prefix - Channel prefix
+   * @param {() => string} prefix - Channel prefix
    * @return {Function} publisher
    */
   getAsyncMacroPublisher(prefix) {
     return (name, parameters, hardFail = false, debug = 1) => {
-      const channel = `${prefix}/call`
+      const channel = `${prefix()}/call`
       const uniqRequestId = this.getUniqRequestId()
       const subscriptions = {}
       return new Promise((resolve, reject) => {
@@ -385,12 +385,12 @@ export class ClientHelper {
   }
   /**
    * Get a publisher for a macro service
-   * @param {string} prefix - Channel prefix
+   * @param {() => string} prefix - Channel prefix
    * @return {Function} publisher
    */
   getMacroPublisher(prefix) {
     return (name, parameters, hardFail = false, debug = 1) => {
-      const channel = `${prefix}/call`
+      const channel = `${prefix()}/call`
       const requestId = this.getUniqRequestId()
       return this.publish(channel, {
         debug,
@@ -435,12 +435,12 @@ export class ClientHelper {
   }
   /**
    * Get a publisher for a service
-   * @param {string} prefix - Channel prefix
+   * @param {() => string} prefix - Channel prefix
    * @return {Function} publisher
    */
   getServicePublisher(prefix) {
     return (method, parameters) => {
-      const channel = `${prefix}/${method}`
+      const channel = `${prefix()}/${method}`
       return this.publish(channel, parameters)
     }
   }
@@ -561,7 +561,7 @@ export class ClientHelper {
   }
   /**
    * Subsribe all methods defined in the listener for the given prefixed channel
-   * @param {string} prefix - Channel prefix
+   * @param {() => string} prefix - Channel prefix
    * @param {Object} listener
    * @param {Object} subscriptions
    * @return {Object} subscriptions
@@ -577,7 +577,7 @@ export class ClientHelper {
       for (let method in listener) {
         if (listener.hasOwnProperty(method)) {
           if (subscriptions[method] === void 0) {
-            const channel = `${prefix}/${method}`
+            const channel = `${prefix()}/${method}`
             subscriptions[method] = this.cometd.subscribe(channel, listener[method])
           }
         }
