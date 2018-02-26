@@ -1,3 +1,9 @@
+# 3.4.0-beta.0 (2018-02-22)
+
+# Features
+
+* **sandbox-alias** Support sandbox alias (available in ZetaPush 2.8.0+)
+
 # 3.3.2 (2018-02-07)
 
 > Bump npm version
