@@ -1,3 +1,7 @@
+# 3.4.0 (2018-02-26)
+
+**Note:** Version bump only for package zetapush-js
+
 # 3.4.0-beta.0 (2018-02-22)
 
 # Features
